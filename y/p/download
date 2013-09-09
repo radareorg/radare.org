@@ -74,6 +74,17 @@ This program converts <i>vapi</i> vala interface files into <i>swig</i> interfar
 <br /><br />
 Allow C and Vala libraries to be used from many scripting languages, like NodeJS, Python, Perl, LUA, Java, Go and others.
 </p>
+<br />
+<b>ired</b> <a href='../get/ired-<?=$irv?>.tar.gz'>ired-<?=$irv?>.tar.gz</a> (<?=$ird?>)
+<br />
+<pre>
+git clone git://github.com/radare/ired
+</pre>
+<p style="margin-left:15px">
+Minimalistic implementation of <i>radare</i> in ~500LOC.
+<i>vired</i> is the visual mode for ired implemented in a shellscript.
+It also contains a wip binary diffing utility named <i>bdiff</i>
+</p>
 
 <br />
 <b>radare</b> <a href='../get/radare-<?=$r1v?>.tar.gz'>radare-<?=$r1v?>.tar.gz</a> (<?=$r1d?>)
@@ -85,14 +96,3 @@ git clone git://github.com/radare/radare
 The old, monolithic and discontinued implementation of radare.
 </p>
 
-<br />
-<b>ired</b> <a href='../get/ired-<?=$irv?>.tar.gz'>ired-<?=$irv?>.tar.gz</a>
-<br />
-<pre>
-git clone git://github.com/radare/ired
-</pre>
-<p style="margin-left:15px">
-Minimalistic implementation of <i>radare</i> in ~500LOC.
-<i>vired</i> is the visual mode for ired implemented in a shellscript.
-It also contains a wip binary diffing utility named <i>bdiff</i>
-</p>
