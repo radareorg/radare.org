@@ -4,9 +4,11 @@ require("config.php");
 
 $p=@$_GET["p"];
 $ps = array("documentation", "development", "bugtracker", "examples", "features", "talks", "gui");
-if (in_array($p, $ps)) $page=$p; else {
-$ps2 = array("changes", "twitter", "devel", "download", "contact");
-if (in_array($p, $ps2)) $page=$p; else $page = "about";
+if (in_array($p, $ps)) {
+	$page=$p;
+} else {
+	$ps2 = array("changes", "twitter", "devel", "download", "contact");
+	if (in_array($p, $ps2)) $page=$p; else $page = "about";
 }
 ?>
 <html>
@@ -78,6 +80,8 @@ foreach($ps as $a) {
 	<a href="nospam.php?for=list" target=_blank>mailing list</a>
 	<br />
 	<a href="http://lists.nopcode.org/pipermail/radare-nopcode.org/" target=_blank>archives</a>
+	<br />
+	<a href="?p=development">donate</a>
 	<br />
 	<a target=_blank href="http://twitter.com/radareorg">twitter</a>
 	<br />

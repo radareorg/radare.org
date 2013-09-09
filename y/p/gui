@@ -1,4 +1,15 @@
-<table >
+<table>
+<tr><td colspan=2 valign=top width=350px>
+<font style="font-size:15px;font-weight:bold">Embedded web ui</font>
+<br /><br />
+r2 comes with a work-in-progress web interface that runs on top of an embedded webserver
+<pre>
+$ r2 -c=H /bin/ls
+</pre>
+If you are too lazy to build or install radare2 in your system, check this online demo: <a href="http://cloud.radare.org">cloud.radare.org</a>
+<br /><br />
+<br /><br />
+</td></tr>
 <tr><td valign=top width=350px>
 <font style="font-size:15px;font-weight:bold">Bokken</font>
 <center>
