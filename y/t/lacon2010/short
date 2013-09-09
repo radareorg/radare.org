@@ -1,0 +1,7 @@
+<a href="http://radare.org/get/lacon2k10-nibble.pdf">[PDF(nibble)]</a>
+<a href="http://radare.org/get/lacon2k10-pancake.pdf">[PDF(pancake)]</a>
+<a href="http://radare.org/get/lacon2k10-demos.tar.gz">[SRC](demos)</a>
+<br />
+<br />
+pancake slides about 'rapatch', an automated patching tool.
+nibble ones are on fatbins, dyldcache, hooking demo, ROP helpers and graphdiff.

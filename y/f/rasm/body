@@ -1,0 +1,126 @@
+One of the main programs distributed with radare and radare2 is 'rasm' (and 'rasm2).
+This tool permits to assemble and disassemble stream of bytes or opcodes from pipes or files.
+<br /><br />
+The way to disassemble some bytes is easy:
+<pre>$ rasm2 'nop'
+90
+$ rasm2 -d '90'
+nop
+</pre>
+Appending more than one opcode is done by the ';' character:
+
+<pre>$ rasm2 'nop;mov eax,33;int3'
+90b821000000cc
+</pre>
+
+By default rasm2 uses the configuration of bits and cpu of the running system.
+<pre>$ rasm2 -h
+rasm2 [-e] [-o off] [-a arch] [-s stx] -d "op"|"hex"|- [-f file ..]
+ -d           Disassemble from hexpair bytes
+ -f           Read data from file
+ -o [offset]  Offset where this opcode is suposed to be
+ -a [arch]    Set architecture plugin
+ -b [bits]    Set architecture bits
+ -s [syntax]  Select syntax (intel, att)
+ -B           Binary input/output (-l is mandatory for binary input)
+ -l [int]     Input/Output length
+ -C           Output in C format
+ -L           List supported asm plugins
+ -e           Use big endian
+ -V           Show version information
+ If '-l' value is greater than output length, pad with nops
+ If the last argument is '-' reads from stdin
+</pre>
+
+If we want to assemble one opcode for java we will do:
+
+<pre>$ rasm -a java 'bipush 32'
+1020
+</pre>
+
+Or maybe to assemble an opcode in 16bit for x86 to patch a bios?
+<pre>$ rasm -a x86 -b 16 'mov ax,32'
+b82000
+</pre>
+
+Simple, huh? :)
+<br /><br />
+One of the main uses of the generated code of rasm2 is to be injected
+or used to patch a binary in order to fix a vulnerability or optimize
+the startup process.
+<br /><br />
+So, we will have to specify an offset where this code will be assembled with the '-o' flag
+<pre>$ rasm2 -o 0x8048290 'call 0x8049200'
+e86b0f0000
+$ rasm2 -o 0x8048290 -d e86b0f0000
+call 0x8049200
+</pre>
+The reason is because some opcodes (like branches) use relative offsets, and the assembler
+needs to know this to relocate the references.
+<br /><br />
+Ok. At this point we would probably like to know which architectures do rasm2 supports.
+The answer is behind '-L':
+<pre>$ rasm2 -L
+asm arm        ARM disassembly plugin
+asm avr        AVR Atmel disassembler
+asm csr        CSR disassembly plugin
+asm java       Java CLASS assembler/disassembler
+asm mips       MIPS disassembly plugin
+asm ppc        PPC disassembly plugin
+asm x86        udis86 disassembly plugin
+asm x86.nasm   X86 nasm assembler plugin
+asm x86.olly   X86 disassembly plugin (olly engine)
+asm bf         BF disassembly plugin
+asm dummy      dummy disassembly plugin
+asm sparc      SPARC disassembly plugin
+asm psosvm     PSOS-VM disassembly plugin
+</pre>
+Assembler/disassembler plugins are selected with the '-a' flag, as we did before.
+<br /><br />
+The tool also supports reading assembly code from a file. This is useful when you need
+to assemble something longer than a oneliner.
+<br /><br />
+rasm2 supports some directives. They can be disposed anywhere in the assembly code.
+Here's the list of supported ones:
+<ul>
+  <li> .string "Hello World"
+  <li> .arch x86
+  <li> .byte 0x90
+  <li> .bits 32
+  <li> .org 0x80484000
+  <li> .equ printf,0x8049524
+</ul>
+The assembler also understands labels. You can use .equ directive to define the offsets of
+the symbols required by your program to run.
+<pre>
+$ cat t/test.asm
+.org 0
+push ebp
+sopa:
+  mov ebp, esp
+end_loop:
+  sub esp, 192
+ call sopa
+jz end_loop
+nop
+mov eax,44
+
+$ rasm2 -f t/test.asm 
+5589e581ecc0000000e8f3ffffff0f84efffffff90b82c000000
+
+$ rasm2 -o 0 -d 5589e581ecc0000000e8f3ffffff0f84efffffff90b82c000000
+push ebp
+mov ebp, esp
+sub esp, 0xc0
+call 0x1
+jz dword 0x3
+nop 
+mov eax, 0x2c
+</pre>
+Another useful option of rasm2 is '-C'. it prints the assembled code in C format,
+so you can copy-paste it to any python, perl, C, Vala, .. program.
+<pre>$ rasm2 -C -f t/test.asm 
+"\x55\x89\xe5\x81\xec\xc0\x00\x00\x00\xe8\xf3" \
+"\xff\xff\xff\x0f\x84\xef\xff\xff\xff\x90\xb8" \
+"\x2c\x00\x00\x00"
+</pre>

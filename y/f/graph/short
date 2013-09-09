@@ -1,0 +1,10 @@
+When analyzing big binaries text-only view is probably not enought to understand the whole program.
+
+<br /> <br />
+radare and radare2 can generate graphs in graphviz format.
+
+<br /><br />
+When compiling radare1 with gtk, you will be able to use the 'ag' command. This command opens a gtk window with the graph analysis starting at the current seek
+
+<br /><br />
+There are three ways to work with graphs using radare:

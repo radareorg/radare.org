@@ -1,0 +1,10 @@
+One of the main programs distributed with radare and radare2 is 'rasm' (and 'rasm2).
+This tool permits to assemble and disassemble stream of bytes or opcodes from pipes or files.
+<br /><br />
+The way to disassemble some bytes is easy:
+<pre>$ rasm2 'nop'
+90
+$ rasm2 -d '90'
+nop
+</pre>
+Appending more than one opcode is done by the ';' character:

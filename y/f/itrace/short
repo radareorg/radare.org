@@ -1,0 +1,14 @@
+In this new article I will explain some of the r_anal features through the
+creation of a small tool that we will call "itrace", which is mainly
+focused on tracing/hooking of imports execution based on LD_PRELOAD + global
+hooking. I presented this method and POC on rooted'10, so you can give a
+look to the slides [1] if you want a quick summary and source [2] for testing
+it.
+
+<br/><br/>
+
+Imagine the following scenario, we have a binary and we want to trigger an event
+each time that an import is called. Obviously, we could hook all the imports and
+exec whatever we want preloading a library coded by us with LD_PRELOAD, but this
+aproximation has a very big problem: the imports used by each target binary will
+change, so we would need to code a library adapted to each binary every time.

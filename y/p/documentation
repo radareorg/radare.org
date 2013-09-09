@@ -1,0 +1,39 @@
+<div style="text-align:left;font-size:14px;font-weight:bold">The book</div>
+<hr size=1 />
+This book was released together with radare 1.0. Most of the concepts are explained there, some of the examples may not be compatible with radare2.
+<br /><br />
+You can read it <a href="http://radare.org/doc/html/contents.html">online</a> or download the <a href="http://radare.org/get/radare.pdf">PDF</a>.
+<br /><br />
+<br /><br />
+
+<div style="text-align:left;font-size:14px;font-weight:bold">The API</div>
+<hr size=1 />
+radare2 api (aka libr) is described in vapi files. Those files are translated by valaswig into swig interface files to generate the bindings for python, ruby, perl and others.
+<br /><br />
+Those <a href="http://live.gnome.org/Vala">Vala</a> vapi files are at the same time parsed by <a href="http://live.gnome.org/Valadoc">Valadoc</a> to generate the <a href="http://radare.org/vdoc">online</a> documentation.
+<br /><br />
+<br /><br />
+
+
+<div style="text-align:left;font-size:14px;font-weight:bold">Articles</div>
+<hr size=1 />
+Some e-zines has published articles about how to use radare in some specific use cases.
+<ul>
+<li> phrack#66 : <a href="http://www.phrack.org/issues.html?issue=66&id=14#article">manual binary mangling with radare</a> - by pancake
+<li>arteam#4 : <a href="http://issuu.com/smithcharly/docs/arteam_ezine_number4/58">handy primer on linux reversing</a> - by Gunther
+<li>crackslatinos : Introduccion al cracking en linux <a href="http://radare.org/get/cl/cl-intro3-install.pdf">3</a> y <a href="http://radare.org/get/cl/cl-intro4-manejo.pdf">4</a>
+<li>crackmes.de : <a href="http://crackmes.de/users/pancake/pcme0/">pcme0 crackme</a> solution - by rookie
+<li>crackmes.de : <a href="http://lolcathost.org/b/adaelf.txt">ada crackme</a> solution - by pancake
+</ul>
+<br /><br />
+
+<div style="text-align:left;font-size:14px;font-weight:bold">Examples</div>
+<hr size=1 />
+Many articles are published in the <a href="?p=examples">examples</a> in order to explain specific features of r2 with practical use cases. We are open to accept submissions of new articles
+<br /><br />
+<br /><br />
+<div style="text-align:left;font-size:14px;font-weight:bold">Talks</div>
+<hr size=1 />
+You may find slides, videos and audios of <a href=?p=talks>many talks</a> about the features, capabilities and practical examples of using r2 for different tasks.
+<br /><br />
+<br /><br />

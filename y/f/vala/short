@@ -1,0 +1,10 @@
+Under some situations you need to automatize or extend the features of radare.
+There are so many scripting languages out there: python, ruby, perl, lua between others.
+<br /><br />
+All of them are supported by the radare package and you can use them from inside r2 using
+r_lang plugins and the '#!' command or externally with the r2-swig.
+<br /><br />
+The main issue on scripting languages is performance. The code is interpreted and all the
+api bindings are wrapped, so linked list accesses and function calls are highly penalized.
+<br /><br />
+Here's where <a href="http://live.gnome.org/Vala">Vala</a> joins the party.

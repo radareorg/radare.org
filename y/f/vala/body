@@ -1,0 +1,69 @@
+Under some situations you need to automatize or extend the features of radare.
+There are so many scripting languages out there: python, ruby, perl, lua between others.
+<br /><br />
+All of them are supported by the radare package and you can use them from inside r2 using
+r_lang plugins and the '#!' command or externally with the r2-swig.
+<br /><br />
+The main issue on scripting languages is performance. The code is interpreted and all the
+api bindings are wrapped, so linked list accesses and function calls are highly penalized.
+<br /><br />
+Here's where <a href="http://live.gnome.org/Vala">Vala</a> joins the party.
+<br /><br />
+
+Vala compiles into C and generates native code with no wrappers, but providing a higher-level interface than C, so it is harder to segfault.
+
+<br /><br />
+Let's see how to run scripts for r_lang in the r2 prompt:
+<br /><br />
+<pre>
+[0x8048520]> #!
+ vala: VALA language extension
+</pre>
+
+<br />
+The '#!' (hashbang) command is used to invoke the r_lang REPL prompt or run the code of the given file.
+<br /><br />
+
+The command has reported that it our build of r2 has built-in support for running Vala code from the core. So let's try it using the read-eval-print-loop mode.
+
+<br /><br />
+<pre>
+[0x8048520]> #!vala
+vala> print ("%p\n", core)
+0x804b2c0
+</pre>
+
+<br />
+
+This is what it's happening after each newline in the prompt:
+<ul>
+ <li> wraps line with: 'using Radare; public static void entry(RCore core) {}
+ <li> compiles temporary .vala file into a shared library against r_core library
+ <li> loads the library and resolves the symbol named 'entry'
+ <li> calls the entry point with the RCore instance as argument
+ <li> unloads the library and removes temporary files
+</ul>
+
+<br />
+You can also write the vala code in a separated file named 'foo.vala':
+<br /><br />
+<pre>
+[0x80498d2]> !cat foo.vala 
+using Radare;
+
+public static void entry(RCore core) {
+        core.cmd0 ("pd 2");
+        core.cons.flush ();
+}
+</pre>
+<br /> <br />
+Execute this file with '#!vala foo[.vala]':
+<br /> <br />
+<pre>
+[0x80498d2]> #!vala foo
+  0x080498d2        5e  pop esi
+  0x080498d3      89e1  mov ecx, esp
+</pre>
+<br />
+
+For more documentation on bindings see the <a href="http://radare.org/vdoc">vapi documentation.</a>

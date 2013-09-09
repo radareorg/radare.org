@@ -1,0 +1,10 @@
+Many times you fall in the situation that you need a simple calculator and conversor tool to convert numbers from different bases, change the endianness, etc..
+<br /><br />
+The 'rax' utility comes with the radare framework and aims to be a minimalistic expression evaluator for the shell useful for making base conversions easily between floating point values, hexadecimal representations, hexpair strings to ascii, octal to integer.
+<br /><br />
+It supports endianness and can be used as a shell if no arguments given.
+In short you have:
+<pre>
+$ rax -h
+Usage: rax [-] | [-s] [-e] [int|0x|Fx|.f|.o] [...]
+</pre>

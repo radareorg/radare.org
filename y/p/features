@@ -1,0 +1,58 @@
+<br />
+<ul> 
+<li><b>Multi-architecture and multi-platform</b>
+  <ul>
+    <li>GNU/Linux, Android, *BSD, OSX, iPhoneOS, Windows{32,64} and Solaris
+    <li>x86{16,32,64}, dalvik, avr, arm, java, powerpc, sparc, mips, bf
+    <li>pe{32,64}, [fat]mach0{32,64}, elf{32,64}, dex and java classes
+  </ul>
+<li><b>Highly scriptable</b>
+  <ul>
+    <li><a href=http://live.gnome.org/Vala>Vala</a>, <a href=http://go-lang.org>Go</a>, Python, Guile, Ruby, Perl, lua, Java, JavaScript, sh, ..
+    <li>batch mode and native plugins with full internal API access
+    <li>native scripting based in mnemonic commands and macros
+  </ul>
+<li><b>Hexadecimal editor</b>
+  <ul>
+    <li>64bit offset support with virtual addressing and section maps
+    <li><a href="?p=examples&f=rasm">Assemble and disassemble</a> from/to many architectures
+    <li>colorizes opcodes, bytes and debug register changes
+    <li>print <a href="?p=examples&f=rax">data</a> in various formats (int, float, disasm, timestamp, ..)
+    <li>search multiple patterns or keywords with binary mask support
+    <li>checksumming and data analysis of byte blocks
+  </ul>
+<li><b>IO is wrapped</b>
+  <ul>
+    <li>support Files, disks, processes and streams
+    <li>virtual addressing with sections and multiple file mapping
+    <li>handles gdb:// and rap:// remote protocols
+  </ul>
+<li><b>Filesystems support</b>
+  <ul>
+    <li>allows to mount ext2, vfat, ntfs, and many others
+    <li>support partition types (gpt, msdos, ..)
+  </ul>
+<li><b>Debugger support</b>
+  <ul>
+    <li>gdb remote and brainfuck debugger support
+    <li>software and hardware breakpoints
+    <li>tracing and logging facilities
+  </ul>
+<li><b>Diffing between two functions or binaries</b>
+  <ul>
+    <li>graphviz friendly <a href="?p=examples&f=graph">code analysis graphs</a>
+    <li>colorize nodes and edges
+  </ul>
+<li><b>Code analysis at opcode, basicblock, function levels</b>
+  <ul>
+    <li>embedded simple virtual machine to emulate code
+    <li>keep track of code and data references
+    <li>function calls and syscall decompilation
+    <li>function description, comments and library signatures
+  </ul>
+</ul>
+<p align=right>
+<a href="?p=examples">And more...</a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
+

@@ -1,0 +1,88 @@
+Many times you fall in the situation that you need a simple calculator and conversor tool to convert numbers from different bases, change the endianness, etc..
+<br /><br />
+The 'rax' utility comes with the radare framework and aims to be a minimalistic expression evaluator for the shell useful for making base conversions easily between floating point values, hexadecimal representations, hexpair strings to ascii, octal to integer.
+<br /><br />
+It supports endianness and can be used as a shell if no arguments given.
+In short you have:
+<pre>
+$ rax -h
+Usage: rax [-] | [-s] [-e] [int|0x|Fx|.f|.o] [...]
+</pre>
+
+
+
+<pre>
+  int   ->  hex           ;  rax 10
+  hex   ->  int           ;  rax 0xa
+  -int  ->  hex           ;  rax -77
+  -hex  ->  int           ;  rax 0xffffffb3
+  float ->  hex           ;  rax 3.33f
+  hex   ->  float         ;  rax Fx40551ed8
+  oct   ->  hex           ;  rax 035
+  hex   ->  oct           ;  rax Ox12 (O is a letter)
+  bin   ->  hex           ;  rax 1100011b
+  hex   ->  bin           ;  rax Bx63 
+  -e    swap endianness   ;  rax -e 0x33
+  -s    swap hex to bin   ;  rax -s 43 4a 50
+  -     read data from stdin until eof
+</pre>
+
+Some examples:
+
+<pre>$ rax 0x345
+837
+$ rax 837
+0x345
+$ rax 44.44f
+Fx8fc23142 
+$ rax 0xfffffffd
+-3
+$ rax -3
+0xfffffffd 
+$ rax -s "41 42 43 44"
+ABCD 
+</pre>
+
+In fact. radare (and r2) have an internal base evaluation prompt which permits some basic math operations,
+memory accesses, registers and others.
+<br /><br />
+The magic is done inside the '?' command. If you type something after '? ' it will be evaluated and will display the result.
+<pre>
+[0x08049850]> ? [esp+4]+eip
+3078117396 0xb7785814
+
+[0x08049850]> ? 10+20
+30 0x1e
+
+[0x08049850]> ? 10+0x8044+esp
+3219215342 0xbfe153ee
+</pre>
+The help documentation for the evaluation command is displayed with the command '???':
+
+<pre>[0x08049850]> ???
+Usage: ?[?[?]] expression
+ ? eip-0x804800  ; calculate result for this math expr
+ ?= eip-0x804800 ; same as above without user feedback
+ ?? [cmd]        ; ? == 0  run command when math matches
+ ?z str          ; returns the length of string (0 if null)
+ ?t cmd          ; returns the time to run a command
+ ?! [cmd]        ; ? != 0
+ ?+ [cmd]        ; ? &gt; 0
+ ?- [cmd]        ; ? &lt; 0
+ ???             ; show this help
+$variables:
+ $$  = here (current seek)
+ $s  = file size
+ $b  = block size
+ $j  = jump address
+ $f  = address of next opcode
+ $r  = opcode reference pointer
+ $e  = 1 if end of block, else 0
+ ${eval} = get value of eval variable
+ $?  = last comparision value
+</pre>
+As you see in the help. The evaluation command is used for programming
+in radare scripts. You can use construct conditional executions depending
+on some register values or memory state, etc..
+<br /><br />
+This is probably food for another article

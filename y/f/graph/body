@@ -1,0 +1,40 @@
+When analyzing big binaries text-only view is probably not enought to understand the whole program.
+
+<br /> <br />
+radare and radare2 can generate graphs in graphviz format.
+
+<br /><br />
+When compiling radare1 with gtk, you will be able to use the 'ag' command. This command opens a gtk window with the graph analysis starting at the current seek
+
+<br /><br />
+There are three ways to work with graphs using radare:
+<ul>
+  <li> r1: ag - needs r1 with gtk
+  <li> r2: ag > foo.dot && !xdot foo.dot
+  <li> mangling with 'rsc gdl2gml tab2gml bin2tab tab2asm and tab2gml'
+</ul>
+<br /><br />
+Let's analyze some functions in r2:
+<pre>$ r2 /bin/ls
+[0x08049850]> af@main
+[0x08049850]> ag > foo.dot
+foo.dot created
+[0x08049850]> !dot -Tpng foo.png foo.dot
+Created foo.png image
+[0x08049850]> !xdot foo.dot
+</pre>
+<center>
+<img border=1 style=border-color:black src="f/graph/graph2.png">
+<br /><br />
+</center>
+If we get closer with control+wheel...
+<center>
+<br /><br />
+<img border=1 style=border-color:black src="f/graph/graph1.png">
+</center>
+<br /><br />
+radare1 with gtk have an internal command to popup a window with a graph view of the basic blocks discovered starting at current seek. Type 'ag'
+<br /><br />
+<center>
+<img border=1 style=border-color:black src="f/graph/graph3.png">
+</center>

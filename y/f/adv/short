@@ -1,0 +1,10 @@
+Posted on July 17, 2011 by Edd
+<br />
+<a target=_blank href="http://canthack.org/2011/07/adventures-with-radare-1-a-simple-shellcode-analysis/">http://canthack.org/2011/07/adventures-with-radare-1-a-simple-shellcode-analysis/</a>
+<br />
+<br />
+
+Radare2 is an open-source reverse engineering toolkit, consisting of a disassembler, debugger and hex editor. In this article I will show you the basics by reversing some shellcode I found on Project Shellcode.
+
+<br /> <br />
+To put this into context let's briefly discuss what we mean by the term "shellcode", not to be confused with "shellscript", which is something else entirely. "Shellcode" is a term colloquially used to refer to the payload of an exploit. Typically this would be code injected to start a shell.

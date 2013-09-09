@@ -1,0 +1,38 @@
+<font style="font-size:15px;font-weight:bold">Authors</font>
+	<hr size=1 />
+The author and main developer of this project is <a href="http://twitter.com/trufae">@trufae</a> (pancake).
+<br/><br />
+Many contributors helped the project (see <a href="https://github.com/radare/radare2/blob/master/AUTHORS">AUTHORS</a>).
+
+<br /><br />
+In order to contribute to the project we recommend using pull requests from github. But unified diff patches and remote gits are also welcome.
+<br /><br />
+<br />
+<font style="font-size:15px;font-weight:bold">Building</font>
+	<hr size=1 />
+The recommended way to build and install r2 from git:<br />
+<pre>$ cd radare2 ; sys/install.sh</pre>
+See <a href="?p=download">Downloads</a> page for tarballs and nightly builds.
+<br />
+<br />
+
+<font style="font-size:15px;font-weight:bold">Repositories</font>
+	<hr size=1 />
+
+<i>radare2</i> is under development
+<pre> git clone <a target=_blank style="color:#b0b0ff" href="http://github.com/radare/radare2">git://github.com/radare/radare2</a></pre>
+<pre style="color:#c0c0c0"> git clone http://radare.org/git/radare2</pre>
+
+<i>radare2-extras</i> is the extra plugins and unmaintaned pieces of radare2
+
+<pre>$ hg clone <a target=_blank style="color:#b0b0ff" href="http://github.com/radare/radare2-extras">http://github.com/radare/radare2-extras</a></pre>
+
+Old version of <i>radare</i>, only maintained for bugfixing:
+
+<pre>$ hg clone <a target=_blank style="color:#b0b0ff;" href="http://github.com/radare/radare">http://github.com/radare/radare</a> </pre>
+
+A minimalist version of radare in 500LOC named <i>ired</i>
+
+<pre> git clone git://github.com/radare/ired</pre>
+<br />
+<? /* include ("p/commits"); */ ?>
