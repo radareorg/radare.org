@@ -3,7 +3,9 @@
 The author and main developer of radare is <a href="http://twitter.com/trufae">@trufae</a> (pancake).
 <br/><br />
 Many contributors helped the project (see <a href="https://github.com/radare/radare2/blob/master/AUTHORS">AUTHORS</a>).
-In order to contribute to the project we recommend using github pull requests, but unified diff patches and remote gits are also welcome. Feel free to join the <a href="irc://irc.freenode.net/radare">irc</a> to discuss, share your ideas and ask your questions.
+In order to contribute to the project we recommend using github pull requests, but unified diff patches and remote gits are also welcome.
+<br /><br />
+Feel free to join the <a href="irc://irc.freenode.net/radare">irc</a> to discuss, share your ideas and ask your questions.
 <br /><br />
 <br /><br />
 
