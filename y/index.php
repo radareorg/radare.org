@@ -63,8 +63,8 @@ foreach($ps as $a) {
 <tr><td><a href="../get/r2-bindings-<?=$r2v?>.tar.xz">r2-bind</a> </td> <td><?=$r2v?></td></tr>
 <tr><td><a href="../get/radare-<?=$r1v?>.tar.gz">radare</a> </td> <td><?=$r1v?></td></tr>
 <tr><td><a href="../get/ired-<?=$irv?>.tar.gz">ired</a> </td> <td><?=$irv?></td></tr>
-<tr><td colspan=2><a href="?p=development">repositories</a> </td></tr>
-<tr><td colspan=2><a href="?p=download">sources</a> </td></tr>
+<tr><td colspan=2><a href="?p=download#binaries">binaries</a> </td></tr>
+<tr><td colspan=2><a href="?p=download#sources">sources</a> </td></tr>
 </table>
 </div>
 <br/> <br />
@@ -111,19 +111,19 @@ include("p/$page");
 </tr>
 </table>
 <br />
+<!--
 <div style="background-color:white;width:500px;
        -webkit-border-radius:10px;
         -moz-border-radius: 10px;
         border-radius: 10px;">
 <br />
 <iframe data-aa='472' src='//ad.a-ads.com/472' scrolling='no' style='width:120px; height:60px; border:0px; padding:0;overflow:hidden' allowtransparency='true'></iframe>
-<!--
 <iframe src='http://anonymousads.com/a/15gRDoa9wHYTN4k8U1EPPxTQ7bXcXWMVWP' scrolling='no' style='width:468px; height:60px; border:0px; padding:5pt'></iframe>
 <a style="font-size:12px" href='http://anonymousads.com?partner=15gRDoa9wHYTN4k8U1EPPxTQ7bXcXWMVWP'>Advertise with Anonymous Ads</a>
--->
 <br />
 <br />
 </div>
+-->
 </center>
 
 </body>

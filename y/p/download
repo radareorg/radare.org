@@ -8,7 +8,7 @@
 <a href='http://trac.macports.org/browser/trunk/dports/devel/radare2'>
  <img alt=0.9.4 src=/img/icons/osx.png />
 </a>
-<a href='../get/pkg/radare2-w32-0.9.5git.zip'>
+<a href='../get/pkg/radare2-w32-0.9.6.zip'>
   <img alt=0.9.5git border=0 src=/img/icons/w32.jpg />
 </a>
 <a href='https://play.google.com/store/apps/details?id=org.radare.installer'>
@@ -29,7 +29,18 @@ Debian (
 )
 <br /><br />
 <br /><br />
+<a name="build"></a>
+<div style="text-align:left;font-size:14px;font-weight:bold">Building</div>
+<hr size=1 />
+The recommended way to build and install r2 from git:<br />
+<pre>git clone git://github.com/radare/radare2
+cd radare2
+sys/install.sh</pre>
 
+<br /><br />
+<br /><br />
+
+<a name="sources"></a>
 <div style="text-align:left;font-size:14px;font-weight:bold">Sources</div>
 <hr size=1 />
 <br />
@@ -43,6 +54,7 @@ wget -O radare2-git.tgz https://github.com/radare/radare2/archive/master.tar.gz
 <pre title="mirror$ git clone http://radare.org/git/radare2">
 git clone git://github.com/radare/radare2
 </pre>
+<pre style="color:#c0c0c0">git clone http://radare.org/git/radare2 # mirror</pre>
 <p style="margin-left:15px">
 This package contains the sources of <i>radare2</i>. This is the second version of radare, and it's the current development front.
 <br /><br />
@@ -58,10 +70,19 @@ See <a href=?p=development>development</a> page to get the sources from the cont
 cd radare2/r2-bindings
 </pre>
 <p style="margin-left:15px">
-Language bindings of <i>libr</i> for python, perl, ruby, Go, lua and Java.
+Language bindings of <i>libr</i> for Python, Perl, Ruby, Go, Lua and Java.
 It contains the files inside the r2-bindings/ directory of the <i>radare2</i> repository.
 <br /> <br />
 The package depends on <a href="http://www.swig.org">swig</i>, <a href="http://live.gnome.org/Vala">vala</a> and <a href="http://radare.org/get/r2-bindings-0.8.tar.gz">valabind</a>.
+</p>
+<br />
+<b>r2-regressions</b>
+<br />
+<pre>
+git clone git://github.com/radare/r2-regressions
+</pre>
+<p style="margin-left:15px">
+Run 'make tests' in radare2 repo to retrieve this repository and run all the test cases.
 </p>
 <br />
 <b>valabind</b> <a href='../get/valabind-<?=$vbv?>.tar.gz'>valabind-<?=$vbv?>.tar.gz</a> (<?=$vbd?>)
@@ -96,3 +117,12 @@ git clone git://github.com/radare/radare
 The old, monolithic and discontinued implementation of radare.
 </p>
 
+<br />
+<b>radare2-extras</b>
+<br />
+<pre>
+git clone http://github.com/radare/radare2-extras
+</pre>
+<p style="margin-left:15px">
+(A bit unmaintained) plugins and programs for r2 not included in main repository.
+</p>
