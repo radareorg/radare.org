@@ -3,12 +3,12 @@
 <li><b>Multi-architecture and multi-platform</b>
   <ul>
     <li>GNU/Linux, Android, *BSD, OSX, iPhoneOS, Windows{32,64} and Solaris
-    <li>x86{16,32,64}, dalvik, avr, arm, java, powerpc, sparc, mips, bf
-    <li>pe{32,64}, [fat]mach0{32,64}, elf{32,64}, dex and java classes
+    <li>8051, x86{16,32,64}, dalvik, avr, arc{4,compact}, arm, aarch64, c55x+, java, powerpc, sparc, mips, bf
+    <li>pe{32,64}, te, [fat]mach0{32,64}, elf{32,64}, bios/uefi, dex and java classes
   </ul>
 <li><b>Highly scriptable</b>
   <ul>
-    <li><a href=http://live.gnome.org/Vala>Vala</a>, <a href=http://go-lang.org>Go</a>, Python, Guile, Ruby, Perl, lua, Java, JavaScript, sh, ..
+    <li><a href=http://live.gnome.org/Vala>Vala</a>, <a href=http://go-lang.org>Go</a>, Python, Guile, Ruby, Perl, Lua, Java, JavaScript, sh, ..
     <li>batch mode and native plugins with full internal API access
     <li>native scripting based in mnemonic commands and macros
   </ul>
