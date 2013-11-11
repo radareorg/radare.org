@@ -2,7 +2,7 @@
 <hr size=1 />
 
 <center>
-<a href='../get/radare2-<?=$r2v?>.tar.gz'>
+<a href='../get/radare2-<?=$r2v?>.tar.xz'>
   <img border=0 src=/img/icons/tar.png />
 </a>
 <a href='http://trac.macports.org/browser/trunk/dports/devel/radare2'>
@@ -38,7 +38,7 @@ Debian (
 wget -O radare2-git.tgz https://github.com/radare/radare2/archive/master.tar.gz
 </pre>
 <br />
-<b>radare2</b> <a href='../get/radare2-<?=$r2v?>.tar.gz'>radare2-<?=$r2v?>.tar.gz</a> (<?=$r2d?>) (<a href='../get/changelog2-<?=$r2v?>-short'>release notes</a>)
+<b>radare2</b> <a href='../get/radare2-<?=$r2v?>.tar.xz'>radare2-<?=$r2v?>.tar.xz</a> (<?=$r2d?>) (<a href='../get/changelog2-<?=$r2v?>-short'>release notes</a>)
 <br />
 <pre title="mirror$ git clone http://radare.org/git/radare2">
 git clone git://github.com/radare/radare2
@@ -52,7 +52,7 @@ See <a href=?p=development>development</a> page to get the sources from the cont
 </p>
 
 <br />
-<b>r2-bindings</b> <a href='../get/r2-bindings-<?=$r2v?>.tar.gz'>r2-bindings-<?=$r2v?>.tar.gz</a> (<?=$r2d?>)
+<b>r2-bindings</b> <a href='../get/r2-bindings-<?=$r2v?>.tar.xz'>r2-bindings-<?=$r2v?>.tar.xz</a> (<?=$r2d?>)
 <br />
 <pre>
 cd radare2/r2-bindings
