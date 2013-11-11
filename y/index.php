@@ -59,8 +59,8 @@ foreach($ps as $a) {
 <div class=menubar>
 <table class=logo style="width:120px;border-collapse:collapse">
 <tr><td><a href="../get/valabind-<?=$vbv?>.tar.gz">valabind</a> </td> <td><?=$vbv?></td></tr>
-<tr style=background-color:yellow><td><a href="../get/radare2-<?=$r2v?>.tar.gz">radare2</a> </td> <td><?=$r2v?></td></tr>
-<tr><td><a href="../get/r2-bindings-<?=$r2v?>.tar.gz">r2-bind</a> </td> <td><?=$r2v?></td></tr>
+<tr style=background-color:yellow><td><a href="../get/radare2-<?=$r2v?>.tar.xz">radare2</a> </td> <td><?=$r2v?></td></tr>
+<tr><td><a href="../get/r2-bindings-<?=$r2v?>.tar.xz">r2-bind</a> </td> <td><?=$r2v?></td></tr>
 <tr><td><a href="../get/radare-<?=$r1v?>.tar.gz">radare</a> </td> <td><?=$r1v?></td></tr>
 <tr><td><a href="../get/ired-<?=$irv?>.tar.gz">ired</a> </td> <td><?=$irv?></td></tr>
 <tr><td colspan=2><a href="?p=development">repositories</a> </td></tr>
