@@ -3,7 +3,7 @@
 <li><b>Multi-architecture and multi-platform</b>
   <ul>
     <li>GNU/Linux, Android, *BSD, OSX, iPhoneOS, Windows{32,64} and Solaris
-    <li>8051, x86{16,32,64}, dalvik, avr, arc{4,compact}, arm, aarch64, c55x+, java, powerpc, sparc, mips, bf
+    <li>8051, x86{16,32,64}, avr, arc{4,compact}, arm{thumb,neon,aarch64}, c55x+, dalvik, java, sparc, mips powerpc, whitespace, brainfuck, malbolge, z80, psosvm, m68k, msil, sh, snes, gb, dcpu16, csr, arc
     <li>pe{32,64}, te, [fat]mach0{32,64}, elf{32,64}, bios/uefi, dex and java classes
   </ul>
 <li><b>Highly scriptable</b>
