@@ -44,7 +44,6 @@ if (in_array($p, $ps)) {
 &nbsp;&nbsp;<a href="?"><img style="background-color:white;border:0;height:36px" src="../img/rlogo.png"></a>
 <br /><br />
 <br /><br />
-q
 <font class=menutitle>&nbsp;<a href='?'>Project</a></font><br /><hr width=120 size=1 /><div class=menubar>
 <a href="/gsoc">gsoc 2014</a><br />
 <?
