@@ -3,7 +3,7 @@
 require("config.php");
 
 $p=@$_GET["p"];
-$ps = array("documentation", "development", "bugtracker", "examples", "features", "talks", "gui");
+$ps = array("gsoc", "documentation", "development", "bugtracker", "examples", "features", "talks", "gui");
 if (in_array($p, $ps)) {
 	$page=$p;
 } else {
