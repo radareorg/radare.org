@@ -1,7 +1,1 @@
-<? 
-
-include "../../config.php";
-
-header("Location: /get/pkg/radare2-$stable-android-arm.tar.gz");
-
-?>
+<? header("Location: /get/pkg/radare2-0.9.7-android-arm.tar.gz"); ?>

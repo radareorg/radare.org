@@ -1,8 +1,8 @@
 ARCHS=arm mips x86
 TAGS=hg unstable stable
 
-STABLE="0.9.2"
-UNSTABLE="0.9.1git"
+STABLE="0.9.7"
+UNSTABLE="0.9.7"
 
 VARS=\
 arm_stable=radare2-${STABLE}-android-arm.tar.gz\

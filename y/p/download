@@ -24,7 +24,7 @@ Other:
 <a href="../get/pkg/android">Android (build)</a>
 Debian (
   <a href="http://ftp.de.debian.org/debian/pool/main/r/radare2/">r2</a>,
-  <a href="http://ftp.de.debian.org/debian/pool/main/r/radare2-bindings/">r2-bindings</a>,
+  <a href="http://ftp.de.debian.org/debian/pool/main/r/radare2-bindings/">radare2-bindings</a>,
   <a href="http://ftp.de.debian.org/debian/pool/main/v/valabind/">valabind</a>
 )
 <br /><br />
@@ -64,16 +64,16 @@ See <a href=?p=development>development</a> page to get the sources from the cont
 </p>
 
 <br />
-<b>r2-bindings</b> <a href='../get/r2-bindings-<?=$r2v?>.tar.xz'>r2-bindings-<?=$r2v?>.tar.xz</a> (<?=$r2d?>)
+<b>radare2-bindings</b> <a href='../get/radare2-bindings-<?=$r2v?>.tar.xz'>radare2-bindings-<?=$r2v?>.tar.xz</a> (<?=$r2d?>)
 <br />
 <pre>
-cd radare2/r2-bindings
+cd radare2/radare2-bindings
 </pre>
 <p style="margin-left:15px">
 Language bindings of <i>libr</i> for Python, Perl, Ruby, Go, Lua and Java.
-It contains the files inside the r2-bindings/ directory of the <i>radare2</i> repository.
+It contains the files inside the radare2-bindings/ directory of the <i>radare2</i> repository.
 <br /> <br />
-The package depends on <a href="http://www.swig.org">swig</i>, <a href="http://live.gnome.org/Vala">vala</a> and <a href="http://radare.org/get/r2-bindings-0.8.tar.gz">valabind</a>.
+The package depends on <a href="http://www.swig.org">swig</i>, <a href="http://live.gnome.org/Vala">vala</a> and <a href="http://radare.org/get/radare2-bindings-0.8.tar.gz">valabind</a>.
 </p>
 <br />
 <b>r2-regressions</b>
