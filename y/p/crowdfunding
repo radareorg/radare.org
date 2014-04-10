@@ -3,17 +3,29 @@ We are looking to implement the following features organizing the Radare Summer 
 <br />
 <br />
 For more information see: <a href="http://radare.org/rsoc/">http://radare.org/rsoc/</a>
+<h2>Schedule</h2>
+<ul>
+ <li>    22 April - participants application open
+ <li>    3 May - participants application closes
+ <li>    8 May - announce applicants/tasks - start discussing specific details of the task
+ <li>    17 Jun - start coding (END OF CROWDFUNDING)
+ <li>    16 Sep - Pencils down!
+ <li>    27 Sep - Everything must be merged in main branch
+</ul>
+
 <h2>Donations</h2>
 You can donate to the crowdfunding program using paypal, bitcoin or dogecoin. We will use this money to pay contributors. The collected amounts will be public, the money will not be returned.
 <br /><br />
 Contributors may get the money in their prefered currency (we may trade to get the money for the desired coin).
 
+We are looking to achieve at least 12000 EUR in order to pay 3000 EUR to each participant and 1000 EUR for mentors.
+
 <h2>Current amounts</h2>
-Euros: <font color=blue>230 EUR</font>
+Euros: <font color=green>230 </font> / 12000 <b>EUR</b>
 <br />
-Bitcoin: <font color=blue>0 BTC</font>
+Bitcoin: <font color=green>0</font> / 40 <b>BTC</b>
 <br />
-Dogecoins: <font color=blue>23235 XDG</font>
+Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
 <br />
 
 <h2>Payment links</h2>
@@ -60,4 +72,6 @@ Dogecoin:</td><td> <a href="http://www.dogebucket.com/bucket/detail/Radare-Summe
 <br /><br />
 We want to make r2 a first class citizen in several reverse engineering areas. We need your help to make this happen.
 <br /> <br />
-Thanks!
+--pancake
+<br /> <br />
+<br /> <br />
