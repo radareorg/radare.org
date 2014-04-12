@@ -21,9 +21,9 @@ Contributors may get the money in their prefered currency (we may trade to get t
 We are looking to achieve at least 12000 EUR in order to pay 3000 EUR to each participant and 1000 EUR for mentors.
 
 <h2>Current amounts</h2>
-Euros: <font color=green>245 </font> / 12000 <b>EUR</b>
+Euros: <font color=green>245</font> / 12000 <b>EUR</b>
 <br />
-Bitcoin: <font color=green>0</font> / 40 <b>BTC</b>
+Bitcoin: <font color=green>0.15</font> / 40 <b>BTC</b>
 <br />
 Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
 <br />
@@ -31,11 +31,11 @@ Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
 <h2>Payment links</h2>
 Note that the bitcoin crowdfunding address (1RSoC..) is different to the bitcoin donations (1R4daRE...)
 <br /><br />
-<table>
+<table style="width:100%">
 <tr><td>
 Paypal: 
 </td>
-<td>
+<td style="overflow:hidden">
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
@@ -48,7 +48,6 @@ Paypal:
 Bitcoin:
 </td>
 <td>
-<a href="http://blockexplorer.com/address/1RSoCpEyUsTiphPD9ZbHywxku4DPkKdgs">1RSoCpEyUsTiphPD9ZbHywxku4DPkKdgs</a>
 <script src="http://coinwidget.com/widget/coin.js"></script>
 <script>
 CoinWidgetCom.go ({
@@ -64,8 +63,13 @@ CoinWidgetCom.go ({
 	, lbl_amount: "BTC"
 });
 </script>
-</td></tr><tr><td>
-Dogecoin:</td><td> <a href="http://www.dogebucket.com/bucket/detail/Radare-Summer-Of-Code">DKYDfrBUzskx7EiqG6zszVWG3ummt8KdkY</a>
+</td>
+</tr><tr><td colspan=2>
+<a style="overflow:hidden" href="http://blockexplorer.com/address/1RSoCpEyUsTiphPD9ZbHywxku4DPkKdgs">1RSoCpEyUsTiphPD9ZbHywxku4DPkKdgs</a>
+</td></tr>
+<tr><td>
+Dogecoin:</td><td> </td></tr>
+<tr><td colspan=2><a href="http://www.dogebucket.com/bucket/detail/Radare-Summer-Of-Code">DKYDfrBUzskx7EiqG6zszVWG3ummt8KdkY</a>
 </td></tr>
 </table>
 

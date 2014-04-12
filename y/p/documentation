@@ -1,12 +1,17 @@
-<div style="text-align:left;font-size:14px;font-weight:bold">The book</div>
+<div class="text_title">The Book</div>
 <hr size=1 />
 This book was released together with radare 1.0. Most of the concepts are explained there, some of the examples may not be compatible with radare2.
 <br /><br />
 You can read it <a href="http://radare.org/doc/html/contents.html">online</a> or download the <a href="http://radare.org/get/radare.pdf">PDF</a>.
 <br /><br />
+Recently, maijin started a project to update the radare book for radare2:<br />
+<br />
+&nbsp;&nbsp;&nbsp;
+<a href="http://maijin.github.io/radare2book/">http://maijin.github.io/radare2book/</a>
+<br /><br />
 <br /><br />
 
-<div style="text-align:left;font-size:14px;font-weight:bold">The API</div>
+<div class="text_title">The API</div>
 <hr size=1 />
 radare2 api (aka libr) is described in vapi files. Those files are translated by valaswig into swig interface files to generate the bindings for python, ruby, perl and others.
 <br /><br />
@@ -15,7 +20,7 @@ Those <a href="http://live.gnome.org/Vala">Vala</a> vapi files are at the same t
 <br /><br />
 
 
-<div style="text-align:left;font-size:14px;font-weight:bold">Articles</div>
+<div class="text_title">Articles</div>
 <hr size=1 />
 Some e-zines has published articles about how to use radare in some specific use cases.
 <ul>
@@ -27,12 +32,12 @@ Some e-zines has published articles about how to use radare in some specific use
 </ul>
 <br /><br />
 
-<div style="text-align:left;font-size:14px;font-weight:bold">Examples</div>
+<div class="text_title">Examples</div>
 <hr size=1 />
 Many articles are published in the <a href="?p=examples">examples</a> in order to explain specific features of r2 with practical use cases. We are open to accept submissions of new articles
 <br /><br />
 <br /><br />
-<div style="text-align:left;font-size:14px;font-weight:bold">Talks</div>
+<div class="text_title">Talks</div>
 <hr size=1 />
 You may find slides, videos and audios of <a href=?p=talks>many talks</a> about the features, capabilities and practical examples of using r2 for different tasks.
 <br /><br />

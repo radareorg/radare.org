@@ -1,4 +1,4 @@
-<font style="font-size:15px;font-weight:bold">Development</font>
+<font class=text_title>Development</font>
 	<hr size=1 />
 The author and main developer of radare is <a href="http://twitter.com/trufae">@trufae</a> (pancake).
 <br/><br />
@@ -9,7 +9,7 @@ Feel free to join the <a href="irc://irc.freenode.net/radare">irc</a> to discuss
 <br /><br />
 <br /><br />
 
-<font style="font-size:15px;font-weight:bold">Donations</font>
+<font class=text_title>Donations</font>
 	<hr size=1 />
 We accept donations via <a href="http://www.paypal.com/">Paypal</a> or using <a href="http://www.bitcoin.com">Bitcoin</a> ( <a href="https://blockchain.info/address/1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi">1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi</a> )
 <br /> <br />

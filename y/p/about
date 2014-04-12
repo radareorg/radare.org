@@ -6,6 +6,12 @@ git clone git://github.com/radare/radare2
 </pre>
 -->
 <center>
+<a href="?p=crowdfunding">
+<div class="banner">
+Radare Summer Of Code<br />
+Crowdfunding
+</div>
+</a>
 	<table cellspacing=10>
 	<tr>
 		<td class="tapme" onclick=window.location='?p=features'>
@@ -32,17 +38,17 @@ git clone git://github.com/radare/radare2
 <tr><td id="tdbar" height="350px">
 	<a target=_blank href="http://camisetasfrikis.es/camisetas/65-camiseta-radare-y-pack-adhesivos.html">
 	<img src="/img/camifriki.jpg" />
-</td><td id="tdfoo" height="350px">
+</td>
+<!--
+<td id="tdfoo" height="350px">
 <div style="height:350px;overflow:hidden">
 <a class="twitter-timeline"  href="https://twitter.com/radareorg" data-widget-id="272151148683730944">Tweets by @radareorg</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-
 </script>
-
 </div>
-
 	</a>
 </td>
+-->
 </tr>
 </table>
 <br />

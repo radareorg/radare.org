@@ -54,12 +54,14 @@ pre {
 	color:#f0f0f0;
 	font-size:13px;
 	padding:5px;
+overflow:hidden;
+width: 80% !important;
 	-webkit-border-radius:5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
 a {
-	color:blue;
+	color: #0066cc;
 }
 .textbox {
 	padding:15px;
@@ -70,7 +72,6 @@ a {
 	color:black;
 	font-weight:bold;
 	padding:4px;
-	width:100%;
 	font-size:24px;
 }
 .menubar {
@@ -87,10 +88,11 @@ a {
 	font-size:15px;
 }
 body {
+overflow-x:hidden;
 	-webkit-text-size-adjust: none;
 	font-family:sans-serif;
 	margin:0px;
-	margin-top:15px;
+	margin-top:5px;
 	margin-bottom:15px;
 	background-color:#90a0a0;
 	background-color:#ffaa00;
@@ -98,6 +100,8 @@ body {
 	border-collapse:collapse;
 }
 .box {
+	background-color:white;
+	border-radius: 15px;
 	width:850px;
 	margin:0;
 	border:solid white 0;
@@ -133,3 +137,39 @@ cursor: pointer !important;
 	background-color: transparent;
 }
 /* borders */
+
+.banner {
+	color: #0066cc;
+	border-radius: 10px;
+	font-weight:bold;
+	padding:10px;
+	cursor:pointer;
+	border: 3px solid #c0c0c0;
+	background-color: yellow;
+	margin-bottom:20px;
+}
+.banner:hover {
+	text-decoration:underline;
+	border: 3px solid #808080;
+}
+.menubutton {
+visibility:hidden;
+	opacity: 0.1;
+	position: absolute;
+	top: 28px;
+	height: 48px;
+	text-align: middle;
+	padding: 10px;
+	width:24px;
+	border-radius: 5px;
+	background-color: #0066ff;
+	color: white;
+}
+.menubutton:hover {
+	opacity: 0.2;
+}
+.text_title {
+	text-align:left;
+	font-size:24px;
+	font-weight:bold;
+}
