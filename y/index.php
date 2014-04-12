@@ -108,7 +108,7 @@ window.onresize = window.onload;
 <div id="menubar" style="width:125px">
 &nbsp;&nbsp;<a href="?"><img style="background-color:white;border:0;height:36px" src="../img/rlogo.png"></a>
 <br /><br />
-<br /><br />
+<br />
 <font class=menutitle>&nbsp;<a href='?'>Project</a></font><br /><hr width=120 size=1 /><div class=menubar>
 <a href="/rsoc">rsoc 2014</a><br />
 <?
