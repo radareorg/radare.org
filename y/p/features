@@ -1,61 +1,44 @@
-<ul> 
-<li><b>Multi-architecture and multi-platform</b>
-  <ul>
-    <li>GNU/Linux, Android, *BSD, OSX, iPhoneOS, Windows{32,64} and Solaris
-    <li>i8080, 8051, x86{16,32,64}, avr, arc{4,compact}, arm{thumb,neon,aarch64}, c55x+, dalvik, ebc, gb, java, sparc, mips, nios2, powerpc, whitespace, brainfuck, malbolge, z80, psosvm, m68k, msil, sh, snes, gb, dcpu16, csr, arc
-    <li>pe{32,64}, te, [fat]mach0{32,64}, elf{32,64}, bios/uefi, dex and java classes
-  </ul>
-<li><b>Highly scriptable</b>
-  <ul>
-    <li><a href=http://live.gnome.org/Vala>Vala</a>, <a href=http://go-lang.org>Go</a>, Python, Guile, Ruby, Perl, Lua, Java, JavaScript, sh, ..
-    <li>batch mode and native plugins with full internal API access
-    <li>native scripting based in mnemonic commands and macros
-  </ul>
-<li><b>Hexadecimal editor</b>
-  <ul>
-    <li>64bit offset support with virtual addressing and section maps
-    <li><a href="?p=examples&f=rasm">Assemble and disassemble</a> from/to many architectures
-    <li>colorizes opcodes, bytes and debug register changes
-    <li>print <a href="?p=examples&f=rax">data</a> in various formats (int, float, disasm, timestamp, ..)
-    <li>search multiple patterns or keywords with binary mask support
-    <li>checksumming and data analysis of byte blocks
-  </ul>
-<li><b>IO is wrapped</b>
-  <ul>
-    <li>support Files, disks, processes and streams
-    <li>virtual addressing with sections and multiple file mapping
-    <li>handles gdb:// and rap:// remote protocols
-  </ul>
-<li><b>Filesystems support</b>
-  <ul>
-    <li>allows to mount ext2, vfat, ntfs, and many others
-    <li>support partition types (gpt, msdos, ..)
-  </ul>
-<li><b>Debugger support</b>
-  <ul>
-    <li>gdb remote and brainfuck debugger support
-    <li>software and hardware breakpoints
-    <li>tracing and logging facilities
-  </ul>
-<li><b>Diffing between two functions or binaries</b>
-  <ul>
-    <li>graphviz friendly <a href="?p=examples&f=graph">code analysis graphs</a>
-    <li>colorize nodes and edges
-  </ul>
-<li><b>Code analysis at opcode, basicblock, function levels</b>
-  <ul>
-    <li>embedded simple virtual machine to emulate code
-    <li>keep track of code and data references
-    <li>function calls and syscall decompilation
-    <li>function description, comments and library signatures
-  </ul>
-</ul>
-<p align=right>
-<a href="?p=examples">And more...</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-</p>
-<br />
-<!--
-<img alt="r2 screenshot" src="http://xvilka.me/r2-r2.png" />
--->
+- **Multi-architecture and multi-platform**
+  - GNU/Linux, Android, \*BSD, OSX, iPhoneOS, Windows{32,64} and
+    Solaris
+  - i8080, 8051, x86{16,32,64}, avr, arc{4,compact},
+    arm{thumb,neon,aarch64}, c55x+, dalvik, ebc, gb, java, sparc,
+    mips, nios2, powerpc, whitespace, brainfuck, malbolge, z80,
+    psosvm, m68k, msil, sh, snes, gb, dcpu16, csr, arc
+  - pe{32,64}, te, [fat]mach0{32,64}, elf{32,64}, bios/uefi, dex and
+    java classes
+- **Highly scriptable**
+  - [Vala](http://live.gnome.org/Vala), [Go](http://go-lang.org),
+    Python, Guile, Ruby, Perl, Lua, Java, JavaScript, sh, ..
+  - batch mode and native plugins with full internal API access
+  - native scripting based in mnemonic commands and macros
+- **Hexadecimal editor**
+  - 64bit offset support with virtual addressing and section maps
+  - [Assemble and disassemble](?p=examples&f=rasm) from/to many
+    architectures
+  - colorizes opcodes, bytes and debug register changes
+  - print [data](?p=examples&f=rax) in various formats (int, float,
+    disasm, timestamp, ..)
+  - search multiple patterns or keywords with binary mask support
+  - checksumming and data analysis of byte blocks
+- **IO is wrapped**
+  - support Files, disks, processes and streams
+  - virtual addressing with sections and multiple file mapping
+  - handles gdb:// and rap:// remote protocols
+- **Filesystems support**
+  - allows to mount ext2, vfat, ntfs, and many others
+  - support partition types (gpt, msdos, ..)
+- **Debugger support**
+  - gdb remote and brainfuck debugger support
+  - software and hardware breakpoints
+  - tracing and logging facilities
+- **Diffing between two functions or binaries**
+  - graphviz friendly [code analysis graphs](?p=examples&f=graph)
+  - colorize nodes and edges
+- **Code analysis at opcode, basicblock, function levels**
+  - embedded simple virtual machine to emulate code
+  - keep track of code and data references
+  - function calls and syscall decompilation
+  - function description, comments and library signatures
 
+[And more...](?p=examples)     
