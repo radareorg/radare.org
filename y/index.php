@@ -10,6 +10,16 @@ if (in_array($p, $ps)) {
 	$ps2 = array("changes", "twitter", "devel", "download", "contact");
 	if (in_array($p, $ps2)) $page=$p; else $page = "about";
 }
+
+
+if (file_exists("p/$page.md")) {
+	require("Parsedown.php");
+	$Parsedown = new Parsedown();
+	$contents = $Parsedown->text(file_get_contents("p/$page.md"));
+} else {
+	$contents = file_get_contents("p/$page");
+}
+
 ?>
 <html>
 <head>
@@ -176,7 +186,7 @@ foreach($ps as $a) {
 <tr>
 <td id="textbox" class="textbox" valign=top>
 <?php
-include("p/$page");
+echo $contents;
 ?>
 <br />
 </td>
