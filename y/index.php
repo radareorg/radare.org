@@ -2,14 +2,24 @@
 <?php
 require("config.php");
 
-$p=@$_GET["p"];
-$ps = array("crowdfunding", "documentation", "development", "bugtracker", "examples", "features", "talks", "gui");
-if (in_array($p, $ps)) {
-	$page=$p;
-} else {
-	$ps2 = array("changes", "twitter", "devel", "download", "contact");
-	if (in_array($p, $ps2)) $page=$p; else $page = "about";
+$page=@$_GET["p"];
+
+if (!ctype_alnum($page)) {
+	$page = "about";
 }
+
+function show_contents($page) {
+	if (file_exists("p/$page.md")) {
+		require("Parsedown.php");
+		$Parsedown = new Parsedown();
+		echo $Parsedown->text(file_get_contents("p/$page.md"));
+	} else if (file_exists("p/$page.php")) {
+		include("p/$page.php");
+	} else {
+		include("p/about.php");
+	}
+}
+
 ?>
 <html>
 <head>
@@ -176,7 +186,7 @@ foreach($ps as $a) {
 <tr>
 <td id="textbox" class="textbox" valign=top>
 <?php
-include("p/$page");
+show_contents($page);
 ?>
 <br />
 </td>

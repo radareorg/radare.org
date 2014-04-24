@@ -1,55 +1,59 @@
-<h1>Crowdfunding for the RSoC</h2>
-We are looking to implement the following features organizing the Radare Summer Of Code. We need funding to reward participants of the program that get those points done.
-<br />
-<br />
-<h2>Participants</h2>
-We are open to accept participants before 3 May. Send us an e-mail at <a href="mailto:rsoc@radare.org">rsoc@radare.org</a>.
-We are organizing the tasks in this <a href="https://pad.nopcode.org/p/rsoc-tasks">pad</a>
+Crowdfunding for the RSoC
+=========================
 
-<br />
-<br />
-For more information see: <a href="http://radare.org/rsoc/">http://radare.org/rsoc/</a>
-<h2>Schedule</h2>
-<ul>
- <li>    22 April - participants application open
- <li>    3 May - participants application closes
- <li>    8 May - announce applicants/tasks - start discussing specific details of the task
- <li>    17 Jun - start coding (END OF CROWDFUNDING)
- <li>    16 Sep - Pencils down!
- <li>    27 Sep - Everything must be merged in main branch
-</ul>
-<br />
+We are looking to implement the following features organizing the Radare
+Summer Of Code. We need funding to reward participants of the program
+that get those points done.
 
-<h2>Donations</h2>
-You can donate to the crowdfunding program using paypal, bitcoin or dogecoin. We will use this money to pay contributors. The collected amounts will be public, the money will not be returned.
-<br /><br />
-Contributors may get the money in their prefered currency (we may trade to get the money for the desired coin).
 
-We are looking to achieve at least 12000 EUR in order to pay 3000 EUR to each participant and 1000 EUR for mentors.
+Participants
+------------
 
-<!--
-16/04/2014 518e
-15/04/2014 113e
-14/04/2014 171e
-13/04/2014 9e
-11/04/2014 14e
-07/04/2014 114e
-27/03/2014 214e
-24/03/2014 96e
--->
-<br /><br />
+We are open to accept participants before 3 May. Send us an e-mail at
+[rsoc@radare.org](mailto:rsoc@radare.org). We are organizing the tasks
+in this [pad](https://pad.nopcode.org/p/rsoc-tasks)
 
-<h2>Current amounts</h2>
+ For more information see:
+[http://radare.org/rsoc/](http://radare.org/rsoc/)
+
+Schedule
+--------
+
+- 22 April - participants application open
+- 3 May - participants application closes
+- 8 May - announce applicants/tasks - start discussing specific
+  details of the task
+- 17 Jun - start coding (END OF CROWDFUNDING)
+- 16 Sep - Pencils down!
+- 27 Sep - Everything must be merged in main branch
+
+Donations
+---------
+
+You can donate to the crowdfunding program using paypal, bitcoin or
+dogecoin. We will use this money to pay contributors. The collected
+amounts will be public, the money will not be returned.
+
+Contributors may get the money in their prefered currency (we may trade
+to get the money for the desired coin). We are looking to achieve at
+least 12000 EUR in order to pay 3000 EUR to each participant and 1000
+EUR for mentors.
+
+Current amounts
+---------------
+
 Euros: <font color=green>1253</font> / 12000 <b>EUR</b>
-<br />
-Bitcoin: <font color=green>0.45</font> / 40 <b>BTC</b>
-<br />
-Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
-<br /><br />
 
-<h2>Payment links</h2>
-Note that the bitcoin crowdfunding address (1RSoC..) is different to the bitcoin donations (1R4daRE...)
-<br /><br />
+Bitcoin: <font color=green>0.45</font> / 40 <b>BTC</b>
+
+Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
+
+Payment links
+-------------
+
+Note that the bitcoin crowdfunding address (1RSoC..) is different to the
+bitcoin donations (1R4daRE...)
+
 <table style="width:100%">
 <tr><td>
 Paypal: 
@@ -92,11 +96,9 @@ Dogecoin:</td><td> </td></tr>
 </td></tr>
 </table>
 
-<br /><br />
-We want to make r2 a first class citizen in several reverse engineering areas. We need your help to make this happen.
-<br /> <br />
+We want to make r2 a first class citizen in several reverse engineering
+areas. We need your help to make this happen.
+
 <p style=text-align:right>
 --pancake
 </p>
-<br /> <br />
-<br /> <br />

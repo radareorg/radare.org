@@ -1,18 +1,25 @@
-<font class=text_title>Development</font>
-	<hr size=1 />
-The author and main developer of radare is <a href="http://twitter.com/trufae">@trufae</a> (pancake).
-<br/><br />
-Many contributors helped the project (see <a href="https://github.com/radare/radare2/blob/master/AUTHORS">AUTHORS</a>).
-In order to contribute to the project we recommend using github pull requests, but unified diff patches and remote gits are also welcome.
-<br /><br />
-Feel free to join the <a href="irc://irc.freenode.net/radare">irc</a> to discuss, share your ideas and ask your questions.
-<br /><br />
-<br /><br />
+Development
+===========
 
-<font class=text_title>Donations</font>
-	<hr size=1 />
-We accept donations via <a href="http://www.paypal.com/">Paypal</a> or using <a href="http://www.bitcoin.com">Bitcoin</a> ( <a href="https://blockchain.info/address/1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi">1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi</a> )
-<br /> <br />
+The author and main developer of radare is
+[@trufae](http://twitter.com/trufae) (pancake).
+
+Many contributors helped the project (see
+[AUTHORS](https://github.com/radare/radare2/blob/master/AUTHORS)).
+In order to contribute to the project we recommend using github pull
+requests, but unified diff patches and remote gits are also welcome.
+
+Feel free to join the [irc](irc://irc.freenode.net/radare) to discuss,
+share your ideas and ask your questions. 
+
+Donations
+=========
+
+We accept donations via [Paypal](http://www.paypal.com/) or using
+[Bitcoin](http://www.bitcoin.com) (
+[1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi](https://blockchain.info/address/1R4daREx3gYpYJ87KqWRahzFHVfZMQVBi)
+)
+
 <table>
 <tr><td>
 &nbsp;&nbsp;&nbsp;
@@ -43,4 +50,3 @@ CoinWidgetCom.go ({
 </form>
 </td></tr>
 </table>
-<br />
