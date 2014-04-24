@@ -4,7 +4,7 @@ require("config.php");
 
 $page=@$_GET["p"];
 
-if (preg_match("/^[a-z0-9]+$/", $page) !== 1) {
+if (!ctype_alnum($page)) {
 	$page = "about";
 }
 
