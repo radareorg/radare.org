@@ -193,3 +193,7 @@ visibility:hidden;
 .comparison td,th:first-child {
     text-align: left;
 }
+
+.y { color:green; }
+.n { color:red; }
+.w { color:#ff9933; }
