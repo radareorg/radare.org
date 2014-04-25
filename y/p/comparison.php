@@ -5,10 +5,10 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Analysis</td>                  <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td width='50%'>Graph View</td>                <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td width='50%'>Signature recognition</td>     <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td width='50%'>Signature recognition</td>     <td class='y'>yes</td> <td class='y'><a href='https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml'>yes</a></td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Type support</td>              <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td width='50%'><a href='http://dwarfstd.org/'>DWARF support</a></td>             <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
-<tr> <td width='50%'>Call/syscall recognation</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td width='50%'><a href='http://dwarfstd.org/'>DWARF</a> support</td>             <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Call/syscall recognition</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Cross-references</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>ROP-gadget finder</td>         <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 </tbody> </table>
@@ -21,7 +21,7 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Java/Dalvik</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'>x86 and x64</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>CSR</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
-<tr> <td width='50%'>TMS320C55x+</td>               <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'><a href='http://www.ti.com/lit/ug/spru393/spru393.pdf'>TMS320C55x+</a></td>               <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 </tbody> </table>
 
 <table class='comparison'>
