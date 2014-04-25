@@ -1,3 +1,5 @@
+This is a (completely unfair) comparison between <a href='http://rada.re'>radare2</a>, <a href='https://www.hex-rays.com/products/ida/index.shtml'>IDA Pro</a> and <a href='http://hopperapp.com/'>Hopper</a>.
+
 <table class='comparison'>
 <thead>
 <tr> <td width='50%'>Analysis</td>                  <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
