@@ -122,6 +122,7 @@ window.onresize = window.onload;
 <font class=menutitle>&nbsp;<a href='?'>Project</a></font><br /><hr width=120 size=1 /><div class=menubar>
 <a href="/rsoc">rsoc 2014</a><br />
 <?
+$ps = array("crowdfunding", "documentation", "development", "bugtracker", "examples", "features", "talks", "gui");
 foreach($ps as $a) {
 	if ($page==$a) print "<a style=\"color:black\">$a</a><br />\n";
 	else print "<a href=\"?p=$a\">$a</a><br />\n";
