@@ -32,7 +32,6 @@
 <tbody>
 <tr> <td width='50%'>Javascript</td>                <td>yes</td>     <td>no </td> <td>no </td> </tr>
 <tr> <td width='50%'>Python</td>                    <td>yes</td>     <td>yes</td> <td>yes </td> </tr>
-<tr> <td width='50%'>Ruby</td>                      <td>yes</td>     <td>no </td> <td>no </td> </tr>
 <tr> <td width='50%'>Vala</td>                      <td>yes</td>     <td>no </td> <td>no </td> </tr>
 </tbody>
 </table>
@@ -77,9 +76,9 @@
 </thead>
 <tbody>
 <tr> <td width='50%'>BSD</td>                       <td>yes</td>      <td>no </td> <td>no </td> </tr>
-<tr> <td width='50%'>Linux</td>                     <td>yes</td>      <td>yes</td> <td>yes</td> </tr>
+<tr> <td width='50%'>Linux</td>                     <td>yes</td>      <td>yes</td> <td>only Hopper v2</td> </tr>
 <tr> <td width='50%'>OSX</td>                       <td>yes</td>      <td>yes</td> <td>yes</td> </tr>
-<tr> <td width='50%'>Windows</td>                   <td>yes</td>      <td>yes</td> <td>yes</td> </tr>
+<tr> <td width='50%'>Windows</td>                   <td>yes</td>      <td>yes</td> <td>only Hopper v2</td> </tr>
 </tbody>
 </table>
 
@@ -88,10 +87,10 @@
 <tr> <td width='50%'>Prices and support</td>        <td>radare2</td> <td>IDA</td> <td>Hopper</td> </tr>
 </thead>
 <tbody>
-<tr> <td width='50%'>Free (as in freedom)</td>      <td>yes</td>     <td>no </td> <td>no </td> </tr>
-<tr> <td width='50%'>Free (as in beer)</td>         <td>yes</td>     <td>no </td> <td>no </td> </tr>
+<tr> <td width='50%'>Free (as in freedom)</td>      <td>yes</td>     <td>no </td> <td>between 250€ and 2700€</td> </tr>
+<tr> <td width='50%'>Free (as in beer)</td>         <td>yes</td>     <td>no </td> <td>between 65€ and 125€</td> </tr>
 <tr> <td width='50%'>Professional customers support</td>    <td>no </td> <td>yes</td> <td>yes</td> </tr>
-<tr> <td width='50%'>Open bugtracker</td>           <td>yes</td>     <td>no </td> <td>no </td> </tr>
+<tr> <td width='50%'>Open bugtracker</td>           <td><a href='https://github.com/radare/radare2/issues'>yes</a></td>     <td>no </td> <td>no </td> </tr>
 </tbody>
 </table>
 
