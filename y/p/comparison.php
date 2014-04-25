@@ -70,6 +70,15 @@
 
 <table class='comparison'>
 <thead>
+<tr> <td width='50%'>Extensibility</td>              <td>radare2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td width='50%'>Exposed IL</td>                <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Open database format</td>      <td class='w'><a href='http://github.com/radare/sdb'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Plugins support</td>           <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
 <tr> <td width='50%'>Prices and support</td>        <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td width='50%'>Free (as in freedom)</td>      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>between 250€ and 2700€</td> </tr>
