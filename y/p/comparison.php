@@ -86,8 +86,8 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <thead>
 <tr> <td width='50%'>Prices and support</td>        <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
-<tr> <td width='50%'>Free (as in freedom)</td>      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>between 250€ and 2700€</td> </tr>
-<tr> <td width='50%'>Free (as in beer)</td>         <td class='y'>yes</td> <td class='n'>no </td> <td class='w'>between 65€ and 125€</td> </tr>
+<tr> <td width='50%'>Free (as in freedom)</td>      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>between 250&euro; and 2700&euro;</td> </tr>
+<tr> <td width='50%'>Free (as in beer)</td>         <td class='y'>yes</td> <td class='n'>no </td> <td class='w'>between 65&euro; and 125&euro;</td> </tr>
 <tr> <td width='50%'>Professional customers support</td>    <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Open bugtracker</td>           <td class='y'><a href='https://github.com/radare/radare2/issues'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 </tbody> </table>
