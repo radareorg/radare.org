@@ -173,3 +173,18 @@ visibility:hidden;
 	font-size:24px;
 	font-weight:bold;
 }
+
+.comparison {
+    width:100%;
+    border-collapse: collapse;
+    margin-bottom:5%;
+}
+
+.comparison thead {
+    font-weight: bold;
+}
+
+.comparison td,th {
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+}
