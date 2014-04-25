@@ -42,7 +42,7 @@ EUR for mentors.
 Current amounts
 ---------------
 
-Euros: <font color=green>1317</font> / 12000 <b>EUR</b>
+Euros: <font color=green>1337</font> / 12000 <b>EUR</b>
 
 Bitcoin: <font color=green>0.45</font> / 40 <b>BTC</b>
 
