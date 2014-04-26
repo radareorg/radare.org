@@ -7,7 +7,8 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Graph View</td>                <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Signature recognition</td>     <td class='y'>yes</td> <td class='y'><a href='https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml'>yes</a></td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Type support</td>              <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td width='50%'><a href='http://dwarfstd.org/'>DWARF</a> support</td>             <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'><a href='http://dwarfstd.org/'>DWARF</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td width='50%'><a href='http://lldb.llvm.org/symbols.html'>dSym</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Call/syscall recognition</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Cross-references</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>ROP-gadget finder</td>         <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
@@ -68,7 +69,7 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Android</td>                   <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'>BSD</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'>iPhone</td>                    <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
-<tr> <td width='50%'>Linux</td>                     <td class='y'>yes</td> <td class='y'>yes</td> <td class='w'>only Hopper v2</td> </tr>
+<tr> <td width='50%'>Linux</td>                     <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>OSX</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>Windows</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='w'>only Hopper v2</td> </tr>
 </tbody> </table>
