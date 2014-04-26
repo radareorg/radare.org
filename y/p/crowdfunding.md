@@ -36,8 +36,7 @@ amounts will be public, the money will not be returned.
 
 Contributors may get the money in their prefered currency (we may trade
 to get the money for the desired coin). We are looking to achieve at
-least 12000 EUR in order to pay 3000 EUR to each participant and 1000
-EUR for mentors.
+least 9000 EUR in order to pay 3000 EUR to each participant.
 
 Current amounts
 ---------------
