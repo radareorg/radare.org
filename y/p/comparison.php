@@ -98,7 +98,7 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Project management</td>        <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td width='50%'>Saving and exporting</td>      <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td width='50%'>Collaborative work</td>        <td class='w'>wip</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Collaborative work</td>        <td class='w'>wip</td> <td class='w'>Via plugins </td> <td class='n'>no </td> </tr>
 </tbody> </table>
 
 <table class='comparison'>
