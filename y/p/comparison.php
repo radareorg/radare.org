@@ -19,7 +19,7 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Architecture</td>              <td>radare2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td width='50%'>ARM</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td width='50%'>Java/Dalvik</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Java/<a href='https://source.android.com/devices/tech/dalvik/index.html'>Dalvik</a></td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'>x86 and x64</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td width='50%'>CSR</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'><a href='http://www.ti.com/lit/ug/spru393/spru393.pdf'>TMS320C55x+</a></td>               <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
