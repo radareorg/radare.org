@@ -30,6 +30,7 @@ This is a (completely unfair) comparison between <a href='http://rada.re'>radare
 <tr> <td width='50%'>Bindings</td>                  <td>radare2</td>        <td>IDA</td>          <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td width='50%'>Javascript</td>                <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td width='50%'>Lua</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 <tr> <td width='50%'>Python</td>                    <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes </td> </tr>
 <tr> <td width='50%'>Vala</td>                      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 </tbody> </table>
