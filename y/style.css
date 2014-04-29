@@ -21,6 +21,11 @@
 	cursor:pointer;
 }
 
+hr {
+    width:120px;
+    size: 1;
+}
+
 iframe {
 	border: 0px;
 	width:100%;
@@ -86,9 +91,10 @@ a {
 	width:100px;
 	height:100px;
 	font-size:15px;
+    vertical-align:top;
 }
 body {
-overflow-x:hidden;
+    overflow-x:hidden;
 	-webkit-text-size-adjust: none;
 	font-family:sans-serif;
 	margin:0px;
