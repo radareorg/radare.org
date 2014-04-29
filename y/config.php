@@ -8,11 +8,4 @@ $vbd="2014-02-22";
 $irv="0.5";
 $ird="2013-07-08";
 
-global $r2v;
-global $r2d;
-global $r1v;
-global $r1d;
-global $irv;
-global $vbv;
-global $vbd;
 ?>

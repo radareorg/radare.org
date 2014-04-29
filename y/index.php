@@ -9,6 +9,10 @@ if (!ctype_alnum($page)) {
 }
 
 function show_contents($page) {
+	global $r2v, $r2d;
+	global $r1v, $r1d;
+	global $irv, $ird;
+	global $vbv, $vbd;
 	if (file_exists("p/$page.md")) {
 		require("Parsedown.php");
 		$Parsedown = new Parsedown();
