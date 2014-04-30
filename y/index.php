@@ -151,6 +151,7 @@ foreach($ps as $a) {
                     <a href="?p=development">donate</a> <br />
                     <a target=_blank href="http://twitter.com/radareorg">twitter</a> <br />
                     <a href="nospam.php?for=mail" target=_blank>email</a> <br />
+                    <a href="http://radare.today" target=_blank>blog</a> <br />
                     <a href="irc://irc.freenode.net/radare">irc</a> <br />
                 </div>
             </div>
