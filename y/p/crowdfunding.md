@@ -45,7 +45,7 @@ Euros: <font color=green>1347</font> / 12000 <b>EUR</b>
 
 Bitcoin: <font color=green>0.45</font> / 40 <b>BTC</b>
 
-Dogecoins: <font color=green>23235 </font> / 15000000 <b>XDG</b>
+Dogecoins: <font color=green>123935 </font> / 15000000 <b>XDG</b>
 
 Payment links
 -------------
