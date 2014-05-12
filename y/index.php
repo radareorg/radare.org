@@ -132,6 +132,8 @@ foreach($ps as $a) {
                         <tr>
                             <td><a href="../get/radare-<?=$r1v?>.tar.gz">radare</a></td> <td><?=$r1v?></td>
                         </tr>
+                            <tr><td><a href="../get/sdb-<?=$sdv?>.tar.gz">sdb</a> </td> <td><?=$sdv?></td>
+                        </tr>
                             <tr><td><a href="../get/ired-<?=$irv?>.tar.gz">ired</a> </td> <td><?=$irv?></td>
                         </tr>
                         <tr>
