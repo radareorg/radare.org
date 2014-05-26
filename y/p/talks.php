@@ -5,11 +5,11 @@ function print_feature($f, $v) {
 	<table width=100% class=menubar style=text-align:left>
 	<tr>
 	<td colspan=3> <font class=text_title><? readfile("t/$f/title"); ?></font>
-	<hr size=1 />
 	</td>
 	</tr>
 	<tr>
 	<td valign=top style="text-align:center;height:100px;width:130px">
+<hr width=100% size=1>
 		<img border=0 src="<? print "t/$f/small.png";?>" />
 <br />
 	</td>
@@ -25,7 +25,7 @@ function print_feature($f, $v) {
 
 $f=@$_GET["f"];
 $feats = array(
-	"owasp2014",
+	"phd2014", "owasp2014",
 	"rootedlabs2013", "lacon2011",
 	"ogg2011", "l0gic2011", "rooted2011",
 	"ncn2010", "lacon2010", "cp2010", "rooted2010",
