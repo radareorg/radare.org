@@ -104,6 +104,7 @@ window.onresize = window.onload = function() {
                 &nbsp;<a class=menutitle href='?'>Project</a><br />
                 <hr />
                 <div class=menubar>
+                    <a href="http://radare.today">today</a><br />
                     <a href="/rsoc">rsoc 2014</a><br />
 <?
 $ps = array("crowdfunding", "documentation", "development", "comparison", "bugtracker", "examples", "features", "talks", "gui");
