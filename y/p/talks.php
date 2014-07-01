@@ -25,6 +25,7 @@ function print_feature($f, $v) {
 
 $f=@$_GET["f"];
 $feats = array(
+	"pses2014",
 	"phd2014", "owasp2014",
 	"rootedlabs2013", "lacon2011",
 	"ogg2011", "l0gic2011", "rooted2011",
