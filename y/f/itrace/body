@@ -58,7 +58,7 @@ if (!r_bin_load (bin, file, R_FALSE)) {
 <br/>
 
 Now that the info has been extracted from the headers we get the base
-address for future calculations of VA's from RVA's:
+address for future calculations of VA's from VADDR's:
 
 <br/><br/>
 
@@ -76,8 +76,8 @@ libc_start_main stub we use the r_bin API:
 <pre>
 /* Entrypoint Offset & VA */
 if ((entry = r_list_get_n (r_bin_get_entries (bin), 0)) != NULL) {
-    entry_va = baddr + entry->rva;
-    entry_off = entry->offset;
+    entry_va = baddr + entry->vaddr;
+    entry_off = entry->paddr;
 }
 if (entry_va == -1 || entry_off == -1) {
     fprintf (stderr, "Error: Cannot find entrypoint\n");
@@ -87,7 +87,7 @@ if (entry_va == -1 || entry_off == -1) {
 /* libc_start_main VA */
 r_list_foreach (r_bin_get_imports (bin), iter, imp)
     if (!strcmp (imp->name, "__libc_start_main")) {
-        libc_main_va = baddr + imp->rva;
+        libc_main_va = baddr + imp->vaddr;
         break;
     }
 if (libc_main_va == -1) {
@@ -178,17 +178,17 @@ r_asm_set_bits (a, 32);
 bytes = malloc (PUSH_SZ);
 r_list_foreach (r_bin_get_imports (bin), iter, imp)
     if (!strcmp (imp->name, import)) {
-        import_va = baddr + imp->rva;
+        import_va = baddr + imp->vaddr;
     } else if (!strcmp (imp->type, "FUNC")) {
-        r_asm_set_pc (a, baddr + imp->rva + PUSH_SZ);
+        r_asm_set_pc (a, baddr + imp->vaddr + PUSH_SZ);
         code = r_str_dup_printf ("call 0x%08llx", init_va + RET_SZ);
         acode = r_asm_massemble(a, code);
         r_buf_read_at (bin->curarch.buf,
-                imp->offset + PUSH_OFF, bytes, PUSH_SZ);
+                imp->paddr + PUSH_OFF, bytes, PUSH_SZ);
         r_buf_write_at (bin->curarch.buf,
-                imp->offset, bytes, PUSH_SZ);
+                imp->paddr, bytes, PUSH_SZ);
         r_buf_write_at (bin->curarch.buf,
-                imp->offset + PUSH_SZ, acode->buf, acode->len);
+                imp->paddr + PUSH_SZ, acode->buf, acode->len);
         free (code);
     }
 free (bytes);
@@ -209,7 +209,7 @@ written with r_buf, the handler code is explained in the comments:
 /* Get the plt VA */
 r_list_foreach (r_bin_get_sections (bin), iter, scn)
     if (!strcmp (scn->name, ".plt")) {
-        plt_va = baddr + scn->rva;
+        plt_va = baddr + scn->vaddr;
         break;
     }
 if (plt_va == -1) {
