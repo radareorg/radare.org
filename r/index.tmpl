@@ -1,0 +1,58 @@
+<{include}>head.tmpl<{/include}>
+<!--
+<img src="img/r2logo2.png">
+<img src="img/r2logo2big.png">
+-->
+<script src="index.js"></script>
+<center>
+<div class="logo"></div>
+</center>
+<input id="button_download" class="button" value="Download" type="button"></input>
+<input id="button_other" class="button" value="Other" type="button"></input>
+<br /> <br />
+</div>
+
+<div class="linkbar">
+Bindings: NodeJS | Python | Go
+<br />
+</div>
+<br /> <br />
+
+<center>
+
+<div class="block">
+<{markdown}>
+Radare is a portable reverse engineering framework. It is composed by a set of programs and libraries with bindings for several programming languages.
+
+What can Radare do for you?
+
+* Assemble/Dissemble several architectures
+* Local native and Remote Debugger (gdb, r2, winedbg)
+* Runs on Linux, *BSD, Windows, OSX, Android, iOS, Solaris and Haiku
+* Forensic Filesystem and Carving for Data
+* It is written in C and it can be scripted in Python, Javascript, Go and more
+* Colaborative analysis using the embedded webserver
+* Cryptographic checksumming disk and data images
+* Visualize data structures of several file types
+* Patch programs to uncover new features or fix vulnerabilities
+<{/markdown}>
+</div>
+
+<div class="block">
+<{markdown}>
+Learn more
+----------
+* Read the Book
+* Checkout the Wiki
+* Join the [IRC](irc://irc.freenode.net/#radare) and chat with us!
+* Read our [Blog](http://radare.today) and learn new stuff
+* Watch some Talks and Slides
+<{/markdown}>
+</div>
+
+<div class="block">
+<div class="slideshow">
+<img class="slideimage" src="img/debug.png">
+<img class="slideimage" src="img/tshirt.jpg">
+</div>
+<{include}>tail.tmpl<{/include}>

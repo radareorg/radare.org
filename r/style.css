@@ -1,0 +1,158 @@
+img {
+	border: 0px;
+}
+h1 {
+	color: white;
+	padding-top:10px;
+	padding-bottom:50px;
+}
+a {
+	color:#383af7;
+	text-decoration: none;
+}
+a:hover {
+	color:blue;
+	text-decoration: underline;
+}
+.logo {
+	width:300px;
+	height:127px;
+	background-image: url(img/r2logo3.png);
+    background-repeat: no-repeat;
+    background-size: 300px 127px;
+    display: block;
+}
+body {
+	font-family: 'Fira Sans', 'Verdana';
+	margin:0px;
+	overflow-x: hidden;
+}
+.menubar {
+position:fixed;
+top:0px;
+width:100%;
+opacity:0.90;
+	background-color:white;
+	font-size: 0.8em;
+	padding-top:10px;
+	word-spacing:0px;
+	padding-left:10px;
+	height:35px;
+}
+.main {
+	margin-top: 50px;
+	background-color:#383a47;
+	text-align:center;
+}
+input, .button {
+	border: 1px solid white ;
+	transition: background-color 0.3s ease;
+	color: white;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	background-image: none;
+	-webkit-appearance: none;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+	font-size: 1.2em;
+	font-family: 'Fira Sans', 'Verdana';
+	background-color:#383a47;
+}
+input:hover {
+	background-color: white;
+	color:black;
+	cursor:pointer;
+}
+.block {
+	display:inline-block;
+	margin:5px;
+	font-size: 0.8em;
+	padding:15px;
+	border-radius: 5px;
+	width:250px !important;
+	border: 1px solid #383a47;
+        vertical-align:top;
+	text-align:left;
+}
+.block2 {
+	display:inline-block;
+	margin:5px;
+	font-size: 0.8em;
+	padding:15px;
+	border-radius: 5px;
+	width:250px !important;
+	border: 1px solid #383a47;
+        vertical-align:top;
+	text-align:justify;
+}
+
+
+h3 {
+	margin-top:0px;
+}
+.slideshow {
+	height: 250px;
+/*	background-color: #d0d0d0; */
+	overflow: hidden;
+	overflow-x: scroll;
+}
+
+pre {
+	font-family: 'Fira Mono', 'Courier';
+	overflow:scroll;
+	overflow-y: hidden;
+}
+
+.topbutton {
+	width:32px;
+	height:32px;
+}
+
+.topbutton:hover {
+	opacity: 0.6;
+	transition: opacity 0.3s ease;
+}
+.slideimage {
+	border-radius: 5px;
+}
+
+@media all and (min-width: 800px) {
+	.block, .block2 {
+		width: 700px !important;
+	}
+	.slideshow {
+		height: 250px;
+		width: 500px !important;
+	       overflow-x: scroll;
+		margin-left: 100px;
+	}
+	.slideimage {
+		
+	}
+}
+
+li:before {
+   display: inline-block;
+   height: 16;
+   width: 16;
+overflow:hidden;
+background-width: 16px;
+   background-image: url();
+}
+
+ul {
+    list-style-image: url('img/tick16.png');
+}
+
+.signature {
+	text-align: right;
+	margin-right: 15px;
+}
+
+.linkbar {
+	background-color:#585a67;
+	color: white;
+	
+}

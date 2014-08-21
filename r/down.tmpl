@@ -1,0 +1,81 @@
+<{include}>head.tmpl<{/include}>
+&nbsp;<h1>Other Downloads</h1>
+</div>
+<br />
+
+<center>
+
+<h2>Last Release:</h2>
+<br />
+<div class="block2">
+<h3>radare2</h3>
+<pre>
+radare2-0.9.7.tar.xz
+</pre>
+</div>
+<br />
+<br />
+<h2>From GIT:</h2>
+<br />
+
+<div class="block2">
+<h3>radare2</h3>
+<pre>
+git clone https://github.com/radare/radare2
+cd radare2
+sys/install.sh
+</pre>
+</div>
+
+<div class="block2">
+<h3>bindings</h3>
+<pre>
+git clone https://github.com/radare/radare2-bindings
+cd radare2-bindings
+./configure --prefix=/usr
+cd python
+make
+sudo make install
+</pre>
+</div>
+
+<div class="block2">
+<h3>test suite</h3>
+<pre>
+git clone https://github.com/radare/radare2-regressions
+cd radare2-regressions
+make
+</pre>
+</div>
+
+<div class="block2">
+<h3>radare</h3>
+<pre>
+git clone https://github.com/radare/radare
+cd radare
+./configure --prefix=/usr
+make
+sudo make install
+</pre>
+</div>
+
+<div class="block2">
+<h3>valabind</h3>
+<pre>
+git clone https://github.com/radare/valabind
+cd valabind
+make
+sudo make install PREFIX=/usr
+</pre>
+</div>
+
+<div class="block2">
+<h3>ired</h3>
+<pre>
+git clone https://github.com/radare/ired
+cd ired
+make
+sudo make install PREFIX=/usr
+</pre>
+
+<{include}>tail.tmpl<{/include}>
