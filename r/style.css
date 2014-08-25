@@ -14,12 +14,20 @@ a:hover {
 	font-weight:bold;
 }
 .logo {
-	width:300px;
+	height:130px;
+}
+.logo img {
 	height:127px;
-	background-image: url(img/r2logo3.png);
-    background-repeat: no-repeat;
-    background-size: 300px 127px;
-    display: block;
+	position:absolute;
+	right: 50%;
+	top: 47px;
+}
+.logo ul{
+	text-align:left;
+	position:absolute;
+	left: 50%;
+	top: 50px;
+	list-style:none;
 }
 body {
 	font-family: 'Fira Sans', 'Verdana';
@@ -160,13 +168,13 @@ li:before {
    display: inline-block;
    height: 16;
    width: 16;
-overflow:hidden;
-background-width: 16px;
+   overflow:hidden;
+   background-width: 16px;
    background-image: url();
 }
 
 ul {
-    list-style-image: url('img/tick16.png');
+	list-style-image: url('img/tick16.png');
 }
 
 .signature {
