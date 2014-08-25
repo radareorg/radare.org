@@ -7,12 +7,11 @@ h1 {
 	padding-bottom:50px;
 }
 a {
-	color:#383af7;
+	color:#727485;
 	text-decoration: none;
 }
 a:hover {
-	color:blue;
-	text-decoration: underline;
+	font-weight:bold;
 }
 .logo {
 	width:300px;
@@ -86,7 +85,7 @@ input:hover {
 	border-radius: 5px;
 	width:250px !important;
 	border: 1px solid #383a47;
-        vertical-align:top;
+	vertical-align:top;
 	text-align:left;
 }
 .block2 {
@@ -97,24 +96,32 @@ input:hover {
 	border-radius: 5px;
 	width:250px !important;
 	border: 1px solid #383a47;
-        vertical-align:top;
+	vertical-align:top;
 	text-align:justify;
 }
-
+.center_block {
+	display:inline-block;
+	margin:5px;
+	font-size: 0.8em;
+	padding:15px;
+	border-radius: 5px;
+	width:250px !important;
+	border: 1px solid #383a47;
+	vertical-align:top;
+	text-align:left;
+}
 
 h3 {
 	margin-top:0px;
 }
 .slideshow {
 	height: 250px;
-/*	background-color: #d0d0d0; */
 	overflow: hidden;
-	overflow-x: scroll;
 }
 
 pre {
 	font-family: 'Fira Mono', 'Courier';
-	overflow:scroll;
+	overflow-x:auto;
 	overflow-y: hidden;
 }
 
@@ -135,14 +142,17 @@ pre {
 	.block, .block2 {
 		width: 700px !important;
 	}
+	.center_block {
+		width: 75% !important;
+	}
 	.slideshow {
-		height: 250px;
-		width: 500px !important;
-	       overflow-x: scroll;
+		height: 400px;
+		width: 800px !important;
+		overflow-x: scroll;
 		margin-left: 100px;
 	}
 	.slideimage {
-		
+		width:800px;
 	}
 }
 
@@ -167,5 +177,7 @@ ul {
 .linkbar {
 	background-color:#585a67;
 	color: white;
-	
+}
+.linkbar a {
+	color:white;
 }
