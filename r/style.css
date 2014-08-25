@@ -28,19 +28,32 @@ body {
 	overflow-x: hidden;
 }
 .menubar {
-position:fixed;
-top:0px;
-width:100%;
-opacity:0.90;
+	position:fixed;
+	top:0px;
+	width:100%;
 	background-color:white;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	padding-top:10px;
-	word-spacing:0px;
+	word-spacing:0.8em;
 	padding-left:10px;
 	height:35px;
+	border: 1px solid #383a47;
+	white-space:nowrap;
+	display:inline-block;
+}
+.menubar img {
+	height:30px;
+}
+.menubar ul {
+	position:absolute;
+	top: 0px;
+	display:inline-block;
+}
+.menubar li {
+	display:inline-block;
 }
 .main {
-	margin-top: 50px;
+	margin-top: 45px;
 	background-color:#383a47;
 	text-align:center;
 }
