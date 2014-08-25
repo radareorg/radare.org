@@ -54,6 +54,7 @@ body {
 .menubar ul {
 	position:absolute;
 	top: 0px;
+	left:75px;
 	display:inline-block;
 }
 .menubar li {
