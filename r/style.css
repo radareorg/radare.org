@@ -13,6 +13,10 @@ a {
 a:hover {
 	font-weight:bold;
 }
+.fade img:hover{
+	opacity: 0.6;
+	transition: opacity 0.3s ease;
+}
 .logo {
 	height:130px;
 }
@@ -36,6 +40,7 @@ body {
 }
 .menubar {
 	position:fixed;
+	z-index:1;
 	top:0px;
 	width:100%;
 	background-color:white;
@@ -139,10 +144,6 @@ pre {
 	height:32px;
 }
 
-.topbutton:hover {
-	opacity: 0.6;
-	transition: opacity 0.3s ease;
-}
 .slideimage {
 	border-radius: 5px;
 }
