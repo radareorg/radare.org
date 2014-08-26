@@ -9,8 +9,8 @@
 <br />
 <div class="block2">
 <h3>radare2</h3>
-<pre>
-radare2-0.9.7.tar.xz
+<pre class='code y'>
+<span class='b'>~</span> <span class='r'>$</span> wget radare2-0.9.7.tar.xz
 </pre>
 </div>
 <br />
@@ -20,62 +20,62 @@ radare2-0.9.7.tar.xz
 
 <div class="block2">
 <h3>radare2</h3>
-<pre>
-git clone https://github.com/radare/radare2
-cd radare2
-sys/install.sh
+<pre class="code y">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
+<span class='b'>~</span> <span class='r'>$</span> cd radare2
+<span class='b'>~</span> <span class='r'>$</span> sys/install.sh
 </pre>
 </div>
 
 <div class="block2">
 <h3>bindings</h3>
-<pre>
-git clone https://github.com/radare/radare2-bindings
-cd radare2-bindings
-./configure --prefix=/usr
-cd python
-make
-sudo make install
+<pre class="code y">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings
+<span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~</span> <span class='r'>$</span> cd python
+<span class='b'>~/python</span> <span class='r'>$</span> make
+<span class='b'>~/python</span> <span class='r'>$</span> sudo make install
 </pre>
 </div>
 
 <div class="block2">
 <h3>test suite</h3>
-<pre>
-git clone https://github.com/radare/radare2-regressions
-cd radare2-regressions
-make
+<pre class='code y'>
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-regressions
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-regressions
+<span class='b'>~/radare2-regressions</span> <span class='r'>$</span> make
 </pre>
 </div>
 
 <div class="block2">
 <h3>radare</h3>
-<pre>
-git clone https://github.com/radare/radare
-cd radare
-./configure --prefix=/usr
-make
-sudo make install
+<pre class='code y'>
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare
+<span class='b'>~</span> <span class='r'>$</span> cd radare
+<span class='b'>~/radare</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare</span> <span class='r'>$</span> make
+<span class='b'>~/radare</span> <span class='r'>$</span> sudo make install
 </pre>
 </div>
 
 <div class="block2">
 <h3>valabind</h3>
-<pre>
-git clone https://github.com/radare/valabind
-cd valabind
-make
-sudo make install PREFIX=/usr
+<pre class="code y">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/valabind
+<span class='b'>~</span> <span class='r'>$</span> cd valabind
+<span class='b'>~/valabind</span> <span class='r'>$</span> make
+<span class='b'>~/valabind</span> <span class='r'>$</span> sudo make install PREFIX=/usr
 </pre>
 </div>
 
 <div class="block2">
 <h3>ired</h3>
-<pre>
-git clone https://github.com/radare/ired
-cd ired
-make
-sudo make install PREFIX=/usr
+<pre class="code y">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/ired
+<span class='b'>~</span> <span class='r'>$</span> cd ired
+<span class='b'>~/ired</span> <span class='r'>$</span> make
+<span class='b'>~/ired</span> <span class='r'>$</span> sudo make install PREFIX=/usr
 </pre>
 
 <{include}>tail.tmpl<{/include}>

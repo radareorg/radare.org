@@ -268,3 +268,13 @@ text-align:right;
 .linkbar a {
 	color:#bcbcff;
 }
+
+.code {
+	padding: 5px;
+	background-color: #333;
+	border-radius: 5px;
+	color: white;
+}
+.b{ color:#87ceeb; }
+.r{ color:#cd5c5c; }
+.y{ color:#ffffcc; }
