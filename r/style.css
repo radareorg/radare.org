@@ -68,7 +68,7 @@ body {
 	width:40px;
 }
 .menubar {
-overflow-x: scroll;
+	overflow-x: auto;
 	position:fixed;
 	z-index:1;
 	top:0px;
@@ -79,7 +79,7 @@ overflow-x: scroll;
 	word-spacing:0.8em;
 	padding-left:10px;
 	height:35px;
-	border: 0px solid #383a47;
+	border-bottom: 1px solid #383a47;
 	white-space:nowrap;
 	display:inline-block;
 }
