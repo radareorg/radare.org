@@ -16,6 +16,9 @@ var docLoaded = setInterval(function () {
 	if (document.readyState === "complete") {
 		var OS = getOS ();
 		clearInterval (docLoaded);
+if (window.onmyload) {
+window.onmyload();
+}
 		var b = document.getElementById ("button_download");
 		b.value = "Download "+version+" "+OS;
 		b.onclick = function (x) {
@@ -32,7 +35,7 @@ var docLoaded = setInterval(function () {
 		};
 		var b = document.getElementById ("button_other");
 		b.onclick = function (x) {
-			document.location.href = 'downloads.html';
+			document.location.href = 'down.html';
 		};
 	}
 }, 100);
