@@ -1,3 +1,15 @@
+.scroll-wrapper{
+    overflow-x: auto;
+}
+ div::-webkit-scrollbar { 
+     display: none; 
+ }
+ div {
+      -ms-overflow-style: none;
+ }
+div::-webkit-scrollbar { 
+    display: none; 
+}
 img {
 	border: 0px;
 }
@@ -206,7 +218,7 @@ pre {
 	.slideshow {
 		height: 300px;
 		width: 580px !important;
-		overflow-x: scroll;
+		overflow-x: auto;
 	}
 	.slideimage {
 		width:800px;
