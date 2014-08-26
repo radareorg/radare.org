@@ -75,7 +75,6 @@ overflow-x: scroll;
 	width:100%;
 	background-color:white;
 	font-size: 0.9em;
-	opacity: 0.9;
 	padding-top:10px;
 	word-spacing:0.8em;
 	padding-left:10px;
@@ -228,6 +227,7 @@ ul {
 .signature {
 	text-align: right;
 	margin-right: 15px;
+	font-size:0.8em;
 }
 
 .linkbar {

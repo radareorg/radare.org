@@ -1,4 +1,4 @@
-PAGES=index down docs screen
+PAGES=index down docs screen contact
 REMOTE?=/tmp/www
 CC=node
 
