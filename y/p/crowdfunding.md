@@ -41,7 +41,7 @@ least 9000 EUR in order to pay 3000 EUR to each participant.
 Current amounts
 ---------------
 
-Euros: <font color=green>1467</font> / 12000 <b>EUR</b>
+Euros: <font color=green>1487</font> / 12000 <b>EUR</b>
 
 Bitcoin: <font color=green>0.6</font> / 40 <b>BTC</b>
 
