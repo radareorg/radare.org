@@ -159,13 +159,24 @@ input:hover {
 	vertical-align:top;
 	text-align:left;
 }
+.block3 {
+	display:inline-block;
+	margin:5px;
+	font-size: 0.8em;
+	padding:15px;
+	border-radius: 5px;
+	width:750px !important;
+	border: 1px solid #383a47;
+	vertical-align:top;
+	text-align:justify;
+}
 .block2 {
 	display:inline-block;
 	margin:5px;
 	font-size: 0.8em;
 	padding:15px;
 	border-radius: 5px;
-	width:250px !important;
+	width:350px !important;
 	border: 1px solid #383a47;
 	vertical-align:top;
 	text-align:justify;
@@ -218,6 +229,7 @@ pre {
 
 .slideimage {
 	border-radius: 5px;
+	margin-bottom:16px;
 }
 
 @media all and (min-width: 600px) {
@@ -235,14 +247,28 @@ pre {
 	       text-align:center !important;
 	}
 }
-@media all and (max-width:800px) {
-.block-mini {
-width:240px !important;
+@media all and (max-width:500px) {
+	.block-mini, .block2 {
+		width:260px !important;
+	}
+	.slideimage {
+		width:300px !important;
+	}
 }
+@media all and (max-width:800px) {
+	.block-mini {
+		width:240px !important;
+	}
+	.block3 {
+		width: 80% !important;
+	}
 }
 
 @media all and (min-width: 800px) {
-	.block, .block2 {
+	.block {
+		width: 700px !important;
+	}
+	.block {
 		width: 700px !important;
 	}
 	.center_block {
@@ -254,7 +280,7 @@ width:240px !important;
 		overflow-x: auto;
 	}
 	.slideimage {
-		width:800px;
+		width:640;
 	}
 	.logo {
 		height:130px !important;
