@@ -20,7 +20,7 @@ margin-top:0px;
 	padding-bottom:10px;
 }
 a {
-	color:#7274f5;
+	color:#6264f5;
 	font-weight:bold;
 	text-decoration: none;
 }
@@ -29,11 +29,11 @@ a:hover {
 	font-weight:bold;
 }
 .external {
-	color:#72f475 !important;
+	color:#5254e5 !important;
 }
 .external:hover {
 	font-weight:bold;
-	color: green !important;
+	color: black !important;
 }
 .rtopbutton {
 	left:0px;
@@ -135,6 +135,19 @@ input:hover {
 	color:black;
 	cursor:pointer;
 }
+.block-mini {
+	display:inline-block;
+	border-radius: 5px;
+	margin:3px;
+	width:155px !important;
+      height:155px;
+	border: 1px solid #a8aaa7;
+	padding:3px;
+	vertical-align:top;
+	background-color: white;
+	text-align:left;
+}
+
 .block {
 	display:inline-block;
 	margin:5px;
@@ -169,8 +182,14 @@ input:hover {
 	text-align:left;
 }
 
+h2 {
+	margin-bottom:0px;
+	padding-bottom:0px;
+}
+
 h3 {
 	margin-top:0px;
+	padding-bottom:0px;
 }
 .slideshow {
 	height: 250px;

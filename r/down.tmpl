@@ -6,18 +6,21 @@
 <center>
 
 <h2>Last Release:</h2>
-<br />
 <div class="block2">
 <h3>radare2</h3>
 <pre class='code y'>
-<span class='b'>~</span> <span class='r'>$</span> wget radare2-0.9.7.tar.xz
+<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-0.9.7.tar.xz">http://rada.re/get/radare2-0.9.7.tar.xz</a>
+<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-0.9.7.tar.xz
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-0.9.7/
+<span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~</span> <span class='r'>$</span> make -j8
+<span class='b'>~</span> <span class='r'>$</span> sudo make install
 </pre>
 </div>
 <br />
 <br />
-<h2>From GIT:</h2>
-<br />
 
+<h2>From GIT:</h2>
 <div class="block2">
 <h3>radare2</h3>
 <pre class="code y">
@@ -50,6 +53,7 @@
 
 <div class="block2">
 <h3>radare</h3>
+The very old and original version of radare. Maintained for historial reasons.
 <pre class='code y'>
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare
 <span class='b'>~</span> <span class='r'>$</span> cd radare
@@ -61,6 +65,7 @@
 
 <div class="block2">
 <h3>valabind</h3>
+The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dlang, Go
 <pre class="code y">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/valabind
 <span class='b'>~</span> <span class='r'>$</span> cd valabind
@@ -77,5 +82,15 @@
 <span class='b'>~/ired</span> <span class='r'>$</span> make
 <span class='b'>~/ired</span> <span class='r'>$</span> sudo make install PREFIX=/usr
 </pre>
+</div>
 
+<div class="block2">
+<h3>sdb</h3>
+<pre class="code y">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/sdb
+<span class='b'>~</span> <span class='r'>$</span> cd sdb
+<span class='b'>~/sdb</span> <span class='r'>$</span> make
+<span class='b'>~/sdb</span> <span class='r'>$</span> make -C tests
+</pre>
+</div>
 <{include}>tail.tmpl<{/include}>
