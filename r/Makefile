@@ -1,6 +1,6 @@
 PAGES=index down docs screen contact
 REMOTE?=/tmp/www
-CC=node
+CC=nodejs
 
 all: node_modules
 	for a in ${PAGES} ; do $(CC) pp.js $$a.tmpl ; done
