@@ -189,8 +189,17 @@ h2 {
 
 h3 {
 	margin-top:0px;
+	border-bottom:0px;
+	margin-bottom:0px;
 	padding-bottom:0px;
 }
+
+hr {
+	width:100%;
+	color:#f0f0f0;
+	size:1px;
+}
+
 .slideshow {
 	height: 250px;
 	overflow: hidden;
@@ -225,6 +234,11 @@ pre {
 	      left:auto !important;
 	       text-align:center !important;
 	}
+}
+@media all and (max-width:800px) {
+.block-mini {
+width:240px !important;
+}
 }
 
 @media all and (min-width: 800px) {
