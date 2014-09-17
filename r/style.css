@@ -152,10 +152,11 @@ input:hover {
 	margin:3px;
 	width:155px !important;
       height:155px;
-	border: 1px solid #a8aaa7;
+	border: 0px solid #a8aaa7;
 	padding:3px;
 	vertical-align:top;
-	background-color: white;
+	background-color: #f0f0f0;
+background-image: url() !important;
 	text-align:left;
 }
 
