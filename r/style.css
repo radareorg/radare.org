@@ -1,12 +1,12 @@
 .scroll-wrapper{
     overflow-x: auto;
 }
- div::-webkit-scrollbar { 
+div::-webkit-scrollbar { 
      display: none; 
- }
- div {
+}
+div {
       -ms-overflow-style: none;
- }
+}
 div::-webkit-scrollbar { 
     display: none; 
 }
@@ -134,6 +134,17 @@ input:hover {
 	background-color: white;
 	color:black;
 	cursor:pointer;
+}
+.icon {
+	display:inline-block;
+	margin:3px;
+	width:80px !important;
+        height:100px;
+	border: 0px;
+	padding:3px;
+	vertical-align:top;
+	background-color: white;
+	text-align:center;
 }
 .block-mini {
 	display:inline-block;

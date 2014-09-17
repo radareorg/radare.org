@@ -1,16 +1,16 @@
 PAGES=index down docs screen contact
 REMOTE?=/tmp/www
-CC=nodejs
+NODE=$(shell nodejs --help > /dev/null 2>&1 && echo nodejs || echo node)
 
 all: node_modules
-	for a in ${PAGES} ; do $(CC) pp.js $$a.tmpl ; done
+	for a in ${PAGES} ; do $(NODE) pp.js $$a.tmpl ; done
 
 node_modules:
 	mkdir -p node_modules
 	npm install
 
 indent:
-	$(CC) node_modules/.bin/jsfmt -w pp.js
+	$(NODE) node_modules/.bin/jsfmt -w pp.js
 
 pub up:
 	rsync -avz . ${REMOTE}
