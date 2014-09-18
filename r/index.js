@@ -37,5 +37,9 @@ window.onmyload();
 		b.onclick = function (x) {
 			document.location.href = 'down.html';
 		};
+		var b = document.getElementById ("button_try");
+		b.onclick = function (x) {
+			document.location.href = 'http://cloud.radare.org/enyo';
+		};
 	}
 }, 100);
