@@ -16,14 +16,20 @@ var docLoaded = setInterval(function () {
 	if (document.readyState === "complete") {
 		var OS = getOS ();
 		clearInterval (docLoaded);
-if (window.onmyload) {
-window.onmyload();
-}
+		if (window.onmyload) {
+			window.onmyload();
+		}
 		var b = document.getElementById ("button_download");
 		b.value = "Download "+version+" "+OS;
 		b.onclick = function (x) {
 			var url = 'downloads.html';
-			switch (OS) {
+			switch (OS.substring (4)) {
+			case 'Windows':
+				url = '/get/pkg/radare2-w32-0.9.8git.zip';
+				break;
+			case 'OS X':
+				url = '/get/pkg';
+				break;
 			case 'Cydia':
 				url = 'http://cydia.radare.org';
 				break;
