@@ -28,7 +28,7 @@ var docLoaded = setInterval(function () {
 				url = '/get/pkg/radare2-w32-0.9.8git.zip';
 				break;
 			case 'OS X':
-				url = '/get/pkg';
+				url = '/get/pkg/radare2-0.9.8git.pkg';
 				break;
 			case 'Cydia':
 				url = 'http://cydia.radare.org';
