@@ -167,20 +167,9 @@ background-image: url() !important;
 	padding:15px;
 	border-radius: 5px;
 	width:350px !important;
-	border: 1px solid #383a47;
+	border: 0px solid #383a47;
 	vertical-align:top;
 	text-align:left;
-}
-.block3 {
-	display:inline-block;
-	margin:5px;
-	font-size: 0.8em;
-	padding:15px;
-	border-radius: 5px;
-	width:750px !important;
-	border: 1px solid #383a47;
-	vertical-align:top;
-	text-align:justify;
 }
 .block2 {
 	display:inline-block;
@@ -189,7 +178,18 @@ background-image: url() !important;
 	padding:15px;
 	border-radius: 5px;
 	width:350px !important;
-	border: 1px solid #383a47;
+	border: 0px solid #383a47;
+	vertical-align:top;
+	text-align:justify;
+}
+.block3 {
+	display:inline-block;
+	margin:5px;
+	font-size: 0.8em;
+	padding:15px;
+	border-radius: 5px;
+	width:750px !important;
+	border: 0px solid #383a47;
 	vertical-align:top;
 	text-align:justify;
 }
