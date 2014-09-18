@@ -22,7 +22,7 @@ var docLoaded = setInterval(function () {
 		var b = document.getElementById ("button_download");
 		b.value = "Download "+version+" "+OS;
 		b.onclick = function (x) {
-			var url = 'downloads.html';
+			var url = 'down.html';
 			switch (OS.substring (4)) {
 			case 'Windows':
 				url = '/get/pkg/radare2-w32-0.9.8git.zip';
