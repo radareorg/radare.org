@@ -166,7 +166,7 @@ background-image: url() !important;
 	font-size: 0.8em;
 	padding:15px;
 	border-radius: 5px;
-	width:250px !important;
+	width:350px !important;
 	border: 1px solid #383a47;
 	vertical-align:top;
 	text-align:left;
@@ -259,8 +259,16 @@ pre {
 	       text-align:center !important;
 	}
 }
+@media all and (max-width:400px) {
+	.block {
+		width:260px !important;
+	}
+	.block-mini {
+		width:250px !important;
+	}
+}
 @media all and (max-width:500px) {
-	.block-mini, .block2 {
+	.block2 {
 		width:260px !important;
 	}
 	.slideimage {
@@ -268,9 +276,6 @@ pre {
 	}
 }
 @media all and (max-width:800px) {
-	.block-mini {
-		width:240px !important;
-	}
 	.block3 {
 		width: 80% !important;
 	}
