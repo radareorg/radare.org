@@ -1,68 +1,26 @@
 <{include}>head.tmpl<{/include}>
-&nbsp;<h1>Downloads</h1>
-</div>
-<br />
-
-<center>
-
-<h2>Binaries:</h2>
-
-<div class="block3">
-<center>
-
-<div class="icon">
-<a title="windows" href="http://radare.org/get/pkg/radare2-w32-0.9.8.git.zip">
-<img width=64 height=64 src="img/os-windows.png">
-<br />
-Windows
-</a>
+<div class="header">
+  <h1>Downloads</h1>
 </div>
 
-<div class="icon">
-<a title="osx" href="/get/pkg/radare2-0.9.8git.pkg">
-<img width="64" height="64" src="img/os-osx.png">
-<br />
-OS X
-</a>
+<div class="row">
+  <div class="col-1 binaries">
+    <h2>Binaries:</h2>
+    <ul>
+      <li><a title="windows" class="windows" href="/get/pkg/radare2-w32-0.9.8.git.zip">Windows</a></li>
+      <li><a title="osx" class="osx" href="/get/pkg/radare2-0.9.8git.pkg">OS X</a></li>
+      <li><a title="ios" class="ios" href="http://cydia.radare.org/">iOS</a></li>
+      <li><a title="android" class="android" href="https://play.google.com/store/apps/details?id=org.radare.installer">Android</a></li>
+      <li><a title="linux" class="linux" href="https://github.com/radare/radare2">Linux</a></li>
+      <li><a title="VoidLinux livecd" class="livecd" href="https://www.dropbox.com/sh/hspxu1uekaoqbm7/AACNNMvuWT-fk0dwnMDsbAaXa?dl=0">LiveCD</a></li>
+    </ul>
+  </div>
 </div>
 
-<div class="icon">
-<a title="ios" href="http://cydia.radare.org/">
-<img width=64 height=64 src="img/os-cydia.png">
-<br />
-iOS
-</a>
-</div>
-
-<div class="icon">
-<a title="android" href="https://play.google.com/store/apps/details?id=org.radare.installer">
-<img width=64 height=64 src="img/os-android.png">
-<br>Android</a>
-</div>
-	<div class="icon">
-<a title="Linux" href="https://github.com/radare/radare2">
-<img width=64 height=64 src="img/os-tux.png">
-<br />
-Linux
-</a>
-</div>
-
-<div class="icon">
-<a title="VoidLinux livecd" href="https://www.dropbox.com/sh/hspxu1uekaoqbm7/AACNNMvuWT-fk0dwnMDsbAaXa?dl=0">
-<img width=64 height=64 src="img/os-iso.png">
-<br />
-LiveCD
-</a>
-</div>
-
-</center>
-</div>
-<br />
-<br />
-
-
+<div class="row">
+<div class="col-1">
 <h2>Last Release:</h2>
-<div class="block3">
+
 <h3>radare2</h3>
 <pre class='code y'>
 <span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-0.9.7.tar.xz">http://rada.re/get/radare2-0.9.7.tar.xz</a>
@@ -72,21 +30,15 @@ LiveCD
 <span class='b'>~</span> <span class='r'>$</span> make -j8
 <span class='b'>~</span> <span class='r'>$</span> sudo make install
 </pre>
-</div>
-<br />
-<br />
 
 <h2>From GIT:</h2>
-<div class="block3">
 <h3>radare2</h3>
 <pre class="code y">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
 <span class='b'>~</span> <span class='r'>$</span> cd radare2
 <span class='b'>~</span> <span class='r'>$</span> sys/install.sh
 </pre>
-</div>
 
-<div class="block3">
 <h3>bindings</h3>
 <pre class="code y">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
@@ -96,18 +48,14 @@ LiveCD
 <span class='b'>~/python</span> <span class='r'>$</span> make
 <span class='b'>~/python</span> <span class='r'>$</span> sudo make install
 </pre>
-</div>
 
-<div class="block3">
 <h3>test suite</h3>
 <pre class='code y'>
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-regressions
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-regressions
 <span class='b'>~/radare2-regressions</span> <span class='r'>$</span> make
 </pre>
-</div>
 
-<div class="block3">
 <h3>radare</h3>
 The very old and original version of radare. Maintained for historial reasons.
 <pre class='code y'>
@@ -117,9 +65,7 @@ The very old and original version of radare. Maintained for historial reasons.
 <span class='b'>~/radare</span> <span class='r'>$</span> make
 <span class='b'>~/radare</span> <span class='r'>$</span> sudo make install
 </pre>
-</div>
 
-<div class="block3">
 <h3>valabind</h3>
 The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dlang, Go
 <pre class="code y">
@@ -128,9 +74,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 <span class='b'>~/valabind</span> <span class='r'>$</span> make
 <span class='b'>~/valabind</span> <span class='r'>$</span> sudo make install PREFIX=/usr
 </pre>
-</div>
 
-<div class="block3">
 <h3>ired</h3>
 <pre class="code y">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/ired
@@ -138,9 +82,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 <span class='b'>~/ired</span> <span class='r'>$</span> make
 <span class='b'>~/ired</span> <span class='r'>$</span> sudo make install PREFIX=/usr
 </pre>
-</div>
 
-<div class="block3">
 <h3>sdb</h3>
 <pre class="code y">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/sdb
@@ -148,5 +90,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 <span class='b'>~/sdb</span> <span class='r'>$</span> make
 <span class='b'>~/sdb</span> <span class='r'>$</span> make -C tests
 </pre>
+
 </div>
+</div> <!-- .row -->
 <{include}>tail.tmpl<{/include}>

@@ -1,28 +1,42 @@
 <{include}>head.tmpl<{/include}>
-&nbsp;<h1>Documentation</h1>
+
+<div class="header">
+  <h1>Documentation</h1>
 </div>
 
-<center>
-<div class="block2">
-<h3> The book </h3>
-<ul>
-<li> Original radare1 in <a href="/get/radare-book.pdf">PDF</a> and <a href="#">HTML</a>.
-<li> Updated <a href="http://maijin.github.io/radare2book/">book</a> for radare2
-<li> Persian <a href="/get/radare2book-persian.pdf">translation</a>
-<li> Contribute in <a href="https://github.com/radare/radare2book">Git</a>
-</ul>
-</div>
 
-<div class="block2">
-<h3> Documentation </h3>
-<ul>
-<li> Checkout the <a href="http://github.com/radare/radare2/wiki">wiki</a> index page
-<li> The <a href="/vdoc">VAPI</a> documentation
-</ul>
-</div>
+<div class="row">
+  <div class="col-1-2">
+  <h3>The book</h3>
+<{markdown}>
 
-<div class="block2">
-<h3>Blog</h3>
+- Original radare1 in [PDF][1] and [HTML][2]
+- Updated [book][3] for radare2
+- Persian [translation][4]
+- Contribute in [Git][5]
+
+[1]: get/radare-book.pdf
+[2]: #
+[3]: http://maijin.github.io/radare2book/
+[4]: get/radare2book-persian.pdf
+[5]: https://github.com/radare/radare2book
+<{/markdown}>
+  </div>
+
+  <div class="col-1-2">
+    <h3>Documentation</h3>
+<{markdown}>
+
+- Checkout the [wiki][1] index page
+- The [VAPI][2] documentation
+
+[1]: http://github.com/radare/radare2/wiki
+[2]: /vdoc
+<{/markdown}>
+  </div>
+
+  <div class="col-1-2">
+    <h3>Blog</h3>
 <{markdown}>
 
 - An introduction to the [Visual Mode](http://radare.today/visual-mode/)
@@ -33,21 +47,21 @@
 - Carvin [Binaries](http://radare.today/carving-bins/)
 
 <{/markdown}>
-</div>
+  </div>
 
-<div class="block2">
-<h3>Scripting</h3>
+  <div class="col-1-2">
+    <h3>Scripting</h3>
 <{markdown}>
-* Generic [r2pipe](http://github.com/radare/radare2/wiki/R2PipeAPI) api
-* Javascript and NodeJS [tutorial](http://radare.today/javascript-in-r2/)
-* Python bindings (swig, ctypes and [r2pipe](https://github.com/radare/radare2-bindings/tree/master/python))
-* Go [r2pipe](https://github.com/radare/radare2-bindings/tree/master/go)
-* [Vala](https://wiki.gnome.org/Projects/Vala) and Genie
+- Generic [r2pipe](http://github.com/radare/radare2/wiki/R2PipeAPI) api
+- Javascript and NodeJS [tutorial](http://radare.today/javascript-in-r2/)
+- Python bindings (swig, ctypes and [r2pipe](https://github.com/radare/radare2-bindings/tree/master/python))
+- Go [r2pipe](https://github.com/radare/radare2-bindings/tree/master/go)
+- [Vala](https://wiki.gnome.org/Projects/Vala) and Genie
 <{/markdown}>
-</div>
+  </div>
 
-<div class="block2">
-<h3>Talks</h3>
+  <div class="col-1-2">
+   <h3>Talks</h3>
 <{markdown}>
 
 2014
@@ -89,9 +103,7 @@
 - Lacon 2008 [PDF](http://radare.org/y/t/lacon2008/radare-lacon-2008.pdf)
 
 <{/markdown}>
+  </div>
 </div>
-
-</center>
-
 
 <{include}>tail.tmpl<{/include}>
