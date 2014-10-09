@@ -101,6 +101,7 @@ body {
 .main {
 	margin-top: 50px; // fixed menu height
 	margin-bottom: 0;
+	text-align: center;
 }
 .header {
 	background-color: #383a47;
@@ -129,23 +130,13 @@ body {
 	color: black;
 	cursor: pointer;
 }
-.icon {
-	display:inline-block;
-	margin:3px;
-	width:80px !important;
-        height:100px;
-	border: 0px;
-	padding:3px;
-	vertical-align:top;
-	background-color: white;
-	text-align:center;
-}
+
 .block-mini {
 	display:inline-block;
 	border-radius: 5px;
 	margin:3px;
 	width:160px !important;
-      height:155px;
+  height:155px;
 	border: 0px solid #a8aaa7;
 	padding:3px;
 	vertical-align:top;
@@ -187,6 +178,20 @@ background-image: url() !important;
 	vertical-align:top;
 	text-align:justify;
 }
+.icons {
+	text-align: center;
+}
+.icon {
+	display:inline-block;
+	margin:3px;
+	width:80px !important;
+  height:100px;
+	border: 0px;
+	padding:3px;
+	vertical-align:top;
+	background-color: white;
+	text-align:center;
+}
 .center_block {
 	display:inline-block;
 	margin:5px;
@@ -209,6 +214,10 @@ h3 {
 	border-bottom:0px;
 	margin-bottom:0px;
 	padding-bottom:0px;
+}
+
+.block-mini h3 {
+	text-align: center;
 }
 
 hr {
