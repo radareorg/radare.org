@@ -15,9 +15,8 @@ img {
 }
 h1 {
 	color: white;
-margin-top:0px;
-	padding-top:0px;
-	padding-bottom:10px;
+	padding-top: 20px;
+	padding-bottom: 10px;
 }
 a {
 	color:#6264f5;
@@ -49,28 +48,19 @@ padding-left:5px;
 	opacity: 0.7;
 	transition: opacity 0.3s ease;
 }
+.logobuttons, .logo {
+	display: inline-block;
+	vertical-align: middle;
+}
 .logo {
-	height: 240px !important;
-}
-.logo img {
-	height:127px;
-/* position:absolute; */
-	top: 47px;
-padding-left:0px;
-	right:auto !important;
-left:0;
-	margin-left:15px !important;
-}
-.logo ul {
-	left: 0%;
-	top: 150px;
-	list-style:none;
-	margin-top: 0px;
+	height: 127px;
 }
 .logobuttons {
-	top: 140px !important;
-margin-left:auto !important;
-margin-right:auto !important;
+	list-style: none;
+	margin: 10px;
+}
+.logobuttons li {
+	display: block;
 }
 body {
 	font-family: 'Fira Sans', 'Verdana';
@@ -109,9 +99,12 @@ body {
 	display:inline-block;
 }
 .main {
-	margin-top: 45px;
-	background-color:#383a47;
-	text-align:center;
+	margin-top: 50px; // fixed menu height
+	margin-bottom: 0;
+}
+.header {
+	background-color: #383a47;
+	text-align: center;
 }
 .button {
 	display: inline-block;
@@ -245,24 +238,6 @@ pre {
 	margin-bottom:16px;
 }
 
-@media all and (min-width: 630px) {
-	.logo {
-		height:130px !important;
-	}
-	.logo, .logobuttons {
-		top: 150px !important;
-padding-top:5px !important;
-margin-left: 150px !important;
-		left: 50% !important;
-	}
-	.logo img {
-		height:127px !important;
-position:absolute !important;
-	       right: 50% !important;
-	      left:auto !important;
-	       text-align:center !important;
-	}
-}
 @media all and (max-width:400px) {
 	.block {
 		width:260px !important;
@@ -302,23 +277,6 @@ position:absolute !important;
 	}
 	.slideimage {
 		width:640;
-	}
-	.logo {
-		height:130px !important;
-	}
-	.logo, .logobuttons {
-		top: 50px !important;
-		left: 50% !important;
-	margin-top: 10px;
-	}
-	.logo img {
-		height:127px !important;
-	       right: 50% !important;
-	      left:auto !important;
-	       text-align:center !important;
-	}
-	ul {
-		top: 0px !important;
 	}
 }
 
