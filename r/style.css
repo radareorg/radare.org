@@ -26,7 +26,6 @@ a {
 }
 a:hover {
 	color:#2224f5;
-	font-weight:bold;
 }
 .external {
 	color:#5254e5 !important;
@@ -114,7 +113,8 @@ body {
 	background-color:#383a47;
 	text-align:center;
 }
-input, .button {
+.button {
+	display: inline-block;
 	border: 1px solid white ;
 	transition: background-color 0.3s ease;
 	color: white;
@@ -128,12 +128,13 @@ input, .button {
 	padding-right: 20px;
 	font-size: 1.2em;
 	font-family: 'Fira Sans', 'Verdana';
+	font-weight: normal;
 	background-color:#383a47;
 }
-input:hover {
+.button:hover {
 	background-color: white;
-	color:black;
-	cursor:pointer;
+	color: black;
+	cursor: pointer;
 }
 .icon {
 	display:inline-block;

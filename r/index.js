@@ -20,7 +20,7 @@ var docLoaded = setInterval(function () {
 			window.onmyload();
 		}
 		var b = document.getElementById ("button_download");
-		b.value = "Download "+version+" "+OS;
+		b.innerHTML = "Download "+version+" "+OS;
 		b.onclick = function (x) {
 			var url = 'down.html';
 			switch (OS.substring (4)) {
@@ -37,15 +37,7 @@ var docLoaded = setInterval(function () {
 				url = 'https://play.google.com/store/apps/details?id=org.radare.installer';
 				break;
 			}
-			document.location.href = url;
-		};
-		var b = document.getElementById ("button_other");
-		b.onclick = function (x) {
-			document.location.href = 'down.html';
-		};
-		var b = document.getElementById ("button_try");
-		b.onclick = function (x) {
-			document.location.href = 'http://cloud.radare.org/enyo';
+			b.setAttribute("href", url);
 		};
 	}
 }, 100);
