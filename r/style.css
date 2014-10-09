@@ -1,3 +1,8 @@
+body {
+	font-family: 'Fira Sans', 'Verdana';
+	margin:0px;
+	overflow-x: hidden;
+}
 .scroll-wrapper{
     overflow-x: auto;
 }
@@ -33,21 +38,6 @@ a:hover {
 	font-weight:bold;
 	color: black !important;
 }
-.rtopbutton {
-	left:0px;
-	position:fixed!important;
-	border-right:10px;
-background-color:white;
-padding-left:5px;
-	height:32px;
-	top:5px;
-	z-index: 9999;
-	position:absolute;
-}
-.fade img:hover{
-	opacity: 0.7;
-	transition: opacity 0.3s ease;
-}
 .logobuttons, .logo {
 	display: inline-block;
 	vertical-align: middle;
@@ -61,47 +51,6 @@ padding-left:5px;
 }
 .logobuttons li {
 	display: block;
-}
-body {
-	font-family: 'Fira Sans', 'Verdana';
-	margin:0px;
-	overflow-x: hidden;
-}
-.padding {
-	width:40px;
-}
-.menubar {
-	overflow: hidden;
-	position:fixed;
-	z-index:1;
-	top:0px;
-	width:100%;
-	background-color:white;
-	font-size: 0.9em;
-	padding-top:15px;
-	word-spacing:0.8em;
-	padding-left:10px;
-	height:35px;
-	border-bottom: 1px solid #383a47;
-	white-space:nowrap;
-	display:inline-block;
-}
-.menubar img {
-	height:30px;
-}
-.menubar ul {
-	position:absolute;
-	top: 0px;
-	left:0px;
-	display:inline-block;
-}
-.menubar li {
-	display:inline-block;
-}
-.main {
-	margin-top: 50px; // fixed menu height
-	margin-bottom: 0;
-	text-align: center;
 }
 .header {
 	background-color: #383a47;
@@ -255,6 +204,7 @@ pre {
 	}
 }
 @media all and (max-width:500px) {
+	.
 	.block2 {
 		width:260px !important;
 	}
@@ -301,6 +251,62 @@ ul {
 	list-style-image: url('img/tick16.png');
 }
 
+/* Navigation */
+.menubar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 51px;
+  font-size: 0;
+  background: #fff;
+  border-bottom: 1px solid #383a47;
+}
+
+.rtopbutton {
+  display: inline-block;
+  width: 110px;
+  height: 50px;
+  float: left;
+  background: url('img/r2logo32.png') no-repeat scroll center center / 76px 32px transparent;
+  opacity: .2;
+  transition: opacity 0.3s ease;
+}
+
+.rtopbutton:hover{
+  opacity: 1;
+}
+
+.nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav li {
+  display: inline-block;
+}
+
+.nav a {
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  min-width: 80px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.nav a:hover {
+  background: #e8ebed;
+}
+
+.main {
+  margin-top: 50px; // fixed menu height
+  margin-bottom: 0;
+  text-align: center;
+}
+
 .signature {
 	text-align: right;
 	margin-right: 15px;
@@ -328,5 +334,11 @@ text-align:right;
 @media all and (max-width:650px) {
 	.logobuttons {
 		padding: 0;
+	}
+}
+@media all and (max-width:430px) {
+	.nav a {
+		padding: 0 5px;
+		min-width: 0;
 	}
 }
