@@ -1,1 +1,23 @@
-{"name": "radare.org.renew", "description": "new website for radare.org", "version": "0.1.1", "homepage": "https://radare.org/r", "maintainers": [ { "name": "pancake", "email": "pancake@nopcode.org" } ], "dependencies": { "jsfmt": "*", "markdown": "*" }, "repository": { "type": "git", "url": "https://github.com/rdio/jsfmt" }, "bugs": { "url": "https://github.com/rdio/jsfmt/issues" } }
+{
+  "bugs": {
+    "url": "https://github.com/rdio/jsfmt/issues"
+  },
+  "dependencies": {
+    "jsfmt": "*",
+    "markdown": "*"
+  },
+  "description": "new website for radare.org",
+  "homepage": "https://radare.org/r",
+  "maintainers": [
+    {
+      "email": "pancake@nopcode.org",
+      "name": "pancake"
+    }
+  ],
+  "name": "radare.org.renew",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rdio/jsfmt"
+  },
+  "version": "0.1.1"
+}
