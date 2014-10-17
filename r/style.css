@@ -298,21 +298,6 @@ html > body .main {
   margin-top: 50px; /* fixed menu height except for ie6-7 */
 }
 
-.signature {
-  text-align: right;
-  margin-right: 15px;
-  font-size:0.8em;
-}
-
-.linkbar {
-text-align:right;
-  background-color:#585a67;
-  color: white;
-}
-.linkbar a {
-  color:#bcbcff;
-}
-
 .code {
   padding: 5px;
   background-color: #333;
