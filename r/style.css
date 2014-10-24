@@ -215,10 +215,8 @@ a:hover {
 }
 
 .rtopbutton {
-  width: 110px;
-  height: 50px;
+  padding: 10px 16px;
   float: left;
-  background: url('img/r2logo32.png') no-repeat center center;
   opacity: .2;
   transition: opacity 0.3s ease;
 }
