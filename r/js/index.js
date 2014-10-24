@@ -13,8 +13,10 @@
     Object.keys(oss).forEach(function (os) {
       if (navigator.appVersion.indexOf(os) !== -1) {
         var link = document.getElementById("button_download");
-        link.innerHTML = "Download " + version + " " + oss[os].name;
-        link.setAttribute("href", oss[os].url);
+        if (link !== null) {
+          link.innerHTML = "Download " + version + " " + oss[os].name;
+          link.setAttribute("href", oss[os].url);
+        }
       }
     });
   });
