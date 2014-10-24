@@ -8,9 +8,6 @@ ul {
   list-style: url('img/tick16.png');
 }
 
-.scroll-wrapper{
-  overflow-x: auto;
-}
 div::-webkit-scrollbar { 
   display: none; 
 }
@@ -103,8 +100,7 @@ a:hover {
 
 .block-mini,
 .block,
-.block2,
-.center_block {
+.block2 {
   display: inline-block;
   zoom: 1;
   *display: inline;
@@ -128,8 +124,7 @@ a:hover {
 
 .block,
 .block2,
-.block3,
-.center_block {
+.block3 {
   font-size: 0.8em;
 }
 
@@ -147,10 +142,6 @@ a:hover {
 	text-align: center;
 }
 
-.center_block {
-  width: 250px;
-  border: 1px solid #383a47;
-}
 
 h2 {
   margin-bottom: 0;
@@ -170,11 +161,6 @@ hr {
   size: 1px;
 }
 
-.slideshow {
-  height: 250px;
-  overflow: hidden;
-}
-
 pre {
   font-family: 'Fira Mono', 'Courier';
   overflow-x: auto;
@@ -184,15 +170,6 @@ pre {
 .bottom-link {
   width: 32px;
   height: 32px;
-}
-
-.slideimage {
-  border-radius: 5px;
-  margin-bottom: 16px;
-}
-
-.icons {
-	text-align: center;
 }
 
 @media all and (max-width: 400px) {
@@ -206,9 +183,6 @@ pre {
 @media all and (max-width: 500px) {
   .block2 {
     width: 260px;
-  }
-  .slideimage {
-    width: 300px;
   }
 }
 @media all and (max-width: 800px) {
@@ -226,14 +200,6 @@ pre {
   }
   .center_block {
     width: 580px;
-  }
-  .slideshow {
-    height: 300px;
-    width: 580px;
-    overflow-x: auto;
-  }
-  .slideimage {
-    width: 640px;
   }
 }
 
