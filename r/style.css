@@ -227,19 +227,19 @@ a:hover {
   opacity: 1;
 }
 
-.nav {
+nav ul {
   margin: 0;
   padding: 0;
 }
 
-.nav li {
+nav li {
   display: inline-block;
   list-style: none;
   zoom: 1;
   *display: inline;
 }
 
-.nav a {
+nav a {
   display: block;
   height: 50px;
   line-height: 50px;
@@ -249,7 +249,7 @@ a:hover {
   text-align: center;
 }
 
-.nav a:hover {
+nav a:hover {
   background: #e8ebed;
 }
 
@@ -279,7 +279,7 @@ a:hover {
 }
 
 @media all and (max-width: 430px) {
-  .nav a {
+  nav a {
     padding: 0 5px;
     min-width: 0;
   }
