@@ -262,6 +262,87 @@ nav a:hover {
 .r { color: #cd5c5c; }
 .y { color: #ffffcc; }
 
+.donations {
+  width: 100%;
+  text-align: center;
+}
+
+.donate {
+  display: inline-block;
+  margin: 5px;
+  color: #383a47;
+  border-radius: 5px;
+  border: 2px solid #383a47;
+  padding: 10px 40px 7px 20px;
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  zoom: 1;
+  *display: inline;
+}
+
+.paypal:hover {
+  color: #011e73;
+  border-color: #011e73;
+}
+
+.paypal:before {
+  display: inline-block;
+  content: '';
+  background: url('img/donations.png') no-repeat center center;
+  background-position: 0 0;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin: 0 10px;
+  zoom: 1;
+  *display: inline;
+}
+
+.paypal:hover:before {
+  display: inline-block;
+  content: '';
+  background: url('img/donations.png') no-repeat center center;
+  background-position: -32px 0;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin: 0 10px;
+  zoom: 1;
+  *display: inline;
+}
+
+.bitcoin:hover {
+  color: #f38200;
+  border-color: #f38200;
+}
+
+.bitcoin:before {
+  display: inline-block;
+  content: '';
+  background: url('img/donations.png') no-repeat center 15px;
+  background-position: 0 -32px;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin: 0 10px;
+  zoom: 1;
+  *display: inline;
+}
+
+.bitcoin:hover:before {
+  display: inline-block;
+  content: '';
+  background: url('img/donations.png') no-repeat center center;
+  background-position: -32px -32px;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin: 0 10px;
+  zoom: 1;
+  *display: inline;
+}
+
 @media all and (max-width: 720px) {
   .block3 {
     width: 80%;
