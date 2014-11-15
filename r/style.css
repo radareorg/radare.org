@@ -123,7 +123,7 @@ a:hover {
   font-size: 1.2em;
   font-family: 'Fira Sans', 'Verdana';
   font-weight: normal;
-  background-color: #383a47;
+  background-color: #383a57;
   zoom: 1;
   *display: inline;
 }
@@ -276,10 +276,11 @@ nav a:hover {
   }
 }
 
-@media all and (max-width: 430px) {
+@media all and (max-width: 440px) {
   nav a {
     padding: 0 5px;
     min-width: 0;
+    font-size: 11px;
   }
 }
 
