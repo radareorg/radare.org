@@ -282,8 +282,8 @@ nav a:hover {
 }
 
 .paypal:hover {
-  color: #011e73;
-  border-color: #011e73;
+  color: #0131bf;
+  border-color: #0131bf;
 }
 
 .paypal:before {
@@ -313,8 +313,8 @@ nav a:hover {
 }
 
 .bitcoin:hover {
-  color: #f38200;
-  border-color: #f38200;
+  color: #b55b00;
+  border-color: #b55b00;
 }
 
 .bitcoin:before {
