@@ -18,15 +18,15 @@ ul {
   list-style: url('img/tick16.png');
 }
 
-div::-webkit-scrollbar { 
-  display: none; 
+div::-webkit-scrollbar {
+  display: none;
 }
 
 div {
   -ms-overflow-style: none;
 }
 
-div::-webkit-scrollbar { 
+div::-webkit-scrollbar {
   display: none;
 }
 
