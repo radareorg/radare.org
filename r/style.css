@@ -279,8 +279,16 @@ nav a:hover {
   font-weight: bold;
   zoom: 1;
   *display: inline;
+  font-family: 'Fira Sans', 'Verdana', sans-serif;
+  font-weight: bold;
+  text-decoration: none;
 }
 
+.paypal {
+  display: block !important;
+padding-right:32px;
+text-align:left;
+}
 .paypal:hover {
   color: #0131bf;
   border-color: #0131bf;
@@ -376,3 +384,4 @@ nav a:hover {
     margin: 3px 10%;
   }
 }
+
