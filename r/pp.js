@@ -6,6 +6,15 @@ function parseMarkdown(str) {
   return md.toHTML (str); //, dialect);
 }
 
+var Vars = {
+  Get: function(k) {
+    return this[k];
+  },
+  Set: function(k, v) {
+    this[k] = v;
+  }
+}
+
 String.prototype.regexIndexOf = function(regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
@@ -14,6 +23,10 @@ String.prototype.regexIndexOf = function(regex, startpos) {
 if (process.argv.length > 2) {
   function findToken(data, idx) {
     function findCloseToken(data, idx, name) {
+      if (name == "error") {
+        console.error ("Error tag found.\n");
+        process.exit(1);
+      }
       var tag = "<{/" + name + "}>";
       var e = data.indexOf (tag, idx + 2);
       if (e == -1) return; // no more tokens to process
@@ -31,8 +44,15 @@ if (process.argv.length > 2) {
     var token = data.substring (b + 2, e);
     var tokend = findCloseToken (data, e + 1, token);
     if (!tokend || !tokend.body) {
-      console.error ("NO CLOSING TAG '" + token + "'");
-      process.exit(1);
+      if (token[0] == '$') {
+        tokend = {
+          body: token + 1,
+          end: e + 2
+        };
+      } else {
+        console.error ("NO CLOSING TAG '" + token + "'");
+        process.exit(1);
+      }
     }
     return {
       name: token,
@@ -62,18 +82,46 @@ if (process.argv.length > 2) {
       var tok = findToken (data, idx);
       if (tok) {
         newdata += data.substring (idx, tok.begin);
-        switch (tok.name) {
-          case 'comment':
-            /* do nothing here */
-            break;
-          case 'include':
-            newdata += fs.readFileSync (tok.body).toString ();
-            //console.log ("INCLUDE " + tok.body);
-            break;
-          case 'markdown':
-            newdata += parseMarkdown (tok.body);
-            //console.log ("MARKDOWN (((" + tok.body + ")))");
-            break;
+        if (tok.name[0] == '$') {
+          var eq = tok.name.indexOf ('=');
+          if (eq != -1) {
+            Vars.Set (tok.name.substring(0, eq),
+              tok.name.substring (eq + 1));
+          } else {
+            newdata += Vars.Get (tok.name);
+          }
+          idx = tok.end + 1;
+        } else {
+          switch (tok.name) {
+            case 'error':
+            case 'comment':
+              /* do nothing here */
+              break;
+            case 'config':
+              var keyvals = fs.readFileSync(tok.body).toString();
+              var keys = keyvals.split("\n");
+              for (var kv_idx in keys) {
+                var kv = keys[kv_idx];
+                var comment = kv.indexOf("#");
+                if (comment != -1) {
+                  kv = kv.substring(0, comment);
+                }
+                kv = kv.trim ();
+                var eq = kv.indexOf("=");
+                if (eq != -1) {
+                  Vars.Set (kv.substring(0, eq), kv.substring(eq + 1));
+                }
+              }
+              break;
+            case 'include':
+              newdata += fs.readFileSync (tok.body).toString ();
+              //console.log ("INCLUDE " + tok.body);
+              break;
+            case 'markdown':
+              newdata += parseMarkdown (tok.body);
+              //console.log ("MARKDOWN (((" + tok.body + ")))");
+              break;
+          }
         }
         idx = tok.end;
       } else {

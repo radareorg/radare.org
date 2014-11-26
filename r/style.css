@@ -385,3 +385,6 @@ text-align:left;
   }
 }
 
+.hidden {
+visibility:hidden;
+}

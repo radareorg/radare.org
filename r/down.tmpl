@@ -3,12 +3,14 @@
   <h1>Downloads</h1>
 </div>
 
+<{config}>web.config<{/config}>
+
 <h2>Binaries:</h2>
 
 <div class="block3 icons">
 
 <div class="icon">
-<a title="windows" href="http://radare.org/get/pkg/radare2-w32-0.9.8.git.zip">
+<a title="windows" href="http://radare.org/get/pkg/radare2-w32-<{$version}>.git.zip">
 <img width=64 height=64 src="img/os-windows.png">
 <br>
 Windows
@@ -16,7 +18,7 @@ Windows
 </div>
 
 <div class="icon">
-<a title="osx" href="/get/pkg/radare2-0.9.8git.pkg">
+<a title="osx" href="/get/pkg/radare2-<{$version}>.pkg">
 <img width="64" height="64" src="img/os-osx.png">
 <br>
 OS X
@@ -55,13 +57,13 @@ LiveCD
 </div>
 
 
-<h2>Last Release:</h2>
+<h2>Last Release <{$version}>:</h2>
 <div class="block3">
 <h3>radare2</h3>
 <pre class='code y'>
-<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-0.9.7.tar.xz">http://rada.re/get/radare2-0.9.7.tar.xz</a>
-<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-0.9.7.tar.xz
-<span class='b'>~</span> <span class='r'>$</span> cd radare2-0.9.7/
+<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$version}>.tar.xz">http://rada.re/get/radare2-<{$version}>.tar.xz</a>
+<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-<{$version}>.tar.xz
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$version}>/
 <span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
 <span class='b'>~</span> <span class='r'>$</span> make -j8
 <span class='b'>~</span> <span class='r'>$</span> sudo make install
