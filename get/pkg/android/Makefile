@@ -1,24 +1,20 @@
 ARCHS=arm aarch64 mips x86
-TAGS=hg unstable stable
+TAGS=unstable stable
 
-STABLE="0.9.7"
-UNSTABLE="0.9.8.git"
+STABLE="0.9.8.git"
+UNSTABLE="0.9.9-git"
 
 VARS=\
 arm_stable=radare2-${STABLE}-android-arm.tar.gz\
-arm_hg=radare2-${UNSTABLE}-android-arm.tar.gz\
 arm_unstable=radare2-${UNSTABLE}-android-arm.tar.gz\
 \
 aarch64_stable=radare2-${STABLE}-android-aarch64.tar.gz\
-aarch64_hg=radare2-${UNSTABLE}-android-aarch64.tar.gz\
 aarch64_unstable=radare2-${UNSTABLE}-android-aarch64.tar.gz\
 \
 mips_stable=radare2-${STABLE}-android-mips.tar.gz \
-mips_hg=radare2-${UNSTABLE}-android-mips.tar.gz\
 mips_unstable=radare2-${UNSTABLE}-android-mips.tar.gz\
 \
 x86_stable=radare2-${STABLE}-android-x86.tar.gz \
-x86_hg=radare2-${UNSTABLE}-android-x86.tar.gz\
 x86_unstable=radare2-${UNSTABLE}-android-x86.tar.gz
 
 S=$
