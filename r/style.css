@@ -151,6 +151,8 @@ a:hover {
 
 .block {
   font-size: 0.8em;
+padding-top:0px;
+padding-bottom:0px;
   width: 700px;
 }
 
@@ -367,7 +369,15 @@ nav a:hover {
   }
 }
 
-@media all and (max-width: 440px) {
+@media all and (max-width: 520px) {
+  nav a {
+    padding: 0 5px;
+    min-width: 50px;
+    font-size: 14px;
+  }
+}
+
+@media all and (max-width: 420px) {
   nav a {
     padding: 0 5px;
     min-width: 0;
