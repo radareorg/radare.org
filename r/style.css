@@ -208,10 +208,10 @@ a:hover {
   left: 0;
   top: 0;
   width: 100%;
-  height: 51px;
+  height: 50px;
   font-size: 0;
   background: #fff;
-  border-bottom: 1px solid #383a47;
+  border-bottom: 0px solid #383a47;
 }
 
 .rtopbutton {
@@ -248,7 +248,8 @@ nav a {
 }
 
 nav a:hover {
-  background: #e8ebed;
+  background-color: #37bad2;
+  color:white;
 }
 
 .code {
@@ -286,8 +287,9 @@ nav a:hover {
 
 .paypal {
   display: block !important;
-padding-right:32px;
-text-align:left;
+  padding-right:32px;
+  text-align:left;
+  height:32px;
 }
 .paypal:hover {
   color: #0131bf;
