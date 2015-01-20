@@ -1,0 +1,60 @@
+<{include}>head.tmpl<{/include}>
+<div class="header">
+  <h1>License</h1>
+</div>
+
+<div class="block2">
+<{markdown}>
+radare2 is licensed under LGPLv3.
+
+The LesserGPLv3 have the following features:
+
+- Privative software (closed source/comercial) can link to it (dynamically).
+- Privative/Commercial plugins can be developed for it.
+- All modifications in the opensource part must be done public.
+- This way, everyone can benefit from the commercial and opensource worlds.
+
+For a sucessful real case of that LGPL see GStreamer.
+
+If you don't want to have legal issues you'll have to understand how software licenses works.
+
+It is important to note that not all plugins in r2 are under the same license, you'll find some pieces in GPL2, BSD, Apache, etc.
+
+We are trying to shrink and squash all the GPL code as much as possible because of the following reasons.
+
+- GPL is a viral license.
+- You can only statically link GPL programs against them.
+- You can't dynamically link privative apps with GPL libraries.
+
+In case of doing a privative software that uses r2 as backend and you dont want to care about special builds or detailed license problems, I would recommend to use r2 via r2pipe and distribute r2 as a separate package for your privative app. This way the GPL viral will not be infect your software because there's no binary link between them, only a textual protocol via a pipe or socket.
+
+The current parts that are under GPL and will be replaced or removed soon (old code is moved to the radare2-extras repository).
+
+- Some exotic disassemblers
+- GRUB (libr/fs) - partitions and filesystems
+- GNU binutils disassemblers (almost replaced by Capstone)
+- C++ demangler (from binutils)
+
+Grepping for licenses in r_asm plugins
+
+	$ rasm2 -L | grep GPL | grep -v LGPL
+	_dA_  16 32      arc         GPL3    Argonaut RISC Core
+	adA_  16 32 64   arm.gnu     GPL3    Acorn RISC Machine
+	_dA_  16 32      avr         GPL     AVR Atmel
+	_dAe  32         cris        GPL3    Axis Comm. 32-bit
+	adAe  32 64      mips.gnu    GPL3    MIPS CPU
+	_dAe  32         nios2       GPL3    NIOS II
+	_dA_  32 64      ppc.gnu     GPL3    PowerPC
+	_dA_  32         sh          GPL3    SuperH-4 CPU
+	_dA_  32 64      sparc.gnu   GPL3    Scalable Proc Arch
+	ad__  32         x86.olly    GPL2    OllyDBG X86 Disasm
+
+If you want to ship r2 in your privative product remember to remove all the GPL plugins from your build using a custom `plugins.cfg` or passing it to `./configure-plugins`.
+
+If you have any other question about licenses, I would recommend you to contact the [Free Software Foundation](http://www.fsf.org) or just drop me an email.
+
+--pancake
+<{/markdown}>
+</div>
+
+<{include}>tail.tmpl<{/include}>
