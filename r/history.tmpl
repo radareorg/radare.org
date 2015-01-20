@@ -5,17 +5,25 @@
 
 <div class="block2">
 <{markdown}>
-radare2 was created in February 2006, aiming to provide a free and simple command line interface for
-a hexadecimal editor supporting 64 bit offsets to make searches and recovering data from hard-disks,
-for forensic purpose.
-	
-Since then, the project has grown with the aim changed to provide a complete framework
-for analysing binaries with some basic *NIX concepts in mind like 'everything is a file',
-'small programs that interact together using stdin/out' or 'keep it simple'.
+Radare was born in 2006, at the time *pancake* was working as a forensic analyst and decided to write a simple hexadecimal editor with support for searching patterns and dump the search results to disk. In order to recover some PHP files deleted from an HFS partition.
 
-In 2009, the decision was made to completely rewrite it,
-to get around limitations in the initial design. Since then, the project kept growing,
-attracting several resident developers.
+RA-DA-RE stands for RAw DAta REcovery.
+
+As long as it was a handy tool, it started to add other features on top of the imple commandline exadecimal editor in order to support disassemblers, file format parsers, debuggers and more.
+
+The design of radare it's on top of some basic *NIX concepts like 'protocols are in plain text', 'everything is a file', 'small programs that interact together using stdin/out' or 'keep it simple'. Most of the power of radare commands resides in mixing them with others by comunicating them with pipes.
+
+The first implementation of radare reached in 2009 a situation where evolving required a full redesign of the codebase in order to properly support scripting language bindings.
+
+radare2 started as a rewrite of the radare codebase following a modular design and licensed under LGPLv3. And it was developed in parallel with radare, because despite the better design it was still not able to replace all the capabilities of the old version.
+
+In 2014, radare2 reached a state good enough to fully replace radare1, there are still some features needed to be added in the debugger, but for the rest is way better.
+
+This year (2014), the project grown a lot, (IRC had 40 users in January and 170 in December), the RSoC bringed new features, users and developers, and there were many talks and trainings in international security conferences.
+
+The project is now starting to switch from a personal project to a community one. Almost 8 years of development alone is now starting to grow and this requires much more time reviewing code contributions, implementing proper security development practices like using a test suite, fuzzing different inputs (file formats, demanglers, disassemblers, command syntax, ..), running with coverity, review all pedantic warnings, llvm-analyzer, valgrind, ASAN, and more to come!
+
+One of the major requests for r2 has been always the GUI, actually the console interface is by far the best one to interact with it, but there is a web frontend which can be used sandboxed and by many users. Also, the r2pipe API can be used from Python, NodeJS or Web Browsers which offers a powerful interface to automatize tasks or interact with the core.
 <{/markdown}>
 </div>
 
