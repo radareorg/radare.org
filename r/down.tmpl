@@ -1,13 +1,21 @@
 <{include}>head.tmpl<{/include}>
+<{config}>web.config<{/config}>
 <div class="header">
-  <h1>Downloads</h1>
+<h1>Last Release: <{$version}></h1>
 </div>
 
-<{config}>web.config<{/config}>
 
 <h2>Binaries:</h2>
 
 <div class="block3 icons">
+
+<div class="icon">
+<a title="Source" href="https://github.com/radare/radare2">
+<img width=64 height=64 src="img/os-tux.png">
+<br>
+Source
+</a>
+</div>
 
 <div class="icon">
 <a title="windows" href="http://radare.org/get/pkg/radare2-w32-<{$version}>.git.zip">
@@ -39,13 +47,6 @@ iOS
 <br>Android</a>
 </div>
 
-<div class="icon">
-<a title="Source" href="https://github.com/radare/radare2">
-<img width=64 height=64 src="img/os-tux.png">
-<br>
-Source
-</a>
-</div>
 
 <!--j
 <div class="icon">
@@ -76,8 +77,8 @@ Docker
 
 </div>
 
+<br /> <br />
 
-<h2>Last Release <{$version}>:</h2>
 <div class="block3">
 <h3>radare2</h3>
 <pre class='code z'>
@@ -90,9 +91,11 @@ Docker
 </pre>
 </div>
 
+<br /> <br />
 <h2>From GIT:</h2>
 <div class="block3">
 <h3>radare2</h3>
+Advanced Hexadecimal Editor initially designed for forensics, but quickly evolved into a disassembler and debugger.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
 <span class='b'>~</span> <span class='r'>$</span> cd radare2
@@ -102,6 +105,7 @@ Docker
 
 <div class="block3">
 <h3>bindings</h3>
+Support for python, nodejs, ruby, ...
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings
@@ -114,6 +118,7 @@ Docker
 
 <div class="block3">
 <h3>test suite</h3>
+Testing every command, binary and operation is needed to avoid having regressions.
 <pre class='code z'>
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-regressions
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-regressions
@@ -146,6 +151,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 
 <div class="block3">
 <h3>ired</h3>
+Minimalistic hexadecimal editor designed to be used in scripts with pipes. Mimics some r2 commands.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/ired
 <span class='b'>~</span> <span class='r'>$</span> cd ired
@@ -156,6 +162,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 
 <div class="block3">
 <h3>sdb</h3>
+String Database is a ondisk/memory hashtable based on CDB which operates with key-values of a single data type: strings.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/sdb
 <span class='b'>~</span> <span class='r'>$</span> cd sdb
