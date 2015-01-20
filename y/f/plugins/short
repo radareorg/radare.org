@@ -1,9 +1,10 @@
 One of the key features behind r2 is how easily it can be extended with new
 libraries or plugins. In this paper, we will see the steps needed for adding
-a new plugin in radare.
+a new plugin in radare 2.
 
 <br/><br/>
 
 Let's say we want to add a new plugin for r_asm because we are working with
 binaries of an architecture not supported by r2. Of course, adding a new plugin
 for another lib would be mostly the same.
+

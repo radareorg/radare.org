@@ -8,7 +8,3 @@ it.
 <br/><br/>
 
 Imagine the following scenario, we have a binary and we want to trigger an event
-each time that an import is called. Obviously, we could hook all the imports and
-exec whatever we want preloading a library coded by us with LD_PRELOAD, but this
-aproximation has a very big problem: the imports used by each target binary will
-change, so we would need to code a library adapted to each binary every time.

@@ -389,10 +389,12 @@ nav a:hover {
         margin-left: -16px;
     }
     .block {
-        width: 180px;
+        width: 90%;
         min-width: 0px;
         padding: 0;
         margin: 0 auto;
+        margin-left:-20px;
+margin-right:10px;
     }
     .block2 {
         width: 280px;
