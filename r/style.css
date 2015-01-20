@@ -30,8 +30,13 @@ div::-webkit-scrollbar {
   display: none;
 }
 
-img {
+body > img {
   border: 0;
+}
+
+p > img {
+  border: 0;
+  width:490px;
 }
 
 h1 {
