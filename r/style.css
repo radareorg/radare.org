@@ -386,6 +386,10 @@ nav a:hover {
     min-width: 50px;
     font-size: 14px;
   }
+  .block-mini {
+    width: 80%;
+    margin: 3px 10%;
+  }
 }
 
 @media all and (max-width: 420px) {
@@ -400,7 +404,7 @@ nav a:hover {
 ul {
 margin-left:-16px;
 }
-  .block {
+  .block,.block2 {
     width: 280px;
     padding: 0;
     margin: 0 auto;
