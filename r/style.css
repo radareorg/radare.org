@@ -150,7 +150,7 @@ a:hover {
     font-size: 0.8em;
 }
 .block3 {
-    width: 750px;
+    width: 700px;
     margin: auto;
     text-align: justify;
     font-size: 0.8em;
@@ -231,11 +231,13 @@ nav a:hover {
     color: white;
 }
 .code {
+font-size:14px;
     padding: 5px;
     background-color: #333;
     border-radius: 5px;
     color: white;
-    width: 720px;
+    width: 700px;
+        margin-left:-10px;
 }
 .b {
     color: #87ceeb;
@@ -330,7 +332,7 @@ nav a:hover {
 }
 @media all and (max-width: 720px) {
     .block3 {
-        width: 80%;
+        width: 70%;
     }
     .block {
         width: 350px;
@@ -339,7 +341,8 @@ nav a:hover {
         padding: 0;
     }
     .code {
-        width: 500px;
+        margin-left:-50px;
+        width: 128%;
     }
 }
 @media all and (max-width: 520px) {
@@ -351,9 +354,6 @@ nav a:hover {
     .block-mini {
         width: 80%;
         margin: 3px 10%;
-    }
-    .code {
-        width: 450px;
     }
 }
 @media all and (max-width: 420px) {
