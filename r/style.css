@@ -37,10 +37,11 @@ body > img {
 p > img {
   border: 0;
   width:490px;
+  margin-bottom:32px;
 }
 @media all and (max-width: 500px) {
   p > img {
-width: 300px;
+    width: 300px;
   }
 }
 
@@ -396,8 +397,11 @@ nav a:hover {
 }
 
 @media all and (max-width: 400px) {
+ul {
+margin-left:-16px;
+}
   .block {
-    width: 100%;
+    width: 280px;
     padding: 0;
     margin: 0 auto;
   }
