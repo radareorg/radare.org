@@ -394,13 +394,15 @@ table {
     width: 78%;
 }
 .y {
-    color: #30f030;
+    color: #00a000;
+    font-weight:bold;
 }
 .z {
     color: #a0a0a0;
 }
 .n {
-    color: red;
+    color: #c00000;
+    font-weight:bold;
 }
 .comparison {
     width: 420px;
