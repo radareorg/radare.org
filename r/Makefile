@@ -1,4 +1,4 @@
-PAGES=index down docs pics me talks
+PAGES=index down docs pics me talks cmp
 REMOTE?=/tmp/www
 NODE=$(shell nodejs --help > /dev/null 2>&1 && echo nodejs || echo node)
 

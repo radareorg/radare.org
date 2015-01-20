@@ -1,0 +1,140 @@
+<{include}>head.tmpl<{/include}>
+<div class="header">
+  <h1>Comparison Table</h1>
+</div>
+<br />
+
+Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.hex-rays.com/products/ida/index.shtml'>IDA Pro</a> and <a href='http://hopperapp.com/'>Hopper</a>.
+
+<br />
+<br />
+<center>
+<h2>Analysis</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"></td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead>
+<tbody>
+<tr> <td class="tdleft">Call/syscall recognition</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Cross-references</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft"><a href='http://dwarfstd.org/'>DWARF</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft"><a href='http://lldb.llvm.org/symbols.html'>dSym</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Graph View</td>                <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">ROP-gadget finder</td>         <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Signature recognition</td>     <td class='y'>yes</td> <td class='y'><a href='https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml'>yes</a></td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Custom structures definition</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>no</td> </tr>
+<tr> <td class="tdleft">Type support</td>              <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+<h2>Architectures</h2>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"></td>              <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ARM</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">CSR</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Java/<a href='https://source.android.com/devices/tech/dalvik/index.html'>Dalvik</a></td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='http://www.ti.com/lit/ug/spru393/spru393.pdf'>TMS320C55x+</a></td>               <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='http://www.renesas.com/products/mpumcu/v850/index.jsp'>v850</a></td>                       <td class='y'>yes</td> <td class='n'>yes </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">x86 and x64</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>Bindings</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"></td>                  <td>r2</td>        <td>IDA</td>          <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Javascript</td>                <td class='y'>yes</td> <td class='n'><a href="http://www.hexblog.com/?p=101">yes</a></td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Lua</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Python</td>                    <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes </td> </tr>
+<tr> <td class="tdleft">Vala</td>                      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
+<h2>Debugger</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"></td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Breakpoints</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Process attaching</td>         <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Remote debugging</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Tracing</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
+<h2>Decompilation</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Decompilation</td>             <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ARM</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x64</td>                       <td class='n'>no </td> <td class='n'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x86</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>Patching</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Patching</td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Patches generation</td>        <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Shellcode compilation</td>     <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Writing/patching opcodes</td>  <td class='y'>yes</td> <td class='n'>no </td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>Platforms</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Platforms</td>                  <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Android</td>                   <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">BSD</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">iPhone</td>                    <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Linux</td>                     <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">OSX</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Windows</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='w'>only Hopper v2</td> </tr>
+</tbody> </table>
+
+<h2>Extensibility</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Extensibility</td>              <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Exposed IL</td>                <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Open database format</td>      <td class='w'><a href='http://github.com/radare/sdb'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Plugins support</td>           <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>Prices and Support</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Prices and support</td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Free (as in beer)</td>         <td class='y'>yes</td> <td class='n'>450...2700&euro;</td> <td class='w'>65..125&euro;</td> </tr>
+<tr> <td class="tdleft">Free (as in freedom)</td>      <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Open bugtracker</td>           <td class='y'><a href='https://github.com/radare/r2/issues'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Professional customers support</td>    <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>Project Management</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Project management</td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Collaborative work</td>        <td class='w'>wip</td> <td class='w'>Via plugins </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Saving and exporting</td>      <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<h2>User Interface</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">User interface</td>            <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">CLI</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">GUI</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Themes support</td>            <td class='y'><a href='https://github.com/radare/r2/wiki/Colorschemes'>yes</a></td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Web interface</td>             <td class='w'><a href='http://cloud.rada.re'>wip</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+</tbody> </table>
+</center>
+<br />
+
+<{include}>tail.tmpl<{/include}>

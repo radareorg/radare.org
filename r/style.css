@@ -12,6 +12,8 @@ body {
 
 html > body .main {
   margin-top: 50px; /* fixed menu height except for ie6-7 */
+margin-left:0px;
+border:0px;
 }
 
 ul {
@@ -123,9 +125,9 @@ a:hover {
 
 .button {
   display: inline-block;
-  border: 1px solid white ;
+  border: 1px solid white;
   transition: background-color 0.3s ease;
-  color: white;
+  color: #f0f0f0;
   border-radius: 5px;
   margin-bottom: 5px;
   background-image: none;
@@ -134,14 +136,14 @@ a:hover {
   font-size: 1.2em;
   font-family: 'Fira Sans', 'Verdana';
   font-weight: normal;
-  background-color: #179ab2;
   zoom: 1;
   *display: inline;
+  background-color: #007a92;
 }
 
 .button:hover {
-  background-color: white;
-  color: black;
+  background-color: #179ab2;
+  color: white;
   cursor: pointer;
 }
 
@@ -270,6 +272,7 @@ nav a:hover {
   background-color: #333;
   border-radius: 5px;
   color: white;
+  width:720px;
 }
 
 .b { color: #87ceeb; }
@@ -378,6 +381,9 @@ nav a:hover {
   .logobuttons {
     padding: 0;
   }
+  .code {
+	  width:500px;
+  }
 }
 
 @media all and (max-width: 520px) {
@@ -389,6 +395,9 @@ nav a:hover {
   .block-mini {
     width: 80%;
     margin: 3px 10%;
+  }
+  .code {
+	  width:450px;
   }
 }
 
@@ -416,5 +425,40 @@ margin-left:-16px;
 }
 
 .hidden {
-visibility:hidden;
+	visibility:hidden;
+}
+
+td {
+	text-align:center;
+}
+
+.tdleft {
+	text-align:left;
+}
+
+thead > td {
+	background-color:#909090;
+}
+
+
+table {
+	width: 78%;
+}
+.y {
+	color:#30f030;
+}
+.z {
+	color:#a0a0a0;
+}
+.n {
+	color:red;
+}
+
+.comparison {
+	width:420px;
+}
+thead {
+	background-color: #303030;
+	text-align:center;
+	color:white;
 }
