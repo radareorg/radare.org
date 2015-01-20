@@ -200,6 +200,7 @@ a:hover {
     height: 50px;
     font-size: 0;
     background: #fff;
+    overflow:hidden;
     border-bottom: 0px solid #383a47;
 }
 .rtopbutton {
