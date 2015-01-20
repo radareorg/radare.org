@@ -26,7 +26,7 @@ div::-webkit-scrollbar {
 }
 div {
     -ms-overflow-style: none;
-overflow-x:hidden;
+    overflow-x: hidden;
 }
 div::-webkit-scrollbar {
     display: none;
@@ -34,13 +34,13 @@ div::-webkit-scrollbar {
 body > img {
     border: 0;
 }
-p > img {
+p > a > img {
     border: 0;
     width: 490px;
     margin-bottom: 32px;
 }
 @media all and (max-width: 500px) {
-    p > img {
+    p > a > img {
         width: 300px;
     }
 }
@@ -235,13 +235,12 @@ nav a:hover {
     color: white;
 }
 .code {
-font-size:13px;
+    font-size: 13px;
     padding: 5px;
     background-color: #333;
     border-radius: 5px;
     color: white;
     width: 700px;
-        margin-left:-10px;
 }
 .b {
     color: #87ceeb;
@@ -335,9 +334,9 @@ font-size:13px;
     *display: inline;
 }
 @media all and (max-width: 720px) {
-.comparison {
-    width: 90%;
-}
+    .comparison {
+        width: 90%;
+    }
     .block3 {
         width: 70%;
     }
@@ -348,7 +347,6 @@ font-size:13px;
         padding: 0;
     }
     .code {
-        margin-left:-50px;
         width: 128%;
     }
 }
@@ -363,7 +361,6 @@ font-size:13px;
         margin: 3px 10%;
     }
     .code {
-        margin-left:-40px;
         width: 128%;
     }
 }
@@ -406,24 +403,23 @@ table {
 }
 .y {
     color: #00a000;
-    font-weight:bold;
+    font-weight: bold;
 }
 .z {
     color: #a0a0a0;
 }
 .n {
     color: #c00000;
-    font-weight:bold;
+    font-weight: bold;
 }
-
 thead {
     background-color: #303030;
     text-align: center;
     color: white;
 }
 .releases {
-width:280px;
-text-align:left;
-font-weight:normal;
-font-size:14px;
+    width: 280px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 14px;
 }
