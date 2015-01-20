@@ -143,6 +143,20 @@ a:hover {
     vertical-align: top;
     text-align: left;
 }
+.block-maxi {
+text-align:left;
+    display: inline-block;
+    zoom: 1;
+float:left;
+    *display: inline;
+    margin: 5px;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300px;
+    border: 0;
+    vertical-align: top;
+    text-align: left;
+}
 .block {
     font-size: 0.8em;
     padding-top: 0px;
@@ -351,34 +365,38 @@ nav a:hover {
         width: 128%;
     }
 }
+
 @media all and (max-width: 520px) {
     nav a {
         padding: 0 5px;
         min-width: 50px;
         font-size: 14px;
     }
-    .block-mini {
-        width: 80%;
-        margin: 3px 10%;
-    }
-    .code {
-        width: 128%;
-    }
+    .block-mini { width: 80%; margin: 3px 10%; }
+    .code { width: 128%; }
 }
-@media all and (max-width: 420px) {
+
+@media all and (max-width: 430px) {
     nav a {
         padding: 0 5px;
-        min-width: 0;
+        min-width: 10px;
         font-size: 13px;
     }
 }
+
 @media all and (max-width: 400px) {
     ul {
         margin-left: -16px;
     }
-    .block,
+    .block {
+        width: 180px;
+        min-width: 0px;
+        padding: 0;
+        margin: 0 auto;
+    }
     .block2 {
         width: 280px;
+        min-width: 0px;
         padding: 0;
         margin: 0 auto;
     }
