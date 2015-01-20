@@ -217,7 +217,7 @@ padding-bottom:0px;
 }
 
 .rtopbutton {
-  padding: 10px 16px;
+  padding: 10px 12px;
   float: left;
   opacity: .2;
   transition: opacity 0.3s ease;
@@ -381,9 +381,10 @@ nav a:hover {
   nav a {
     padding: 0 5px;
     min-width: 0;
-    font-size: 11px;
+    font-size: 14px;
   }
 }
+
 
 @media all and (max-width: 400px) {
   .block {
