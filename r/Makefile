@@ -13,6 +13,7 @@ node_modules:
 
 indent:
 	$(NODE) $(NBIN)/jsfmt -w pp.js
+	$(NODE) $(NBIN)/jsfmt -w js/index.js
 	$(NODE) $(NBIN)/js-beautify --type=css -r style.css 
 
 pub up:

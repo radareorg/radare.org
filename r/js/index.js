@@ -10,8 +10,9 @@
     };
 
   document.addEventListener('DOMContentLoaded', function () {
+    var ua = navigator.userAgent;
     Object.keys(oss).forEach(function (os) {
-      if (navigator.appVersion.indexOf(os) !== -1) {
+      if (ua.indexOf(os) !== -1) {
         var link = document.getElementById("button_download");
         if (link !== null) {
           link.innerHTML = "Download " + version + " " + oss[os].name;
