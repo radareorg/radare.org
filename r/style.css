@@ -154,7 +154,7 @@ a:hover {
     font-size: 0.8em;
 }
 .block3 {
-    width: 600px;
+    width: 630px;
     margin: auto;
     text-align: justify;
     font-size: 0.8em;
@@ -177,7 +177,7 @@ a:hover {
     display: inline-block;
     zoom: 1;
     *display: inline;
-    margin: 3px;
+    margin: 0px;
     width: 80px;
     height: 100px;
     border: 0;
