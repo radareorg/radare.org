@@ -20,6 +20,10 @@ String.prototype.regexIndexOf = function(regex, startpos) {
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
 }
 
+function readFile(fn) {
+  return fs.readFileSync(fn.trim()).toString();
+}
+
 if (process.argv.length > 2) {
   function findToken(data, idx) {
     function findCloseToken(data, idx, name) {
@@ -63,7 +67,7 @@ if (process.argv.length > 2) {
   }
   for (var i = 2; i < process.argv.length; i++) {
     var file = process.argv[2];
-    var data = fs.readFileSync (file).toString ();
+    var data = readFile(file);
     var newdata = "";
     var idx = 0;
     /*
@@ -98,7 +102,8 @@ if (process.argv.length > 2) {
               /* do nothing here */
               break;
             case 'config':
-              var keyvals = fs.readFileSync(tok.body).toString();
+              var keyvals = readFile(tok.body);
+
               var keys = keyvals.split("\n");
               for (var kv_idx in keys) {
                 var kv = keys[kv_idx];
@@ -114,7 +119,7 @@ if (process.argv.length > 2) {
               }
               break;
             case 'include':
-              newdata += fs.readFileSync (tok.body).toString ();
+              newdata += readFile(tok.body);
               //console.log ("INCLUDE " + tok.body);
               break;
             case 'markdown':

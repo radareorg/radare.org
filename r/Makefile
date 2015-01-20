@@ -1,4 +1,5 @@
 PAGES=index down docs pics me talks cmp
+NBIN=node_modules/.bin
 REMOTE?=/tmp/www
 NODE=$(shell nodejs --help > /dev/null 2>&1 && echo nodejs || echo node)
 
@@ -10,7 +11,8 @@ node_modules:
 	npm install
 
 indent:
-	$(NODE) node_modules/.bin/jsfmt -w pp.js
+	$(NODE) $(NBIN)/jsfmt -w pp.js
+	$(NODE) $(NBIN)/js-beautify --type=css -r style.css 
 
 pub up:
 	rsync -avz . ${REMOTE}
