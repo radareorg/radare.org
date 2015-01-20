@@ -26,6 +26,7 @@ div::-webkit-scrollbar {
 }
 div {
     -ms-overflow-style: none;
+overflow-x:hidden;
 }
 div::-webkit-scrollbar {
     display: none;
@@ -421,8 +422,8 @@ thead {
     color: white;
 }
 .releases {
-width:240px;
+width:280px;
 text-align:left;
-font-weight:bold;
+font-weight:normal;
 font-size:14px;
 }
