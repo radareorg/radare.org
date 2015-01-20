@@ -231,7 +231,7 @@ nav a:hover {
     color: white;
 }
 .code {
-font-size:14px;
+font-size:13px;
     padding: 5px;
     background-color: #333;
     border-radius: 5px;
@@ -355,6 +355,10 @@ font-size:14px;
         width: 80%;
         margin: 3px 10%;
     }
+    .code {
+        margin-left:-40px;
+        width: 128%;
+    }
 }
 @media all and (max-width: 420px) {
     nav a {
@@ -411,4 +415,10 @@ thead {
     background-color: #303030;
     text-align: center;
     color: white;
+}
+.releases {
+width:240px;
+text-align:left;
+font-weight:bold;
+font-size:14px;
 }

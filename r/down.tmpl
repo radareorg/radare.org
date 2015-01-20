@@ -1,7 +1,7 @@
 <{include}>head.tmpl<{/include}>
 <{config}>web.config<{/config}>
 <div class="header">
-<h1>Last Release: <{$version}></h1>
+<h1>Last Release: <{$radare2_version}></h1>
 </div>
 
 
@@ -18,7 +18,7 @@ Source
 </div>
 
 <div class="icon">
-<a title="windows" href="http://radare.org/get/pkg/radare2-w32-<{$version}>.git.zip">
+<a title="windows" href="http://radare.org/get/pkg/radare2-w32-<{$radare2_version}>.git.zip">
 <img width=64 height=64 src="img/os-windows.png">
 <br>
 Windows
@@ -26,7 +26,7 @@ Windows
 </div>
 
 <div class="icon">
-<a title="osx" href="/get/pkg/radare2-<{$version}>.pkg">
+<a title="osx" href="/get/pkg/radare2-<{$radare2_version}>.pkg">
 <img width="64" height="64" src="img/os-osx.png">
 <br>
 OS X
@@ -76,25 +76,38 @@ Docker
 </div>
 
 </div>
+<hr />
+<h2>Sources:</h2>
+<center>
+<div class="releases">
+<pre >
+<a href="../get/radare2-<{$radare2_version}>.tar.xz">radare2</a>     <{$radare2_version}>  <{$radare2_date}>
+<a href="../get/radare2-bindings-<{$radare2_bindings_version}>.tar.xz">r2-bindings</a> <{$radare2_bindings_version}>  <{$radare2_bindings_date}>
+<a href="../get/radare2-extras-<{$radare2_extras_version}>.tar.xz">r2-extras</a>   <{$radare2_extras_version}>  <{$radare2_extras_date}>
+<a href="../get/valabind-<{$valabind_version}>.tar.xz">valabind</a>    <{$valabind_version}>  <{$valabind_date}>
+<a href="../get/ired-<{$ired_version}>.tar.xz">ired</a>        <{$ired_version}>  <{$ired_date}>
+<a href="../get/radare1-<{$radare1_version}>.tar.xz">radare</a>      <{$radare1_version}>  <{$radare1_date}>
+<a href="../get/sdb-<{$sdb_version}>.tar.xz">sdb</a>         <{$sdb_version}>  <{$sdb_date}>
+<a href="../get/acr-<{$acr_version}>.tar.xz">acr</a>         <{$acr_version}>  <{$acr_date}>
+</pre>
+</div>
+</center>
 
-<br /> <br />
-
+<br />
 <div class="block3">
-<h3>radare2</h3>
+<h2>Installation from tarball:</h2>
 <pre class='code z'>
-<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$version}>.tar.xz">http://rada.re/get/radare2-<{$version}>.tar.xz</a>
-<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-<{$version}>.tar.xz
-<span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$version}>/
+<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$radare2_version}>.tar.xz">http://rada.re/get/radare2-<{$radare2_version}>.tar.xz</a>
+<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-<{$radare2_version}>.tar.xz
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$radare2_version}>/
 <span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
 <span class='b'>~</span> <span class='r'>$</span> make -j8
 <span class='b'>~</span> <span class='r'>$</span> sudo make install
 </pre>
 </div>
-
-<br /> <br />
-<h2>From GIT:</h2>
+<br />
 <div class="block3">
-<h3>radare2</h3>
+<h2>radare2</h2>
 Advanced Hexadecimal Editor initially designed for forensics, but quickly evolved into a disassembler and debugger.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
@@ -104,7 +117,7 @@ Advanced Hexadecimal Editor initially designed for forensics, but quickly evolve
 </div>
 
 <div class="block3">
-<h3>bindings</h3>
+<h2>bindings</h2>
 Support for python, nodejs, ruby, ...
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
@@ -117,7 +130,7 @@ Support for python, nodejs, ruby, ...
 </div>
 
 <div class="block3">
-<h3>test suite</h3>
+<h2>test suite</h2>
 Testing every command, binary and operation is needed to avoid having regressions.
 <pre class='code z'>
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-regressions
@@ -127,7 +140,7 @@ Testing every command, binary and operation is needed to avoid having regression
 </div>
 
 <div class="block3">
-<h3>radare</h3>
+<h2>radare</h2>
 The very old and original version of radare. Maintained for historial reasons.
 <pre class='code z'>
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare
@@ -139,7 +152,7 @@ The very old and original version of radare. Maintained for historial reasons.
 </div>
 
 <div class="block3">
-<h3>valabind</h3>
+<h2>valabind</h2>
 The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dlang, Go
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/valabind
@@ -150,7 +163,7 @@ The tool used to autogenerate the language bindings for SWIG, Ctypes, NodeJS, Dl
 </div>
 
 <div class="block3">
-<h3>ired</h3>
+<h2>ired</h2>
 Minimalistic hexadecimal editor designed to be used in scripts with pipes. Mimics some r2 commands.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/ired
@@ -161,7 +174,7 @@ Minimalistic hexadecimal editor designed to be used in scripts with pipes. Mimic
 </div>
 
 <div class="block3">
-<h3>sdb</h3>
+<h2>sdb</h2>
 String Database is a ondisk/memory hashtable based on CDB which operates with key-values of a single data type: strings.
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/sdb
