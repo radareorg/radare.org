@@ -19,7 +19,7 @@ html > body .main {
     border: 0px;
 }
 ul {
-    list-style: url('img/tick16.png');
+    /* list-style: url('img/tick16.png'); */
 }
 div::-webkit-scrollbar {
     display: none;
