@@ -1,1 +1,4 @@
-<? header("Location: y"); ?>
+<?php
+header("Location: r");
+//header("Location: y");
+?>
