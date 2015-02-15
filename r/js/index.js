@@ -3,7 +3,7 @@
 
   var version = "0.9.8",
     oss = {
-      Win: { url: '/get/pkg/radare2-w32-0.9.8git.zip', name: 'for Windows' },
+      Win: { url: '/get/pkg/radare2-w32-0.9.8.zip', name: 'for Windows' },
       Mac: { url: '/get/pkg/radare2-0.9.8git.pkg', name: 'for OSX' },
       iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
       Android: { url: 'https://play.google.com/store/apps/details?id=org.radare.installer', name: 'Android' }
