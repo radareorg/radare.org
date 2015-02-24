@@ -111,9 +111,34 @@ Docker
 <span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$radare2_version}>.tar.xz">http://rada.re/get/radare2-<{$radare2_version}>.tar.xz</a>
 <span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-<{$radare2_version}>.tar.xz
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$radare2_version}>/
-<span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
-<span class='b'>~</span> <span class='r'>$</span> make -j8
-<span class='b'>~</span> <span class='r'>$</span> sudo make install
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> make -j8
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> sudo make install
+</pre>
+</div>
+<br />
+<div class="block3">
+<h2>Uninstall:</h2>
+To uninstall a r2 from a specific prefix run the following commands on the root directory of the radare2 source code:
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> cd radare2
+<span class='b'>~/radare2</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2</span> <span class='r'>$</span> sudo make uninstall
+</pre>
+
+In case you want to remove all previous installations purge it.
+<pre class='code z'>
+<span class='b'>~/radare2</span> <span class='r'>$</span> sudo make purge
+</pre>
+
+To uninstall on OSX you'll need to 
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> sudo su -
+<span class='b'>~</span> <span class='r'>#</span> export PKG=org.radare.radare2
+<span class='b'>~</span> <span class='r'>#</span> cd /
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --files --only-files $PKG | xargs rm -f
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --files --only-dirs $PKG | xargs rmdir
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --forget $PKG
 </pre>
 </div>
 <br />
@@ -123,13 +148,34 @@ Advanced Hexadecimal Editor initially designed for forensics, but quickly evolve
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
 <span class='b'>~</span> <span class='r'>$</span> cd radare2
-<span class='b'>~</span> <span class='r'>$</span> sys/install.sh
+<span class='b'>~/radare2</span> <span class='r'>$</span> sys/install.sh
 </pre>
 </div>
 
 <div class="block3">
-<h2>bindings</h2>
-Support for python, nodejs, ruby, ...
+<h2>radare2 extras</h2>
+Yara, EWF, more archs, ...
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-extras
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-extras
+<span class='b'>~/radare2-extras</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-extras</span> <span class='r'>$</span> cd yara/yara3
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ../install-yara3.sh
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> make
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> sudo make install
+</pre>
+Or install them by hand
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> make
+<span class='b'>~</span> <span class='r'>$</span> cp plugin.so ~/.config/radare2/plugins
+<span class='b'>~</span> <span class='r'>$</span> R_DEBUG=1 r2 -qc. --
+</pre>
+</div>
+
+<div class="block3">
+<h2>radare2 bindings</h2>
+Support for r2pipe, duktape, python, nodejs, ruby, ...
 <pre class="code z">
 <span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings
@@ -138,6 +184,10 @@ Support for python, nodejs, ruby, ...
 <span class='b'>~/python</span> <span class='r'>$</span> make
 <span class='b'>~/python</span> <span class='r'>$</span> sudo make install
 </pre>
+R2Pipe APIs
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings/r2pipe/python
+<span class='b'>~/radare2-bindings/r2pipe/python</span> <span class='r'>$</span> python test.py
 </div>
 
 <div class="block3">
@@ -149,6 +199,7 @@ Testing every command, binary and operation is needed to avoid having regression
 <span class='b'>~/radare2-regressions</span> <span class='r'>$</span> make
 </pre>
 </div>
+
 
 <div class="block3">
 <h2>radare</h2>
