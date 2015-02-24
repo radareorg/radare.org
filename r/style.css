@@ -250,12 +250,10 @@ nav a:hover {
     color: white;
 }
 .code {
-    font-size: 13px;
     padding: 5px;
     background-color: #333;
     border-radius: 5px;
     color: white;
-    width: 700px;
 }
 .b {
     color: #87ceeb;
@@ -373,7 +371,7 @@ nav a:hover {
         font-size: 14px;
     }
     .block-mini { width: 80%; margin: 3px 10%; }
-    .code { width: 128%; }
+    .code { width: 97%; }
 }
 
 @media all and (max-width: 430px) {
@@ -394,7 +392,7 @@ nav a:hover {
         padding: 0;
         margin: 0 auto;
         margin-left:-20px;
-margin-right:10px;
+	margin-right:10px;
     }
     .block2 {
         width: 280px;
