@@ -4,6 +4,13 @@
 <h1>Last Release: <{$radare2_version}></h1>
 </div>
 
+<h2>Recommended Install:</h2>
+<div class="block3">
+<pre class="code z">
+git clone https://github.com/radare/radare2 cd radare2 ; sys/install.sh
+</pre>
+</div>
+<hr />
 <h2>Binaries:</h2>
 
 <div class="block3 icons">
@@ -182,6 +189,18 @@ String Database is a ondisk/memory hashtable based on CDB which operates with ke
 <span class='b'>~</span> <span class='r'>$</span> cd sdb
 <span class='b'>~/sdb</span> <span class='r'>$</span> make
 <span class='b'>~/sdb</span> <span class='r'>$</span> make -C tests
+</pre>
+</div>
+
+<div class="block3">
+<h2>acr</h2>
+AutoConfReplacement
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/acr
+<span class='b'>~</span> <span class='r'>$</span> cd acr
+<span class='b'>~/sdb</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/sdb</span> <span class='r'>$</span> make
+<span class='b'>~/sdb</span> <span class='r'>$</span> sudo make install
 </pre>
 </div>
 <{include}>tail.tmpl<{/include}>
