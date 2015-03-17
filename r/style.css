@@ -107,6 +107,14 @@ a:hover {
     list-style: none;
     list-style-image: none;
 }
+.yellow {
+	background-color:yellow !important;
+	color:black !important;
+}
+.yellow:hover {
+	background-color:orange !important;
+	color:black !important;
+}
 .button {
     display: inline-block;
     border: 1px solid white;
