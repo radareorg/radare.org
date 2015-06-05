@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  var version = "0.9.9git",
+  var version = "0.9.9",
     oss = {
-      Win: { url: '/get/pkg/radare2-w32-0.9.9-git.zip', name: 'for Windows' },
-      Mac: { url: '/get/pkg/radare2-0.9.9git.pkg', name: 'for OSX' },
+      Win: { url: '/get/pkg/radare2-w32-0.9.9.zip', name: 'for Windows' },
+      Mac: { url: '/get/pkg/radare2-0.9.9.pkg', name: 'for OSX' },
       iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
       Android: { url: 'https://play.google.com/store/apps/details?id=org.radare2.installer', name: 'Android' }
     };
