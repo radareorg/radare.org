@@ -1,6 +1,6 @@
 <?
 
-$stable="0.9.7";
-$unstable="0.9.9.git";
+$stable="0.9.9";
+$unstable="0.9.9";
 
 ?>
