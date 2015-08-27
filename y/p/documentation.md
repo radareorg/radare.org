@@ -11,8 +11,8 @@ download the [PDF](http://radare.org/get/radare.pdf).
 Recently, maijin started a project to update the radare book for
 radare2:
 
-* [Online](http://maijin.gitbooks.io/radare2book/content/)
-* [PDF](https://www.gitbook.com/download/pdf/book/maijin/radare2book)
+* [Online](http://radare.gitbooks.io/radare2book/content/)
+* [PDF](https://www.gitbook.com/download/pdf/book/radare/radare2book)
 
 The API
 =======
