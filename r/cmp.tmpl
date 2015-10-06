@@ -6,31 +6,27 @@
 
 Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.hex-rays.com/products/ida/index.shtml'>IDA Pro</a> and <a href='http://hopperapp.com/'>Hopper</a>.
 
-<br />
-<br />
+<br /> <br />
+
 <center>
-<h2>Analysis</h2>
 <table class='comparison'>
 <thead>
-<tr> <td class="tdleft"></td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+<tr> <td class="tdleft">Analysis</td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead>
 <tbody>
 <tr> <td class="tdleft">Call/syscall recognition</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">Cross-references</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft"><a href='http://dwarfstd.org/'>DWARF</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft"><a href='http://lldb.llvm.org/symbols.html'>dSym</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">Graph View</td>                <td class='y'><a href='http://radare.today/ascii-graphs/'>yes</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">ROP-gadget finder</td>         <td class='y'><a href='http://radare.today/ropnroll/'>yes</a></td> <td class='y'><a href='http://thesprawl.org/projects/ida-sploiter/'>plugin</a></td> <td class='n'>no </td></tr>
 <tr> <td class="tdleft">Signature recognition</td>     <td class='y'>yes</td> <td class='y'><a href='https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml'>yes</a></td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">Custom structures definition</td> <td class='y'><a href='http://radare.today/parsing-a-fileformat-with-radare2/'>yes</a></td> <td class='y'>yes</td> <td class='y'>no</td> </tr>
+<tr> <td class="tdleft">Custom structures definition</td> <td class='y'><a href='http://radare.today/parsing-a-fileformat-with-radare2/'>yes</a></td> <td class='y'>yes</td> <td class='n'>no</td> </tr>
 <tr> <td class="tdleft">Type support</td>              <td class='y'><a href='http://radare.today/types/'>yes</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">Diffing</td>				   <td class='y'><a href='http://radare.today/binary-diffing/'>yes</a></td> <td class='y'><a href='https://code.google.com/p/patchdiff2/'>plugin</a></td> <td class='n'>no</td> </tr>
 </tbody> </table>
 
-<h2>Architectures</h2>
 <table class='comparison'>
 <thead>
-<tr> <td class="tdleft"></td>              <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+<tr> <td class="tdleft">Architectures</td>              <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td class="tdleft">ARM</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">CSR</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
@@ -40,10 +36,9 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">x86 and x64</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>Bindings</h2>
 <table class='comparison'>
 <thead>
-<tr> <td class="tdleft"></td>                  <td>r2</td>        <td>IDA</td>          <td>Hopper</td> </tr>
+<tr> <td class="tdleft">Bindings</td>                  <td>r2</td>        <td>IDA</td>          <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td class="tdleft">Javascript</td>                <td class='y'><a href='http://radare.today/javascript-in-r2/'>yes</a></td> <td class='n'><a href="http://www.hexblog.com/?p=101">yes</a></td> <td class='n'>no </td> </tr>
 <tr> <td class="tdleft">Lua</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
@@ -51,39 +46,45 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">Vala</td>                      <td class='y'><a href='http://radare.today/scripting-r2-in-vala/'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 </tbody> </table>
 
-<h2>Debugger</h2>
 <table class='comparison'>
 <thead>
-<tr> <td class="tdleft"></td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+<tr> <td class="tdleft">Debugger</td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td class="tdleft">Breakpoints</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">Process attaching</td>         <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>yes</td> </tr>
+<tr> <td class="tdleft">Process attaching</td>         <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">Remote debugging</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">Tracing</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
 <tr> <td class="tdleft">Emulation</td>                 <td class='y'><a href='https://github.com/radare/radare2/wiki/ESIL'>yes</a></td> <td class='y'><a href='http://www.idabook.com/x86emu/'>plugin</a></td> <td class='n'>no </td> </tr>
 </tbody> </table>
 
-<h2>Decompilation</h2>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft">Exploitation</td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ROP-gadget finder</td>         <td class='y'><a href='http://radare.today/ropnroll/'>yes</a></td> <td class='y'><a href='http://thesprawl.org/projects/ida-sploiter/'>plugin</a></td> <td class='n'>no </td></tr>
+<tr> <td class="tdleft">Mitigations detection</td>                   <td class='y'>yes</td> <td class='n'>no</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Shellcode compilation</td>     <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='https://en.wikipedia.org/wiki/De_Bruijn_sequence'>De Bruijn pattern</a></td>                   <td class='y'>yes</td> <td class='n'>no</td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Decompilation</td>             <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
-<tr> <td class="tdleft">ARM</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">x64</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
-<tr> <td class="tdleft">x86</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">ARM</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x64</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x86</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>Patching</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Patching</td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
 </thead> <tbody>
 <tr> <td class="tdleft">Patches generation</td>        <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
-<tr> <td class="tdleft">Shellcode compilation</td>     <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Assemblers</td>        <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
 <tr> <td class="tdleft">Writing/patching opcodes</td>  <td class='y'>yes</td> <td class='y'><a href='https://github.com/isislab/Fentanyl'>plugin</a> </td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>Platforms</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Platforms</td>                  <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
@@ -96,7 +97,6 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">Windows</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='w'>only v2</td> </tr>
 </tbody> </table>
 
-<h2>Extensibility</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Extensibility</td>              <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
@@ -106,7 +106,6 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">Plugins support</td>           <td class='y'><a href='http://radare.today/extending-r2-with-new-plugins/'>yes</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>Prices and Support</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Prices and support</td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
@@ -117,7 +116,6 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">Professional customers support</td>    <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>Project Management</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">Project management</td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
@@ -126,7 +124,6 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">Saving and exporting</td>      <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 </tbody> </table>
 
-<h2>User Interface</h2>
 <table class='comparison'>
 <thead>
 <tr> <td class="tdleft">User interface</td>            <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
@@ -135,6 +132,8 @@ Unfair comparison between <a href='http://rada.re'>r2</a>, <a href='https://www.
 <tr> <td class="tdleft">GUI</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
 <tr> <td class="tdleft">Themes support</td>            <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
 <tr> <td class="tdleft">Web interface</td>             <td class='w'><a href='http://radare.today/the-new-web-interface/'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Graphs</td>            <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes </td> </tr>
+<tr> <td class="tdleft">Ascii graphs</td>            <td class='y'><a href='https://twitter.com/akochkov/status/634016073264795650'>yes</a></td> <td class='n'>no</td> <td class='n'>no </td> </tr>
 </tbody> </table>
 </center>
 <br />
