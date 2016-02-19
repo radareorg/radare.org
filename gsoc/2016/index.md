@@ -18,7 +18,7 @@ In Summer of 2014 and 2015, we hosted our own version of Radare Summer of Code (
  - ObjC metadata parsing from Mach-0 to expose classes and symbols
 More information can be found in this [RSoC blog post](http://radare.today/posts/the-rsoc-is-over/).
 
-We were also successfully performed in the Google Summer of Code (GSoC) 2015 under the umbrella of [Openwall](http://www.openwall.com/) project. Our students finished developing a major part of decompiler with radare2 integration (except pseudo-C code emitter). More information is available in the project [repository](https://github.com/radare/radeco) and GSoC’15 pages: [project1](https://www.google-melange.com/gsoc/project/details/google/gsoc2015/dkreuter/5668600916475904), [project2](https://www.google-melange.com/gsoc/project/details/google/gsoc2015/sushant94/5733935958982656).
+We were also accepted for Google Summer of Code (GSoC) 2015 under the umbrella of [Openwall](http://www.openwall.com/) project. Our students finished developing a major part of decompiler (radeco) with radare2 integration (except pseudo-C code emitter). More information is available in the project [repository](https://github.com/radare/radeco) and GSoC’15 pages: [project1](https://www.google-melange.com/gsoc/project/details/google/gsoc2015/dkreuter/5668600916475904), [project2](https://www.google-melange.com/gsoc/project/details/google/gsoc2015/sushant94/5733935958982656).
 
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
