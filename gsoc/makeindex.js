@@ -1,6 +1,10 @@
 
 var fs = require('fs')
-var body = ''+fs.readFileSync('body.html');
+if (process.argv.length >2) {
+  var body = ''+fs.readFileSync(process.argv[2]);
+} else {
+  var body = fs.readFileSync('/dev/stdin').toString();
+}
 var lines = body.split("\n");
 var titles = [];
 
