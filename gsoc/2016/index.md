@@ -1,4 +1,3 @@
-
 # Introduction
 
 The [radare]( http://rada.re/ ) project started in February of 2006 aiming to provide a free and simple command line interface for an hexadecimal editor supporting 64 bit offsets to make searches and recovering data from hard-disks.
@@ -24,10 +23,10 @@ If you have questions or comments, visit our IRC channel #radare on Freenode.
 # Mentors
 Members of radare2 core team have volunteered to guide students for GSoC’16. They were already guiding the students for GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
 
-* Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
-* Jeffrey Crowell IRC: crowell -- [@jeffreycrowell](https://twitter.com/jeffreycrowell)
-* Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
-* Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
+- Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
+- Jeffrey Crowell IRC: crowell -- [@jeffreycrowell](https://twitter.com/jeffreycrowell)
+- Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
+- Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
 
 # Development methodology
 Currently, all repositories are hosted on [github](https://github.com/radare/) and bugs are tracked on github [issues](https://github.com/radare/radare2/issues). We are mostly using [etherpad](https://pad.nopcode.org/p/r2), IRC and Telegram for communication.
@@ -38,7 +37,7 @@ We encourage contributors to write test cases and documentation in order to veri
 Radare2 is modular: this means that it aims to make all the elements and features easily reusable from other projects. The choice of [LGPL3](https://www.gnu.org/licenses/lgpl.html) as a license is the minimum requirement to get code merged in r2. Contributors can choose Apache, BSD, MIT, Public Domain, or other similar licenses. The reason to exclude GPL as a valid license for the project is because we aim to support proprietary software that uses r2, while protecting our free codebase.
 
 # Instructions for students
-It is almost a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2016 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/grsoc-microtasks) as part of their application. Though you can also choose any of the Github issues for radare2 if they are big enough to be a qualification task, still small enough to be finished no more than in a couple of weeks.
+It is almost a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2016 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/gsoc/2016/tasks.html) as part of their application. Though you can also choose any of the Github issues for radare2 if they are big enough to be a qualification task, still small enough to be finished no more than in a couple of weeks.
 
 ## Programming languages
 Knowing the C language is a requierement for most of the tasks. Rust for the *radeco* one (our decompiler), JS/HTML/CSS for the *WebUI*, … There are also other options (for example for the *ROP chain generator* task or if you suggest your own idea).
@@ -46,7 +45,7 @@ Knowing the C language is a requierement for most of the tasks. Rust for the *ra
 ## Recommended steps
 
 1. Read Google's instructions for participating
-2. Grab any of the project from [list of ideas](http://radare.org/gsoc-ideas)  that you're interested in (or propose your own)
+2. Grab any of the project from [list of ideas](http://radare.org/gsoc/2016/ideas.html)  that you're interested in (or propose your own)
 3. Write a first draft proposal and ask one of the mentors or administrators to review it with you
 4. Submit it using Google's web interface
 
