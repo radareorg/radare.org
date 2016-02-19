@@ -2,6 +2,7 @@
 
 ### INDEX
 
+
 ## Web interface
 Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
 
@@ -11,7 +12,7 @@ Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p
    - Graph : Interactive basicblocks/functions/bindiff graphs.
    - Sections : Memory ranges with attributes.
    - Search : Strings, opcodes, ...
-   - Structures : Edition, view, manipulation, â€¦
+   - Structures : Edition, view, manipulation, …
    - Functions : Edition, view, manipulation, arguments, XREF, ...
 2. Make it [responsive](https://en.wikipedia.org/wiki/Responsive_Web_Design)
 3. Make it more keyboard friendly (aka-olly)
@@ -22,7 +23,7 @@ Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p
 5. Optimize it, compress JS, reduce AJAX queries, make it usable on all devices
 
 ### Skills
-The student should be comfortable with modern web technologies like javascript and HTML5. They don't need to be Ã¼ber-comfortable with C nor assembly, since all the information is obtained directly from radare2.
+The student should be comfortable with modern web technologies like javascript and HTML5. They don't need to be über-comfortable with C nor assembly, since all the information is obtained directly from radare2.
 As a bonus point it would be interesting if they know some basic assembly.
 
 ### Difficulty
@@ -45,7 +46,7 @@ pancake
 - [Related issues](https://github.com/radare/radare2/labels/webui) on github
 
 ## Completing Radeco
-radeco, a radare2 based decompiler, was a project that was started in GSoCâ€™15. Currently, radeco features a ESIL to SSA IL converter and a  few optimisations to the IR. The task for this year is to complete the first iteration of the decompiler. This involves several tasks which are listed below. Note that some of these tasks are large and are listed to give students a complete view of the requirements of this project. A potential student is required to discuss these with the mentors and pick some tasks to write their proposals for GSoCâ€™16. Being a relatively new project under the radare banner, this project also gives student an opportunity to learn, design and discuss the architectural aspects of the project.
+radeco, a radare2 based decompiler, was a project that was started in GSoC'15. Currently, radeco features a ESIL to SSA IL converter and a  few optimisations to the IR. The task for this year is to complete the first iteration of the decompiler. This involves several tasks which are listed below. Note that some of these tasks are large and are listed to give students a complete view of the requirements of this project. A potential student is required to discuss these with the mentors and pick some tasks to write their proposals for GSoC'16. Being a relatively new project under the radare banner, this project also gives student an opportunity to learn, design and discuss the architectural aspects of the project.
 
 ### Tasks
  - SSA to higher level pseudo/C code writer. This task is the highest priority as it would give us a chance to evaluate the quality of the produces code, receive feedback from the community and aim our efforts in the improving the same in further iterations.
@@ -74,11 +75,12 @@ Advanced
 - Binary code analysis
 
 ### Benefits for the project
-Finally, radare2 will have its own retargetable decompiler, which will cover a wide range of architectures
+Finally, radare2 will have its own retargetable decompiler, which will cover a wide range of architectures.
 
 ### Assess requirements for midterm/final evaluation
-Midterm will be successful, in case of working pseudo/C emitter.
-Final term will require working type inference, with tests.
+For the midterm evaluations, the student is expected to have completed the C/pseudo code emitter and obtain the first set of results.
+The final evaluation requires students to have improved the quality of the generated code and have a working type inference system.
+
 
 ### Mentors
 - crowell
@@ -112,8 +114,8 @@ pancake
 ### Links/Resources
 
 ## Function argument detection
-Radare2 doesnâ€™t deal very well with argument and variable and function definition. The student will have to combine several concepts/modules within radare2 to be able to complete this tasks: 
- - Radareâ€™s type system
+Radare2 doesn’t deal very well with argument and variable and function definition. The student will have to combine several concepts/modules within radare2 to be able to complete this tasks: 
+ - Radare’s type system
  - SDB, the internal database format
  - pf, the structure module
  - The analysis engine
@@ -175,7 +177,7 @@ system(echo reg3);
 ```
 
 ### Skills
-The student should be comfortable with the C language, know some assembly and a high-level language. Also, knowing a little bit of automatic binary analysis wouldnâ€™t hurt.
+The student should be comfortable with the C language, know some assembly and a high-level language. Also, knowing a little bit of automatic binary analysis wouldn’t hurt.
 
 ### Difficulty
 Medium
@@ -249,7 +251,7 @@ Final evaluation will require gdbserver which should work at least on x86, arm, 
 - [Bug 1773](https://github.com/radare/radare2/issues/1773)
 
 ## Timeless debugging support
-We want to add support for timeless debugging in r2. This requires to design and implement a generic API that would allow to load recorded tracing sessions from tools like rr, QIRA or r2 itself. r2 canâ€™t create tracing sessions and it should be implemented in the debugging component of our tool. We already have support for debugging snapshots, so those actions should be available as callbacks in the debugger plugins, and provide some basic commands to specify which snapshot to get or set.
+We want to add support for timeless debugging in r2. This requires to design and implement a generic API that would allow to load recorded tracing sessions from tools like rr, QIRA or r2 itself. r2 can’t create tracing sessions and it should be implemented in the debugging component of our tool. We already have support for debugging snapshots, so those actions should be available as callbacks in the debugger plugins, and provide some basic commands to specify which snapshot to get or set.
 
 ### Task
 1. Read/write memory at any moment in the debugging history
@@ -346,7 +348,7 @@ The student will have the opportunity to see uncommon architectures, and to impl
 Radare2 is currently using Capstone to disassemble several architecture, having an equivalent library to assemble would greatly simplify the maintenance and the code base.
 
 ### Assess requirements for midterm/final evaluation
-Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation weâ€™ll expect it integrated into the radare2 framework.
+Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation we’ll expect it integrated into the radare2 framework.
 
 ### Mentors
 - pancake
@@ -367,9 +369,9 @@ It should support:
 ```
 macro <name> <args> { <body> }
 ```
-- Preprocessor operations like â€œ>>â€, â€œIâ€, â€œ&â€, â€œ==â€, etc (should have aliases like â€œshrâ€, â€œandâ€ for fasm compatibility)
-- Preprocessor conditionals â€œif/else/switchâ€
-- Structures like
+- Preprocessor operations like “>>”, “I”, “&”, “==”, etc (should have aliases like “shr”, “and” for fasm compatibility)
+- Preprocessor conditionals “if/else/switch”
+- Structures with arguments, like
 ```
 struc Unit   a,b,type
 {
@@ -388,6 +390,7 @@ virtual at edi
 end virtual
 mov        eax, [edi.d.Call]
 ```
+- Support for nesting macroses and structures
 
 ### Skills
 The student should be comfortable with the C language and assembly.
@@ -402,7 +405,7 @@ The student will have the opportunity to see uncommon architectures, and to impl
 Having a better assembler syntax will allow r2 and its users to have a multiarch assembler with syntax as handier as the one from nasm or fasm.
 
 ### Assess requirements for midterm/final evaluation
-Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation weâ€™ll expect it integrated into the radare2 framework.
+Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation we’ll expect it integrated into the radare2 framework and completely covered by regression tests for each specific keyword or syntax construction.
 
 ### Mentors
 - pancake
@@ -432,7 +435,7 @@ Medium
 Learn and understanding the ELF/MACH0 internals as well as which information is important to be able to reproduce a specific state of execution to understand, for example: why a crash has happened.
 
 ### Benefits for the project
-Missed support for loading coredump was the only major difference between radare2 and gdb, so after implementing it and improving DWARF support will help broader usages of radare2 as a source-level debugger
+Missed support for loading coredump was the only major difference between radare2 and gdb, so after implementing it and improving DWARF support will help broader usages of radare2 as a source-level debugger.
 
 ### Assess requirements for midterm/final evaluation
 At the midterm evaluation student should provide working support fo loading coredump from file. 
