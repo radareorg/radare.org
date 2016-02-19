@@ -23,10 +23,10 @@ If you have questions or comments, visit our IRC channel #radare on Freenode.
 # Mentors
 Members of radare2 core team have volunteered to guide students for GSoC’16. They were already guiding the students for GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
 
-1. Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
-2. Jeffrey Crowell IRC: crowell -- [@jeffreycrowell](https://twitter.com/jeffreycrowell)
-3. Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
-4. Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
+* Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
+* Jeffrey Crowell IRC: crowell -- [@jeffreycrowell](https://twitter.com/jeffreycrowell)
+* Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
+* Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
 
 # Development methodology
 Currently, all repositories are hosted on [github](https://github.com/radare/) and bugs are tracked on github [issues](https://github.com/radare/radare2/issues). We are mostly using [etherpad](https://pad.nopcode.org/p/r2), IRC and Telegram for communication.
