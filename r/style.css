@@ -110,14 +110,16 @@ a:hover {
 .yellow {
 	background-color:yellow !important;
 	color:black !important;
+	border: 2px solid #a0a0a0;
 }
 .yellow:hover {
 	background-color:orange !important;
 	color:black !important;
+	border: 2px solid #a0a0a0;
 }
 .button {
+	border: 2px solid #a0a0a0;
     display: inline-block;
-    border: 1px solid white;
     transition: background-color 0.3s ease;
     color: #f0f0f0;
     border-radius: 5px;
