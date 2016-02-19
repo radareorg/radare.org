@@ -3,6 +3,12 @@ PAD=https://pad.nopcode.org/p/$(NAME)/export/txt
 WGET=wget --no-check-certificate
 
 all: node_modules
+	node md2html.js > body.html
+	node makeindex.js > body2.html
+	mv body2.html body.html
+	cat head.html body.html tail.html > index.html
+
+old: node_modules
 	rm -f body.txt
 	$(WGET) -O body.txt $(PAD) 
 	node md2html.js > body.html
