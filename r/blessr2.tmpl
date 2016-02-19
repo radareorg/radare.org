@@ -1,0 +1,42 @@
+<{include}>head.tmpl<{/include}>
+<div class="header">
+  <h1>BlessR2</h1>
+</div>
+<br />
+<div class="block2" style="text-align:center">
+<{markdown}>
+BlessR2 is a radare2 frontend based on Node.js, r2pipe and blessed modules in order to provide a fully responsive and asynchronous user interface for radare2.
+
+It's still in beta phase, but it's easy to hack on and it runs on Linux, OSX and Windows.
+
+	$ npm install blessr2
+	$ $(npm bin)/blessr2
+
+or do it globally:
+
+	$ npm install -g blessr2
+	$ blessr2 [...]
+
+This console application shows the output of the commands in frames that can be scrolled and perform actions on every line of them.
+
+[![img](img/blessr2.png)](img/blessr2.png)
+
+All keybindings are documented when pressing '?', r2 can be fully configured from here.
+
+[![img](img/blessr2-config.png)](img/blessr2-config.png)
+
+The UI can be also used for debugging, color themes support is inherited from r2, windows can have shadow and be translucid and dragged with the mouse. The wheel is used to scroll in the window contents. The background is filled 
+
+[![img](img/blessr2-debug.png)](img/blessr2-debug.png)
+
+Ascii-Art graphic widgets and code graphs in full 256-colors to enable better visualization of the binary. As long as it's based on r2pipe, the backend can run anywhere, in local or 
+
+[![img](img/blessr2-map.png)](img/blessr2-map.png)
+
+This thing is free software, check it out in [github](https://github.com/radare/radare2-extras/).
+<{/markdown}>
+</div>
+</div>
+
+<{include}>tail.tmpl<{/include}>
+
