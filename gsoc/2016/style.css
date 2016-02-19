@@ -1,6 +1,6 @@
 
-a { color:#0099ff; text-decoration: none; }
-a:visited { color:#0099ff; text-decoration: none; }
+a { color:#0060a0; text-decoration: none; }
+a:visited { color:#0060a0; text-decoration: none; }
 a:hover { color:#0099ff; text-decoration: underline;}
 a:active { color:blue; text-decoration: underline;}
 
@@ -14,6 +14,7 @@ p, ul, ol {
 body {
   max-width:760px !important; 
   text-align: justify;
+font-family: 'Droid Sans';
 }
 .topbar {
   border:1em;
@@ -22,8 +23,8 @@ body {
   font-size: 1em;
   color:white;
   left:0px;
-  background-color: #174A72;
-  position:absolute;
+  background-color: #204070;
+  position:fixed;
   width:100%;
   top:0px;
 }

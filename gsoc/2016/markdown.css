@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0 auto;
     font-family: Georgia, Palatino, serif;
     color: #444444;
@@ -50,7 +50,8 @@ ul, ol {
     margin: 0;
 }
 li {
-    line-height: 24px;
+    line-height: 1.4em;
+    margin-left:2em;
 }
 li ul, li ul {
     margin-left: 24px;
