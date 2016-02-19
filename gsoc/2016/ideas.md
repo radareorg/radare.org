@@ -1,12 +1,9 @@
 # Project Ideas
 
-
-
-
 ### INDEX
 
 ## Web interface
-Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the later is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome and good-looking web interface.
+Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
 
 ### Tasks
 1. Implement/enhance widgets like:
@@ -29,7 +26,7 @@ The student should be comfortable with modern web technologies like javascript a
 As a bonus point it would be interesting if they know some basic assembly.
 
 ### Difficulty
-Easy. If the student if comfortable with web technologies, there shouldn't be any major challenges
+Easy. If the student if comfortable with web technologies, there shouldn't be any major challenges in complteting this task.
 
 ### Benefits for the student
 The student will gain experience in writing rich web applications, and domain-specific user interface. Also, the student will learn to design usable APIs, since this task will deal with interfacing C and Javascript.
@@ -82,6 +79,10 @@ Finally, radare2 will have its own retargetable decompiler, which will cover a w
 ### Assess requirements for midterm/final evaluation
 Midterm will be successful, in case of working pseudo/C emitter.
 Final term will require working type inference, with tests.
+
+### Mentors
+- crowell
+- xvilka
 
 ### Links/Resources
 
@@ -152,8 +153,8 @@ The completion of this task would greatly improve radare2's analysis capabilitie
 At the midterm student should have a working
 
 ### Mentors
-pancake
-xvilka
+- pancake
+- xvilka
 
 ### Links/Resources
 - https://github.com/radare/radare2/issues/3655
@@ -190,8 +191,8 @@ midterm : ROP gadgets stored in sdb, and gadget classification
 final evaluation : a working ropchain builder
 
 ### Mentors
-jvoisin
-crowell
+- jvoisin
+- crowell
 
 ### Links/Resources
 - [ROPGadget](http://shell-storm.org/project/ROPgadget/)
@@ -238,12 +239,14 @@ Midterm will be successfull if the simpe gdbserver, working via sockets will be 
 Final evaluation will require gdbserver which should work at least on x86, arm, mips and powerpc platforms, able to answer radare2, gdb, lldb and IDA Pro rquests.
 
 ### Mentors
-pancake
+- pancake
+- xvilka
 
 ### Links/Resources
 - [GDB remote protocol specification](https://sourceware.org/gdb/onlinedocs/gdb/Remote-Protocol.html)
 - [GDB protocol parser](https://github.com/radare/radare2/tree/master/shlr/gdb)
 - [WinDbg protocol parser](https://github.com/radare/radare2/tree/master/shlr/wind)
+- [Bug 1773](https://github.com/radare/radare2/issues/1773)
 
 ## Timeless debugging support
 We want to add support for timeless debugging in r2. This requires to design and implement a generic API that would allow to load recorded tracing sessions from tools like rr, QIRA or r2 itself. r2 canâ€™t create tracing sessions and it should be implemented in the debugging component of our tool. We already have support for debugging snapshots, so those actions should be available as callbacks in the debugger plugins, and provide some basic commands to specify which snapshot to get or set.
@@ -252,6 +255,7 @@ We want to add support for timeless debugging in r2. This requires to design and
 1. Read/write memory at any moment in the debugging history
 2. Same for registers
 3. Be able to seek forward/backward in time
+4. Implement step back command (dsb)
 
 ### Skills
 Student should know C and C++ (for integration with tools like RR or Qira).
@@ -309,7 +313,7 @@ Midterm: Support of FAT binaries (Win32 native + .NET) in RBin, basic one
 Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as long as other metadata. And show this metadata in rabin2 output as well.
 
 ### Mentors
-pancake
+- pancake
 
 ### Links/Resources
 - [Bug 662](https://github.com/radare/radare2/issues/662)
@@ -345,8 +349,8 @@ Radare2 is currently using Capstone to disassemble several architecture, having 
 Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation weâ€™ll expect it integrated into the radare2 framework.
 
 ### Mentors
-pancake
-jvoisin
+- pancake
+- jvoisin
 
 ### Links/Resources
 - [Capstone](http://www.capstone-engine.org/) universal disassembly library
@@ -401,10 +405,42 @@ Having a better assembler syntax will allow r2 and its users to have a multiarch
 Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation weâ€™ll expect it integrated into the radare2 framework.
 
 ### Mentors
-pancake
-jvoisin
+- pancake
+- xvilka
 
 ### Links/Resources
 - https://github.com/radare/radare2/issues/4122
 
+## Linux coredump loading/creating support
+A core represents the state of a process at a point in time. It contains all the information that needed to inspect the process and its state. This information includes thread information, mapped memory, register state and more. After implementing a support of loading coredump files into the radare2 debugger, it will be possible to inspect the state of the process as if they had attached a debugger to the process at the time when the core file was generated. Moreover, generating coredump files from the remote systems, connected via gdb:// protocol can increase speed of debugging via slow links.
 
+Currently radare2 can dump and restore memory, register states to disk, in order to have snapshots of the execution, but the dump is not done in Core format.
+
+### Tasks
+1. parse mach0/elf coredump images and load them in r2
+2. implement coredump generation from debugger memory/regs
+3. support linux and osx/linux
+4. ability to generate coredump from remote target connected via gdb:// protocol
+
+### Skills
+C
+
+### Difficulty
+Medium
+
+### Benefits for the student
+Learn and understanding the ELF/MACH0 internals as well as which information is important to be able to reproduce a specific state of execution to understand, for example: why a crash has happened.
+
+### Benefits for the project
+Missed support for loading coredump was the only major difference between radare2 and gdb, so after implementing it and improving DWARF support will help broader usages of radare2 as a source-level debugger
+
+### Assess requirements for midterm/final evaluation
+At the midterm evaluation student should provide working support fo loading coredump from file. 
+After the final evaluation radare2 should have support for creating coredump files for process on linux systems.
+
+### Mentors
+pancake
+
+### Links/Resources
+
+https://github.com/radare/radare2/issues/152
