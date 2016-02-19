@@ -24,6 +24,7 @@ Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p
 ### Skills
 The student should be comfortable with modern web technologies like javascript and HTML5. They don't need to be über-comfortable with C nor assembly, since all the information is obtained directly from radare2.
 As a bonus point it would be interesting if they know some basic assembly.
+It's better if student will come with a few simple mockups what [s]he is going to do.
 
 ### Difficulty
 Easy. If the student if comfortable with web technologies, there shouldn't be any major challenges in complteting this task.
@@ -81,7 +82,6 @@ Finally, radare2 will have its own retargetable decompiler, which will cover a w
 ### Assess requirements for midterm/final evaluation
 For the midterm evaluations, the student is expected to have completed the C/pseudo code emitter and obtain the first set of results.
 The final evaluation requires students to have improved the quality of the generated code and have a working type inference system.
-
 
 ### Mentors
 - crowell
@@ -286,7 +286,10 @@ And should be familiar with the ideas of reversible debugging along with the kno
 Advanced
 
 ### Benefits for the student
+Student will meet a relatively new approach to debug and searching errors, along with an opportunity to gather experience of optimizing algorythms to be able work with a huge amount of data, which is a definetely a case for timeless debug.
+
 ### Benefits for the project
+Timeless and reversible debugging will help radare2 to become an universal debug tool for quick and easy inspection of trace snapshots, based on RR or Qira sessions.
 
 ### Assess requirements for midterm/final evaluation
 Midterm: design and implementation of the interface and commands to work with traces taken from QIRA and RR.
