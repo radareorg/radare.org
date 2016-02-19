@@ -10,6 +10,7 @@ Radare2 is composed of an hexadecimal editor as central point, with several asse
 
 # Previous Years
 In Summer of 2014 and 2015, we hosted our own version of Radare Summer of Code (RSoC). These were some of the successful projects:
+
  - FLIRT and YARA signatures support for radare2
  - Loading PDB debug information
  - Structures support (like in 010 Editor)
