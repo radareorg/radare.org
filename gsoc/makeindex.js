@@ -16,13 +16,13 @@ for (var i in lines) {
 }
 
 function generateIndex() {
-	var str = "<ul>";
+	var str = "<p><ul>";
 	for (var i in titles) {
 		var id = "title_"+i;
 		var title = titles[i].replace (/h2/g,"b");
 		str += "<li><a href='#"+id+"'>"+title+"</a>\n";
 	}
-	return str+"</ul>\n";
+	return str+"</ul></p>\n";
 }
 
 console.log("<a id='index'></a>");
