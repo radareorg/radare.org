@@ -2,18 +2,17 @@
 
 ### INDEX
 
-
 ## Web interface
 Radare2 has a nice [web interface](http://cloud.rada.re/p) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
 
 ### Tasks
 1. Implement/enhance widgets like:
-   - Hexeditor : view and edit, columns should be configurable.
-   - Graph : Interactive basicblocks/functions/bindiff graphs.
-   - Sections : Memory ranges with attributes.
-   - Search : Strings, opcodes, ...
-   - Structures : Edition, view, manipulation, …
-   - Functions : Edition, view, manipulation, arguments, XREF, ...
+   - Hexeditor: view and edit, columns should be configurable.
+   - Graph: Interactive basicblocks/functions/bindiff graphs.
+   - Sections: Memory ranges with attributes.
+   - Search: Strings, opcodes, ...
+   - Structures: Edition, view, manipulation, …
+   - Functions: Edition, view, manipulation, arguments, XREF, ...
 2. Make it [responsive](https://en.wikipedia.org/wiki/Responsive_Web_Design)
 3. Make it more keyboard friendly (aka-olly)
 4. Better Interface for the debugger
@@ -105,15 +104,28 @@ C
 Medium
 
 ### Benefits for the student
+
+The student will learn about the differences between multiple architectures and find a way to properly structure this to integrate it with radare2 with a multi-architecture debugging backend plugin.
+
 ### Benefits for the project
+
+Unicorn is a project with a growing community and inherits the power from QEMU, supporting many architectures and with many real use cases. Having better support for it implies that r2 will be able to verify the ESIL implementation against more backends and gain the ability to emulate code in more architectures.
+
 ### Assess requirements for midterm/final evaluation
 
+At least two architectures should be supported in the unicorn plugin and the memory should be mirrored in realtime between unicorn and r2.
+
 ### Mentors
-pancake
+
+* pancake
 
 ### Links/Resources
 
+* http://www.unicorn-engine.org
+* https://github.com/radare/radare2-extras/tree/master/unicorn
+
 ## Function argument detection
+
 Radare2 doesn’t deal very well with argument and variable and function definition. The student will have to combine several concepts/modules within radare2 to be able to complete this tasks: 
  - Radare’s type system
  - SDB, the internal database format
@@ -123,18 +135,18 @@ Radare2 doesn’t deal very well with argument and variable and function definit
 ![How it looks](https://cloud.githubusercontent.com/assets/1408600/13150924/14752dfa-d668-11e5-869f-32d10f3a8b4a.png)
 
 ### Task
- - Add precompiled headers in sdb file for windows OS [#3654](https://github.com/radare/radare2/issues/3654)
+ - Add precompiled headers in sdb file for windows OS [issue #3654](https://github.com/radare/radare2/issues/3654)
  - Autoload those types when `e asm.os = windows`
- - Add "return type" in the Functions definition files to be able to deal with non-return function as well [#3632](https://github.com/radare/radare2/issues/3632)
+ - Add "return type" in the Functions definition files to be able to deal with non-return function as well [issue #3632](https://github.com/radare/radare2/issues/3632)
  - Use Native types instead of pf types in Functions definition files
  - Enhance naming convention and storage to handle types with names composed of multiple words
  - Enhance current display (maybe reuse the e asm.calls display)
  - Changing easily the call convention
  - Add support for windows-x86-32/64
- - Add support for linux-x86-32 functions since some of them have already been added => https://github.com/radare/radare2/blob/master/libr/anal/d/linux-x86-32
+ - Add support for linux-x86-32 functions since some of them have already been added => [libr/anal/d/linux-x86-32](https://github.com/radare/radare2/blob/master/libr/anal/d/linux-x86-32)
  - Add support for linux-x86-32/64
  - Add support for  osx-x86-32/64
- - Add support for naming local variables based off esp [#3735](https://github.com/radare/radare2/issues/3735)
+ - Add support for naming local variables based off esp [issue #3735](https://github.com/radare/radare2/issues/3735)
  - Ability to load/export IDA TIL Files
  - Add display stack frame of a function
  - Seamless integration with **asm.emu/asm.emuwrite** display
@@ -152,7 +164,7 @@ General idea about various platforms ABI
 The completion of this task would greatly improve radare2's analysis capabilities, making it ever more competitive with IDA Pro.
 
 ### Assess requirements for midterm/final evaluation
-At the midterm student should have a working
+At the midterm student should have a working argument and types display.
 
 ### Mentors
 - pancake
@@ -163,7 +175,7 @@ At the midterm student should have a working
 
 ## Ropchain generator with ragg2
 
-Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building rop chain by hand can be tedious, this is why some tools can be used to ease this construction : ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet.
+Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building rop chain by hand can be tedious, this is why some tools can be used to ease this construction: ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet.
 
 ### Task
 1. Implement a "classic" (`/bin/sh` for example) ropchain as a proof-of-concept, like what [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) does. This can be done is almost any language, thanks to the bindings/r2pipe.
@@ -189,8 +201,8 @@ The student will improve their skills in software exploitation and solvers.
 This feature would greatly help during exploits development, and people would be able to ditch mona.py for radare2 ;)
 
 ### Assess requirements for midterm/final evaluation
-midterm : ROP gadgets stored in sdb, and gadget classification
-final evaluation : a working ropchain builder
+midterm: ROP gadgets stored in sdb, and gadget classification
+final evaluation: a working ropchain builder
 
 ### Mentors
 - jvoisin
@@ -206,6 +218,7 @@ final evaluation : a working ropchain builder
 - [ROP related bugs](https://github.com/radare/radare2/issues?q=is%3Aissue+is%3Aopen+ROP)
 
 ## Improve remote debugging with GDBServer and RAP
+
 Having a reusable implementation of gdbserver in r2 will be useful because it means that r2 will be able to be used from IDA, GDB or LLDB as frontend. And being able to use r2 too to communicate with a remote r2 instance with better integration for remote debugging.
 
 Also, the current r2 remote debugging is done via rap:// which is just a plain io+system protocol. it will be good to support a remote debugging via serializing r2 commands so we need a debug_rap plugin.
@@ -248,7 +261,7 @@ Final evaluation will require gdbserver which should work at least on x86, arm, 
 - [GDB remote protocol specification](https://sourceware.org/gdb/onlinedocs/gdb/Remote-Protocol.html)
 - [GDB protocol parser](https://github.com/radare/radare2/tree/master/shlr/gdb)
 - [WinDbg protocol parser](https://github.com/radare/radare2/tree/master/shlr/wind)
-- [Bug 1773](https://github.com/radare/radare2/issues/1773)
+- [Issue #1773](https://github.com/radare/radare2/issues/1773)
 
 ## Timeless debugging support
 We want to add support for timeless debugging in r2. This requires to design and implement a generic API that would allow to load recorded tracing sessions from tools like rr, QIRA or r2 itself. r2 can’t create tracing sessions and it should be implemented in the debugging component of our tool. We already have support for debugging snapshots, so those actions should be available as callbacks in the debugger plugins, and provide some basic commands to specify which snapshot to get or set.
@@ -318,7 +331,7 @@ Final: Also should be working with listing symbols from both parts of the binary
 - pancake
 
 ### Links/Resources
-- [Bug 662](https://github.com/radare/radare2/issues/662)
+- [Issue #662](https://github.com/radare/radare2/issues/662)
 - [Official .Net resources](http://www.microsoft.com/net)
 
 ## Universal assembler library
@@ -366,12 +379,15 @@ Unify assembly syntax among all supported architectures in radare2, implement th
 It should support:
 
 - Simple macro language 
+
 ```
 macro <name> <args> { <body> }
 ```
+
 - Preprocessor operations like “>>”, “I”, “&”, “==”, etc (should have aliases like “shr”, “and” for fasm compatibility)
 - Preprocessor conditionals “if/else/switch”
 - Structures with arguments, like
+
 ```
 struc Unit   a,b,type
 {
@@ -390,6 +406,7 @@ virtual at edi
 end virtual
 mov        eax, [edi.d.Call]
 ```
+
 - Support for nesting macroses and structures
 
 ### Skills
@@ -412,7 +429,7 @@ Midterm will require working universal assembly library for at least 4 architect
 - xvilka
 
 ### Links/Resources
-- https://github.com/radare/radare2/issues/4122
+- [Issue #4122](https://github.com/radare/radare2/issues/4122)
 
 ## Linux coredump loading/creating support
 A core represents the state of a process at a point in time. It contains all the information that needed to inspect the process and its state. This information includes thread information, mapped memory, register state and more. After implementing a support of loading coredump files into the radare2 debugger, it will be possible to inspect the state of the process as if they had attached a debugger to the process at the time when the core file was generated. Moreover, generating coredump files from the remote systems, connected via gdb:// protocol can increase speed of debugging via slow links.
@@ -446,4 +463,6 @@ pancake
 
 ### Links/Resources
 
-https://github.com/radare/radare2/issues/152
+- [Issue#152](https://github.com/radare/radare2/issues/152)
+
+

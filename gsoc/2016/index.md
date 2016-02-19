@@ -9,6 +9,7 @@ Radare2 is composed of an hexadecimal editor as central point, with several asse
 ![graph](http://radare.today/images/graph.png)
 
 # Previous Years
+
 In Summer of 2014 and 2015, we hosted our own version of Radare Summer of Code (RSoC). These were some of the successful projects:
 
  - FLIRT and YARA signatures support for radare2
@@ -30,18 +31,22 @@ Members of radare2 core team have volunteered to guide students for GSoC’16. T
 - Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
 
 # Development methodology
+
 Currently, all repositories are hosted on [github](https://github.com/radare/) and bugs are tracked on github [issues](https://github.com/radare/radare2/issues). We are mostly using [etherpad](https://pad.nopcode.org/p/r2), IRC and Telegram for communication.
 We have a [testsuite](https://github.com/radare/radare2-regressions) (that is running on [Travis CI](https://travis-ci.org/radare/radare2/), [AppVeyor](https://ci.appveyor.com/project/radare/radare2) and our [Jenkins](http://ci.rada.re/) instance) to test and verify that all the features are still working and that a merge or a commit don't break anything, and to find regressions.
 We encourage contributors to write test cases and documentation in order to verify the implementation and ensure that everything fits well together. There is also a [Coverity](https://scan.coverity.com/projects/416) instance to catch obvious defects. For the complex bugs and examples we're using our own [asciinema installation](http://radare.tv/)
 
 # License
+
 Radare2 is modular: this means that it aims to make all the elements and features easily reusable from other projects. The choice of [LGPL3](https://www.gnu.org/licenses/lgpl.html) as a license is the minimum requirement to get code merged in r2. Contributors can choose Apache, BSD, MIT, Public Domain, or other similar licenses. The reason to exclude GPL as a valid license for the project is because we aim to support proprietary software that uses r2, while protecting our free codebase.
 
 # Instructions for students
+
 It is almost a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2016 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/gsoc/2016/tasks.html) as part of their application. Though you can also choose any of the Github issues for radare2 if they are big enough to be a qualification task, still small enough to be finished no more than in a couple of weeks.
 
 ## Programming languages
-Knowing the C language is a requierement for most of the tasks. Rust for the *radeco* one (our decompiler), JS/HTML/CSS for the *WebUI*, … There are also other options (for example for the *ROP chain generator* task or if you suggest your own idea).
+
+Most of radare2 is written in C and hence we expect students to be familiar with C programming language. Some of our tasks such as [WebUI]() requires students to be learn latest web technologies such as HTML5 and Javascript. For the [radeco]() task, student should know rust or be willing to learn the same.
 
 ## Recommended steps
 
@@ -51,9 +56,12 @@ Knowing the C language is a requierement for most of the tasks. Rust for the *ra
 4. Submit it using Google's web interface
 
 ## Student proposal guidelines
+
 1. Keep it simple enough to fit not more than a couple of pages. Despite the shortness of the sentences, try to save the clarity of the proposal.
-2. Try to GSOC period into tasks, and the task into subtasks. It really helps us to understand how you want to accomplish your goals, but even more it'll help you - to understand the task deep enough before starting it, and prioritize important things to do first.
+2. Try to GSoC period into tasks, and the task into subtasks. It really helps us to understand how you want to accomplish your goals, but even more it'll help you - to understand the task deep enough before starting it, and prioritize important things to do first.
 3. Please, note, how much time a day/week you are going to spend on this project.
 4. Specify your timezone, since so we can assign you a mentor in the same one, to ease communication.
 5. Submit your proposal early, not in the last minute
 6. You can also choose a “backup” idea (the second task you probably want to do), so that in case of some conflicts (two students for one task) it will be easier to solve.
+
+
