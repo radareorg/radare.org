@@ -36,11 +36,13 @@ Since radare2 has a steep learning curve, this task will lower the barrier for t
 
 ### Assess requirements for midterm/final evaluation
 
+The student must focus on the material webui as long is the one used by default in Android and it is also the fastest one to load. Adding more visual feedback like displaying graphs for entropy, section sizes, ... and support for editing code or data, and be able to use the debugger in a more comfortable way.
+
 ### Mentors
 pancake
 
 ### Links/Resources
-- The [current](http://cloud.rada.re) web interface
+- The [current](http://cloud.rada.re/m) web interface
 - [Announcement](http://radare.today/the-new-web-interface/) of its release
 - [Related issues](https://github.com/radare/radare2/labels/webui) on github
 
@@ -87,8 +89,8 @@ The final evaluation requires students to have improved the quality of the gener
 
 ### Links/Resources
 
-- https://github.com/radare/radeco-lib
-- https://github.com/radare/radeco-lib/issues
+- [Radeco-lib](https://github.com/radare/radeco-lib)
+- Radeco-lib [issues](https://github.com/radare/radeco-lib/issues)
 
 ## Better support for UNICORN  debugging
 Current support of UNICORN in r2 is more or less a proof of concept. We need to support more architectures, better handle syscall tracing, share memory and initialize/store/restore debugging states from core files, etc. All those features should be a laa par of using ESIL for emulation, which is currently working way better than UNICORN, but having more backends also benefits the overall interface and internal apis.
@@ -121,8 +123,8 @@ At least two architectures should be supported in the unicorn plugin and the mem
 
 ### Links/Resources
 
-* http://www.unicorn-engine.org
-* https://github.com/radare/radare2-extras/tree/master/unicorn
+* [Unicorn](http://www.unicorn-engine.org) disassembly framework
+* Unicorn [plugin for radare2](https://github.com/radare/radare2-extras/tree/master/unicorn)
 
 ## Function argument detection
 
@@ -164,14 +166,14 @@ General idea about various platforms ABI
 The completion of this task would greatly improve radare2's analysis capabilities, making it ever more competitive with IDA Pro.
 
 ### Assess requirements for midterm/final evaluation
-At the midterm student should have a working argument and types display.
+At the midterm student should have a working argument with types display.
 
 ### Mentors
 - pancake
 - xvilka
 
 ### Links/Resources
-- https://github.com/radare/radare2/issues/3655
+- [Issue #3655](https://github.com/radare/radare2/issues/3655)
 
 ## Ropchain generator with ragg2
 
@@ -248,7 +250,11 @@ Student should know C, have some experience with socket/network programming and 
 Advanced
 
 ### Benefits for the student
+The student will understand how most of the remote debugging works "under the hood". And will have general knowledge about writing mutiplatfform debuggers, as like as bits of network programming.
+
 ### Benefits for the project
+The fact we have our own gdbserver implementation will help us to improve GDB protocol on both client and server sides, which will make the testing protcol parser easier. Also radare2 would not rely on the non-standard debug protcols for exotic platforms, since it would be easier to port radare2 gdbserver on that platform.
+
 ### Assess requirements for midterm/final evaluation
 Midterm will be successfull if the simpe gdbserver, working via sockets will be able to talk with radare2 and gdb
 Final evaluation will require gdbserver which should work at least on x86, arm, mips and powerpc platforms, able to answer radare2, gdb, lldb and IDA Pro rquests.
@@ -431,7 +437,7 @@ Midterm will require working universal assembly library for at least 4 architect
 ### Links/Resources
 - [Issue #4122](https://github.com/radare/radare2/issues/4122)
 
-## Linux coredump loading/creating support
+## Coredump loading/creating support (ELF/MACH0)
 A core represents the state of a process at a point in time. It contains all the information that needed to inspect the process and its state. This information includes thread information, mapped memory, register state and more. After implementing a support of loading coredump files into the radare2 debugger, it will be possible to inspect the state of the process as if they had attached a debugger to the process at the time when the core file was generated. Moreover, generating coredump files from the remote systems, connected via gdb:// protocol can increase speed of debugging via slow links.
 
 Currently radare2 can dump and restore memory, register states to disk, in order to have snapshots of the execution, but the dump is not done in Core format.
@@ -464,5 +470,49 @@ pancake
 ### Links/Resources
 
 - [Issue#152](https://github.com/radare/radare2/issues/152)
+
+
+## Kernel support for r2
+
+There have been many attempts to bring r2 into the kernel and boot land, but none of them stick enough time or get enough support to survive. We should be able to allow r2 to talk with the kernel by exposing a new device to read/write kernel memory, and extend the functionality to expose more internal information from the kernel to r2.
+
+Maybe the best way to talk with r2 is via rap:// we should evaluate the communication protocol in order to simplify as much as possible the problem and avoid adding vulnerabilities.
+
+This kind of r2kernel integration has been used in the past for manually hooking syscalls by patching the kernel memory inline or patching some instructions to disable some protections for testing and better understanding of the priviledged procedures of modern operating systems.
+
+### Tasks
+* Write a small kernel driver to talk with userland
+* Support Linux, Windows and OSX (at least)
+* Share as much code as possible between all OS and r2
+* Read/write kernel memory
+* Expose more information from userland
+* Could be loaded at boot.
+
+### Skills
+C, Kernel
+
+### Difficulty
+Medium
+
+### Benefits for the student
+
+Learn about how all major kernels expose interfaces to the user and their limitations. Understanding the differences in memory protection and address space found in user and kernel land.
+
+### Benefits for the project
+
+Being able to talk with kernel from r2 will unleash a lot of power for exploiters, researchers and kernel developers, providing easy to use tools for analyzing code and patching without having to reboot or reload kernel modules.
+
+### Assess requirements for midterm/final evaluation
+
+At least one operating system should be supported, and it should be possible to read and write memory.
+Bonus points include the ability to enumerate symbols or set flags to different points of interest.
+
+### Mentors
+pancake
+
+### Links/Resources
+
+- [http://www.tldp.org/LDP/lkmpg/2.6/lkmpg.pdf](http://www.tldp.org/LDP/lkmpg/2.6/lkmpg.pdf)
+- [http://www.linuxdevcenter.com/pub/a/linux/2007/07/05/devhelloworld-a-simple-introduction-to-device-drivers-under-linux.html](http://www.linuxdevcenter.com/pub/a/linux/2007/07/05/devhelloworld-a-simple-introduction-to-device-drivers-under-linux.html)
 
 
