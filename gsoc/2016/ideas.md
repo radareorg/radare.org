@@ -45,7 +45,7 @@ pancake
 ### Links/Resources
 - The [current](http://cloud.rada.re/m) web interface
 - [Announcement](http://radare.today/the-new-web-interface/) of its release
-- [Related issues](https://github.com/radare/radare2/labels/webui) on github
+- [Related issues](https://github.com/radare/radare2-webui/issues) on github
 
 ## Completing Radeco
 radeco, a radare2 based decompiler, was a project that was started in GSoC'15. Currently, radeco features a ESIL to SSA IL converter and a  few optimisations to the IR. The task for this year is to complete the first iteration of the decompiler. This involves several tasks which are listed below. Note that some of these tasks are large and are listed to give students a complete view of the requirements of this project. A potential student is required to discuss these with the mentors and pick some tasks to write their proposals for GSoC'16. Being a relatively new project under the radare banner, this project also gives student an opportunity to learn, design and discuss the architectural aspects of the project.
