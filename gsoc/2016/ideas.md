@@ -406,7 +406,11 @@ struc Unit   a,b,type
     .offs_h      dw ((b >> 16) & 0xFFFF)
     .size        = $ - .offs_l
 }
-Nested structures and virtual
+```
+
+ - Nested structures and virtual
+
+```
 pd    PStruct
 
 ; For accessing structure fields based on some register
