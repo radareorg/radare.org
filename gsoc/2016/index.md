@@ -29,6 +29,8 @@ Members of radare2 core team have volunteered to guide students for GSoC’16. T
 - Jeffrey Crowell IRC: crowell -- [@jeffreycrowell](https://twitter.com/jeffreycrowell)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
 - Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
+- Alvaro Felipe Melchor: alvaro\_fe - [@alvaro\_fe](https://twitter.com/alvaro_fe)
+- Maxime Morin IRC: maijin - [@Maijin212](https://twitter.com/Maijin212)
 
 # Development methodology
 
@@ -52,7 +54,7 @@ Most of radare2 is written in C and hence we expect students to be familiar with
 
 1. Read Google's instructions for participating
 2. Grab any of the project from [list of ideas](http://radare.org/gsoc/2016/ideas.html)  that you're interested in (or propose your own)
-3. Write a first draft proposal and ask one of the mentors or administrators to review it with you
+3. Write a first draft proposal using Google Docs and ask one of the mentors or administrators to review it with you
 4. Submit it using Google's web interface
 
 ## Student proposal guidelines
