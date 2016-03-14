@@ -343,42 +343,6 @@ Final: Also should be working with listing symbols from both parts of the binary
 - [Issue #662](https://github.com/radare/radare2/issues/662)
 - [Official .Net resources](http://www.microsoft.com/net)
 
-## Universal assembler library
-Currently, radare2 uses several assemblers, and none of them is complete. It would be awesome to have a generic assembler library for a lot of architectures.
-
-### Task
-Unify assembly syntax among all supported architectures in radare2, implement this in an external library, and make it compatible with various architectures. The library should:
-
-- be capstone compatible
-- use same syntax (att/intel/masm)
-- use similar api
-- reuse internal representation to allow direct instruction manipulation
-- have bindings for languages (at least python/ruby/js)
-- be in a separate repository, like capstone, maintained as a dependency
-- support for parallel execution instructions
-
-### Skills
-The student should be comfortable with the C language and assembly. Having some knowledge of some disassembly/assembly library would be a plus.
-
-### Difficulty
-Medium
-
-### Benefits for the student
-The student will have the opportunity to see uncommon architectures, and to implement a simple-but-solid assembly language parser.
-
-### Benefits for the project
-Radare2 is currently using Capstone to disassemble several architecture, having an equivalent library to assemble would greatly simplify the maintenance and the code base.
-
-### Assess requirements for midterm/final evaluation
-Midterm will require working universal assembly library for at least 4 architectures: x86, arm, mips and avr. It could be a separate library at this point. And at the final evaluation we’ll expect it integrated into the radare2 framework.
-
-### Mentors
-- pancake
-- jvoisin
-
-### Links/Resources
-- [Capstone](http://www.capstone-engine.org/) universal disassembly library
-
 ## Improve assembly syntax
 Currently, radare2 uses several assemblers, and none of them is complete. It would be awesome to have a generic assembler syntax with structures and macroses for a lot of architectures.
 
