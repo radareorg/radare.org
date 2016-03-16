@@ -54,7 +54,7 @@ Most of radare2 is written in C and hence we expect students to be familiar with
 
 1. Read Google's instructions for participating
 2. Grab any of the project from [list of ideas](http://radare.org/gsoc/2016/ideas.html)  that you're interested in (or propose your own)
-3. Write a first draft proposal using Google Docs and ask one of the mentors or administrators to review it with you
+3. Write a first draft proposal using Google Docs and [our template](https://docs.google.com/document/d/1kDPGgr_D5tQuYLQi_gEGlkuQ-DlU8GH5kDBqZbVSC7I/edit?usp=sharing) and ask one of the mentors or administrators to review it with you
 4. Submit it using Google's web interface
 
 ## Student proposal guidelines
