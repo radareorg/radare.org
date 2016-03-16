@@ -40,7 +40,7 @@ Since radare2 has a steep learning curve, this task will lower the barrier for t
 The student must focus on the material webui as long is the one used by default in Android and it is also the fastest one to load. Adding more visual feedback like displaying graphs for entropy, section sizes, ... and support for editing code or data, and be able to use the debugger in a more comfortable way.
 
 ### Mentors
-pancake
+- pancake
 
 ### Links/Resources
 - The [current](http://cloud.rada.re/m) web interface
@@ -119,7 +119,8 @@ At least two architectures should be supported in the unicorn plugin and the mem
 
 ### Mentors
 
-* pancake
+- pancake
+- alvaro_fe
 
 ### Links/Resources
 
@@ -296,7 +297,8 @@ Midterm: design and implementation of the interface and commands to work with tr
 Final: Add the plugin for timeless debugging feature inside r2.
 
 ### Mentors
-pancake
+- pancake
+- alvaro_fe 
 
 ### Links/Resources
 - [RR](http://rr-project.org/) - Record and Replay framework from Mozilla
@@ -338,6 +340,7 @@ Final: Also should be working with listing symbols from both parts of the binary
 
 ### Mentors
 - pancake
+- alvaro_fe
 
 ### Links/Resources
 - [Issue #662](https://github.com/radare/radare2/issues/662)
@@ -436,7 +439,8 @@ At the midterm evaluation student should provide working support fo loading core
 After the final evaluation radare2 should have support for creating coredump files for process on linux systems.
 
 ### Mentors
-pancake
+- pancake
+- maijin 
 
 ### Links/Resources
 
