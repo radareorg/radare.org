@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var version = "0.10.0",
+  var version = "0.10.1",
     oss = {
       Win: { url: '/get/pkg/radare2-w32-'+version+'.zip', name: 'for Windows' },
       Mac: { url: '/get/pkg/radare2-'+version+'.pkg', name: 'for OSX' },
