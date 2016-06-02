@@ -1,8 +1,8 @@
 ARCHS=arm aarch64 mips x86
 TAGS=unstable stable
 
-STABLE="0.9.9"
-UNSTABLE="0.10.0-git"
+STABLE="0.10.0-git"
+UNSTABLE="0.10.3-git"
 
 VARS=\
 arm_stable=radare2-${STABLE}-android-arm.tar.gz\
@@ -29,5 +29,7 @@ all:
 			[ ! -f ../$$file ] && echo " ** Missing file $$file" ; \
 			printf "$$x  \t$${file}\n" ; \
 			echo '<? header("Location: /get/pkg/'$${file}'"); ?>' > $$a/$$b/index.php ; \
+			echo '<? header("Location: https://github.com/radare/radare2-bin/blob/android-aarch64/'$${file}'?raw=true"); ?>' > $$a/$$b/index.php ; \
+			echo '<? header("Location: https://raw.githubusercontent.com/radare/radare2-bin/android-aarch64/'$${file}'"); ?>' > $$a/$$b/index.php ; \
 		done ; \
 	done
