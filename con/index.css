@@ -1,9 +1,14 @@
+html {
+	width: 100%;
+}
+
 body {
 	background-image:url(img/bcncrw.jpg);
 // trn
 // sub
 // rof
 // crw
+	background-position:center;
 	background-size:100%;
 	background-repeat: no-repeat;
 	background-color: black;
