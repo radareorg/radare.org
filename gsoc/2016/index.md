@@ -60,7 +60,7 @@ Most of radare2 is written in C and hence we expect students to be familiar with
 ## Student proposal guidelines
 
 1. Keep it simple enough to fit not more than a couple of pages. Despite the shortness of the sentences, try to save the clarity of the proposal.
-2. Try to GSoC period into tasks, and the task into subtasks. It really helps us to understand how you want to accomplish your goals, but even more it'll help you - to understand the task deep enough before starting it, and prioritize important things to do first.
+2. Try to split GSoC period into tasks, and the task into subtasks. It really helps us to understand how you want to accomplish your goals, but even more it'll help you - to understand the task deep enough before starting it, and prioritize important things to do first.
 3. Please, note, how much time a day/week you are going to spend on this project.
 4. Specify your timezone, since so we can assign you a mentor in the same one, to ease communication.
 5. Submit your proposal early, not in the last minute
