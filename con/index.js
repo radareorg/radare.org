@@ -62,13 +62,16 @@ function initializeStuff() {
     var curpos = document.body.scrollTop;
   
     if (curpos < 400) {
-ticket.style.position='absolute';
-ticket.style.top = '100px';
-ticket.style.fontSize = '1.5em';
-apply.style.position='absolute';
-apply.style.right = '10px';
-apply.style.top = '10px';
-apply.style.fontSize = '1.5em';
+      /* change ticket button */
+      ticket.style.position='absolute';
+      ticket.style.top = '100px';
+      ticket.style.fontSize = '1.5em';
+      /* change apply button */
+      apply.style.position='absolute';
+      apply.style.right = '10px';
+      apply.style.top = '10px';
+      apply.style.fontSize = '1.5em';
+      /* logo relocation */
       if (!topPage) {
         scrolldown.style.visibility = 'visible';
         logolink.href = '#main';
@@ -79,13 +82,16 @@ apply.style.fontSize = '1.5em';
       data.style.visibility = 'hidden';
       page.style.top = 800 - (curpos * 2);
     } else {
-ticket.style.fontSize = '0.8em';
-ticket.style.top = 20;
-ticket.style.position='fixed';
-apply.style.fontSize = '0.8em';
-apply.style.top = 20;
-apply.style.right = '12em';
-apply.style.position='fixed';
+      /* change ticket button */
+      ticket.style.fontSize = '1em';
+      ticket.style.top = 20;
+      ticket.style.position='fixed';
+      /* change apply button */
+      apply.style.fontSize = '1em';
+      apply.style.top = 20;
+      apply.style.right = '12em';
+      apply.style.position='fixed';
+      /* logo relocation */
       logolink.href = '#top';
       topPage = false;
       logoimg.style.height = '64px';
