@@ -25,7 +25,7 @@ body {
 	border: 3px solid #179AB2;
 	right: 10px;
 	margin: 0 auto;
-	z-index:10;
+	z-index:20;
 	background-color: white;
 	font-family: Verdana, Sans Serif;
 	padding-top: 0.5em;
@@ -35,6 +35,28 @@ body {
 	position:absolute;
 	text-align: center;
 	top:10px;
+}
+
+.ticket:hover {
+	background-color:#e0e0f0;
+}
+
+.ticket {
+        width: 10em;
+	margin: auto;
+	border: 3px solid #179AB2;
+	right: 10px;
+	margin: 0 auto;
+	z-index:20;
+	background-color: white;
+	font-family: Verdana, Sans Serif;
+	padding-top: 0.5em;
+	height: 2em;
+	font-size: 1.5em;
+	color: black;
+	position:absolute;
+	text-align: center;
+	top:100px;
 }
 
 .page {

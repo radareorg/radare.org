@@ -48,6 +48,9 @@ function initializeStuff() {
   var logo = document.getElementById('logo');
   var page = document.getElementById('page');
   var data = document.getElementById('data');
+  /* buttons */
+  var ticket = document.getElementById('ticket');
+  var apply = document.getElementById('apply');
   var topPage = true;
 
   oldStyle = getStyle(logo);
@@ -59,6 +62,13 @@ function initializeStuff() {
     var curpos = document.body.scrollTop;
   
     if (curpos < 400) {
+ticket.style.position='absolute';
+ticket.style.top = '100px';
+ticket.style.fontSize = '1.5em';
+apply.style.position='absolute';
+apply.style.right = '10px';
+apply.style.top = '10px';
+apply.style.fontSize = '1.5em';
       if (!topPage) {
         scrolldown.style.visibility = 'visible';
         logolink.href = '#main';
@@ -69,6 +79,13 @@ function initializeStuff() {
       data.style.visibility = 'hidden';
       page.style.top = 800 - (curpos * 2);
     } else {
+ticket.style.fontSize = '0.8em';
+ticket.style.top = 20;
+ticket.style.position='fixed';
+apply.style.fontSize = '0.8em';
+apply.style.top = 20;
+apply.style.right = '12em';
+apply.style.position='fixed';
       logolink.href = '#top';
       topPage = false;
       logoimg.style.height = '64px';
