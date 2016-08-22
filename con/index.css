@@ -2,6 +2,17 @@ html {
 	width: 100%;
 }
 
+
+b {
+	color: #179AB2;
+}
+
+p {
+	margin-left: 15px;
+	margin-right: 50px;
+	font-size: 0.8em;
+}
+
 body {
 	background-image:url(img/bcncrw3.jpg);
 // trn
