@@ -62,15 +62,19 @@ function initializeStuff() {
     var curpos = document.body.scrollTop;
   
     if (curpos < 400) {
+if (ticket) {
       /* change ticket button */
       ticket.style.position='absolute';
       ticket.style.top = '100px';
       ticket.style.fontSize = '1.5em';
+}
+if (apply) {
       /* change apply button */
       apply.style.position='absolute';
       apply.style.right = '10px';
       apply.style.top = '10px';
       apply.style.fontSize = '1.5em';
+}
       /* logo relocation */
       if (!topPage) {
         scrolldown.style.visibility = 'visible';
@@ -82,15 +86,19 @@ function initializeStuff() {
       data.style.visibility = 'hidden';
       page.style.top = 800 - (curpos * 2);
     } else {
+if (ticket) {
       /* change ticket button */
       ticket.style.fontSize = '1em';
       ticket.style.top = 20;
       ticket.style.position='fixed';
+}
+if (apply) {
       /* change apply button */
       apply.style.fontSize = '1em';
       apply.style.top = 20;
       apply.style.right = '12em';
       apply.style.position='fixed';
+}
       /* logo relocation */
       logolink.href = '#top';
       topPage = false;
