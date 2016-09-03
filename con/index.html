@@ -95,99 +95,137 @@ This training will show how to create IO, DEBUG and ANALysis plugins to help us 
 
 <h1>9th Friday Morning Training</h1>
 
-<b>Fri 9 - Track 1 - 10:00 / 14:00 AVR exploiting (alexander + boris) (EN)</b><br />
+<b>Fri 9 - Single Track - 10:00 / 14:00 AVR exploiting (alexander + boris) (EN)</b><br />
 <p>
 During this workshop, you will learn about reverse engineering AVR firmware and exploitation specifics. Alexander and Boris will talk about tools and techniques, review AVR architecture, teach you how to write ROP chains for AVR, and use other methods that force MCUs to do things that firmware developers didn’t expect. Post-exploitation topics (like re-flashing and altering the bootloader) will also be covered.  The journey will start with simple programs, quickly advance to different AVR libc and compilers, including some AVR RTOSes and popular Arduino libraries, and finish with a real-world case of industrial gateway exploitation.
 <br /><br/>
 Prerequisites: Basic understanding of memory corruption (buffer overflow) vulnerabilities and embedded (or ICS) device architecture, Ability to read/understand C code would be great, but not mandatory and a laptop with VMWare/VirtualBox installed (a virtual machine with all required software will be supplied).
-
-<br /><br/>
-
-<!--
-
-<h1>9th Friday Morning Talks</h1>
-<b></b><br />
-<p>
-
 </p>
-<h1>9th Friday Afternoon Talks</h1>
-<h1>10th Saturday Morning Talks</h1>
-<h1>10th Saturday Afternoon Talks</h1>
-
-<ul>
-<li> r2-1.0 and beyond (pancake)
-<li> GSoC/RSoC - vartypes/radeco/webui (oddcoder + xvilka)
-<li> Reverse engineering an AVR-based ESC (brainstorm)
-<li> Street fighter hacking (pof)
-<li> Windows kernel reversing (skuater)
-<li> r2frida - the ultimate static analysis on dynamic steroids (oleavr)
-<li> Radeco: plans and challenges (xvilka + Sushant Dinesh)
-<li> Function argument detection and type matching (oddcoder)
-<li> Using miasm2 to build radare2 plugins (guillaume valadon)
-<li> Glibc Heap Analysis in Linux Systems with Radare2 (n4x0r)
-<li> Pwning embedded systems with r2 (Daniel Romero)
-<li> File format within r2 and its nuances (alvaro)
-<li> Reversing Linux Malware with r2 (Sergi Martinez)
-<li> R2Clutch: Patching iOS binaries (murphy)
-<li> Improving the Disassembly Process of PE Files (jayro)
-</ul>
--->
-
-<!--
-<h1> 8th Thursday Trainings</h1>
-
-<pre>
-10:00 - 10:30 Welcome to r2con! ---- (pancake) (EN)
-
-10:30 - 14:00 Track 1: Introduction to r2 (xvilka + jvoisin + maijin) (EN)
-10:30 - 14:00 Track 2: Radare from A to Z (pancake) (EN)
-
-16:00 - 20:00 Track 1: Exploiting on Linux (Nighterman) (EN)
-16:00 - 20:00 Track 2: Plugin development and ESIL (skuater) (SP)
-</pre>
-
-
-<h1>9th Friday Trainings</h1>
-
-<pre>
-10:00 - 14:00 AVR exploiting (alexander + boris) (EN)
-</pre>
--->
+<br /><br/>
 
 <h1>9th Friday Talks</h1>
 
-<pre>
-16:00  [1h ]  GSoC/RSoC - argument detection/vartypes/radeco/webui (oddcoder + xvilka)
-17:00  [30m]  r2m2 - using miasm2 as radare2 plugins (guedou)
+<b>Fri 9 - 16:00 - GSoC/RSoC - argument detection/vartypes/radeco/webui (oddcoder + xvilka)</b>
+<p>
+This is the third year the radare project is able to participate in a Summer Of Code competition, starting with a crowdfunding and finally this year we were able to get accepted by Google in the GSoC, which allows us to bring the oportunity to some students to learn more about C, reverse engineering and r2 itself thanks to our mentoring.
+<br /><br/>
+This talk will allow students to expose their work and experience, this is: better support for kernel stuff, enhanced material webui, radeco decompiler, variable analysis and type checking and ROP gadget classification.
+</p>
 
-17:30  [30m]  BREAK
+<b>Fri 9 - 17:00 - r2m2 using miasm2 as radare2 plugins (guedou)</b>
+<p>
+Reversing a binary using a rare CPU architecture requires to write a lot of code, such as disassembler, assembler, or block splitting logic. Once implemented, there is still a need for a graphical interface dedicated to reverse. Sooner or later, more needs might also arise: symbolic execution, emulation, jit, debugging, …
+<br /><br />
+<a href="https://github.com/cea-sec/miasm/">miasm2</a> is a powerful reverse engineering framework written in Python. It greatly simplifies the definition of new CPU architectures, and allows to assemble, disassemble and jit code.
+<br /><br />
+At the high level, this talk will describe how to write r2 plugins. More specifically, it will explain how to call miasm2 from radare2 and provide some miasm2 examples.
+</p>
+<center>
+<b>(30m break)</b>
+</center>
+<br />
 
-18:00  [30m]  Improving the Disassembly Process of PE Files (jayro)
-18:30  [30m]  File format within r2 and its nuances (alvaro)
-19:00  [30m]  R2Clutch: Patching iOS binaries (murphy)
-</pre>
+<b>Fri 9 - 18:00 - Improving the disassembly process of the PE files (jayro)</b>
+<p>
+At Intezer Labs, we automate the reverse engineering process for powering our Code Intelligence technology - a revolutionary method for analyzing malware and unknown executables. The disassembler we have chosen to use for our back-end is radare2. Most of our customers are threatened mainly by PE files (Windows Executables), which can be very difficult files to disassemble correctly. That is why we have made our own improvements to radare2, as well as our own custom commands, that increase the performance and accuracy for dealing with PE files. At the talk, we will discuss about those fixes and more things that can be done for building a better algorithm for handling PE files.
+</p>
+
+<b>Fri 9 - 18:30 - File format within r2 and its nuances (alvarofe)</b>
+<p>
+In this talk we will explore different file formats and its difficulties when parsing and at the same time how everything is implemented within r2. The attendee will learn from this talk how to improve and add new file formats in order to add new features to make reverse engineering great again
+</p>
+
+
+<b>Fri 9 - 19:00 - r2clutch - patching iOS binaries (murphy)</b>
+<p>
+Mobile security has become increasingly important, where one of the main platforms used is Apple. Apple security mechanisms add important drawbacks that can difficult static analysis during mobile application assessments. With this presentation, you are going to understand the binary format used by iOS operative system and how to parse and patch it with R2 in order to bypass Apple security mechanisms and allow static analysis.
+</p>
+
 
 <h1>10th Saturday Talks</h1>
 
-<pre>
-10:00	[1h ]	Glibc Heap Analysis in Linux Systems with Radare2 (n4x0r)
-11:00	[30m]	Reverse engineering an AVR-based ESC (brainstorm)
+<b>Sat 10 - 10:00 - Glibc Heap Analysis in Linux Systems with Radare2 (n4x0r)</b>
+<p>
+Introduction to glibc malloc heap internals, and overview of the dmh command family features for heap analysis.
+</p>
 
-11:30	[30m]	BREAK
+<b>Sat 10 - 11:00 - Reverse Engineering an AVR-based ESC (brainstorm)</b>
+<p>
+My drone broke. I wanted a (software) fix without buying a whole $50+ hardware replacement for the faulty part.
+<br /><br />
+This is a close hobbyist view into how a (drone) electronic motor speed control works with an AVR microcontroller and how I fixed it.
+<br /><br />
+This talk is also a journey on how a complete outsider (currently into bioinformatics) got involved into Radare’s community to solve a specific need (fix my drone) while contributing and thinking about different aspects of Radare’s development and its possible future roadmap.
+</p>
 
-12:00	[1h15]	IRs deserts, decompilation swamps and radeco (xvilka + Sushant Dinesh)
-13:15	[45m]	r2-1.0 and beyond (pancake)
+<center>
+<b>(30m break)</b>
+</center>
+<br />
 
-14:00	[1h30]	LUNCH BREAK
+<b>Sat 10 - 12:00 - IRs deserts, decompilation swamps and radeco (xvilka + sushant)</b>
+<p>
+This is the third year the radare project is able to participate in a Summer Of Code competition, starting with a crowdfunding and finally this year we were able to get accepted by Google in the GSoC, which allows us to bring the oportunity to some students to learn more about C, reverse engineering and r2 itself thanks to our mentoring.
+<br /><br />
+This talk will allow students to expose their work and experience, this is: better support for kernel stuff, enhanced material webui, radeco decompiler, variable analysis and type checking and ROP gadget classification.
+</p>
 
-15:30	[30m]	Reversing UEFI using radare2 (xvilka)
-16:00	[45m]	r2frida - the ultimate static analysis on dynamic steroids (oleavr)
-16:45	[45m]	Hacking Street Fighter: CPS2 Encryption in Radare2 (pof)
+<b>Sat 10 - 13:10 - r2-1.0 and beyond (pancake)</b>
+<p>
+10 years have passed since the first release of radare, lot of contributors, features and lines of code has been commited and the use cases and needs has changed a lot. This talk will focus in explaining how to contribute to the project, the current bottlenecks and wishlist for the future of radare2.
+</p>
 
-17:30	[30m]	BREAK
+<center>
+<b>(1h30m lunch)</b>
+</center>
+<br />
 
-18:00	[45m]	Pwning embedded systems (Daniel Romero)
-18:45	[45m]	Reversing Linux Malware (Sergi Martinez)
+
+<b>Sat 10 - 15:30 - reversing UEFI using radare2 (xvilka)</b>
+<p>
+In this talk we’ll describe the theory basics behind radeco already implemented parts and future
+plans. Everything - from SSA to type inference, from dead code elimination to graph reshaping to
+kill "goto"s. Since radeco still WIP we’ll talk about currently implemented algorithms and stages
+and will cover possible and probable goal to improve them, along with adding new stages.
+</p>
+
+<b>Sat 10 - 16:00 - r2frida - the ultimate static analysis on dynamic steroids (oleavr)</b>
+<p>
+Have you ever wanted to enhance your static analysis with live telemetry from a running instance of the software that you’re analyzing? In this talk I will show you how you can do this by combining r2 with Frida.
+</p>
+
+<b>Sat 10 - 16:45 - Hacking Street Fighter: CPS2 Encryption in radare2 (pof)</b>
+<p>
+Capcom CPS-2 games hold a battery-backed RAM on board that contains the
+decryption keys needed for the games to run, when the battery dies, the
+games can’t be decrypted and won’t run anymore, that’s why the battery
+is commonly known as “suicide battery”.
+<br /><br />
+CPS-2 the encryption is applied to the m68k opcodes of the game, and
+consists of two 4-round feistel networks with a 64-bit key. In this talk
+we will show how radare2 implemented the crypto algorithm from M.A.M.E.
+for Capcom CPS-2 decryption and will give some practical examples to
+decrypt and patch CPS2 game ROMs using radare2.
+</p>
+
+<center>
+<b>(30m break)</b>
+</center>
+<br />
+
+<b>Sat 10 - 18:00 - Pwning embedded systems (Daniel Romero)</b>
+<p>
+During the talk it will be shown how an embedded system (Router) could be hacked, bypassing their security mechanisms using hardware hacking, reverse engineering and exploitation techniques using radare2.
+</p>
+
+<b>Sat 10 - 19:00 - Reversing Linux Malware (Sergi Martinez)</b>
+<p>
+Windows is not the only platform targeted by malware writers, Linux also has
+plenty of different families, and growing every day. This talk will cover
+different functionalities of radare2 that are quite useful when reverse
+engineering malware for Linux, by following an analysis of a recent malware sample.
+</p>
+
 </pre>
 
 </div>
