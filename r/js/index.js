@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  var version = "0.10.5",
-    oss = {
-      Win: { url: '/get/pkg/radare2-w32-'+version+'.zip', name: 'for Windows' },
-      Mac: { url: '/get/pkg/radare2-'+version+'.pkg', name: 'for OSX' },
-      iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
-      Android: { url: 'https://play.google.com/store/apps/details?id=org.radare2.installer', name: 'Android' }
-    };
+  var version = "0.10.6",
+  oss = {
+    Win: { url: '/get/pkg/radare2-w32-'+version+'.zip', name: 'for Windows' },
+    Mac: { url: '/get/pkg/radare2-'+version+'.pkg', name: 'for OSX' },
+    iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
+    Android: { url: 'https://play.google.com/store/apps/details?id=org.radare2.installer', name: 'Android' }
+  };
 
   document.addEventListener('DOMContentLoaded', function () {
     var ua = navigator.userAgent;
