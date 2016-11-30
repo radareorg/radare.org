@@ -1,8 +1,9 @@
+<{config}>web.config<{/config}>
 (function () {
   'use strict';
 
-  var version = "1.0";
-  oss = {
+  var version = "<{$radare2_version}>";
+  var oss = {
     Win: { url: '/get/pkg/radare2-w32-'+version+'.zip', name: 'for Windows' },
     Mac: { url: '/get/pkg/radare2-'+version+'.pkg', name: 'for OSX' },
     iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },

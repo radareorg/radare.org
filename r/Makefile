@@ -4,9 +4,11 @@ PAGES+=blessr2
 NBIN=node_modules/.bin
 REMOTE?=/tmp/www
 NODE=$(shell nodejs --help > /dev/null 2>&1 && echo nodejs || echo node)
+PAGES+=js/index.js
 
 all: node_modules
 	for a in ${PAGES} ; do $(NODE) pp.js $$a.tmpl ; done
+	mv js/index.js.html js/index.js
 
 node_modules:
 	mkdir -p node_modules
