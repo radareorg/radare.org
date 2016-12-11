@@ -27,7 +27,7 @@ Source
 </div>
 
 <div class="icon">
-<a title="windows" href="http://radare.org/get/pkg/radare2-w32-<{$radare2_w32_version}>.zip">
+<a title="windows" href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-w32-<{$radare2_w32_version}>.zip">
 <img width=64 height=64 src="img/os-windows.png">
 <br>
 W32
@@ -39,14 +39,16 @@ W32
 </div>
 
 <div class="icon">
-<a title="osx" href="/get/pkg/radare2-<{$radare2_osx_version}>.pkg">
+<a title="osx" href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-<{$radare2_osx_version}>.pkg">
 <img width="64" height="64" src="img/os-osx.png">
 <br>
 OS X
 </a>
+<!--
 <a title="osx" href="/get/pkg/radare2-<{$radare2_version}>.pkg">
 / Git
 </a>
+-->
 </div>
 
 <div class="icon">
@@ -75,6 +77,7 @@ Github
 </div>
 -->
 
+<!--
 <div class="icon">
 <a title="VoidLinux livecd" href="http://bin.rada.re/r2live-20150901.iso">
 <img width=64 height=64 src="img/os-iso.png">
@@ -82,6 +85,7 @@ Github
 LiveCD
 </a>
 </div>
+-->
 
 <div class="icon">
 <a title="Docker Image" href="https://hub.docker.com/r/radare/radare2/">
@@ -99,10 +103,10 @@ Or use the <a target="_blank" href="http://bin.rada.re">nightly</a> builds.
 <center>
 <div class="releases">
 <pre >
-<a href="../get/radare2-<{$radare2_version}>.tar.xz">radare2</a>     <{$radare2_version}>     <{$radare2_date}>
-<a href="../get/radare2-r2pipe-<{$radare2_bindings_version}>.tar.xz">r2pipe</a>      <{$radare2_bindings_version}>     <{$radare2_bindings_date}>
-<a href="../get/radare2-bindings-<{$radare2_bindings_version}>.tar.xz">bindings</a>    <{$radare2_bindings_version}>     <{$radare2_bindings_date}>
-<a href="../get/radare2-extras-<{$radare2_version}>.tar.xz">r2-extras</a>   <{$radare2_extras_version}>     <{$radare2_extras_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-<{$radare2_version}>.tar.gz">radare2</a>     <{$radare2_version}>     <{$radare2_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-r2pipe-<{$radare2_bindings_version}>.tar.gz">r2pipe</a>      <{$radare2_bindings_version}>     <{$radare2_bindings_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-bindings-<{$radare2_bindings_version}>.tar.gz">bindings</a>    <{$radare2_bindings_version}>     <{$radare2_bindings_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-extras-<{$radare2_extras_version}>.tar.gz">r2-extras</a>   <{$radare2_extras_version}>     <{$radare2_extras_date}>
 <a href="../get/valabind-<{$valabind_version}>.tar.gz">valabind</a>    <{$valabind_version}>  <{$valabind_date}>
 <a href="../get/sdb-<{$sdb_version}>.tar.gz">sdb</a>         <{$sdb_version}>  <{$sdb_date}>
 <a href="../get/acr-<{$acr_version}>.tar.gz">acr</a>         <{$acr_version}>  <{$acr_date}>
@@ -117,8 +121,8 @@ Or use the <a target="_blank" href="http://bin.rada.re">nightly</a> builds.
 <div class="block3">
 <h2>Installation from tarball:</h2>
 <pre class='code z'>
-<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$radare2_version}>.tar.xz">http://rada.re/get/radare2-<{$radare2_version}>.tar.xz</a>
-<span class='b'>~</span> <span class='r'>$</span> tar xJvf radare2-<{$radare2_version}>.tar.xz
+<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://rada.re/get/radare2-<{$radare2_version}>.tar.gz">http://cloud.rada.re/get/<{$radare2_version}>/radare2-<{$radare2_version}>.tar.gz</a>
+<span class='b'>~</span> <span class='r'>$</span> tar xzvf radare2-<{$radare2_version}>.tar.gz
 <span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$radare2_version}>/
 <span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> ./configure --prefix=/usr
 <span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> make -j8
