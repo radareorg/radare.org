@@ -9,7 +9,10 @@
     iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
     Android: { url: 'https://play.google.com/store/apps/details?id=org.radare2.installer', name: 'Android' }
   };
-
+  if (typeof document.addEventListener === 'undefined') {
+    /* internet explorer */
+    return;
+  }
   document.addEventListener('DOMContentLoaded', function () {
     var ua = navigator.userAgent;
     Object.keys(oss).forEach(function (os) {
