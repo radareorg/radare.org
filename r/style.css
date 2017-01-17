@@ -31,6 +31,9 @@ div {
 div::-webkit-scrollbar {
     display: none;
 }
+img {
+    border: 0;
+}
 body > img {
     border: 0;
 }
@@ -211,6 +214,7 @@ float:left;
     text-align: center;
 }
 .bottom-link {
+    border: 0;
     width: 32px;
     height: 32px;
 }
