@@ -10,6 +10,18 @@ The current code analysis have many little caveats and issues which may be good 
 
 [See these issues](https://github.com/radare/radare2/issues?q=is%3Aissue+is%3Aopen+label%3Aanal)
 
+## Node groups
+
+Being able to select multiple nodes in the graph and group them to colorize them and specify a name for them.
+
+## Smarter lines in graphs
+
+Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, but some edge lines are passing thru.
+
+## Save/restore graph state
+
+This task is necessary when node grouping or layout have changed, this information can be stored in projects by just reusing the `agn` and `age` commands to recreate a graph and feeding the body of the nodes in base64.
+
 ## Flash bytecode
 
 Flash is slowly dying, but there's still people using it and there are still appearing 0day vulnerabilities in the wild, so it will be interesting to be able to disassemble flash from memory inside r2.
@@ -35,9 +47,6 @@ There are lot of missing features in the current PE file parser. [Here](https://
 ## PCAP loading support
 Add pcap support. [See issue](https://github.com/radare/radare2/issues/3574)
 
-## Display "malwareness" indicators
-Add command for print indicators like in PEStudio (i.e display version information that already parsed) [See issue](https://github.com/radare/radare2/issues/4128)
-
 ## Sdbtization
 Radare2 is being slowly refactored to store all the information about session, user metadata and state of debugger in the [SDB](https://github.com/radare/sdb) - simple key-value database. This work still ungoing. So helping us with a few sdbtization bugs will introduce you into the radare2 codebase structure.
 [See issues](https://github.com/radare/radare2/issues?q=is%3Aopen+is%3Aissue+label%3Asdbtization)
@@ -47,12 +56,6 @@ Radare2 has its own intermediate language - ESIL, but not yet support it for all
 the task is to add ESIL support to any architecture, which doesn't has it yet.
 [See issues](https://github.com/radare/radare2/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3Aesil) for the related bugs.
 
-## Better crypto identification support
-
-radare2 currently supports Yara (see radare2-extras repository), but it will be good to extend the support to handle more hashing algorithms by code analysis by integrating more updated Yara signatores or using Manalyze, writing a blog post or documentation for it.
-
-[See Manalyze](https://github.com/JusticeRage/Manalyze)
-
 ## UTF-8 support everywhere
 
 This task requires implementing proper support for multibyte characters in RConsCanvas in order to render UTF-8 characters in the graphs for having better ascii-art boxes and lines.
@@ -60,18 +63,6 @@ This task requires implementing proper support for multibyte characters in RCons
 [Issue #2091](https://github.com/radare/radare2/issues/2091)
 [Issue #2032](https://github.com/radare/radare2/issues/2032)
 [Issue #4997](https://github.com/radare/radare2/issues/4997)
-
-## Node groups
-
-Being able to select multiple nodes in the graph and group them to colorize them and specify a name for them.
-
-## Smarter lines in graphs
-
-Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, but some edge lines are passing thru.
-
-## Save/restore graph state
-
-This task is necessary when node grouping or layout have changed, this information can be stored in projects by just reusing the `agn` and `age` commands to recreate a graph and feeding the body of the nodes in base64.
 
 ## Better support for AOT and ART binaries
 
