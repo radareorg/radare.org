@@ -22,14 +22,6 @@ Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, 
 
 This task is necessary when node grouping or layout have changed, this information can be stored in projects by just reusing the `agn` and `age` commands to recreate a graph and feeding the body of the nodes in base64.
 
-## Flash bytecode
-
-Flash is slowly dying, but there's still people using it and there are still appearing 0day vulnerabilities in the wild, so it will be interesting to be able to disassemble flash from memory inside r2.
-
-This task implies writing a plugin for flasm in radare2-extras to be able to disassemble, assemble and optionally analyze Flash bytecode.
-
-See [Issue #3705](https://github.com/radare/radare2/issues/3705)
-
 ## Lua bytecode
 Add disassembler, assembler and analyzer for the latest LUA vm.
 
