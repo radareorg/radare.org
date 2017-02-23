@@ -57,6 +57,10 @@ This task requires implementing proper support for multibyte characters in RCons
 ### Better PE (Portable Executable) format support
 There are lot of missing features in the current PE file parser. [Here](https://github.com/radare/radare2/issues/921) you can find a full list of those. Implemeting it will help for radare2 usage in malware analysis.
 
+### Proper MDMP (Windows minidump) and PGDM (Windows kernel minidump) support
+There is basic MDMP file format support in [radare2-extras](https://github.com/radare/radare2-extras/tree/master/libr/bin/format/mdmp). It should be properly parsed, added ability to automatically load PDB symbols, improved autoanalysis and entry-point searching. Also
+there should be a support for kernel minidumps as well.
+
 ### PCAP loading support
 Add pcap support. [See issue](https://github.com/radare/radare2/issues/3574)
 
