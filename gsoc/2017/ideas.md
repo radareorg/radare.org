@@ -92,6 +92,7 @@ The final evaluation requires students to have improved the quality of the gener
 
 - [Radeco-lib](https://github.com/radare/radeco-lib)
 - Radeco-lib [issues](https://github.com/radare/radeco-lib/issues)
+- [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
 
 ## Ropchain generator with ragg2
 
