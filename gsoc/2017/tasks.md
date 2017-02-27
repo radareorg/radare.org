@@ -49,9 +49,9 @@ the task is to add ESIL support to any architecture, which doesn't has it yet.
 
 This task requires implementing proper support for multibyte characters in RConsCanvas in order to render UTF-8 characters in the graphs for having better ascii-art boxes and lines.
 
-[Issue #2091](https://github.com/radare/radare2/issues/2091)
-[Issue #2032](https://github.com/radare/radare2/issues/2032)
-[Issue #4997](https://github.com/radare/radare2/issues/4997)
+- [Issue #2091](https://github.com/radare/radare2/issues/2091)
+- [Issue #2032](https://github.com/radare/radare2/issues/2032)
+- [Issue #4997](https://github.com/radare/radare2/issues/4997)
 
 ## File formats
 ### Better PE (Portable Executable) format support
@@ -62,15 +62,11 @@ There is basic MDMP file format support in [radare2-extras](https://github.com/r
 there should be a support for kernel minidumps as well.
 
 ### PCAP loading support
-Add pcap support. [See issue](https://github.com/radare/radare2/issues/3574)
+Add pcap support. That will allow radare2 to replay debug sessions without actual calling of the debugger. [See issue](https://github.com/radare/radare2/issues/3574) for more details.
 
 ### Better support for AOT and ART binaries
 
 Current version of r2 is able to load ART and AOT binaries, but we are not yet able to extract all the information that lives in there
-
-### Better support for DEX
-
-Multidex is not yet supported, and there are some specially crafted dex bins that will not load properly. This task requires writing tests, checking with fuzzed and obfuscated dex binaries and fix the bugs found in the process.
 
 ### Better support for Dalvik
 
