@@ -2,51 +2,6 @@
 
 ### INDEX
 
-## Web interface
-Radare2 has a nice [web interface](http://cloud.rada.re/m) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
-
-### Tasks
-1. Implement/enhance widgets like:
-   - Hexeditor: view and edit, columns should be configurable.
-   - Graph: Interactive basicblocks/functions/bindiff graphs.
-   - Sections: Memory ranges with attributes.
-   - Search: Strings, opcodes, ...
-   - Structures: Edition, view, manipulation, …
-   - Functions: Edition, view, manipulation, arguments, XREF, ...
-2. Make it [responsive](https://en.wikipedia.org/wiki/Responsive_Web_Design)
-3. Make it more keyboard friendly (aka-olly)
-4. Better Interface for the debugger
-   - Panels with list of breakpoints
-   - Backtrace with clickable offsets
-   - Register panel
-5. Optimize it, compress JS, reduce AJAX queries, make it usable on all devices
-
-### Skills
-The student should be comfortable with modern web technologies like javascript and HTML5. They don't need to be über-comfortable with C nor assembly, since all the information is obtained directly from radare2.
-As a bonus point it would be interesting if they know some basic assembly.
-It's better if student will come with a few simple mockups what [s]he is going to do.
-
-### Difficulty
-Easy. If the student if comfortable with web technologies, there shouldn't be any major challenges in complteting this task.
-
-### Benefits for the student
-The student will gain experience in writing rich web applications, and domain-specific user interface. Also, the student will learn to design usable APIs, since this task will deal with interfacing C and Javascript.
-
-### Benefits for the project
-Since radare2 has a steep learning curve, this task will lower the barrier for transitioning from IDA to radare2.
-
-### Assess requirements for midterm/final evaluation
-
-The student must focus on the material webui as long is the one used by default in Android and it is also the fastest one to load. Adding more visual feedback like displaying graphs for entropy, section sizes, ... and support for editing code or data, and be able to use the debugger in a more comfortable way.
-
-### Mentors
-- pancake
-
-### Links/Resources
-- The [current](http://cloud.rada.re/m) web interface
-- [Announcement](http://radare.today/the-new-web-interface/) of its release
-- [Related issues](https://github.com/radare/radare2-webui/issues) on github
-
 ## Completing Radeco
 radeco, a radare2 based decompiler, was a project that was started in GSoC'15, and continued in GSoC'16. Currently, radeco features a ESIL to SSA IL converter, skeleton of C emitter and a  few optimisations to the IR. The task for this year is to complete the full process of the decompiler (from binary to C pseudo-code). This involves several tasks which are listed below. Note that some of these tasks are large and are listed to give students a complete view of the requirements of this project. A potential student is required to discuss these with the mentors and pick some tasks to write their proposals for GSoC'17. Being a relatively new project under the radare banner, this project also gives student an opportunity to learn, design and discuss the architectural aspects of the project.
 
@@ -264,4 +219,47 @@ Final: Also should be working with listing symbols from both parts of the binary
 - [Issue #662](https://github.com/radare/radare2/issues/662)
 - [Official .Net resources](http://www.microsoft.com/net)
 
+## Web interface
+Radare2 has a nice [web interface](http://cloud.rada.re/m) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
 
+### Tasks
+1. Implement/enhance widgets like:
+   - Hexeditor: view and edit, columns should be configurable.
+   - Graph: Interactive basicblocks/functions/bindiff graphs.
+   - Sections: Memory ranges with attributes.
+   - Search: Strings, opcodes, ...
+   - Structures: Edition, view, manipulation, …
+   - Functions: Edition, view, manipulation, arguments, XREF, ...
+2. Make it [responsive](https://en.wikipedia.org/wiki/Responsive_Web_Design)
+3. Make it more keyboard friendly (aka-olly)
+4. Better Interface for the debugger
+   - Panels with list of breakpoints
+   - Backtrace with clickable offsets
+   - Register panel
+5. Optimize it, compress JS, reduce AJAX queries, make it usable on all devices
+
+### Skills
+The student should be comfortable with modern web technologies like javascript and HTML5. They don't need to be über-comfortable with C nor assembly, since all the information is obtained directly from radare2.
+As a bonus point it would be interesting if they know some basic assembly.
+It's better if student will come with a few simple mockups what [s]he is going to do.
+
+### Difficulty
+Easy. If the student if comfortable with web technologies, there shouldn't be any major challenges in complteting this task.
+
+### Benefits for the student
+The student will gain experience in writing rich web applications, and domain-specific user interface. Also, the student will learn to design usable APIs, since this task will deal with interfacing C and Javascript.
+
+### Benefits for the project
+Since radare2 has a steep learning curve, this task will lower the barrier for transitioning from IDA to radare2.
+
+### Assess requirements for midterm/final evaluation
+
+The student must focus on the material webui as long is the one used by default in Android and it is also the fastest one to load. Adding more visual feedback like displaying graphs for entropy, section sizes, ... and support for editing code or data, and be able to use the debugger in a more comfortable way.
+
+### Mentors
+- pancake
+
+### Links/Resources
+- The [current](http://cloud.rada.re/m) web interface
+- [Announcement](http://radare.today/the-new-web-interface/) of its release
+- [Related issues](https://github.com/radare/radare2-webui/issues) on github
