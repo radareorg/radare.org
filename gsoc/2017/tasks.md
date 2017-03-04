@@ -68,10 +68,6 @@ Add pcap support. That will allow radare2 to replay debug sessions without actua
 
 Current version of r2 is able to load ART and AOT binaries, but we are not yet able to extract all the information that lives in there
 
-### Better support for Dalvik
-
-There are some bugs in the current disassembler that will be good to address them. Also, it will be good to have a dalvik assembler for binary patching.
-
 ### Fix dyldcache (already listed in fatmacho task)
 
 Dyldcache for user libraries and kernel modules is already supported, but it is not working because of the api changes in RBin. This task implies writing tests for dyldcache (we need to cook a dyldcache that can be distributable, not the ones from Apple). And fix the rbin api to get this working.
