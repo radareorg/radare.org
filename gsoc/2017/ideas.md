@@ -219,6 +219,55 @@ Final: Also should be working with listing symbols from both parts of the binary
 - [Issue #662](https://github.com/radare/radare2/issues/662)
 - [Official .Net resources](http://www.microsoft.com/net)
 
+## Proper Windows platform support
+Radare2 has a basic support for windows but tests are still not passing under AppVeyor, debugging has still problems,
+and some features of radare2 does not work properly or [at all](https://github.com/radare/radare2/issues/4163). This task consists from some small,
+some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
+platform
+
+### Tasks
+1. Fix current features on Windows platform:
+   - Debugger: check if it work on Windows XP - 10.
+   - Regression tests: make them pass locally
+   - Regression tests: run them on AppVeyor automatically
+2. Improve [PDB loading](https://github.com/radare/radare2/issues/3128) support and [integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
+3. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
+4. Make zignatures for Windows libraries, integrate with WinDbg
+5. Add support of loading all kinds of user mode minidumps and kernel dumps
+6. Ability to find out WinMain automatically, parsing SEH and RTTI
+7. Improve overall Windows debugging experience with radare2
+
+### Skills
+The student should be comfortable with programming under Windows platform. They don't need to have a reverse engineering background, since most of the missing stuff is well documented. As a bonus point it would be interesting if they know some basic assembly.
+
+### Difficulty
+Medium. If the student is comfortable with programming for Windows, there shouldn't be major challenges except WinDbg protocol support.
+
+### Benefits for the student
+The student will gain experience in writing debuggers for Windows platform. Also, the student will learn the Windows platform crucial parts' internals, related to debugging.
+
+### Benefits for the project
+Since radare2 has a better support for emulation and analysis, this will help to migrate from WinDbg to radare2.
+
+### Assess requirements for midterm/final evaluation
+
+The student must finish the regression tests pass stage during the first evaluation. WinDbg protocol support improvements are the requirement to pass the 2nd evaluation. Ability to parse various versions of PDB format + regression tests for them is a final evaluation requirement.
+
+### Mentors
+- maijin
+- xvilka
+
+### Links/Resources
+- The [current](https://github.com/radare/radare2/issues/1246) WinDbg protocol support issues
+- Windows support - [META](https://github.com/radare/radare2/issues/1194) issue
+- [Related issues](https://github.com/radare/radare2/labels/Windows) on github
+- [PDB format](http://llvm.org/docs/PDB/index.html) description (LLVM project)
+- [PyKD](https://pykd.codeplex.com/) - WinDbg extension via Python tools
+- [KDnet](https://github.com/Lekensteyn/kdnet) - Windows kernel debugging over Network
+- [VirtualKD](http://virtualkd.sysprogs.org/) debugger
+- [WinAppDbg](https://github.com/MarioVilas/winappdbg) debugger
+- [MEX](https://blogs.msdn.microsoft.com/luisdem/2016/07/19/mex-debugging-extension-for-windbg-2/) debugging extensions for WinDbg
+
 ## Web interface
 Radare2 has a nice [web interface](http://cloud.rada.re/m) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
 
