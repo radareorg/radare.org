@@ -231,11 +231,11 @@ platform
    - Regression tests: make them pass locally
    - Regression tests: run them on AppVeyor automatically
 2. Improve [PDB loading](https://github.com/radare/radare2/issues/3128) support and [integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
-3. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
-4. Make zignatures for Windows libraries, integrate with WinDbg
-5. Add support of loading all kinds of user mode minidumps and kernel dumps
-6. Ability to find out WinMain automatically, parsing SEH and RTTI
-7. Improve overall Windows debugging experience with radare2
+3. Make zignatures for Windows libraries
+4. Better Support for .dll (analysis and debugger)
+5. Ability to find out WinMain automatically, parsing SEH and RTTI
+6. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
+7. Add support of loading all kinds of user mode minidumps and kernel dumps
 
 ### Skills
 The student should be comfortable with programming under Windows platform. They don't need to have a reverse engineering background, since most of the missing stuff is well documented. As a bonus point it would be interesting if they know some basic assembly.
