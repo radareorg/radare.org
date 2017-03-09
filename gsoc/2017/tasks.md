@@ -10,11 +10,11 @@ The current code analysis have many little caveats and issues which may be good 
 
 [See these issues](https://github.com/radare/radare2/issues?q=is%3Aissue+is%3Aopen+label%3Aanal)
 
-## Graphs
+## META - Graphs [#6967](https://github.com/radare/radare2/issues/6967)
 
-### Smarter lines in graphs
+### Smarter lines in graphs 
 
-Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, but some edge lines are passing thru. [#6111](https://github.com/radare/radare2/issues/6011)
+Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, but some edge lines are passing thru. [#6011](https://github.com/radare/radare2/issues/6011)
 
 ![Nodes overlapping edges](https://cloud.githubusercontent.com/assets/10424605/19608188/36215ed8-97d8-11e6-8a7f-df3aef804454.png)
 ![Edges overlapping edges](https://cloud.githubusercontent.com/assets/10424605/19608195/3b7f4e1c-97d8-11e6-81ed-a6b515b1c7d9.png)
@@ -25,7 +25,7 @@ Being able to select multiple nodes in the graph and group them to colorize them
 
 ### Save/restore graph state
 
-This task is necessary when node grouping or layout have changed, this information can be stored in projects by just reusing the `agn` and `age` commands to recreate a graph and feeding the body of the nodes in base64. [#3643](https://github.com/radare/radare2/issues/3643)
+This task is necessary when node grouping or layout have changed, this information can be stored in projects by just reusing the `agn` and `age` commands to recreate a graph and feeding the body of the nodes in base64. 
 
 ## Diassemblers and assemblers
 ### Lua bytecode
