@@ -88,8 +88,7 @@ Add pcap support. That will allow radare2 to replay debug sessions without actua
 
 Current version of r2 is able to load ART and AOT binaries, but we are not yet able to extract all the information that lives in there
 
-![image](https://cloud.githubusercontent.com/assets/1408600/23970371/ce487cce-09c9-11e7-8490-46f77f8b36e8.png)
-
+![image](https://cloud.githubusercontent.com/assets/1408600/23970539/62632152-09ca-11e7-976e-e35f067af344.png)
 
 ### Fix dyldcache
 
