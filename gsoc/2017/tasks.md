@@ -75,14 +75,23 @@ There are lot of missing features in the current PE file parser as you can see i
 There is basic MDMP file format support in [radare2-extras](https://github.com/radare/radare2-extras/tree/master/libr/bin/format/mdmp). It should be properly parsed, added ability to automatically load PDB symbols, improved autoanalysis and entry-point searching. Also
 there should be a support for kernel minidumps as well.
 
+![image](https://cloud.githubusercontent.com/assets/1408600/23970288/9ecd3520-09c9-11e7-9733-0e8d2dfe512b.png)
+
+
 ### PCAP loading support
 Add pcap support. That will allow radare2 to replay debug sessions without actual calling of the debugger. [See issue](https://github.com/radare/radare2/issues/3574) for more details.
+
+![image](https://cloud.githubusercontent.com/assets/1408600/23970352/bd7112d0-09c9-11e7-84b4-11946b3a2c9e.png)
+
 
 ### Better support for AOT and ART binaries
 
 Current version of r2 is able to load ART and AOT binaries, but we are not yet able to extract all the information that lives in there
 
-### Fix dyldcache (already listed in fatmacho task)
+![image](https://cloud.githubusercontent.com/assets/1408600/23970371/ce487cce-09c9-11e7-8490-46f77f8b36e8.png)
+
+
+### Fix dyldcache
 
 Dyldcache for user libraries and kernel modules is already supported, but it is not working because of the api changes in RBin. This task implies writing tests for dyldcache (we need to cook a dyldcache that can be distributable, not the ones from Apple). And fix the rbin api to get this working.
 
