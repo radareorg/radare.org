@@ -59,9 +59,11 @@ the task is to add ESIL support to any architecture, which doesn't has it yet.
 
 This task requires implementing proper support for multibyte characters in RConsCanvas in order to render UTF-8 characters in the graphs for having better ascii-art boxes and lines.
 
-- [Issue #2091](https://github.com/radare/radare2/issues/2091)
-- [Issue #2032](https://github.com/radare/radare2/issues/2032)
-- [Issue #4997](https://github.com/radare/radare2/issues/4997)
+- [Support for the various languages - #2032](https://github.com/radare/radare2/issues/2032)
+- [Option to enable view of unicode strings - #4997](https://github.com/radare/radare2/issues/4997)
+
+![image](https://cloud.githubusercontent.com/assets/1408600/23970139/2728377c-09c9-11e7-8653-a167205ac153.png)
+![image](https://cloud.githubusercontent.com/assets/1408600/23970169/3c1ce88a-09c9-11e7-9dc7-0da71d9bc1c6.png)
 
 ## File formats
 ### META - Portable Executable format [#921](https://github.com/radare/radare2/issues/6921)
