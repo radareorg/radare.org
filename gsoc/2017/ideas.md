@@ -267,6 +267,11 @@ The student must finish the regression tests pass stage during the first evaluat
 - [VirtualKD](http://virtualkd.sysprogs.org/) debugger
 - [WinAppDbg](https://github.com/MarioVilas/winappdbg) debugger
 - [MEX](https://blogs.msdn.microsoft.com/luisdem/2016/07/19/mex-debugging-extension-for-windbg-2/) debugging extensions for WinDbg
+- [KarmaDbg](https://karmadbg.codeplex.com/) - PyKD extension
+- [WinDbg extensions
+  list](https://github.com/lowleveldesign/debug-recipes/blob/master/debugging-using-windbg/windbg-extensions.md)
+- [WinDbg cheatsheet](http://windbg.info/doc/1-common-cmds.html)
+- [DbgKit](http://www.andreybazhan.com/dbgkit.html) - WinDbg extension for working with processes
 
 ## Web interface
 Radare2 has a nice [web interface](http://cloud.rada.re/m) (and not only one: /p, /m and /t), but it's not currently as complete as the command line one. While the latter is more powerful, it has a steep learning curve, and it not usable on every devices (Like cellphones or tablets); this is we'd like to put some efforts into an awesome, functional web interface.
