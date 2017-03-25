@@ -61,7 +61,7 @@ Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki
 register reg1 = 0;
 register reg2 = whatever;
 register reg3 = reg1 + reg2;
-system(echo reg3);
+system(reg3);
 ```
 
 ### Skills
