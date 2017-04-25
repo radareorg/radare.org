@@ -21,3 +21,6 @@ all: node_modules
 node_modules:
 	mkdir node_modules
 	npm install node-markdown
+
+clean doc-zh:
+	@echo "Nothing to do."

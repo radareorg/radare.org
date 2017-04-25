@@ -1,0 +1,44 @@
+<{include}>zh/head.tmpl<{/include}>
+<div class="header">
+  <h1> BlessR2 </h1>
+</div>
+<br />
+<div class="block2" style="text-align:center">
+<{markdown}>
+
+BlessR2 是一个基于 Node.js 的 radare2 的前端，r2pipe 和 blessed 模块，为了给 radare2 提供一个全响应的、异步的用户接口。
+
+BlessR2 依然处于 beta 阶段，但易于 hack，而且运行于 Linux，OSX 和 Windows。
+
+	$ npm install blessr2
+	$ $(npm bin)/blessr2
+
+或者，全局安装:
+
+	$ npm install -g blessr2
+	$ blessr2 [...]
+
+控制台应用显示 frame 中的命令输出，可以滚动，此时可在其中每一行执行动作。
+
+[![img](/r/img/blessr2.png)](/r/img/blessr2.png)
+
+按 '?' 键时，显示所有「快捷键」的文档，r2 可在此处进行完全配置。
+
+[![img](/r/img/blessr2-config.png)](/r/img/blessr2-config.png)
+
+此 UI 也可以用于调试，从 r2 继承了彩色的主体支持，窗体可以有阴影，通过「鼠标」进行半透明或拖拽。「转轮」用于滚动窗体的内容。背景被填充。
+
+[![img](/r/img/blessr2-debug.png)](/r/img/blessr2-debug.png)
+
+Ascii-Art 图小部件和代码图，是 256-色 全彩，以支持更好的二进制可视化。只要基于 r2pipe，后端可在任何地方运行，在本地或
+
+[![img](/r/img/blessr2-map.png)](/r/img/blessr2-map.png)
+
+这个是自由软件，从 [github](https://github.com/radare/radare2-extras/) 检出代码。
+
+<{/markdown}>
+</div>
+</div>
+
+<{include}>zh/tail.tmpl<{/include}>
+

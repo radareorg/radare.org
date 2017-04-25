@@ -1,0 +1,141 @@
+<{include}>zh/head.tmpl<{/include}>
+<div class="header">
+  <h1> 比较列表 </h1>
+</div>
+<br />
+
+ <a href='http://rada.re'> r2 </a>, <a href='https://www.hex-rays.com/products/ida/index.shtml'> IDA Pro </a> 和 <a href='http://hopperapp.com/'>Hopper</a> 之间不公平的比较：
+
+<br /> <br />
+
+<center>
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 分析 </td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead>
+<tbody>
+<tr> <td class="tdleft">Call/syscall recognition</td>  <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Cross-references</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft"><a href='http://dwarfstd.org/'>DWARF</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft"><a href='http://lldb.llvm.org/symbols.html'>dSym</a> support</td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Signature recognition</td>     <td class='y'>yes</td> <td class='y'><a href='https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml'>yes</a></td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Custom structures definition</td> <td class='y'><a href='http://radare.today/parsing-a-fileformat-with-radare2/'>yes</a></td> <td class='y'>yes</td> <td class='n'>no</td> </tr>
+<tr> <td class="tdleft">Type support</td>              <td class='y'><a href='http://radare.today/types/'>yes</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Diffing</td>				   <td class='y'><a href='http://radare.today/binary-diffing/'>yes</a></td> <td class='y'><a href='https://code.google.com/p/patchdiff2/'>plugin</a></td> <td class='n'>no</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 架构 </td>              <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ARM</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">CSR</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Java/<a href='https://source.android.com/devices/tech/dalvik/index.html'>Dalvik</a></td> <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='http://www.ti.com/lit/ug/spru393/spru393.pdf'>TMS320C55x+</a></td>               <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='http://www.renesas.com/products/mpumcu/v850/index.jsp'>v850</a></td>                       <td class='y'>yes</td> <td class='y'>yes </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">x86 and x64</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 语言绑定 </td>                  <td>r2</td>        <td>IDA</td>          <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Javascript</td>                <td class='y'><a href='http://radare.today/javascript-in-r2/'>yes</a></td> <td class='n'><a href="http://www.hexblog.com/?p=101">yes</a></td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Lua</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Python</td>                    <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes </td> </tr>
+<tr> <td class="tdleft">Vala</td>                      <td class='y'><a href='http://radare.today/scripting-r2-in-vala/'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 调试器 </td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Breakpoints</td>               <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Process attaching</td>         <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Remote debugging</td>          <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Tracing</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Emulation</td>                 <td class='y'><a href='https://github.com/radare/radare2/wiki/ESIL'>yes</a></td> <td class='y'><a href='http://www.idabook.com/x86emu/'>plugin</a></td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 利用 </td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ROP-gadget finder</td>         <td class='y'><a href='http://radare.today/ropnroll/'>yes</a></td> <td class='y'><a href='http://thesprawl.org/projects/ida-sploiter/'>plugin</a></td> <td class='n'>no </td></tr>
+<tr> <td class="tdleft">Mitigations detection</td>                   <td class='y'>yes</td> <td class='n'>no</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Shellcode compilation</td>     <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft"><a href='https://en.wikipedia.org/wiki/De_Bruijn_sequence'>De Bruijn pattern</a></td>                   <td class='y'>yes</td> <td class='n'>no</td> <td class='n'>no </td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 反编译 </td>             <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">ARM</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x64</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">x86</td>                       <td class='y'><a href='https://github.com/radare/radeco-lib'>wip</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 补丁 </td>                  <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Patches generation</td>        <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Assemblers</td>        <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Writing/patching opcodes</td>  <td class='y'>yes</td> <td class='y'><a href='https://github.com/isislab/Fentanyl'>plugin</a> </td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 平台 </td>                  <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Android</td>                   <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">BSD</td>                       <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">iPhone</td>                    <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Linux</td>                     <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">OSX</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Windows</td>                   <td class='y'>yes</td> <td class='y'>yes</td> <td class='w'>only v2</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 可扩展性 </td>              <td>r2</td>      <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Exposed IL</td>                <td class='y'>yes</td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Open database format</td>      <td class='w'><a href='http://github.com/radare/sdb'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Plugins support</td>           <td class='y'><a href='http://radare.today/extending-r2-with-new-plugins/'>yes</a></td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 价格和服务支持 </td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Free (as in beer)</td>         <td class='y'>yes</td> <td>450-2700&euro;</td> <td class='w'>65-125&euro;</td> </tr>
+<tr> <td class="tdleft">Free (as in freedom)</td>      <td class='y'><a href='https://github.com/radare/radare2/blob/master/COPYING.LESSER'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Open bugtracker</td>           <td class='y'><a href='https://github.com/radare/r2/issues'>yes</a></td> <td class='n'>no </td> <td class='y'><a href='http://www.hopperapp.com/bugtracker/'>yes</a></td> </tr>
+<tr> <td class="tdleft">Professional customers support</td>    <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 项目管理 </td>        <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">Collaborative work</td>        <td class='w'>wip</td> <td class='w'><a href='https://crowdre.crowdstrike.com/sign-in'>plugin</a></td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Saving and exporting</td>      <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+</tbody> </table>
+
+<table class='comparison'>
+<thead>
+<tr> <td class="tdleft"> 用户界面 </td>            <td>r2</td>       <td>IDA</td>           <td>Hopper</td> </tr>
+</thead> <tbody>
+<tr> <td class="tdleft">CLI</td>                       <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">GUI</td>                       <td class='n'>no </td> <td class='y'>yes</td> <td class='y'>yes</td> </tr>
+<tr> <td class="tdleft">Themes support</td>            <td class='y'>yes</td> <td class='y'>yes</td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Web interface</td>             <td class='w'><a href='http://radare.today/the-new-web-interface/'>yes</a></td> <td class='n'>no </td> <td class='n'>no </td> </tr>
+<tr> <td class="tdleft">Graphs</td>            <td class='y'>yes</td> <td class='y'>yes</td> <td class='y'>yes </td> </tr>
+<tr> <td class="tdleft">Ascii graphs</td>            <td class='y'><a href='https://twitter.com/akochkov/status/634016073264795650'>yes</a></td> <td class='n'>no</td> <td class='n'>no </td> </tr>
+</tbody> </table>
+</center>
+<br />
+
+<{include}>zh/tail.tmpl<{/include}>

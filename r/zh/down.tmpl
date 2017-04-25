@@ -1,0 +1,273 @@
+<{include}>zh/head.tmpl<{/include}>
+<{config}>web.config<{/config}>
+<div class="header">
+<h1> 下载 </h1>
+</div>
+<br />
+最新版是 <{$radare2_version}>
+<h2> 推荐从 Git 安装：</h2>
+<div class="block3">
+<pre class="code z" style="color:white !important">
+git clone https://github.com/radare/radare2 --depth=1
+cd radare2
+sys/install.sh   # 运行此脚本，从 git 更新 r2
+</pre>
+</div>
+<h2> 二进制：</h2>
+<br />
+<div class="block3 icons">
+
+<div class="icon">
+<a title="Source" href="https://github.com/radare/radare2">
+<img width=64 height=64 src="/r/img/os-tux.png">
+<br>
+Source
+</a>
+</div>
+
+<div class="icon">
+<a title="windows" href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-w32-<{$radare2_w32_version}>.zip">
+<img width=64 height=64 src="/r/img/os-windows.png">
+<br>
+W32
+</a>
+<a title="windows" href="http://bin.rada.re/radare2-w32-<{$radare2_w32_git_version}>.zip">
+
+/ Git
+</a>
+</div>
+
+<div class="icon">
+<a title="osx" href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-<{$radare2_osx_version}>.pkg">
+<img width="64" height="64" src="/r/img/os-osx.png">
+<br>
+OS X
+</a>
+<!--
+<a title="osx" href="/get/pkg/radare2-<{$radare2_version}>.pkg">
+/ Git
+</a>
+-->
+</div>
+
+<div class="icon">
+<a title="ios" href="http://cydia.radare.org/">
+<img width=64 height=64 src="/r/img/os-cydia.png">
+<br>
+iOS
+</a>
+</div>
+
+<div class="icon">
+<a title="android" href="https://play.google.com/store/apps/details?id=org.radare2.installer">
+<img width=64 height=64 src="/r/img/os-android.png">
+<br>Android</a>
+</div>
+
+
+<!--j
+<div class="icon">
+<a title="Linux" href="
+wget https://github.com/radare/radare2/archive/master.tar.gz">
+<img width=64 height=64 src="/r/img/github.png">
+<br>
+Github
+</a>
+</div>
+-->
+
+<!--
+<div class="icon">
+<a title="VoidLinux livecd" href="http://bin.rada.re/r2live-20150901.iso">
+<img width=64 height=64 src="/r/img/os-iso.png">
+<br>
+LiveCD
+</a>
+</div>
+-->
+
+<div class="icon">
+<a title="Docker Image" href="https://hub.docker.com/r/radare/radare2/">
+<img width=64 height=64 src="/r/img/os-docker.png">
+<br>
+Docker
+</a>
+</div>
+
+</div>
+或者使用 <a target="_blank" href="http://bin.rada.re"> 每夜 </a> 构建版本。
+<br />
+<br />
+<h2> 版本列表：</h2>
+<center>
+<div class="releases">
+<pre >
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-<{$radare2_version}>.tar.gz">radare2</a>     <{$radare2_version}>     <{$radare2_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-r2pipe-<{$radare2_r2pipe_version}>.tar.gz">r2pipe</a>      <{$radare2_r2pipe_version}>     <{$radare2_bindings_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-bindings-<{$radare2_bindings_version}>.tar.gz">bindings</a>    <{$radare2_bindings_version}>     <{$radare2_bindings_date}>
+<a href="http://cloud.radare.org/get/<{$radare2_version}>/radare2-extras-<{$radare2_extras_version}>.tar.gz">r2-extras</a>   <{$radare2_extras_version}>     <{$radare2_extras_date}>
+<a href="../../get/valabind-<{$valabind_version}>.tar.gz">valabind</a>    <{$valabind_version}>  <{$valabind_date}>
+<a href="../../get/sdb-<{$sdb_version}>.tar.gz">sdb</a>         <{$sdb_version}>  <{$sdb_date}>
+<a href="../../get/acr-<{$acr_version}>.tar.gz">acr</a>         <{$acr_version}>  <{$acr_date}>
+<a href="../../get/ired-<{$ired_version}>.tar.gz">ired</a>        <{$ired_version}>   <{$ired_date}>
+<a href="../../get/radare-<{$radare1_version}>.tar.gz">radare</a>      <{$radare1_version}>   <{$radare1_date}>
+</pre>
+</div>
+</center>
+
+<br />
+<h2> 操作指南：</h2>
+<div class="block3">
+<h2> 从 tar 包安装：</h2>
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> wget <a style="color:white;text-decoration:underline;" href="http://cloud.rada.re/get/<{$radare2_version}>/radare2-<{$radare2_version}>.tar.gz">http://cloud.rada.re/get/<{$radare2_version}>/radare2-<{$radare2_version}>.tar.gz</a>
+<span class='b'>~</span> <span class='r'>$</span> tar xzvf radare2-<{$radare2_version}>.tar.gz
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-<{$radare2_version}>/
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> make -j8  # 请根据 CPU 核数进行调整
+<span class='b'>~/radare2-<{$radare2_version}></span> <span class='r'>$</span> sudo make install
+</pre>
+</div>
+<br />
+<div class="block3">
+<h2> 卸载：</h2>
+在 radare2 源码根目录，执行以下命令，完成对特定前缀（装是时，指定的 prefix）的 r2 的卸载：
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> cd radare2
+<span class='b'>~/radare2</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2</span> <span class='r'>$</span> sudo make uninstall
+</pre>
+
+假如你想卸载所有之前安装的版本，请执行 purge 编译目标：
+<pre class='code z'>
+<span class='b'>~/radare2</span> <span class='r'>$</span> sudo make purge
+</pre>
+
+针对 OSX 平台的卸载操作指令，如下：
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> sudo su -
+<span class='b'>~</span> <span class='r'>#</span> export PKG=org.radare.radare2
+<span class='b'>~</span> <span class='r'>#</span> cd /
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --files --only-files $PKG | xargs rm -f
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --files --only-dirs $PKG | xargs rmdir
+<span class='b'>/</span> <span class='r'>#</span> pkgutil --forget $PKG
+</pre>
+</div>
+<br />
+<div class="block3">
+<h2>radare2</h2>
+高级十六进制编辑器，最初为了「取证」（forensics）而设计，但很快就在反汇编和调试中使用。
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2
+<span class='b'>~</span> <span class='r'>$</span> cd radare2
+<span class='b'>~/radare2</span> <span class='r'>$</span> sys/install.sh
+</pre>
+</div>
+
+<div class="block3">
+<h2>radare2 extras</h2>
+Yara, EWF, 更多的架构, ...
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-extras
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-extras
+<span class='b'>~/radare2-extras</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-extras</span> <span class='r'>$</span> cd yara/yara3
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ../install-yara3.sh
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> make
+<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> sudo make install
+</pre>
+或者手工安装：
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> make
+<span class='b'>~</span> <span class='r'>$</span> cp plugin.so ~/.config/radare2/plugins
+<span class='b'>~</span> <span class='r'>$</span> R_DEBUG=1 r2 -qc. --
+</pre>
+</div>
+
+<div class="block3">
+<h2>radare2 绑定</h2>
+支持 r2pipe, duktape, python, nodejs, ruby 等：
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-bindings
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings
+<span class='b'>~</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~</span> <span class='r'>$</span> cd python
+<span class='b'>~/python</span> <span class='r'>$</span> make
+<span class='b'>~/python</span> <span class='r'>$</span> sudo make install
+</pre>
+R2Pipe API：
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-bindings/r2pipe/python
+<span class='b'>~/radare2-bindings/r2pipe/python</span> <span class='r'>$</span> python test.py
+</div>
+
+<div class="block3">
+<h2> 测试集 </h2>
+测试每一条命令，二进制文件和指令是必不可少的，以防止有退化。
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-regressions
+<span class='b'>~</span> <span class='r'>$</span> cd radare2-regressions
+<span class='b'>~/radare2-regressions</span> <span class='r'>$</span> make
+</pre>
+</div>
+
+
+<div class="block3">
+<h2>radare</h2>
+非常老的或原始版本的 radare 。因历史原来而维护。
+<pre class='code z'>
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare
+<span class='b'>~</span> <span class='r'>$</span> cd radare
+<span class='b'>~/radare</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/radare</span> <span class='r'>$</span> make
+<span class='b'>~/radare</span> <span class='r'>$</span> sudo make install
+</pre>
+</div>
+
+<div class="block3">
+<h2>valabind</h2>
+
+这个工具用于自动生成各种语言的绑定，SWIG, Ctypes, NodeJS, Dlang, Go
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/valabind
+<span class='b'>~</span> <span class='r'>$</span> cd valabind
+<span class='b'>~/valabind</span> <span class='r'>$</span> make
+<span class='b'>~/valabind</span> <span class='r'>$</span> sudo make install PREFIX=/usr
+</pre>
+</div>
+
+<div class="block3">
+<h2>ired</h2>
+最小化的「十六进制」编辑器，为在脚本中通过「管道」方式使用而设计的。模拟 r2 的一些命令。
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/ired
+<span class='b'>~</span> <span class='r'>$</span> cd ired
+<span class='b'>~/ired</span> <span class='r'>$</span> make
+<span class='b'>~/ired</span> <span class='r'>$</span> sudo make install PREFIX=/usr
+</pre>
+</div>
+
+<div class="block3">
+<h2>sdb</h2>
+字符串数据库，是一个磁盘或内存 （ondisk/memeory） hash 表，基于 CDB 仅支持单一数据类型的 key-value 操作：字符串。
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/sdb
+<span class='b'>~</span> <span class='r'>$</span> cd sdb
+<span class='b'>~/sdb</span> <span class='r'>$</span> make
+<span class='b'>~/sdb</span> <span class='r'>$</span> make -C tests
+</pre>
+</div>
+
+<div class="block3">
+<h2>acr</h2>
+自动化配置替换：
+<pre class="code z">
+<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/acr
+<span class='b'>~</span> <span class='r'>$</span> cd acr
+<span class='b'>~/sdb</span> <span class='r'>$</span> ./configure --prefix=/usr
+<span class='b'>~/sdb</span> <span class='r'>$</span> make
+<span class='b'>~/sdb</span> <span class='r'>$</span> sudo make install
+</pre>
+</div>
+<{include}>zh/tail.tmpl<{/include}>

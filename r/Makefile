@@ -10,6 +10,11 @@ all: node_modules
 	for a in ${PAGES} ; do $(NODE) pp.js $$a.tmpl ; done
 	mv js/index.js.html js/index.js
 
+doc-zh: node_modules
+	find ./zh -name "*.tmpl" |xargs -I {} node pp.js {}
+	node pp.js js/index.js.tmpl
+	mv js/index.js.html js/index.js
+
 node_modules:
 	mkdir -p node_modules
 	npm install
@@ -24,3 +29,5 @@ pub up:
 
 clean:
 	rm -f *.html
+	rm -f zh/*.html
+
