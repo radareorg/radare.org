@@ -299,10 +299,12 @@ nav a:hover {
     text-decoration: none;
 }
 .paypal {
-    display: block !important;
     padding-right: 32px;
+overflow:hidden;
     text-align: left;
+/* background-color:white; */
     height: 32px;
+width:32px;
 }
 .paypal:hover {
     color: #0131bf;
