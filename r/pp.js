@@ -1,9 +1,10 @@
 var fs = require ("fs");
-var md = require ("markdown").markdown;
+var showdown = require ("showdown");
 
 function parseMarkdown(str) {
   var dialect = ["Gruber", "Maruku"];
-  return md.toHTML (str); //, dialect);
+  var conv = new showdown.Converter();
+  return conv.makeHtml(str);
 }
 
 var Vars = {

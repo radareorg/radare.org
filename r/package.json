@@ -5,7 +5,7 @@
   "dependencies": {
     "jsfmt": "*",
     "js-beautify": "*",
-    "markdown": "*"
+    "showdown": "*"
   },
   "description": "new website for radare.org",
   "homepage": "https://radare.org/r",
