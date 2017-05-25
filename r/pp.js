@@ -3,7 +3,7 @@ var showdown = require ("showdown");
 
 function parseMarkdown(str) {
   var dialect = ["Gruber", "Maruku"];
-  var conv = new showdown.Converter();
+  var conv = new showdown.Converter({tables: true});
   return conv.makeHtml(str);
 }
 

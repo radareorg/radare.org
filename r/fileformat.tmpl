@@ -1,0 +1,891 @@
+<{include}>head.tmpl<{/include}>
+
+
+<{markdown}>
+
+# Fileformats
+
+<a name="avr"></a>
+## AVR
+
+### EntryPoints (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+r2 arduino_avr.bin
+[0x00000158]> ie
+[Entrypoints]
+vaddr=0x00000158 paddr=0x00000158 baddr=0xffffffffffffffff laddr=0x00000000 haddr=-1 type=program
+[0x00000158]> pd 10
+            ;-- entry0:
+            0x00000158      1124           clr r1
+            0x0000015a      1fbe           out 0x3f, r1                ; '?' ; IO SREG: flags
+            0x0000015c      cfef           ser r28
+            0x0000015e      d0e1           ldi r29, 0x10
+            0x00000160      debf           out 0x3e, r29               ; '>' ; IO SPH: Stack higher bits SP8-SP10
+            0x00000162      cdbf           out 0x3d, r28               ; '=' ; IO SPL: Stack lower bits SP0-SP7
+[0x00000158]> i
+blksz    0x0
+block    0x100
+fd       6
+file     arduino_avr.bin
+format   avr
+iorw     false
+mode     -r--
+size     0x3722
+humansz  13.8K
+type     ROM
+arch     avr
+...
+</pre>
+</div>
+<a name="coff"></a>
+## COFF
+### Symbols (`is`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x0000008c]> is
+[Symbols]
+...
+vaddr=0x0000008c paddr=0x0000008c ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigCreate@4
+vaddr=0x000000b9 paddr=0x000000b9 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigDestroy@4
+vaddr=0x000000d5 paddr=0x000000d5 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigCopy@8
+vaddr=0x00000103 paddr=0x00000103 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigCompare@8
+vaddr=0x00000151 paddr=0x00000151 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigCompare32@8
+vaddr=0x00000188 paddr=0x00000188 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigInB256@12
+vaddr=0x00000205 paddr=0x00000205 ord=000 fwd=NONE sz=4 bind= type=EXTERNAL name=__BigIn32@8
+...
+</pre>
+</div>
+<a name="dex"></a>
+## Dex
+### Headers (`ih`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000001c0]> ihh
+DEX file header:
+magic               : 'dex\n035\0'
+checksum            : 1b1f79b5
+signature           : 3c99...7f13
+file_size           : 1000
+header_size         : 112
+link_size           : 0
+link_off            : 0 (0x000000)
+...
+Class #0            -
+  Class descriptor  : 'LHello;'
+  Access flags      : 0x0001 (PUBLIC)
+  Superclass        : 'Ljava/lang/Object;'
+  Interfaces        -
+  Static fields     -
+  Instance fields   -
+    #0              : (in LHello;)
+      name          : 'who'
+      type          : 'Ljava/lang/String;'
+      access        : 0x0002 (PRIVATE)
+  Direct methods    -
+    #0              : (in LHello;)
+      name          : '<init>'
+      type          : '(Ljava/lang/String;)V'
+      access        : 0x10001 (PUBLIC CONSTRUCTOR)
+      code          -
+      registers     : 2
+...
+</pre>
+</div>
+### EntryPoints (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000001c0]> ie
+[Entrypoints]
+vaddr=0x000001c0 paddr=0x000001c0 baddr=0x00000000 laddr=0x00000000 haddr=-1 type=program
+
+1 entrypoints
+</pre>
+</div>
+### Classes, methods and fields (`ic`, `VB`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000001c0]> ic
+0x00000174 [0x000001a4 - 0x0000021e] (sz 122) class 0 LHello
+0x000001a4 method 0 pC   LHello.method.<init>(Ljava/lang/String;)V
+0x000001c0 method 1 sp   LHello.method.main([Ljava/lang/String;)V
+0x000001e8 method 2 p    LHello.method.say()V
+...
+[0x000001c0]> icj~{}
+[
+  {
+    "classname": "LHello",
+    "addr": 372,
+    "index": 0,
+    "methods": [
+      {
+        "name": "LHello.method.<init>(Ljava/lang/String;)V",
+        "flags": [
+          "public",
+          "constructor"
+        ],
+        "addr": 420
+      },
+      {
+        "name": "LHello.method.main([Ljava/lang/String;)V",
+        "flags": [
+          "static",
+          "public"
+        ],
+        "addr": 448
+      },
+      {
+        "name": "LHello.method.say()V",
+        "flags": [
+          "public"
+        ],
+        "addr": 488
+      }
+    ]
+  }
+]
+</pre>
+</div>
+<a name="elf"></a>
+## ELF/ELF64
+### Headers (`ih`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+  [0x080483d0]> ih
+  0x00000000  ELF MAGIC   0x464c457f
+  0x00000004  Type        0x0101
+  0x00000006  Machine     0x0001
+  0x00000008  Version     0x00000000
+  0x0000000c  Entrypoint  0x00000000
+  0x00000010  PhOff       0x00030002
+  0x00000014  ShOff       0x00000001
+...
+</pre>
+</div>
+### Sections (`iS`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+  [0x080483d0]> iS
+  [Sections]
+  ....
+  idx=04 vaddr=0x080481c0 paddr=0x000001c0 sz=32 vsz=32 perm=--r-- name=.gnu.hash
+  idx=05 vaddr=0x080481e0 paddr=0x000001e0 sz=144 vsz=144 perm=--r-- name=.dynsym
+  idx=06 vaddr=0x08048270 paddr=0x00000270 sz=95 vsz=95 perm=--r-- name=.dynstr
+  idx=07 vaddr=0x080482d0 paddr=0x000002d0 sz=18 vsz=18 perm=--r-- name=.gnu.version
+  ...
+  [0x080483d0]> iSj~{}
+[
+  ...
+  {
+    "name": ".interp",
+    "size": 19,
+    "vsize": 19,
+    "flags": "--r--",
+    "paddr": 340,
+    "vaddr": 134512980
+  },
+  {
+    "name": ".note.ABI_tag",
+    "size": 32,
+    "vsize": 32,
+    "flags": "--r--",
+    "paddr": 360,
+    "vaddr": 134513000
+    ...
+</pre>
+</div>
+### EntryPoints/TLS (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x080483d0]> ie
+[Entrypoints]
+vaddr=0x080483d0 paddr=0x000003d0 baddr=0x08048000 laddr=0x00000000 haddr=0x00000018 type=program
+
+1 entrypoints
+</pre>
+</div>
+### Main detection (`iM`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x080483d0]> iM
+[Main]
+vaddr=0x08048540 paddr=0x00000540
+</pre>
+</div>
+### Libraries/Imports/Exports (`il`, `ii`, `iE`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x080483d0]> il
+[Linked libraries]
+libc.so.6
+
+1 library
+[0x080483d0]> ii
+[Imports]
+ordinal=001 plt=0x00000000 bind=WEAK type=NOTYPE name=__gmon_start__
+ordinal=002 plt=0x08048364 bind=GLOBAL type=FUNC name=__libc_start_main
+ordinal=003 plt=0x08048374 bind=GLOBAL type=FUNC name=scanf
+ordinal=004 plt=0x08048384 bind=GLOBAL type=FUNC name=strlen
+...
+[0x080483d0]> iij~{}
+[
+  {
+    "ordinal": 1,
+    "bind": "WEAK",
+    "type": "NOTYPE",
+    "name": "__gmon_start__",
+    "plt": 0
+  },
+  {
+    "ordinal": 2,
+    "bind": "GLOBAL",
+    "type": "FUNC",
+    "name": "__libc_start_main",
+    "plt": 134513508
+  },
+</pre>
+</div>
+### Certificate, Debug, Protection and Version Information (`iI`,`iV`,`iC`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x080483d0]> iV
+Version symbols section '.gnu.version' contains 9 entries:
+ Addr: 0x080482d0  Offset: 0x000002d0  Link: 5 (.dynsym)
+0x00000000: 0 (*local*) 0 (*local*) (GLIBC_2.0) (GLIBC_2.0)
+0x00000004: (GLIBC_2.0) (GLIBC_2.0) (GLIBC_2.0) (GLIBC_2.0)
+0x00000008: 1 (*global*)
+...
+[0x080483d0]> iI
+...
+canary   false
+class    ELF32
+crypto   false
+endian   little
+havecode true
+intrp    /lib/ld-linux.so.2
+lang     c
+linenum  true
+lsyms    true
+machine  Intel 80386
+maxopsz  16
+minopsz  1
+nx       true
+os       linux
+pcalign  0
+pic      false
+relocs   true
+relro    partial relro
+rpath    NONE
+static   false
+stripped false
+subsys   linux
+va       true
+</pre>
+</div>
+
+<a name="java"></a>
+## Java
+### EntryPoints (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00001c87]> ie
+[Entrypoints]
+vaddr=0x00001c87 paddr=0x00001c87 baddr=0x00000000 laddr=0x00000000 haddr=0x00001c71 type=program
+vaddr=0x000020b4 paddr=0x000020b4 baddr=0x00000000 laddr=0x00000000 haddr=0x0000209e type=program
+vaddr=0x00002720 paddr=0x00002720 baddr=0x00000000 laddr=0x00000000 haddr=0x0000270a type=program
+vaddr=0x0000275d paddr=0x0000275d baddr=0x00000000 laddr=0x00000000 haddr=0x00002747 type=program
+vaddr=0x000027a5 paddr=0x000027a5 baddr=0x00000000 laddr=0x00000000 haddr=0x0000278f type=program
+vaddr=0x000027e2 paddr=0x000027e2 baddr=0x00000000 laddr=0x00000000 haddr=0x000027cc type=program
+vaddr=0x0000281f paddr=0x0000281f baddr=0x00000000 laddr=0x00000000 haddr=0x00002809 type=program
+vaddr=0x00002868 paddr=0x00002868 baddr=0x00000000 laddr=0x00000000 haddr=0x00002852 type=program
+vaddr=0x000028a5 paddr=0x000028a5 baddr=0x00000000 laddr=0x00000000 haddr=0x0000288f type=program
+vaddr=0x000028e2 paddr=0x000028e2 baddr=0x00000000 laddr=0x00000000 haddr=0x000028cc type=program
+vaddr=0x0000291f paddr=0x0000291f baddr=0x00000000 laddr=0x00000000 haddr=0x00002909 type=program
+vaddr=0x00002968 paddr=0x00002968 baddr=0x00000000 laddr=0x00000000 haddr=0x00002952 type=program
+vaddr=0x000029a5 paddr=0x000029a5 baddr=0x00000000 laddr=0x00000000 haddr=0x0000298f type=program
+</pre>
+</div>
+### Classes, methods and fields (`ic`, `VB`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00001c87]> ic
+0x00000000 [0x00000000 - 0x00000000] (sz 0) class 0 org/radare2/installer/MainActivity super: android/app/Activity
+[0x00001c87]> icj~{}
+[
+  {
+    "classname": "org/radare2/installer/MainActivity",
+    "addr": 0,
+    "index": 0,
+    "super": "android/app/Activity",
+    "methods": [
+
+    ]
+  }
+]
+</pre>
+</div>
+### Other related command
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00001c87]> java help
+|Usage: java [cmd] [arg..] Suite of java commands, java help for more info
+| help                              displays this message
+| set_flags [addr cmf <value>]      set the access flags attributes for a field or method
+| prototypes <jaicmf>               show in JSON, or All,Imports,Class,Methods,Fields
+| resolve_cp [<stecadg> idx]        cp type or value @ idx. Summary,Type,b64Encode,Const,Addr,Dump,Gsumarize
+| calc_flags <lcfm> [visib.]        value from access flags: ListAll, flags, Class, Field, Method
+| flags_str_at <cfm> [addr]         string value from access flags @ addr: Class, Field, Method
+| flags_str [<cfm> <access>]        string value for the flags number: Class, Field, Method
+| m_info [<p,c,s idx> | <n idx>]    method information at index (c:method+ord, s:metadata)
+| f_info [<p,c,s idx> | #idx]       field information at index (c:field+ord, s:metadata)
+| find_cp_const [a|#idx]            find references to constant CP Object in code: AllReferences
+| find_cp_value [<silfd> V]         find references to CP constants by value
+| replace_cp_value [<idx> V]        replace CP constants with value if the no resizing is required
+| replace_classname_value <c> <nc>  rename class name
+| reload_bin addr [size]            reload and reanalyze the Java class file starting at address
+| summary                           print summary information for the current java class file
+| lcr [addr]                        list all references to fields and methods in code sections
+| exc [<addr>]                      list all exceptions to fields and methods in code sections
+| yc_w_refs [name] [start] [count]  yara code bytes extraction with a name starting at <start> to <count>
+| i_mref C M S                      add Method to Class with given method signature
+| calc_sz <addr>                    calculate class file size at location
+| is_valid <addr> <sz>              check buffer to see if it is a valid class file
+</pre>
+</div>
+
+<a name="mach0"></a>
+## Fatmach0/Mach0
+### Headers (`ih`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+  [0x1000011e0]> ih
+  0x00000000  Magic       0xfeedfacf
+  0x00000004  CpuType     0x1000007
+  0x00000008  CpuSubType  0x80000003
+  0x0000000c  FileType    0x2
+  0x00000010  nCmds       18
+  0x00000014  sizeOfCmds  1800
+  0x00000018  Flags       0x200085
+...
+  Load Command 0
+  0x00000020  cmd          0x19 LC_SEGMENT_64
+  0x00000024  cmdsize      72
+...
+</pre>
+</div>
+### Sections (`iS`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x1000011e0]> iS
+[Sections]
+idx=00 vaddr=0x100000f00 paddr=0x00000f00 sz=13599 vsz=13599 perm=m-r-x name=0.__TEXT.__text
+idx=01 vaddr=0x100004420 paddr=0x00004420 sz=456 vsz=456 perm=m-r-x name=1.__TEXT.__stubs
+idx=02 vaddr=0x1000045e8 paddr=0x000045e8 sz=776 vsz=776 perm=m-r-x name=2.__TEXT.__stub_helper
+idx=03 vaddr=0x1000048f0 paddr=0x000048f0 sz=504 vsz=504 perm=m-r-x name=3.__TEXT.__const
+idx=04 vaddr=0x100004ae8 paddr=0x00004ae8 sz=1150 vsz=1150 perm=m-r-x name=4.__TEXT.__cstring
+...
+[0x1000011e0]> iSj~{}
+[
+  {
+    "name": "0.__TEXT.__text",
+    "size": 13599,
+    "vsize": 13599,
+    "flags": "m-r-x",
+    "paddr": 3840,
+    "vaddr": 4294971136
+  },
+  {
+    "name": "1.__TEXT.__stubs",
+    "size": 456,
+    "vsize": 456,
+    "flags": "m-r-x",
+    "paddr": 17440,
+    "vaddr": 4294984736
+  },
+...
+</pre>
+</div>
+### EntryPoints/TLS (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x1000011e0]> ie
+[Entrypoints]
+vaddr=0x1000011e0 paddr=0x000011e0 baddr=0x100000000 laddr=0x00000000 haddr=0x00000648 type=program
+
+1 entrypoints
+</pre>
+</div>
+### Main detection (`iM`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x1000011e0]> iM
+[Main]
+vaddr=0x1000011e0 paddr=0x1000011e0
+</pre>
+</div>
+### Libraries/Imports/Exports (`il`, `ii`, `iE`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x1000011e0]> il
+[Linked libraries]
+/usr/lib/libutil.dylib
+/usr/lib/libncurses.5.4.dylib
+/usr/lib/libSystem.B.dylib
+
+3 libraries
+
+[0x1000011e0]> ii
+[Imports]
+ordinal=000 plt=0x00000000 bind=NONE type=FUNC name=_DefaultRuneLocale
+ordinal=001 plt=0x10000443e bind=NONE type=FUNC name=__assert_rtn
+ordinal=002 plt=0x100004444 bind=NONE type=FUNC name=__bzero
+ordinal=003 plt=0x10000444a bind=NONE type=FUNC name=__error
+ordinal=004 plt=0x100004450 bind=NONE type=FUNC name=__maskrune
+ordinal=005 plt=0x100004456 bind=NONE type=FUNC name=__snprintf_chk
+ordinal=006 plt=0x10000445c bind=NONE type=FUNC name=__stack_chk_fail
+ordinal=007 plt=0x00000000 bind=NONE type=FUNC name=__stack_chk_guard
+...
+[0x1000011e0]> iij~{}
+[
+  {
+    "ordinal": 0,
+    "bind": "NONE",
+    "type": "FUNC",
+    "name": "_DefaultRuneLocale",
+    "plt": 0
+  },
+  {
+    "ordinal": 1,
+    "bind": "NONE",
+    "type": "FUNC",
+    "name": "__assert_rtn",
+    "plt": 4294984766
+  },
+...
+</pre>
+</div>
+### Certificate, Debug, Protection and Version Information (`iI`,`iV`,`iC`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x1000011e0]> i
+...
+type     Executable file
+arch     x86
+binsz    38624
+bintype  mach0
+bits     64
+canary   true
+class    MACH064
+crypto   false
+endian   little
+havecode true
+intrp    /usr/lib/dyld
+pic      true
+relocs   false
+static   false
+stripped true
+nx       false
+...
+</pre>
+</div>
+
+<a name="minidump"></a>
+## Minidump (See also PE)
+
+### EntryPoints/TLS (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x004014c8]> ie
+[Entrypoints]
+vaddr=0x004014c8 paddr=0x000008c8 baddr=0x00400000 laddr=0x00000000 haddr=0x00000098 type=program
+vaddr=0x00401618 paddr=0x00000a18 baddr=0x00400000 laddr=0x00000000 haddr=0x00007fb0 type=tls
+
+2 entrypoints
+
+[0x004014c8]> iej~{}
+[
+  {
+    "vaddr": 4199624,
+    "paddr": 2248,
+    "baddr": 4194304,
+    "laddr": 0,
+    "haddr": 152,
+    "type": "program"
+  },...
+</pre>
+</div>
+
+### Sections (`iS`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> iS
+[Sections]
+idx=00 vaddr=0x00401000 paddr=0x00001000 sz=36864 vsz=36864 perm=m-r-x name=.text
+idx=01 vaddr=0x0040a000 paddr=0x0000a000 sz=4096 vsz=4096 perm=m-r-- name=.rdata
+idx=02 vaddr=0x0040b000 paddr=0x0000b000 sz=159744 vsz=3166208 perm=m-rw- name=.data
+idx=03 vaddr=0x00710000 paddr=0x00032000 sz=3518464 vsz=3518464 perm=m-r-- name=.rsrc
+
+4 sections
+
+[0x00409a16]> iSj~{}
+[
+  {
+    "name": ".text",
+    "size": 36864,
+    "vsize": 36864,
+    "flags": "m-r-x",
+    "paddr": 4096,
+    "vaddr": 4198400
+  },...
+</pre>
+</div>
+
+### Relocations
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> pd 9 @[0x004083ac]
+;-- msvcrt.dll_vfprintf:
+0x7fefdb0a1a4      4883ec38       sub rsp, 0x38            ; '8'
+0x7fefdb0a1a8      4c89442420     mov qword [rsp + 0x20], r8
+0x7fefdb0a1ad      4c8bc2         mov r8, rdx
+0x7fefdb0a1b0      488bd1         mov rdx, rcx
+0x7fefdb0a1b3      488d0dea7ffa.  lea rcx, 0x7fefdab21a4   ; 0x7fefdab21a4
+0x7fefdb0a1ba      4533c9         xor r9d, r9d
+0x7fefdb0a1bd      e87efdffff     call 0x7fefdb09f40
+0x7fefdb0a1c2      4883c438       add rsp, 0x38            ; '8'
+0x7fefdb0a1c6      c3             ret
+</pre>
+</div>
+
+### Information (`iI`)
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> iI
+arch     x86
+binsz    36724
+bits     64
+canary   false
+crypto   false
+endian   little
+havecode true
+hdr.csum 0x00000000
+linenum  false
+lsyms    false
+machine  AMD64
+maxopsz  16
+minopsz  1
+nx       false
+os       Windows NT Workstation 6.1.7601
+pcalign  0
+pic      false
+relocs   false
+rpath    NONE
+static   true
+stripped false
+va       true
+</pre>
+</div>
+
+<a name="pe"></a>
+<a name="mz"></a>
+## MZ/PE/PE64
+
+### Headers (`ih`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> ih
+PE file header:
+IMAGE_NT_HEADERS
+	Signature : 0x4550
+IMAGE_FILE_HEADERS
+	Machine : 0x14c
+	NumberOfSections : 0x4
+	TimeDateStamp : 0x4ce78ecc
+	PointerToSymbolTable : 0x0
+	NumberOfSymbols : 0x0
+	SizeOfOptionalHeader : 0xe0
+	Characteristics : 0x10f
+</pre>
+</div>
+
+### Sections (`iS`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> iS
+[Sections]
+idx=00 vaddr=0x00401000 paddr=0x00001000 sz=36864 vsz=36864 perm=m-r-x name=.text
+idx=01 vaddr=0x0040a000 paddr=0x0000a000 sz=4096 vsz=4096 perm=m-r-- name=.rdata
+idx=02 vaddr=0x0040b000 paddr=0x0000b000 sz=159744 vsz=3166208 perm=m-rw- name=.data
+idx=03 vaddr=0x00710000 paddr=0x00032000 sz=3518464 vsz=3518464 perm=m-r-- name=.rsrc
+
+4 sections
+
+[0x00409a16]> iSj~{}
+[
+  {
+    "name": ".text",
+    "size": 36864,
+    "vsize": 36864,
+    "flags": "m-r-x",
+    "paddr": 4096,
+    "vaddr": 4198400
+  },...
+</pre>
+</div>
+
+### EntryPoints/TLS (`ie`)
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x004014c8]> ie
+[Entrypoints]
+vaddr=0x004014c8 paddr=0x000008c8 baddr=0x00400000 laddr=0x00000000 haddr=0x00000098 type=program
+vaddr=0x00401618 paddr=0x00000a18 baddr=0x00400000 laddr=0x00000000 haddr=0x00007fb0 type=tls
+
+2 entrypoints
+
+[0x004014c8]> iej~{}
+[
+  {
+    "vaddr": 4199624,
+    "paddr": 2248,
+    "baddr": 4194304,
+    "laddr": 0,
+    "haddr": 152,
+    "type": "program"
+  },...
+</pre>
+</div>
+
+### Main detection (`iM`)
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> iM
+[Main]
+vaddr=0x00408140 paddr=0x00008140
+</pre>
+</div>
+
+### Libraries/Imports/Exports (`il`, `ii`, `iE`)
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> il
+[Linked libraries]
+kernel32.dll
+advapi32.dll
+ws2_32.dll
+msvcp60.dll
+iphlpapi.dll
+wininet.dll
+msvcrt.dll
+
+7 libraries
+
+[0x00409a16]> ii
+[Imports]
+ordinal=001 plt=0x0040a030 bind=NONE type=FUNC name=KERNEL32.dll_WaitForSingleObject
+ordinal=002 plt=0x0040a034 bind=NONE type=FUNC name=KERNEL32.dll_InterlockedIncrement
+ordinal=003 plt=0x0040a038 bind=NONE type=FUNC name=KERNEL32.dll_GetCurrentThreadId
+ordinal=004 plt=0x0040a03c bind=NONE type=FUNC name=KERNEL32.dll_GetCurrentThread
+ordinal=005 plt=0x0040a040 bind=NONE type=FUNC name=KERNEL32.dll_ReadFile
+...
+
+[0x101cf8ab]> iE
+[Exports]
+...
+vaddr=0x100ec600 paddr=0x000eba00 ord=1303 fwd=NONE sz=0 bind=GLOBAL type=FUNC name=RtmPal.dll_RtcPalCryptSHA384Final
+vaddr=0x100ec5dc paddr=0x000eb9dc ord=1304 fwd=NONE sz=0 bind=GLOBAL type=FUNC name=RtmPal.dll_RtcPalCryptSHA384Update
+vaddr=0x100ec643 paddr=0x000eba43 ord=1305 fwd=NONE sz=0 bind=GLOBAL type=FUNC name=RtmPal.dll_RtcPalCryptSHA512Create
+vaddr=0x100ec6af paddr=0x000ebaaf ord=1306 fwd=NONE sz=0 bind=GLOBAL type=FUNC name=RtmPal.dll_RtcPalCryptSHA512Destroy
+...
+
+[0x101cf8ab]> iij~{} | more
+[
+  {
+    "ordinal": 1,
+    "bind": "NONE",
+    "type": "FUNC",
+    "name": "KERNEL32.dll_DeviceIoControl",
+    "plt": 270668020
+  },
+...
+
+</pre>
+</div>
+
+### Resources (`iR`)
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x08050911]> iR
+Resource 0
+	name: 1
+	timestamp: Thu Jan  1 00:00:00 1970
+	paddr: 0x00078570
+	size: 66K
+	type: ICON
+	language: LANG_ENGLISH
+Resource 1
+	name: 2
+	timestamp: Thu Jan  1 00:00:00 1970
+	paddr: 0x00088d98
+	size: 37.2K
+	type: ICON
+	language: LANG_ENGLISH
+...
+Resource 15
+	name: 1
+	timestamp: Thu Jan  1 00:00:00 1970
+	paddr: 0x0659cdc0
+	size: 381
+	type: MANIFEST
+	language: LANG_ENGLISH
+
+[0x08050911]> iRj~{}
+[
+  {
+    "name": 1,
+    "index": 0,
+    "type": "ICON",
+    "paddr": 492912,
+    "size": 67624,
+    "lang": "LANG_ENGLISH"
+  },
+...
+
+[0x00000000]> pm @@ resource.**
+0x0009fd30 0x0009fd30 1 PE  for MS Windows Intel 80386 32-bit
+0x016f07c0 0x016f07c0 1 PE  for MS Windows Intel 80386 32-bit
+0x02ae3880 0x02ae3880 1 PE  for MS Windows Intel 80386 32-bit
+0x036ea060 0x036ea060 1 PE  for MS Windows Intel 80386 32-bit
+0x04d7adf0 0x04d7adf0 1 PE  for MS Windows Intel 80386 32-bit
+....
+</pre>
+</div>
+
+### Certificate, Debug, Protection and Version Information (`iI`,`iV`,`iC`)
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00409a16]> iV
+=== VS_VERSIONINFO ===
+
+# VS_FIXEDFILEINFO
+
+  Signature: 0xfeef04bd
+  StrucVersion: 0x10000
+  FileVersion: 6.1.7601.17514
+  ProductVersion: 6.1.7601.17514
+  FileFlagsMask: 0x3f
+  FileFlags: 0x0
+  FileOS: 0x40004
+  FileType: 0x1
+  FileSubType: 0x0
+
+# StringTable
+
+  CompanyName: Microsoft Corporation
+  FileDescription: Microsoft® Disk Defragmenter
+  FileVersion: 6.1.7601.17514 (win7sp1_rtm.101119-1850)
+  InternalName: lhdfrgui.exe
+  LegalCopyright: © Microsoft Corporation. All rights reserved.
+  OriginalFilename: lhdfrgui.exe
+  ProductName: Microsoft® Windows® Operating System
+  ProductVersion: 6.1.7601.17514
+
+[0x00409a16]> iI
+...
+cmp.csum 0x00394136
+compiled Sat Nov 20 09:03:08 2010
+hdr.csum 0x00000000
+crypto   false
+nx       false
+signed   false
+dbg_file c:\\src\\ProcMon\\exe\\Release\\Johnny.pdb
+guid     0CDC6EB98912480293E5487A3B62E0C0C
+...
+
+[0x004b5953]> iC
+signedData
+  Version: 1
+  Digest Algorithms:
+    sha1
+  Certificates: 4
+    TBSCertificate:
+      Version: v3
+      Serial Number:
+        33:00:00:00:2b:39:32:48:c1:b2:c9:48:f3:00:00:00:00:00:2b
+      Signature Algorithm:
+        sha1WithRSAEncryption
+      Issuer:
+        countryName: US
+        stateOrProvinceName: Washington
+        localityName: Redmond
+        organizationName: Microsoft Corporation
+        commonName: Microsoft Time-Stamp PCA
+      Validity:
+        Not Before: 04/09/2012 21:12:34 GMT
+        Not After: 04/12/2013 21:12:34 GMT
+...
+
+[0x004b5953]> iCj~{}
+{
+        "Version": 1,
+        "DigestAlgorithms": [
+        "sha1"
+        ],
+        "Certificates": [
+        {
+        "TBSCertificate": {
+        "Version": 3,
+        "SerialNumber": "33:00:00:00:2b:39:32:48:c1:b2:c9:48:f3:00:00:00:00:00:2b",
+        "SignatureAlgorithm": "sha1WithRSAEncryption",
+        "Issuer": {
+        "countryName": "US",
+        "stateOrProvinceName": "Washington",
+        "localityName": "Redmond",
+        "organizationName": "Microsoft Corporation",
+        "commonName": "Microsoft Time-Stamp PCA"
+        },
+        "Validity": {
+        "NotBefore": "04/09/2012 21:12:34 GMT",
+        "NotAfter": "04/12/2013 21:12:34 GMT"
+...
+</pre>
+</div>
+
+<a name="zip"></a>
+## Zip (Jar, Apk, Ipa)
+<div class="block3">
+<pre class="code" style="color:white !important">
+r2 jar://example.jar
+0 research_data/experiment/decompiler/dumped_jar_dec/c.class
+
+r2 jar://example.jar::0
+[0x000002af]> i~type
+type     JAVA CLASS
+bintype  class
+...
+</pre>
+</div>
+
+<a name="ihex"></a>
+## Ihex
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+r2 ihex://FreeRTOS-pic18c.hex
+[0x00000000]> pi 5
+goto 0x246e
+return 0
+return 0
+btfss 0x9e, 2, 0
+bra 0x2
+</pre>
+</div>
+<{/markdown}>
+
+<{include}>tail.tmpl<{/include}>
