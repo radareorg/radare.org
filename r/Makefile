@@ -1,6 +1,6 @@
 PAGES=index down docs pics me talks cmp todo 
 PAGES+=license community whouses history rsoc
-PAGES+=blessr2 jobs fileformat
+PAGES+=blessr2 jobs fileformat arch
 NBIN=node_modules/.bin
 REMOTE?=/tmp/www
 NODE=$(shell nodejs --help > /dev/null 2>&1 && echo nodejs || echo node)
