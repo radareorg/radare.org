@@ -1,0 +1,628 @@
+<{include}>head.tmpl<{/include}>
+
+
+<{markdown}>
+
+## Fileformats
+
+
+## ARM
+
+<a name="arm"></a>
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a arm -b 16 -d f0b5 -o 0x9555
+push {r4, r5, r6, r7, lr}
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+  ┌ (fcn) entry0 56
+  │   entry0 ();
+  │              ; UNKNOWN XREF from 0x00008018 (sym.data.6576 + 0)
+  │              ; UNKNOWN XREF from 0x000832c8 (sym.0x00080016 + 12978)
+  │           0x00008150      24c09fe5       ldr ip, loc._d_2
+  │           0x00008154      00b0a0e3       mov fp, 0
+  │           0x00008158      04109de4       pop {r1}
+  │           0x0000815c      0d20a0e1       mov r2, sp
+  │           0x00008160      04202de5       str r2, [sp, -4]!
+  │           0x00008164      04002de5       str r0, [sp, -4]!
+  │           0x00008168      10009fe5       ldr r0, sym.main
+  │           0x0000816c      10309fe5       ldr r3, sym.__libc_csu_init
+  │           0x00008170      04c02de5       str ip, [sp, -4]!
+  │           0x00008174      b80000eb       bl sym.__libc_start_main    ; int __libc_start_main(func main, int argc, char **ubp_av, func init, func fini, func rtld_fini, void *stack_end)
+  │           0x00008178      a40200eb       bl sym.abort                ; void abort(void)
+  |           ;-- $d:
+  │              ; DATA XREF from 0x00008150 (entry0)
+  │           0x0000817c      .dword 0x00008b00 ; loc._a_15 ; sym.__libc_csu_fini
+  │              ; DATA XREF from 0x00008168 (entry0)
+  │           0x00008180      .dword 0x00008290 ; main ; sym.main
+  │              ; DATA XREF from 0x0000816c (entry0)
+  └           0x00008184      .dword 0x00008b48 ; loc._a_16 ; sym.__libc_csu_init
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00008174]> ao
+address: 0x8174
+opcode: bl 0x845c
+mnemonic: bl
+prefix: 0
+id: 13
+bytes: b80000eb
+refptr: 0
+size: 4
+type: call
+esil: 4,pc,+,lr,=,33884,pc,=
+jump: 0x0000845c
+fail: 0x00008178
+stack: null
+family: cpu
+[0x00008150]> aoj~{}
+[
+  {
+    "opcode": "ldr ip, [pc, 0x24]",
+    "mnemonic": "ldr",
+    "prefix": 0,
+    "id": 75,
+    "opex": {
+      "operands": [
+        {
+          "type": "reg",
+          "value": "ip"
+        },
+        {
+          "type": "mem",
+          "base": "pc",
+          "scale": 1,
+          "disp": 36
+        }
+      ]
+    },
+    "addr": 33104,
+    "bytes": "24c09fe5",
+    "ptr": 33148,
+    "size": 4,
+    "type": "load",
+    "esil": "2,2,8,$$,+,>>,<<,36,+,[4],ip,=",
+    "refptr": 4,
+    "cycles": 0,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Emulation / Intermediate Language
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00008174]> aoe
+0x8174 4,pc,+,lr,=,33884,pc,=
+</pre>
+</div>
+
+<a name="avr"></a>
+## AVR
+
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a avr "ldi r25, 0x00"
+90e0
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00000000]> pdf @ main
+┌ (fcn) main 22
+│   main ();
+│              ; JMP XREF from 0x000002a8 (main)
+│       ┌─> 0x00000294      81e0           ldi r24, 0x01
+│       |   0x00000296      90e0           ldi r25, 0x00
+│       |   0x00000298      0e948d05       call sym.wait_time
+│       |   0x0000029c      0e94a40c       call sym.proc_reset_watchdog
+│       |   0x000002a0      80e4           ldi r24, 0x40
+│       |   0x000002a2      92e0           ldi r25, 0x02
+│       |   0x000002a4      0e94c80f       call sym.sig_wait
+└       └─< 0x000002a8      f5cf           rjmp main
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00000294]> ao
+address: 0x294
+opcode: ldi r24, 0x01
+mnemonic: ldi
+prefix: 0
+id: 0
+bytes: 81e0
+val: 0x00000000
+ptr: 0x00000000
+refptr: 0
+size: 2
+type: load
+esil: 0x1,r24,=
+jump: 0x00000000
+fail: 0x00000296
+stack: null
+family: cpu
+[0x00000294]> aoj~{}
+[
+  {
+    "opcode": "ldi r24, 0x01",
+    "mnemonic": "ldi",
+    "prefix": 0,
+    "id": 0,
+    "addr": 660,
+    "bytes": "81e0",
+    "val": 0,
+    "ptr": 0,
+    "size": 2,
+    "type": "load",
+    "esil": "0x1,r24,=",
+    "jump": 0,
+    "refptr": 0,
+    "fail": 662,
+    "cycles": 1,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Emulation / Intermediate Language
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x00000294]> pi 1
+ldi r24, 0x01
+[0x00000294]> aoe
+0x294 0x1,r24,=
+</pre>
+</div>
+
+## Dalvik
+
+<a name="dalvik"></a>
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a dalvik "return-void"
+0e00
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000001c0]> pdf
+┌ (fcn) sym.LHello.method.main__Ljava_lang_String__V 22
+│   sym.LHello.method.main__Ljava_lang_String__V ();
+│           0x000001c0      22000000       new-instance v0, LHello;    ; Hello.java:13 ; 0xc8
+│           0x000001c4      1a010d00       const-string v1, str.World  ; 0x2cf
+│           0x000001c8      702000001000   invoke-direct {v0, v1}, LHello.<init>(Ljava/lang/String;)V ; 0x0 ; sym.LHello.method._init__Ljava_lang_String__V
+│           0x000001ce      6e1002000000   invoke-virtual {v0}, LHello.say()V ; 0x2 ; sym.LHello.method.say__V
+└           0x000001d4      0e00           return-void
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000001c0]> ao
+address: 0x1c0
+opcode: new-instance v0, LHello;
+mnemonic: new-instance
+prefix: 0
+id: 34
+bytes: 22000000
+ptr: 0x000000c8
+refptr: 0
+size: 4
+type: new
+stack: null
+family: cpu
+[0x000001c0]> aoj~{}
+[
+  {
+    "opcode": "new-instance v0, LHello;",
+    "mnemonic": "new-instance",
+    "prefix": 0,
+    "id": 34,
+    "addr": 448,
+    "bytes": "22000000",
+    "ptr": 200,
+    "size": 4,
+    "type": "new",
+    "refptr": 0,
+    "cycles": 0,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Java
+
+<a name="java"></a>
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a java "nop"
+00
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x0000022b]> pdf
+            ;-- sym.Hello._init_:
+┌ (fcn) entry0 10
+│   entry0 ();
+│           0x0000022b      2a             aload_0
+│           0x0000022c      b70001         invokespecial java/lang/Object/<init>()V
+│           0x0000022f      2a             aload_0
+│           0x00000230      2b             aload_1
+│           0x00000231      b50002         putfield Hello/who Ljava/lang/String;
+└           0x00000234      b1             return
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x0000022b]> ao
+address: 0x22b
+opcode: aload_0
+mnemonic: aload_0
+prefix: 0
+id: 42
+bytes: 2a
+val: 0x00000000
+ptr: 0x00000000
+refptr: 0
+size: 1
+type: push
+type2: undefined
+jump: 0x00000000
+fail: 0x00000000
+stack: null
+family: cpu
+[0x0000022b]> aoj~{}
+[
+  {
+    "opcode": "aload_0",
+    "mnemonic": "aload_0",
+    "prefix": 0,
+    "id": 42,
+    "addr": 555,
+    "bytes": "2a",
+    "val": 0,
+    "ptr": 0,
+    "size": 1,
+    "type": "push",
+    "jump": 0,
+    "refptr": 0,
+    "fail": 0,
+    "cycles": 0,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## MIPS
+
+<a name="mips"></a>
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a mips "addu gp, gp, ra"
+21e09f03
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000804d0]> pdf
+            ;-- section..text:
+            ;-- __start:
+            ;-- _ftext:
+            ;-- _start:
+┌ (fcn) entry0 52
+│   entry0 ();
+│           ; var int local_1ch @ sp+0x1c
+│              ; UNKNOWN XREF from 0x00080018 (sym.0x00080002 + 22)
+│              ; UNKNOWN XREF from 0x0008030c (section_end..hash + 116)
+│           0x000804d0      01001104       bal 0x804d8                 ; section 7 va=0x000804d0 pa=0x000004d0 sz=304 vsz=304 rwx=--r-x .text
+│           0x000804d4      00000000       nop
+│              ; CALL XREF from 0x000804d0 (entry0)
+│           0x000804d8      02001c3c       lui gp, 2
+│           0x000804dc      288b9c27       addiu gp, gp, -0x74d8
+│           0x000804e0      21e09f03       addu gp, gp, ra
+│           0x000804e4      2120a003       move a0, sp
+│           0x000804e8      e0ffbd27       addiu sp, sp, -0x20
+│           0x000804ec      1c00a0af       sw zero, 0x1c(sp)
+│           0x000804f0      1880998f       lw t9, -sym.do_mips_start(gp) ; [0x91018:4]=0x8051c sym.do_mips_start
+│           0x000804f4      09f82003       jalr t9
+│           0x000804f8      00000000       nop
+│       │      ; JMP XREF from 0x000804fc (entry0)
+│       └─> 0x000804fc      ffff0010       b 0x804fc
+└           0x00080500      00000000       nop
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000804d0]> ao
+address: 0x804d0
+opcode: bal 0x804d8
+mnemonic: bal
+prefix: 0
+id: 44
+bytes: 01001104
+val: 0x00000000
+ptr: 0x00000000
+refptr: 0
+size: 4
+type: call
+esil: 0,$ds,>,?{,$$,1,TRAP,BREAK,},pc,4,+,ra,=,525528,$jt,=,1,$ds,=
+jump: 0x000804d8
+fail: 0x000804d8
+delay: 1
+stack: null
+family: cpu
+[0x000804d0]> aoj~{}
+[
+  {
+    "opcode": "bal 0x804d8",
+    "mnemonic": "bal",
+    "prefix": 0,
+    "id": 44,
+    "opex": {
+      "operands": [
+        {
+          "type": "imm",
+          "value": 525528
+        }
+      ]
+    },
+    "addr": 525520,
+    "bytes": "01001104",
+    "val": 0,
+    "ptr": 0,
+    "size": 4,
+    "type": "call",
+    "esil": "0,$ds,>,?{,$$,1,TRAP,BREAK,},pc,4,+,ra,=,525528,$jt,=,1,$ds,=",
+    "jump": 525528,
+    "refptr": 0,
+    "fail": 525528,
+    "cycles": 0,
+    "delay": 1,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Emulation / Intermediate Language
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x000804d0]> pi 1
+bal 0x804d8
+[0x000804d0]> aoe
+0x804d0 0,$ds,>,?{,$$,1,TRAP,BREAK,},pc,4,+,ra,=,525528,$jt,=,1,$ds,=
+</pre>
+</div>
+
+## PPC
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x100014e0]> pdf
+┌ (fcn) entry0 36
+│   entry0 ();
+│           0x100014e0      7c290b78       mr r9, r1
+│           0x100014e4      54210036       rlwinm r1, r1, 0, 0, 0x1b
+│           0x100014e8      38000000       li r0, 0
+│           0x100014ec      9421fff0       stwu r1, -0x10(r1)
+│           0x100014f0      7c0803a6       mtlr r0
+│           0x100014f4      90010000       stw r0, 0(r1)
+│           0x100014f8      3d001002       lis r8, 0x1002
+│           0x100014fc      85a86c98       lwzu r13, 0x6c98(r8)
+└       ┌─< 0x10001500      48025180       b sym.imp.__libc_start_main
+...
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x100014e0]> ao
+address: 0x100014e0
+opcode: mr r9, r1
+mnemonic: mr
+prefix: 0
+id: 1008
+bytes: 7c290b78
+refptr: 0
+size: 4
+type: mov
+esil: r1,r9,=
+stack: null
+family: cpu
+[0x100014e0]> aoj~{}
+[
+  {
+    "opcode": "mr r9, r1",
+    "mnemonic": "mr",
+    "prefix": 0,
+    "id": 1008,
+    "opex": {
+      "operands": [
+
+      ]
+    },
+    "addr": 268440800,
+    "bytes": "7c290b78",
+    "size": 4,
+    "type": "mov",
+    "esil": "r1,r9,=",
+    "refptr": 0,
+    "cycles": 0,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Emulation / Intermediate Language
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x100014e0]> pi 1
+mr r9, r1
+[0x100014e0]> aoe
+0x100014e0 r1,r9,=
+</pre>
+</div>
+
+## x86
+
+<a name="x86"></a>
+## Assembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+rasm2 -a x86 "mov eax,0x1000"
+b800100000
+</pre>
+</div>
+
+## Disassembler
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x08048360]> pdf @ entry0
+┌ (fcn) entry0 33
+│   entry0 ();
+│           0x08048360      31ed           xor ebp, ebp
+│           0x08048362      5e             pop esi
+│           0x08048363      89e1           mov ecx, esp
+│           0x08048365      83e4f0         and esp, 0xfffffff0
+│           0x08048368      50             push eax
+│           0x08048369      54             push esp
+│           0x0804836a      52             push edx
+│           0x0804836b      6810850408     push sym.__libc_csu_fini
+│           0x08048370      68a0840408     push sym.__libc_csu_init
+│           0x08048375      51             push ecx
+│           0x08048376      56             push esi
+│           0x08048377      6814840408     push main
+└           0x0804837c      e89fffffff     call sym.imp.__libc_start_main ; int __libc_start_main(func main, int argc, char **ubp_av, func init, func fini, func rtld_fini, void *stack_end)
+</pre>
+</div>
+
+## Analysis
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x08048360]> ao
+address: 0x8048360
+opcode: xor ebp, ebp
+mnemonic: xor
+prefix: 0
+id: 334
+bytes: 31ed
+refptr: 0
+size: 2
+type: xor
+esil: ebp,ebp,^=,$z,zf,=,$p,pf,=,$s,sf,=,$0,cf,=,$0,of,=
+stack: null
+family: cpu
+[0x08048360]> aoj~{}
+[
+  {
+    "opcode": "xor ebp, ebp",
+    "mnemonic": "xor",
+    "prefix": 0,
+    "id": 334,
+    "opex": {
+      "operands": [
+        {
+          "size": 4,
+          "rw": 3,
+          "type": "reg",
+          "value": "ebp"
+        },
+        {
+          "size": 4,
+          "rw": 1,
+          "type": "reg",
+          "value": "ebp"
+        }
+      ],
+      "modrm": true
+    },
+    "addr": 134513504,
+    "bytes": "31ed",
+    "size": 2,
+    "type": "xor",
+    "esil": "ebp,ebp,^=,$z,zf,=,$p,pf,=,$s,sf,=,$0,cf,=,$0,of,=",
+    "refptr": 0,
+    "cycles": 1,
+    "delay": 0,
+    "family": "cpu"
+  }
+]
+</pre>
+</div>
+
+## Emulation / Intermediate Language 
+
+<div class="block3">
+<pre class="code" style="color:white !important">
+[0x08048360]> aoe
+0x8048360 ebp,ebp,^=,$z,zf,=,$p,pf,=,$s,sf,=,$0,cf,=,$0,of,=
+</pre>
+</div>
+
+<{/markdown}>
+
+<{include}>tail.tmpl<{/include}>
