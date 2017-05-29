@@ -1,0 +1,128 @@
+html {
+	width: 100%;
+}
+
+
+b {
+	color: #179AB2;
+}
+
+p {
+	margin-left: 15px;
+	margin-right: 50px;
+	font-size: 0.8em;
+}
+
+body {
+	background-image:url(img/bcn.jpg);
+// trn
+// sub
+// rof
+// crw
+	background-position:center;
+	background-size:100%;
+	background-repeat: no-repeat;
+	background-color: black;
+	margin:0px;
+}
+
+.apply:hover {
+	background-color:#e0e0f0;
+}
+
+.apply {
+        width: 10em;
+	margin: auto;
+	border: 3px solid #179AB2;
+	right: 10px;
+	margin: 0 auto;
+	z-index:20;
+	background-color: white;
+	font-family: Verdana, Sans Serif;
+	padding-top: 0.5em;
+	height: 2em;
+	font-size: 1.5em;
+	color: black;
+	position:absolute;
+	text-align: center;
+	top:10px;
+}
+
+.ticket:hover {
+	background-color:#e0e0f0;
+}
+
+.ticket {
+        width: 10em;
+	margin: auto;
+	border: 3px solid #179AB2;
+	right: 10px;
+	margin: 0 auto;
+	z-index:20;
+	background-color: white;
+	font-family: Verdana, Sans Serif;
+	padding-top: 0.5em;
+	height: 2em;
+	font-size: 1.5em;
+	color: black;
+	position:absolute;
+	text-align: center;
+	top:100px;
+}
+
+.page {
+	background-color: black;
+	margin:0px;
+	width: 100%;
+	padding:0px;
+	border:0px;
+	position:absolute;
+	top:800px;
+	color:white;
+	font-size: 1.6em;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.logo {
+        width: 100%;
+	margin: 0 auto;
+	z-index:10;
+	position:absolute;
+	text-align: center;
+	top:30%;
+}
+
+.logoimg {
+	max-width: 600px;
+	width:80%;
+}
+
+.scrolldown {
+	width: 64px;
+}
+
+.text {
+	margin:64px;
+	text-align:justify;
+	padding-top: 500px;
+	padding-bottom: 100px;
+}
+
+h1 {
+	color: #909090;
+}
+
+a {
+	color: #179AB2;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #179af0;
+	text-decoration: underline;
+}
+
+.data {
+	visibility: hidden;
+}
