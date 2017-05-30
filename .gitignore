@@ -1,4 +1,16 @@
 *.swp
 *.swo
-*.un~
+*.~
+.DS_Store
+r/*.html
+r/js/index.js
+r/zh/*.html
+gsoc/2017/ideas.html
+gsoc/2017/ideas.tmpl
+gsoc/2017/index.html
+gsoc/2017/index.tmpl
+gsoc/2017/tasks.html
+gsoc/2017/tasks.tmpl
+gsoc/index.html
+node_modules
 

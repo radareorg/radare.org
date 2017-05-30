@@ -1,0 +1,64 @@
+<{include}>zh/head.tmpl<{/include}>
+<div class="header">
+  <h1>License</h1>
+</div>
+
+<div class="block2">
+<{markdown}>
+
+radare2 使用 [LGPLv3](https://www.gnu.org/licenses/lgpl-3.0) 许可协议。
+
+LesserGPLv3 拥有以下的特点：
+
+- 私有软件（闭源的/商业的）可以连接它（动态化）
+- 可以为其开发私有的/商业的插件
+- 开源部分当中的所有改动，必须开放
+- 这种方式，每一个人都可以从商业和开源世界中受益
+
+作为一个成功的 LGPL 现实案例，请参考 [GStreamer](http://gstreamer.freedesktop.org/)。
+
+如果你不想碰上法律问题，必须了解「软件许可」是如何运作的。
+
+很重要的一点是，并非所有 r2 的插件都基于相同的许可协议，你将发现有些基于 GPL2、BSD 和 Apache 等等。
+
+出于以下的原因，我们正努力尽可能的收缩和挤压所有 GPL 代码：
+
+- GPL 是一个病毒性的许可证 
+- 你仅只能静态连接 GPL 程序，不利于他们（r2 的目标用户）
+- 你不能在私有产品中，动态连接 GPL 库
+
+假设制作一个私有软件，使用 r2 作为后端，你不想关心特定的构建或详细的许可问题，我推荐你通过 r2pipe 使用 r2，同时为你的 App 做一个独立的 r2 分发包。
+通过这种方式，GPL 的病毒性，不会感染你的软件，因为它们之间没有二进制的连接，仅有一个通过 pipe 或 socket 的文本协议。
+
+当前还处于 GPL 下的那一部分，很快将被替换或移除(旧的代码已经挪到 [radare2-extras](https://github.com/radare/radare2-extras) 库).
+
+- 一些外部的反汇编器
+- GRUB (libr/fs) - 分区和文件系统
+- GNU binutils 反汇编器 - （已基本被 Capstone 替换）
+- C++ 命名处理器（demangler）- (来源于 binutils)
+
+查找 r_asm 插件中的许可证：
+
+	$ rasm2 -L | grep GPL | grep -v LGPL
+	_dA_  16 32      arc         GPL3    Argonaut RISC Core
+	adA_  16 32 64   arm.gnu     GPL3    Acorn RISC Machine
+	_dA_  16 32      avr         GPL     AVR Atmel
+	_dAe  32         cris        GPL3    Axis Comm. 32-bit
+	adAe  32 64      mips.gnu    GPL3    MIPS CPU
+	_dAe  32         nios2       GPL3    NIOS II
+	_dA_  32 64      ppc.gnu     GPL3    PowerPC
+	_dA_  32         sh          GPL3    SuperH-4 CPU
+	_dA_  32 64      sparc.gnu   GPL3    Scalable Proc Arch
+	ad__  32         x86.olly    GPL2    OllyDBG X86 Disasm
+
+如果你想在自己私有的产品中发布 r2，请记住在你构建的时候，通过定制 `plugins.cfg` 或 执行 `./configure-plugins --rm-static [dir]` （挨个传
+入待删除模块的名称），删除所有 GPL 插件。
+
+如果你在「许可证」方面还有别的疑问，我建议你联系[Free Software Foundation](http://www.fsf.org) 或给我发邮件。
+
+--pancake
+
+<{/markdown}>
+</div>
+
+<{include}>zh/tail.tmpl<{/include}>
