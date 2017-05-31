@@ -42,7 +42,7 @@ This task requires implementing proper support for multibyte characters in RCons
 ![image](https://cloud.githubusercontent.com/assets/1408600/23970169/3c1ce88a-09c9-11e7-9dc7-0da71d9bc1c6.png)
 
 ## File formats
-### META - Portable Executable format [#921](https://github.com/radare/radare2/issues/6921)
+### META - Portable Executable format [#921](https://github.com/radare/radare2/issues/921)
 There are lot of missing features in the current PE file parser as you can see in this META Issue.
 
 ![](https://image.slidesharecdn.com/44con2013workshop-exploringtheportableexecutableformat-130916113833-phpapp01/95/exploring-the-portable-executable-format-18-638.jpg)
