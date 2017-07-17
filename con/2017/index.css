@@ -1,3 +1,8 @@
+@font-face {
+    font-family: ati8x8;
+    src: url(Px437_ATI_8x8.ttf)
+}
+
 html {
 	width: 100%;
 }
@@ -79,8 +84,8 @@ body {
 	position:absolute;
 	top:800px;
 	color:white;
-	font-size: 1.6em;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 1em;
+	font-family: ati8x8, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 .logo {
