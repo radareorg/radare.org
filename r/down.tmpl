@@ -167,22 +167,9 @@ Advanced Hexadecimal Editor initially designed for forensics, but quickly evolve
 
 <div class="block3">
 <h2>radare2 extras</h2>
-Yara, EWF, more archs, ...
+Yara, EWF, more archs, ... everything available via r2pm
 <pre class="code z">
-<span class='b'>~</span> <span class='r'>$</span> git clone https://github.com/radare/radare2-extras
-<span class='b'>~</span> <span class='r'>$</span> cd radare2-extras
-<span class='b'>~/radare2-extras</span> <span class='r'>$</span> ./configure --prefix=/usr
-<span class='b'>~/radare2-extras</span> <span class='r'>$</span> cd yara/yara3
-<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ../install-yara3.sh
-<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> ./configure --prefix=/usr
-<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> make
-<span class='b'>~/radare2-extras/yara/yara3</span> <span class='r'>$</span> sudo make install
-</pre>
-Or install them by hand
-<pre class='code z'>
-<span class='b'>~</span> <span class='r'>$</span> make
-<span class='b'>~</span> <span class='r'>$</span> cp plugin.so ~/.config/radare2/plugins
-<span class='b'>~</span> <span class='r'>$</span> R_DEBUG=1 r2 -qc. --
+<span class='b'>~</span> <span class='r'>$</span> r2pm update
 </pre>
 </div>
 
