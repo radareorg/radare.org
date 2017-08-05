@@ -134,6 +134,7 @@ Rair is a project that is planned to be the future radare2 implementation but in
 <li> w32 COM reversing - @newlog
 <li> jemalloc heap analysis - nax0r+soez
 <li> cfg based fuzzy hash - @Maxou56800 and @rbnctl
+The original design was published for SSTIC by ANSSI (only in fr-FR), and named machoc. This talk is about a reimplementation using r2. The basic operation is to convert the CFG tree of a function to a string, by naming nodes and recording jumps and calls, to concatenate the strings of all functions and generate a murmurhash3 of the whole. This construction produces a hash resisting minor modifications of source code for the hashed sample. Moreover, comparison à-la ssdeep is possible.
 <li> GSoC - students update
 <ul>
 <li> Windows Support
