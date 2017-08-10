@@ -1,6 +1,26 @@
 var oldStyle = null;
 var oldLogoStyle = null;
 
+var logoView = true;
+
+//Finds y value of given object
+function findPos(obj) {
+    var curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    return [curtop];
+    }
+}
+
+function jump(h) {
+    // var top = document.getElementById(h).offsetTop + pos;
+    // window.scrollTo(0, top);
+
+    window.scroll(0, findPos(document.getElementById(h)) - 58);
+}
+
 function setStyle(o, s) {
   /* required for Safari */
   for (var a in s) {
@@ -48,6 +68,7 @@ function initializeStuff() {
   var logo = document.getElementById('logo');
   var page = document.getElementById('page');
   var data = document.getElementById('data');
+  var navigation = document.getElementById('navigation');
   /* buttons */
   var ticket = document.getElementById('ticket');
   var apply = document.getElementById('apply');
@@ -62,54 +83,56 @@ function initializeStuff() {
     var curpos = document.body.scrollTop;
   
     if (curpos < 400) {
-if (ticket) {
-      /* change ticket button */
-      ticket.style.position='absolute';
-      ticket.style.top = '100px';
-      ticket.style.fontSize = '1.5em';
-}
-if (apply) {
-      /* change apply button */
-      apply.style.position='absolute';
-      apply.style.right = '10px';
-      apply.style.top = '10px';
-      apply.style.fontSize = '1.5em';
-}
-      /* logo relocation */
-      if (!topPage) {
-        scrolldown.style.visibility = 'visible';
-        logolink.href = '#main';
-        setStyle(logo, oldStyle);
-        setStyle(logoimg, oldLogoStyle);
-        topPage = true;
+      if (ticket) {
+            /* change ticket button */
+            ticket.style.position='absolute';
+            ticket.style.top = '100px';
+            ticket.style.fontSize = '1.5em';
       }
-      data.style.visibility = 'hidden';
-      page.style.top = 800 - (curpos * 2);
-    } else {
-if (ticket) {
-      /* change ticket button */
-      ticket.style.fontSize = '1em';
-      ticket.style.top = 20;
-      ticket.style.position='fixed';
-}
-if (apply) {
-      /* change apply button */
-      apply.style.fontSize = '1em';
-      apply.style.top = 20;
-      apply.style.right = '12em';
-      apply.style.position='fixed';
-}
+      if (apply) {
+            /* change apply button */
+            apply.style.position='absolute';
+            apply.style.right = '10px';
+            apply.style.top = '10px';
+            apply.style.fontSize = '1.5em';
+      }
+            /* logo relocation */
+            if (!topPage) {
+              scrolldown.style.visibility = 'visible';
+              navigation.style.visibility = 'hidden';
+              logolink.href = '#main';
+              setStyle(logo, oldStyle);
+              setStyle(logoimg, oldLogoStyle);
+              topPage = true;
+            }
+            data.style.visibility = 'hidden';
+            page.style.top = 800 - (curpos * 2);
+          } else {
+      if (ticket) {
+            /* change ticket button */
+            ticket.style.fontSize = '1em';
+            ticket.style.top = 20;
+            ticket.style.position='fixed';
+      }
+      if (apply) {
+            /* change apply button */
+            apply.style.fontSize = '1em';
+            apply.style.top = 20;
+            apply.style.right = '12em';
+            apply.style.position='fixed';
+      }
       /* logo relocation */
       logolink.href = '#top';
       topPage = false;
-      logoimg.style.height = '64px';
+      logoimg.style.height = '34px';
       data.style.visibility = 'visible';
+      navigation.style.visibility = 'visible';
       scrolldown.style.visibility = 'hidden';
-      logoimg.style.width = '64px';
+      logoimg.style.width = '34px';
       logoimg.style.padding = '10px';
       logo.style.backgroundColor = '#303030';
       logo.style.position = 'fixed';
-      logo.style.height = '84px';
+      logo.style.height = '48px';
       logo.style.width = '100%';
       logo.style.textAlign = 'left';
       logo.style.top = 0;

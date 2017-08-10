@@ -1,8 +1,8 @@
 <html>
 <head>
-<link rel="stylesheet" href="index.css">
-<script src="index.js"></script>
-<title>r2con-2017</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+    <title>r2con-2017</title>
 </head>
 <body>
 <!--
@@ -14,60 +14,69 @@
 </div>
 -->
 <div name="top" id="logo" class="logo">
-<a id="logolink" href="#main">
-<img id="logoimg" class="logoimg" src="img/r2con.png">
-</a>
-<br />
-<br />
-<br />
-<a href="#main">
-<img id="scrolldown" class="scrolldown" src="img/scrolldown.png">
-</a>
+    <a id="logolink" href="#main">
+        <img id="logoimg" class="logoimg" src="img/r2con.png">
+    </a>
+    <div class="navigation" id="navigation">
+        <a class="navlink" href="javascript:jump('what')">What</a>
+        <a class="navlink" href="javascript:jump('CFP')">CFP</a>
+        <a class="navlink" href="javascript:jump('why')">Why</a>
+        <a class="navlink" href="javascript:jump('where')">When</a>
+        <a class="navlink" href="javascript:jump('who')">Who</a>
+        <a class="navlink" href="javascript:jump('trainings')">Trainings</a>
+        <a class="navlink" href="javascript:jump('talks')">Talks</a>
+        <a class="navlink" href="javascript:jump('where')">Where</a>
+    </div>
+    <br />
+    <br />
+    <br />
+    <a href="#main">
+        <img id="scrolldown" class="scrolldown" src="img/scrolldown.png">
+    </a>
 </div>
 <div id="page" class="page">
-<div class="text">
-<a name="main">
-<div id="data" class="data">
-<br /><br />
-</a>
-<h1>What</h1>
-The first^Wsecond official congress about <a href="http://rada.re/">radare</a>.
-<br />
-<br />
-Highlighting all aspects of radare2, this congress brings the oportunity to everyone to learn more about manual and automated reverse engineering, static and dynamic analysis, fuzzing, forensics, exploiting, unpacking, malware, ... this congress allows everyone to understand how to use r2 and how to extend it for your own purposes, it will also serve as an excuse for all developers to meet and discuss design and implementation tips for the future of the project.
-<br /> <br />
-The congress will be composed by 2 days of trainings (english and spanish) and 2 days of single-track talks with parallel hackathon on open place to meet people.
+    <div class="text">
+        <a name="main">
+            <div id="data" class="data">
+                <br /><br />
+            </a>
+            <h1 id="what">What</h1>
+            The first^Wsecond official congress about <a href="http://rada.re/">radare</a>.
+            <br />
+            <br />
+            Highlighting all aspects of radare2, this congress brings the oportunity to everyone to learn more about manual and automated reverse engineering, static and dynamic analysis, fuzzing, forensics, exploiting, unpacking, malware, ... this congress allows everyone to understand how to use r2 and how to extend it for your own purposes, it will also serve as an excuse for all developers to meet and discuss design and implementation tips for the future of the project.
+            <br /> <br />
+            The congress will be composed by 2 days of trainings (english and spanish) and 2 days of single-track talks with parallel hackathon on open place to meet people.
 
-<center>
-<br /><br />
-<a href="http://events.eventzilla.net/e/r2con-2017-2138904925">
-<div style="background-color:yellow;width:10em;border:5px;border-color:blue;font-size:2em">
-BUY TICKETS
-</div>
-</a>
-</center>
-<br /> <br />
-The ticket includes the following:
-<ul>
-<li> All trainings (days wed 6 and thu 7)
-<li> All talks (days fri 8 and sat 9)
-<li> Snacks during talks and dinner at <a href="http://www.mussolrestaurant.com/">Mussol restaurant</a>
-<ul>
-<li> Dinner included in price if you are a speaker
-<li> Vegetarian option
-</li>
-</ul>
-<li> Merchandising (until 2017-08-01)
-<ul>
-<li> (tshirt, pin, stickers, bag)
-<li> + extra stuff at a special price (camisetasfrikis)
-</ul>
-</ul>
+            <center>
+                <br /><br />
+                <a href="http://events.eventzilla.net/e/r2con-2017-2138904925">
+                    <div style="background-color:yellow;width:10em;border:5px;border-color:blue;font-size:2em">
+                        BUY TICKETS
+                    </div>
+                </a>
+            </center>
+            <br /> <br />
+            The ticket includes the following:
+            <ul>
+                <li> All trainings (days wed 6 and thu 7) </li>
+                <li> All talks (days fri 8 and sat 9) </li>
+                <li> Snacks during talks and dinner at <a href="http://www.mussolrestaurant.com/">Mussol restaurant</a> </li>
+                <ul>
+                    <li> Dinner included in price if you are a speaker
+                        <li> Vegetarian option </li>
+                    </ul>
+                    <li> Merchandising (until 2017-08-01) </li>
+                    <ul>
+                        <li> (tshirt, pin, stickers, bag) </li>
+                        <li> + extra stuff at a special price (camisetasfrikis) </li>
+                    </ul>
+                </ul>
 
-<h1>Call For Papers</h1>
-The talks and trainings in r2con must involve r2 in some way or another, we are not imposing any strict topic, the August's 1st we will publish the schedule with all the accepted talks.
-<br /><br />
-You can send your talk proposals (45m of duration) to <a href="mailto:r2con@radare.org">r2con@radare.org</a>
+                <h1 id="CFP">Call For Papers</h1>
+                The talks and trainings in r2con must involve r2 in some way or another, we are not imposing any strict topic, the August's 1st we will publish the schedule with all the accepted talks.
+                <br /><br />
+                You can send your talk proposals (45m of duration) to <a href="mailto:r2con@radare.org">r2con@radare.org</a>
 
 <!--
 <center>
@@ -77,11 +86,11 @@ You can send your talk proposals (45m of duration) to <a href="mailto:r2con@rada
 
 <br />
 <br />
-<h1>Why</h1>
+<h1 id="why">Why</h1>
 Because in 2016, the radare project turns 10 year old and the community and interest is big enough to fill a conference. And the project evolves pretty fast, so it makes sense to repeat the event in 2017 to celebrate the 11th anniversary.
-<h1>When</h1>
+<h1 id="when">When</h1>
 September 6, 7, 8, 9
-<h1>Who</h1>
+<h1 id="who">Who</h1>
 Everyone: from hackers to developers, from users to companies, from curious to experts.
 <br /> <br />
 Tickets bought before August 15th will be rewarded with some r2 merchandising.
@@ -91,83 +100,437 @@ In addition you can save the shipping costs and get lowered prices at <a href="h
 
 Please send more talks, the CFP is not closed yet, and there's no schedule defined atm.
 
-<h1>6th Wednesday Trainings at <a href="https://maps.google.com/maps?ll=41.386608,2.16402&z=16&t=m&hl=en-US&gl=ES&mapclient=embed&daddr=Universitat%20de%20Barcelona%20Gran%20Via%20de%20les%20Corts%20Catalanes%2C%20585%2008007%20Barcelona@41.386608,2.16402">UB</a></h1>
+<h1 id="trainings">6th Wednesday Trainings at <a href="https://maps.google.com/maps?ll=41.386608,2.16402&z=16&t=m&hl=en-US&gl=ES&mapclient=embed&daddr=Universitat%20de%20Barcelona%20Gran%20Via%20de%20les%20Corts%20Catalanes%2C%20585%2008007%20Barcelona@41.386608,2.16402">UB</a></h1>
 <ul>
-<li> r0 10h-14h Beginner Training (pancake, alvarofe)
-<li> r0 15h-19h Hackathon (learn, ask, experiment, play)
-<li> r1 14h-18h Intro to Unpacking on Windows (newlog, Giomismo, zlowram)
+    <li> r0 10h-14h Beginner Training (pancake, alvarofe) </li>
+    <li> r0 15h-19h Hackathon (learn, ask, experiment, play) </li>
+    <li> r1 14h-18h Intro to Unpacking on Windows (newlog, Giomismo, zlowram) </li>
 </ul>
 <h1>7th Thursday Trainings at <a href="https://maps.google.com/maps?ll=41.386608,2.16402&z=16&t=m&hl=en-US&gl=ES&mapclient=embed&daddr=Universitat%20de%20Barcelona%20Gran%20Via%20de%20les%20Corts%20Catalanes%2C%20585%2008007%20Barcelona@41.386608,2.16402">UB</a></h1>
 <ul>
-<li> r0 10h-13h Beginner Training (maijin, xvilka)
-<li> r0 14h-19h Hackathon (learn, share, ask, play, ...)
-<li> r1 12h-19h Tiny uControllers firmware reversing and exploiting (dark_k3y)
+    <li> r0 10h-13h Beginner Training (maijin, xvilka) </li>
+    <li> r0 14h-19h Hackathon (learn, share, ask, play, ...) </li>
+    <li> r1 12h-19h Tiny uControllers firmware reversing and exploiting (dark_k3y) </li>
 </ul>
-<h1>8th - 9th Friday-Saturday Talks</h1>
-<ul>
-<li> r2k - kernel analyzing and debugging - @nighterman
+
+<h1 id="talks">8th - 9th Friday-Saturday Talks</h1>
+
+<div class="talk">
+    <div>
+        <div class="speaker">
+            <img src="https://avatars3.githubusercontent.com/u/8380459?v=4&s=460" class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Jaime Pe&ntilde;alba</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://twitter.com/NighterMan">@nighterman</a>, 
+                    <a class="handle" href="https://github.com/jpenalbae">@jpenalbae</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="talk-title">Road to the kernel</div>
+    <p class="talk-description">Altough r2 might not be the best tool to work with when dealing with the Linux kernel, a signifficant effort has been done since last year in order to add better support when delaling with kernels and some other low level stuff such as bootloaders or embedded systems. During the talk we will discuss about the multiple GSoC and RSoC projects making this possible, such as r2k and gdbserver, creating scripts to examine a live kernel or debug race conditions among other topics.</p>
+    <div class="talk-title">R2con badge</div>
+    <p class="talk-description">During the talk we will discuss about the creation processes of the badge, explaining how I went from being potato in electronics to manufacturing a badge. We will cover the hole processes: prototyping, design, debugging, assembly, problems encountered during the journey, tools required, etc...</p>
+</div>
+
+<br>
+<div class="talk">
+    <div>
+        <div class="speaker">
+            <img src="https://www.rootedcon.com/public/uploads/speakers2017/abel_valero.png" class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Abel Valero</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://twitter.com/sanguinawer">@sanguinawer</a>, 
+                    <a class="handle" href="https://github.com/skuater">@SkUaTeR</a>
+                </span>
+            </div>
+        </div>
+        <div class="speaker">
+            <img src="https://pbs.twimg.com/profile_images/645166967796670464/9hteWUWP_400x400.jpg"  class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Sergi Alvarez (pancake)</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://twitter.com/trufae">@trufae</a>, 
+                    <a class="handle" href="https://github.com/trufae">@trufae</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="talk-title">r2wars</div>
+    <p class="talk-description">This talk will introduce the attendees to the r2wars game, which will be one of the competitions that will happen during the congress. The game consists in writing small programs in assembly code for x86, mips, arm and z80 to make them fight until death between them. The purpose of them would be to find the other player in memory to corrupt it and make it crash. The competition is an excuse for finding bugs in the assemblers, emulators and r2 itself, and have fun together :D</p>
+</div>
+
+<br>
+<div class="talk">
+    <div>
+        <div class="speaker">
+            <img src="https://pbs.twimg.com/profile_images/645166967796670464/9hteWUWP_400x400.jpg"  class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Sergi Alvarez (pancake)</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://twitter.com/trufae">@trufae</a>, 
+                    <a class="handle" href="https://github.com/trufae">@trufae</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="talk-title">Hidden gems in r2land</div>
+    <p class="talk-description">It is known that r2 is capable for doing lot of things but most people ignore how to use those magic tricks, the talk will show several small tricks and features that are not widely known but very handy for many situations.</p>
+</div>
+
+<br>
+<div class="talk">
+    <div>
+        <div class="speaker">
+            <img src="https://pbs.twimg.com/profile_images/674688315573059584/FSYM4sKL_400x400.jpg"  class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Francesco Tamagni</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://twitter.com/bezjaje">@bezjaje</a>, 
+                    <a class="handle" href="https://github.com/mrmacete">@mrmacete</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="talk-title">r2frida</div>
+    <p class="talk-description">r2frida brings the superpowers of Frida's dynamic instrumentation into radare2 workflow. It lets you disassemble, search, trace execution, live patch, call functions and more on running apps in many different architectures. Let's take a quick tour of killer use cases and recent improvements with an eye to the future.</p>
+</div>
+
+
+<br>
+<div class="talk">
+    <div>
+        <div class="speaker">
+            <img src="https://lh3.googleusercontent.com/-GYORdjg-yjzlhfKcOR1GS5vkNlTA8amYkcIIqjQ0j11GVueBDs41pKETTOxvkNwCwcsewNOYHqZdh4L9Q=w1920-h1080-no"  class="speaker"/>
+            <div class="speaker-data">
+                <span class="name">Gerardo Garc&iacute;a</span> <br />
+                <span class="handle">
+                    <a class="handle" href="https://github.com/killabytenow">@killabytenow</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="talk-title">Limits of ESIL</div>
+    <p class="talk-description">After developing the ESIL emulator for the AVR chipset family we decided to
+        make a critical reflection about the limitations and lacks found during the
+        developing of this emulator. The idea of this quick talk is to expose the
+        current limitations of r2 when emulating real hardware, commenting the
+        limitations we found, how we avoid them and what we think that should be
+        improved in next versions of r2. We think that the firmware or software
+        emulation under a reversing environment may be a great feature, specially when
+        dealing with special hardware or microcontrollers. (15 min)</p>
+    </div>
+
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/829599022520360960/Vk2e-D2N_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Maite Moreno</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/mmorenog">@mmorenog</a>
+                    </span>
+                </div>
+            </div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/1250418539/sanchez_400x400.JPG"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Antonio S&aacute;nchez</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/plutec_net">@plutec_net</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">r2yara</div>
+        <p class="talk-description">The way to use the powerful information extracted from r2 to catch malware is creating a module for Yara, that's the point! With this talks we will try to explain all the features and receive feedback from the community to improve it.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://avatars1.githubusercontent.com/u/917142?v=4&s=400"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">ak42</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="#">@ak42</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">Pimp my Triton</div>
+        <p class="talk-description">Description pending.</p>
+    </div>
+
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/784037258190057473/Osews8Fx_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Isabel Romero</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/inromx">@inromx</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">Forensics with r2</div>
+        <p class="talk-description">How to recover and get information about removed or damaged files within a file system using r2.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/466541188741226496/IDlMVblj_400x400.png"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Eduardo Novella</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/enovella_">@enovella_</a>
+                    </span>
+                </div>
+            </div>
+            <div class="speaker">
+                <img src="https://avatars1.githubusercontent.com/u/917142?v=4&s=400"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Dana Geist</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="#">@handle</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">r2 the Rhme3!</div>
+        <p class="talk-description">The RHme (Riscure Hack me) is a low level hardware CTF that comes in the form of an Arduino board (AVR architecture). It involves a set of SW and HW challenges to test your skills in different areas such as side channel analysis, fault injection, reverse-engineering and software exploitation. In our talk we will briefly recap RHme2 and introduce the upcoming RHme3. This year we decided to create a special target called the Riscurino board which features CAN controllers for a real automotive hacking experience!<br/>During the r2con we challenge you to solve as many challenges as you can using radare2. Are you up to the task? By the time the r2con takes place the registration for RHme3 will be closed. However, we reserved  5 Riscurino boards for giving away during the conference. Be at r2con and win one of these boards by solving the qualification challenge(s) using radare2!</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/1652473594/bar_dragon_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">dukeBarman</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/dukebarman">@dukebarman</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">IoT malware analysis</div>
+        <p class="talk-description">We talk about IoT malware evolution history. We will use the real examples of reversing IoT malaware, like Mirai, BrickerBot and others. At the same time we will concentrate on the methods of pwning home devices by using vulnerabilities.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/699266370/Avatar_short_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Hugo Teso</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/hteso">@hteso</a>, 
+                        <a class="handle" href="https://github.com/hteso">@hteso</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">Iait&#333;</div>
+        <p class="talk-description">r2 finally has a GUI, yes. It was presented in the latest r2con and this year we will take a look at the current status, the future plans and show how developers can contribute.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/378800000859020819/KDjWlA4K_400x400.jpeg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Lars Haukli</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/zutle">@zutle</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">zdbg</div>
+        <p class="talk-description">The zdbg plugin hotwires r2 to a virtual machine to turn it into a stealthy kernel-mode debugger. Our Windows 10 target does not even know it is being debugged. Not only are we enabling r2 to debug code running in the kernel, but also to work as a systemwide debugger to debug multiple user-mode processes simultaneously, including those nasties that debug themselves!</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://avatars1.githubusercontent.com/u/917142?v=4&s=400"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">condret</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="#">@condret</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">SIOL</div>
+        <p class="talk-description">Description pending.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://avatars3.githubusercontent.com/u/10424605?v=4&s=460"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Ahmed Abd El Mawgood</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://github.com/oddcoder">@oddcoder</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">RAIR(RAdare In Rust)</div>
+        <p class="talk-description">Rair is a project that is planned to be the future radare2 implementation but in rust. we will look into it's challenges that appeared during transition to rust, the project's current state, as well as advantages and disadvantages of moving to reimplmenting the project in rust.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/530684362107285504/4iGVd5XS_400x400.png"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Albert L&oacute;pez</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/Newlog_">@Newlog</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">w32 COM reversing</div>
+        <p class="talk-description">Description pending.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/895763604930211841/oFtSUYjo_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Ignacio Sanmillan</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/__n4x0r__">@n4x0r</a>
+                    </span>
+                </div>
+            </div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/2072581890/cara3_400x400.png"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Javier PR (soez)</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/javierprtd">@javierprtd</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">jemalloc heap analysis</div>
+        <p class="talk-description">Description pending.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/754971823524179968/OmoSoDfi_400x400.jpg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">Maxou56800</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/Maxou56800">@Maxou56800</a>
+                    </span>
+                </div>
+            </div>
+            <div class="speaker">
+                <img src="https://pbs.twimg.com/profile_images/567031858848751617/g7se0uBH_400x400.jpeg"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">RbN</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/rbnctl">@rbnctl</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">cfg based fuzzy hash</div>
+        <p class="talk-description">The original design was published for SSTIC by ANSSI (only in fr-FR), and named machoc. This talk is about a reimplementation using r2. The basic operation is to convert the CFG tree of a function to a string, by naming nodes and recording jumps and calls, to concatenate the strings of all functions and generate a murmurhash3 of the whole. This construction produces a hash resisting minor modifications of source code for the hashed sample. Moreover, comparison à-la ssdeep is possible.</p>
+    </div>
+
+    <br>
+    <div class="talk">
+        <div>
+            <div class="speaker">
+                <img src="https://avatars1.githubusercontent.com/u/917142?v=4&s=400"  class="speaker"/>
+                <div class="speaker-data">
+                    <span class="name">GSoC Students</span> <br />
+                    <span class="handle">
+                        <a class="handle" href="https://twitter.com/radareorg">@radareorg</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="talk-title">GSoC - students update</div>
+        <p class="talk-description">
+            asasdfsdfs
+            <ul>
+                <li> Windows Support </li>
+                <li> Reverse Debugging </li>
+                <li> GDB Server </li>
+            </ul>
+        </p>
+    </div>
+
+
+
+
 <!--
 <li> diaphora - @pancake, @joxeankoret
 <li> Anal cLEMENCy
 -->
-<li> r2wars - @skuater, @pancake
-This talk will introduce the attendees to the r2wars game, which will be one of the competitions that will happen during the congress. The game consists in writing small programs in assembly code for x86, mips, arm and z80 to make them fight until death between them. The purpose of them would be to find the other player in memory to corrupt it and make it crash. The competition is an excuse for finding bugs in the assemblers, emulators and r2 itself, and have fun together :D
-<li> Hidden gems in r2land - @pancake
-It is known that r2 is capable for doing lot of things but most people ignore how to use those magic tricks, the talk will show several small tricks and features that are not widely known but very handy for many situations.
-<li> r2frida - @mrmacete <br/>
-r2frida brings the superpowers of Frida's dynamic instrumentation into radare2 workflow. It lets you disassemble, search, trace execution, live patch, call functions and more on running apps in many different architectures. Let's take a quick tour of killer use cases and recent improvements with an eye to the future.
-<li> Limits of ESIL - @killabytenow<br/>
-After developing the ESIL emulator for the AVR chipset family we decided to
-make a critical reflection about the limitations and lacks found during the
-developing of this emulator. The idea of this quick talk is to expose the
-current limitations of r2 when emulating real hardware, commenting the
-limitations we found, how we avoid them and what we think that should be
-improved in next versions of r2. We think that the firmware or software
-emulation under a reversing environment may be a great feature, specially when
-dealing with special hardware or microcontrollers. (15 min)</li>
-<li> r2yara - @mmorenog + @plutec_net <br/>
-  The way to use the powerful information extracted from r2 to catch malware is creating a module for Yara, that's the point! With this talks we will try to explain all the features and receive feedback from the community to improve it.
-<li> Pimp my Triton - ak42
-<li> Forensics with r2 - inromx
-  How to recover and get information about removed or damaged files within a file system using r2. 
-<li> r2 the Rhme3! - @enovella_ and Dana Geist. <br/>
-The RHme (Riscure Hack me) is a low level hardware CTF that comes in the form of an Arduino board (AVR architecture). It involves a set of SW and HW challenges to test your skills in different areas such as side channel analysis, fault injection, reverse-engineering and software exploitation. In our talk we will briefly recap RHme2 and introduce the upcoming RHme3. This year we decided to create a special target called the Riscurino board which features CAN controllers for a real automotive hacking experience!<br/>During the r2con we challenge you to solve as many challenges as you can using radare2. Are you up to the task? By the time the r2con takes place the registration for RHme3 will be closed. However, we reserved  5 Riscurino boards for giving away during the conference. Be at r2con and win one of these boards by solving the qualification challenge(s) using radare2!
-<li> IoT malware analysis - @dukebarman
-  We talk about IoT malware evolution history. We will use the real examples of reversing IoT malaware, like Mirai, BrickerBot and others. At the same time we will concentrate on the methods of pwning home devices by using vulnerabiities.
-<li> Iaitō - @hteso <br/>
-  r2 finally has a GUI, yes. It was presented in the latest r2con and this year we will take a look at the current status, the future plans and show how developers can contribute.
-<li> zdbg - @zutle <br/>
-The zdbg plugin hotwires r2 to a virtual machine to turn it into a stealthy kernel-mode debugger. Our Windows 10 target does not even know it is being debugged. Not only are we enabling r2 to debug code running in the kernel, but also to work as a systemwide debugger to debug multiple user-mode processes simultaneously, including those nasties that debug themselves!
-<li> SIOL - @condret
-<li> RAIR(RAdare In Rust) - @oddcoder
-Rair is a project that is planned to be the future radare2 implementation but in rust. we will look into it's challenges that appeared during transition to rust, the project's current state, as well as advantages and disadvantages of moving to reimplmenting the project in rust.
-<li> w32 COM reversing - @newlog
-<li> jemalloc heap analysis - nax0r+soez
-<li> cfg based fuzzy hash - @Maxou56800 and @rbnctl
-The original design was published for SSTIC by ANSSI (only in fr-FR), and named machoc. This talk is about a reimplementation using r2. The basic operation is to convert the CFG tree of a function to a string, by naming nodes and recording jumps and calls, to concatenate the strings of all functions and generate a murmurhash3 of the whole. This construction produces a hash resisting minor modifications of source code for the hashed sample. Moreover, comparison à-la ssdeep is possible.
-<li> GSoC - students update
-<ul>
-<li> Windows Support
-<li> Reverse Debugging
-<li> GDB Server
-</ul>
-</ul>
 
-<h1>Where</h1>
+<h1 id="where">Where</h1>
 The event will happen in two places:
 <br />
 <br />
 <center>
-(Wednesday + Thursday) Trainings (UB, Gran Via de les Corts Catalanes, 585)
-<br />
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.4235188805387!2d2.161831314263729!3d41.38660797926421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f34cbed9d3%3A0xba3e12058122ec95!2sUniversitat+de+Barcelona!5e0!3m2!1sen!2ses!4v1496070343022"
-width="70%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+    (Wednesday + Thursday) Trainings (UB, Gran Via de les Corts Catalanes, 585)
+    <br />
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.4235188805387!2d2.161831314263729!3d41.38660797926421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f34cbed9d3%3A0xba3e12058122ec95!2sUniversitat+de+Barcelona!5e0!3m2!1sen!2ses!4v1496070343022"
+    width="70%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
 </center>
 <br />
 <center>
-(Friday + Saturday) Talks + Hackathon (MediaPro building, Diagonal 177)
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.6117774218324!2d2.191723514264588!3d41.40423667926258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3234bdba4ef%3A0xcde2c0c49e28d484!2sTallers+Area%2C+Avinguda+Diagonal%2C+177%2C+08018+Barcelona!5e0!3m2!1sen!2ses!4v1496070307182"
-width="70%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+    (Friday + Saturday) Talks + Hackathon (MediaPro building, Diagonal 177)<br />
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.6117774218324!2d2.191723514264588!3d41.40423667926258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3234bdba4ef%3A0xcde2c0c49e28d484!2sTallers+Area%2C+Avinguda+Diagonal%2C+177%2C+08018+Barcelona!5e0!3m2!1sen!2ses!4v1496070307182"
+    width="70%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
 </center>
 
 </pre>
