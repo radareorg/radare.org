@@ -7,7 +7,6 @@ html {
 	width: 100%;
 }
 
-
 b {
 	color: #179AB2;
 }
@@ -118,6 +117,10 @@ h1 {
 	color: #909090;
 }
 
+h2 {
+	color: white;
+	font-size: 3em;
+}
 a {
 	color: #179AB2;
 	font-weight: bold;
