@@ -6,16 +6,8 @@ git clone git://github.com/radare/radare2
 </pre>
 -->
 <center>
-<a href="?p=crowdfunding">
-<div class="banner">
-Radare Summer Of Code<br />
-Crowdfunding
-</div>
-</a>
-<center>
 <a title=Github href=http://github.com/radare><img src=../img/github-ok32.png /></a>
 <a title=Twitter href=http://twitter.com/radareorg><img src=../img/twitter-ok32.png /></a>
-<a title=Bitcoin href=?p=crowdfunding><img src=../img/bitcoin-ok32.png /></a>
 </center>
 	<table cellspacing=10>
 	<tr>
