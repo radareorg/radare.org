@@ -226,3 +226,18 @@ a.handle {
 	color: #1da1f3;
 	font-weight: normal;
 }
+
+.buy-button {
+	background-color:#ffff99;
+	width:10em;
+	padding:5px;
+	padding-top:8px;
+	border:6px solid #179ab2;
+	border-radius: 10px;
+	font-size:2em;
+}
+
+.buy-button:hover {
+	background-color:yellow;
+	font-decoration: none;
+}
