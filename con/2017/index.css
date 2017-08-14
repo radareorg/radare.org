@@ -239,5 +239,6 @@ a.handle {
 
 .buy-button:hover {
 	background-color:yellow;
+	border:6px solid #179af0;
 	font-decoration: none;
 }
