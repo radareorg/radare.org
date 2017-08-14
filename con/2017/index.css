@@ -4,6 +4,7 @@
 }
 
 html {
+overflow-x:hidden;
 	width: 100%;
 }
 
@@ -18,6 +19,7 @@ p {
 }
 
 body {
+overflow-x:hidden;
 	background-image:url(img/bcn2.jpg);
 // trn
 // sub
@@ -157,10 +159,13 @@ a.navlink:hover {
 
 div.talk {
 	background-color: #202020;;
-	padding-top: 10px;
-	padding-bottom:  10px;
-	padding-left: 10px;
-	padding-right: 10px;
+ margin:5px;
+padding: 10px;
+    display: inline-block;
+width: 350px;
+    *display: inline;
+	border-radius: 10px;
+vertical-align:middle;
 }
 
 
