@@ -81,6 +81,9 @@ function initializeStuff() {
   
   window.addEventListener("scroll", function onScroll() {
     var curpos = document.body.scrollTop;
+    if (curpos === 0) {
+      curpos = window.scrollY;
+    }
   
     if (curpos < 400) {
       if (ticket) {
