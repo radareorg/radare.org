@@ -1,5 +1,5 @@
 PAGES=index down docs pics me talks cmp todo 
-PAGES+=license community whouses history rsoc
+PAGES+=license community whouses history
 PAGES+=blessr2 jobs fileformat arch
 NBIN=node_modules/.bin
 REMOTE?=/tmp/www
