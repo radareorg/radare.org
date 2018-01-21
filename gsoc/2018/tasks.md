@@ -17,10 +17,17 @@ So the most important part of supporting heap analysis is to create a new subset
 
 ## META - Graphs [#6967](https://github.com/radare/radare2/issues/6967)
 
-### Binary diffing (radiff2)
+### Better unicode support in graphs
+
+Currently not always Unicode characters shown in the canvas (which is used for drawing graph nodes)
+
+See [META Unicode support](https://github.com/radare/radare2/issues/2032)
+
+### Binary diffing (radiff2) [#6971](https://github.com/radare/radare2/issues/6971)
 
 Bindiffing has been a known feature of radiff2, but it has been unmaintained for years.
-TODO: add a list what is missing/need to be done
+
+[Radiff2 related issues](https://github.com/radare/radare2/labels/radiff2)
 
 ### Smarter lines in graphs
 
@@ -28,8 +35,6 @@ Avoid overlapping edges, currently the ascii art graphs does not overlap nodes, 
 
 ![Nodes overlapping edges](https://cloud.githubusercontent.com/assets/10424605/19608188/36215ed8-97d8-11e6-8a7f-df3aef804454.png)
 ![Edges overlapping edges](https://cloud.githubusercontent.com/assets/10424605/19608195/3b7f4e1c-97d8-11e6-81ed-a6b515b1c7d9.png)
-
-* canvas still have problems with utf8
 
 ### Node groups
 
@@ -42,10 +47,13 @@ This task is necessary when node grouping or layout have changed, this informati
 Same goes for the visual panels mode. we need a way to save/restore the panels.
 
 ## Diassemblers and assemblers
+### WebAssembly analysis
+Radare2 already supports disassembling [WebAssembly](http://webassembly.org) but analysis is barely implemented. See [wasm](https://github.com/athre0z/wasm) and [wasmdec](https://github.com/wwwg/wasmdec) as a good examples. Implementing `pdc` (pseudocode) on top of this analysis is also a good idea.
+
+### Java
+Java support has landed in radare2 a long time ago. At the same time it is largely unused, full of bugs and poorly written. Some code (e.g. [anal_extra](https://github.com/radare/radare2/blob/master/libr/anal/anal_ex.c)) doesn't really fit its place and can be moved/refactored on top of the modern radare2 architecture design.
+
 ### Lua bytecode
-
-
-again? who the hell needs lua or python disassemblers in r2? wasm or java are more important, or even DEX imho.
 
 Radare2 has support for LUA bytecode disassembly and analysis but lack the proper testing thus can
 be easily broken. We need to add the proper tests for the architecture in [radare2-regressions](https://github.com/radare/radare2-regressions) suite and fix the bugs if they appear.
@@ -57,12 +65,6 @@ if there are bugs (and fix them)
 See [universal python disassembler](https://github.com/evanw/unwind) for example and [Issue #4228](https://github.com/radare/radare2/issues/4228) for current state of it.
 
 ![image](https://image.slidesharecdn.com/tailbytespygotham-140819135745-phpapp02/95/tco-in-python-via-bytecode-manipulation-7-638.jpg)
-
-### WebAssembly analysis
-Radare2 already supports disassembling [WebAssembly](http://webassembly.org) but analysis is barely implemented. See [wasm](https://github.com/athre0z/wasm) and [wasmdec](https://github.com/wwwg/wasmdec) as a good examples. Implementing `pdc` (pseudocode) on top of this analysis is also a good idea.
-
-### Java
-Java support has landed in radare2 a long time ago. At the same time it is largely unused, full of bugs and poorly written. Some code (e.g. [anal_extra](https://github.com/radare/radare2/blob/master/libr/anal/anal_ex.c)) doesn't really fit its place and can be moved/refactored on top of the modern radare2 architecture design.
 
 ## META - RAGG2 [#6949](https://github.com/radare/radare2/issues/6949)
 
@@ -128,17 +130,7 @@ multidex is improtatn feature to support. as well as the feature of loading a ja
 
 ![image](https://cloud.githubusercontent.com/assets/1408600/23970539/62632152-09ca-11e7-976e-e35f067af344.png)
 
-### Fix dyldcache
-
-Dyldcache for user libraries and kernel modules is already supported, but it is not working because of the api changes in RBin. This task implies writing tests for dyldcache (we need to cook a dyldcache that can be distributable, not the ones from Apple). And fix the rbin api to get this working.
-
-already fixed this. we need to improve it, but dyldcache works again now in master.
-
-Support objc selrefs and better code analysis for objc/swift code.
-
-## Support iOS native debugging
-
-## Support Dalvik (and java?) debugging via jdwp://
+### Support objc selrefs and better code analysis for objc/swift code.
 
 ## Debugging
 ### Improving reversible debugging
@@ -153,10 +145,15 @@ Take ideas from Androguard, and be able to follow execution flow paths to unders
 ### Support to spawn Apps, not just programs
 See `debugserver -x springboard` and such to spawn apps from the backboard otherwise they get killed.
 
+### Support iOS native debugging
+Currently iOS native debugger cannot step, continue and set a breakpoint. See [#3461](https://github.com/radare/radare2/issues/3461)
+
+### Support Dalvik (and java?) debugging via jdwp://
+
 ## Miscellanous
-### Improving bindings
+### Improving bindings and r2pipe
 There are valabind generated bindings and we want them fixed, also merge r2pipe asyncronous and synchronous bindings.
-TODO: Add links
+See [radare2-bindings issues](https://github.com/radare/radare2-bindings/issues)
 
 ## rune
 

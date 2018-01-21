@@ -3,7 +3,7 @@
 ### INDEX
 
 -------------------
-# Radeco GSoC -- Idea List
+# Radeco GSoC (radare2 decompiler)
 
 [radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
@@ -43,8 +43,7 @@ Final term: Refined C output, written regression and unit tests, updated documen
  - [Radeco-lib issues](https://github.com/radare/radeco-lib/issues)
  - [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
 
----------------------
-# Cutter GSoC -- Idea List
+# Cutter (radare2 Qt/C++ GUI)
 
 [Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. It focuses on those whose are not yet radare2 users because of the learning curve, because they don't like CLI applications or because of the difficulty/instability of radare2.
 
@@ -84,7 +83,7 @@ Final term: Emulation support is complete, every debugging widget is fully imple
 ### Links/Resources
 None.
 
----------------------
+# Radare2
 
 ## Console interface improvement
 
@@ -92,7 +91,17 @@ Radare2 has a very flexible console interface, including command line, different
 Unix-like integration with other tools. But there are still a lot of things to be done.
 
 ### Task
+1. Unify similar code between all different modes
+2. Write a popup window widget for selection/autocompletion
+3. Add the table API/commands like it is done for graphs
+4. Add API and command for setting graph node background
+5. Show minigraph together with graph
+6. Radiff2 visual split-view mode
+7. Tests and documentation (r2book) for new commands
+
 ### Skills
+Student should know C and basics of terminal interaction (ESC sequences, TTY, etc)
+
 ### Difficulty
 Medium
 
@@ -105,6 +114,9 @@ tuning the redrawing performance.
 Huge benefits for end users in UX and better support for localisation
 
 ### Assess requirements for evaluations
+1st term: Fixed Unicode problems in visual modes, added the table API/commands
+2nd term: Show minigraph with graph, popup widget, node background
+Final term: Refactored and unified code in visual modes, radiff2 split view, fixed bugs, written the tests
 
 ### Mentors
  - xvilka
@@ -183,7 +195,8 @@ The student will gain a deep understanding of Microsoft's executable formats.
 Currently, there are no up to date modern tools to deal with .Net programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
 
 ### Assess requirements for midterm/final evaluation
-Midterm: Support of FAT binaries (Win32 native + .NET) in RBin, basic one
+1st term: Refactoring RBin to support FAT and multibin
+2nd term: Support of FAT binaries (Win32 native + .NET) with new RBin, basic one
 Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as long as other metadata. And show this metadata in rabin2 output as well.
 
 ### Mentors
@@ -279,7 +292,15 @@ Medium
 ### Benefits for the student
 ### Benefits for the project
 ### Assess requirements for evaluation
+1st term: Simple server in Go (with conflict resolution) is up and running + some tests of it
+2nd term: Add the hooks in radare2 that are can be easily placed, commands for connection to the
+server
+Final term: The rest of the hooks, autotesting them + server, written documentation (r2book)
+
 ### Mentors
+- xvilka
+- pancake
+
 ### Links/Resources
 - [Hooks for realtime collaboration](https://github.com/radare/radare2/issues/7410)
 
@@ -311,8 +332,9 @@ The student will improve their skills in software exploitation and solvers.
 This feature would greatly help during exploits development, and people would be able to ditch mona.py for radare2 ;)
 
 ### Assess requirements for evaluation
-midterm: ROP gadgets stored in sdb, and gadget classification
-final evaluation: a working ropchain builder
+1st term: ROP gadgets stored in sdb, and gadget classification
+2nd term: Writing integration with SMT solver and producing SMT constraints
+Final term: Working ropchain compiler, covered by tests and documented in r2book.
 
 ### Mentors
 - jvoisin

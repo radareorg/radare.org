@@ -53,7 +53,7 @@ Radare2 is modular: this means that it aims to make all the elements and feature
 
 # Instructions for students
 
-It is almost a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2017 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/gsoc/2018/tasks.html) as part of their application. Though you can also choose any of the GitHub issues for radare2 if they are big enough to be a qualification task, still small enough to be finished no more than in a couple of weeks.
+It is almost a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2018 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/gsoc/2018/tasks.html) as part of their application. Though you can also choose any of the GitHub issues for radare2 if they are big enough to be a qualification task, still small enough to be finished no more than in a couple of weeks.
 
 ## Programming languages
 
