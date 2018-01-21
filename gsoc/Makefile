@@ -1,4 +1,4 @@
-YEAR=2017
+YEAR=2018
 
 # TODO: make this dynamic .md
 INDEX=$(addprefix $(YEAR)/,$(addsuffix .tmpl,head index tail))
