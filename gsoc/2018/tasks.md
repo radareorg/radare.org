@@ -157,29 +157,17 @@ See [radare2-bindings issues](https://github.com/radare/radare2-bindings/issues)
 
 ## rune
 
-[rune](http://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. It aims to be a library with replaceable modules for reasoning about sections of a binary. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. Apart from ESIL, we would also be attempting to implement a new `Engine` with radeco-ir as the underlying representation.
-
-Working with rune would give the candidate a good exposure to projects in the radare-rust ecosystem and high-level structures used across libraries such as radeco-lib, arch-rs and libsmt-rs.
+[rune](https://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. 
 
 Below are some microtasks up for grabs:
 
-* Implementing breakpointing and hooks for the engine ([#7](https://github.com/radare/rune/issues/7))
-  Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIl patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
+* Implementing breakpointing and hooks for the engine ([#7](https://github.com/radare/rune/issues/7)) : Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIL patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
 
-* Integrating a test-benchmark and CI ([#3](https://github.com/radare/rune/issues/3))
-  Currently, most of the testing is either performed offline or as individual modules. We would like to have a solid test setup for the engine to check for module integration issues. We could use binaries used for testing radeco-lib or similar decompiler/symbolic engine libraries. . This could involve checking for deterministic `Context` (registers, memory, etc.) at different stages of the execution run.
+* Improvement to the CLI : rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
 
-* Improvement to the CLI
-  rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
+* Implementing a multithreaded model for `Explorer` : Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
 
-* Implementing a multithreaded model for `Explorer`
-  Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
-
-* Incremental solving features for rune ([#5](https://github.com/radare/rune/issues/5))
-  rune could leverage the use of this z3 feature. This task would involve research and discussion into implementing a PoC and benchmarking the results against a certain set of binaries to observe improvement in performance.
-
-* Implementing rerune - A new engine based on radeco-ir ([#8](https://github.com/radare/rune/issues/8))
-  This is a big task which could be broken down into multiple stages as mentioned in the above issue. Before we implement the `Engine`, we would be looking to move structures and traits to refactor major modules in rune. This would be extremely useful in bringing the project closer to complete integration with radeco-lib.
+* Incremental solving features for rune ([#5](https://github.com/radare/rune/issues/5)) : rune could leverage the use of this z3 feature. This task would involve research and discussion into implementing a PoC and benchmarking the results against a certain set of binaries to observe improvement in performance.
 
 Reference links:
 
