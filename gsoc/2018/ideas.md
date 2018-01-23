@@ -6,7 +6,7 @@
 
 [radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
-## Pseudo-C Backend for Decompiler
+## [Radeco] Pseudo-C Backend for Decompiler
 
 This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code. Below is a high-level task list that we think is appropriate for this timeline. Feel free to break it down further and bring in new ideas while writing your proposal.
 
@@ -46,7 +46,7 @@ This task allows to produce the first release of radeco which will be able to ge
 
 [Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. It focuses on those whose are not yet radare2 users because of the learning curve, because they don't like CLI applications or because of the difficulty/instability of radare2.
 
-## Implement Debugging and Emulation support
+## [Cutter] Implement Debugging and Emulation support
 Cutter currently only works in static analysis. The idea would be to implement a debugging view which allows to run/rerun the current binary with multiple r2 dbg/io plugins.
 
 ### Task
