@@ -155,31 +155,62 @@ Currently iOS native debugger cannot step, continue and set a breakpoint. See [#
 There are valabind generated bindings and we want them fixed, also merge r2pipe asyncronous and synchronous bindings.
 See [radare2-bindings issues](https://github.com/radare/radare2-bindings/issues)
 
+
+## radeco
+[radeco](https://github.com/radare/radeco-lib) is a binary analysis framework based on radare. This year, we lan to push it further to implement a working decompiler within radare2.
+
+Below are some tasks which help new contributors get start with radeco-lib:
+
+1. [Issue#114](https://github.com/radare/radeco-lib/issues/114). Standardize register usage and structs in radeco using arch-rs repo:
+Moving forward, we want to standardize and share common structs across
+radare-rust repositories. [arch-rs](https://github.com/radare/arch-rs) is an effort towards this and defines
+architecture related structs. We want to replace the current `SubRegisterFile`
+in radeco with structs from arch-rs.
+
+2. [Issue#117](https://github.com/radare/radeco-lib/issues/117). Parsing text-based radeco IR to Graph based IR:
+This would allow us to write IR to files and load them up at a later point in
+the analysis. It would be nice if we could do this with a parser generator in
+rust, such as [lalrpop](https://github.com/nikomatsakis/lalrpop)
+
+3. [Issue#118](https://github.com/radare/radeco-lib/issues/118). Implement a simple type system:
+Currently, we have the ability to mark nodes as either a scalar (not an
+address) or a reference (pointer/reference). We'd like to take this a step
+further and be able to assign primitive (C like) types for nodes to make the
+IR more expressive.
+
+4. [Issue#119](https://github.com/radare/radeco-lib/issues/119). Restore / Update / Improve CLI tool (aka. minidec/radeco):
+Minidec currently uses the old deprecated containers. This should be ported to
+use the latest container systems.
+
+5. [Issue#120](https://github.com/radare/radeco-lib/issues/120). Make accessing bindings in `RadecoFunction` more ergonomic:
+Currently, accessing `Bindings` in `RadecoFunction` is not elegant. We should
+improve support for this. This should also be extended to improve accessing of
+type and other node information related to these bindings.
+
+6. [Issue##46](https://github.com/radare/radeco-lib/issues/114). Port domtree analysis to use `petgraph` domtree construction:
+Dominator tree construction was one of the first analysis implemented in
+radeco. This needs some love. As such, it is works but is inconsistent with
+the other analysis API in radeco. A refactor is needed. petgraph (the graph
+library used inside radeco-lib for all graphs) has
+added dominator tree construction to its set of graph algorithms. It might be
+worthwhile to look into this and ride off their analysis instead of
+reimplementing/refactoring this inside radeco.
+
+As always, feel free to ask for help or discuss issues on #radare channel (telegram or irc, ping: @xvilka or @sushant94).
+
 ## rune
 
-[rune](http://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. It aims to be a library with replaceable modules for reasoning about sections of a binary. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. Apart from ESIL, we would also be attempting to implement a new `Engine` with radeco-ir as the underlying representation.
-
-Working with rune would give the candidate a good exposure to projects in the radare-rust ecosystem and high-level structures used across libraries such as radeco-lib, arch-rs and libsmt-rs.
+[rune](https://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. 
 
 Below are some microtasks up for grabs:
 
-* Implementing breakpointing and hooks for the engine ([#7](https://github.com/radare/rune/issues/7))
-  Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIl patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
+* Implementing breakpointing and hooks for the engine ([#7](https://github.com/radare/rune/issues/7)) : Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIL patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
 
-* Integrating a test-benchmark and CI ([#3](https://github.com/radare/rune/issues/3))
-  Currently, most of the testing is either performed offline or as individual modules. We would like to have a solid test setup for the engine to check for module integration issues. We could use binaries used for testing radeco-lib or similar decompiler/symbolic engine libraries. . This could involve checking for deterministic `Context` (registers, memory, etc.) at different stages of the execution run.
+* Improvement to the CLI : rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
 
-* Improvement to the CLI
-  rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
+* Implementing a multithreaded model for `Explorer` : Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
 
-* Implementing a multithreaded model for `Explorer`
-  Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
-
-* Incremental solving features for rune ([#5](https://github.com/radare/rune/issues/5))
-  rune could leverage the use of this z3 feature. This task would involve research and discussion into implementing a PoC and benchmarking the results against a certain set of binaries to observe improvement in performance.
-
-* Implementing rerune - A new engine based on radeco-ir ([#8](https://github.com/radare/rune/issues/8))
-  This is a big task which could be broken down into multiple stages as mentioned in the above issue. Before we implement the `Engine`, we would be looking to move structures and traits to refactor major modules in rune. This would be extremely useful in bringing the project closer to complete integration with radeco-lib.
+* Incremental solving features for rune ([#5](https://github.com/radare/rune/issues/5)) : rune could leverage the use of this z3 feature. This task would involve research and discussion into implementing a PoC and benchmarking the results against a certain set of binaries to observe improvement in performance.
 
 Reference links:
 

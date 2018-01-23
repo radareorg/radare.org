@@ -32,16 +32,17 @@ tasks:
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
 # Mentors
-Members of radare2 core team have volunteered to guide students for GSoC’17. They were already guiding the students for GSoC'16, GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
+Members of radare2 core team have volunteered to guide students for GSoC’18. They were already guiding the students for GSoC'16, GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
 - Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
-- Maxime Morin IRC: maijin - [@Maijin212](https://twitter.com/Maijin212)
+- Maxime Morin IRC: maijin -- [@Maijin212](https://twitter.com/Maijin212)
+- Sushant Dinesh tg: sushant94 -- [sushant94](https://github.com/sushant94)
 
 # Development methodology
 
-Currently, all repositories are hosted on [github](https://github.com/radare/) and bugs are tracked on github [issues](https://github.com/radare/radare2/issues). We are mostly using [HackMD](https://hackmd.io), IRC and Telegram for communication.
+Currently, all repositories are hosted on [github](https://github.com/radare/) and bugs are tracked on github [issues](https://github.com/radare/radare2/issues). We are mostly using [HackMD](https://hackmd.io), IRC and Telegram ([telegraph#radare](https://t.me/radare)) for communication.
 We have a [testsuite](https://github.com/radare/radare2-regressions) (that is running on [Travis CI](https://travis-ci.org/radare/radare2/), [AppVeyor](https://ci.appveyor.com/project/radare/radare2) and our [Jenkins](http://ci.rada.re/) instance) to test and verify that all the features are still working and that a merge or a commit don't break anything, and to find regressions.
 We encourage contributors to write test cases and documentation in order to verify the implementation and ensure that everything fits well together. There is also a [Coverity](https://scan.coverity.com/projects/416) instance to catch obvious defects. For the complex bugs and examples we're using our own [asciinema](http://asciinema.org/)
 

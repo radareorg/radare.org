@@ -6,9 +6,9 @@
 
 [radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
-## Pseudo-C Output
+## Pseudo-C Backend for Decompiler
 
-This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code.
+This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code. Below is a high-level task list that we think is appropriate for this timeline. Feel free to break it down further and bring in new ideas while writing your proposal.
 
 ### Task
 * Define and implement a subset of C Abstract Syntax Tree (AST)
@@ -23,7 +23,7 @@ The student should be familiar with Rust and decompilation basics or be able to 
 Advanced
 
 ### Benefits for the student
-The student will learn decompilation theory and working with AST tree.
+The student will learn decompilation theory and working with radeco-ir.
 
 ### Benefits for the project
 This task allows to produce the first release of radeco which will be able to generate readable C code.
@@ -33,9 +33,9 @@ This task allows to produce the first release of radeco which will be able to ge
 - xvilka
 
 ### Assess requirements for midterm/final evaluation
-1st term: Implementing AST generation.
-2nd term: Producing C code.
-Final term: Refined C output, written regression and unit tests, updated documentation (including r2book).
+- 1st term: Implementing AST generation.
+- 2nd term: Producing C code.
+- Final term: Refined C output, written regression and unit tests, updated documentation (including r2book).
 
 ### Links/Resources
  - [Radeco-lib](https://github.com/radare/radeco-lib)
@@ -75,9 +75,9 @@ for both static and dynamic analysis.
 - maijin
 
 ### Assess requirements for midterm/final evaluation
-1st term: Managed to separate seeks between differents widgets and has a PoC for debugging.
-2nd term: Fully working debugger with multiple IO, and fully working debugger widgets.
-Final term: Emulation support is complete, every debugging widget is fully implemented and documentation is done.
+- 1st term: Managed to separate seeks between differents widgets and has a PoC for debugging.
+- 2nd term: Fully working debugger with multiple IO, and fully working debugger widgets.
+- Final term: Emulation support is complete, every debugging widget is fully implemented and documentation is done.
 
 ### Links/Resources
 None.
@@ -113,9 +113,9 @@ tuning the redrawing performance.
 Huge benefits for end users in UX and better support for localisation
 
 ### Assess requirements for evaluations
-1st term: Fixed Unicode problems in visual modes, added the table API/commands
-2nd term: Show minigraph with graph, popup widget, node background
-Final term: Refactored and unified code in visual modes, radiff2 split view, fixed bugs, written the tests
+- 1st term: Fixed Unicode problems in visual modes, added the table API/commands
+- 2nd term: Show minigraph with graph, popup widget, node background
+- Final term: Refactored and unified code in visual modes, radiff2 split view, fixed bugs, written the tests
 
 ### Mentors
  - xvilka
@@ -149,9 +149,9 @@ Student will understand modern program analysis problems related to the type inf
 This feature will make radare2 usable for day-to-day reverse engineering of complex programs, and will make integration with radeco decompilator even easier.
 
 ### Assess requirements for midterm/final evaluation
-1st term: Improved test case and fixed bugs. Structure offsets autorecognition.
-2nd term: Handling of complex nested structures and type inference implementation.
-Final term: Documentation in r2book and commands, working testcases for types inference and offsets recognition
+- 1st term: Improved test case and fixed bugs. Structure offsets autorecognition.
+- 2nd term: Handling of complex nested structures and type inference implementation.
+- Final term: Documentation in r2book and commands, working testcases for types inference and offsets recognition
 
 ### Mentors
 - pancake
@@ -194,9 +194,9 @@ The student will gain a deep understanding of Microsoft's executable formats.
 Currently, there are no up to date modern tools to deal with .Net programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
 
 ### Assess requirements for midterm/final evaluation
-1st term: Refactoring RBin to support FAT and multibin
-2nd term: Support of FAT binaries (Win32 native + .NET) with new RBin, basic one
-Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as long as other metadata. And show this metadata in rabin2 output as well.
+- 1st term: Refactoring RBin to support FAT and multibin
+- 2nd term: Support of FAT binaries (Win32 native + .NET) with new RBin, basic one
+- Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as long as other metadata. And show this metadata in rabin2 output as well.
 
 ### Mentors
 - pancake
@@ -291,10 +291,9 @@ Medium
 ### Benefits for the student
 ### Benefits for the project
 ### Assess requirements for evaluation
-1st term: Simple server in Go (with conflict resolution) is up and running + some tests of it
-2nd term: Add the hooks in radare2 that are can be easily placed, commands for connection to the
-server
-Final term: The rest of the hooks, autotesting them + server, written documentation (r2book)
+- 1st term: Simple server in Go (with conflict resolution) is up and running + some tests of it
+- 2nd term: Add the hooks in radare2 that are can be easily placed, commands for connection to the server
+- Final term: The rest of the hooks, autotesting them + server, written documentation (r2book)
 
 ### Mentors
 - xvilka
@@ -331,9 +330,9 @@ The student will improve their skills in software exploitation and solvers.
 This feature would greatly help during exploits development, and people would be able to ditch mona.py for radare2 ;)
 
 ### Assess requirements for evaluation
-1st term: ROP gadgets stored in sdb, and gadget classification
-2nd term: Writing integration with SMT solver and producing SMT constraints
-Final term: Working ropchain compiler, covered by tests and documented in r2book.
+- 1st term: ROP gadgets stored in sdb, and gadget classification
+- 2nd term: Writing integration with SMT solver and producing SMT constraints
+- Final term: Working ropchain compiler, covered by tests and documented in r2book.
 
 ### Mentors
 - jvoisin
@@ -347,4 +346,46 @@ Final term: Working ropchain compiler, covered by tests and documented in r2book
 - [Slides](https://github.com/XVilka/hacklu) for the exploitation part of workshop at Hack.lu 2015
 - [ROP related bugs](https://github.com/radare/radare2/issues?q=is%3Aissue+is%3Aopen+ROP)
 
+# Rune GSoC (symex engine)
 
+The main motive of the projects of the radare-rust ecosystem is to build a complete binary analysis framework. [rune](https://github.com/radare/rune) aims to be a library with replaceable modules for reasoning about sections of a binary through symbolic execution.
+
+## rune integration with radeco-lib and radare2
+
+This task involves complete integration of the rune backend with radeco-lib and radare2.
+
+### Task
+
+* Refactor existing code to import abstractions defined in radeco-lib to isolate common logic across multiple projects. As an instance: rune should use containers defined in [radeco_containers](https://github.com/radare/radeco-lib/blob/master/src/frontend/radeco_containers.rs). 
+* Set up a test-suite to check correctness and fix bugs across module integrations. This suite can contain binaries with deterministic output to check overall state across multiple stages during the execution run.
+* Implement rerune - a new `Engine` module operating over radeco-lib's SSA-based intermediate representation. radeco-lib allows the user to perform multiple analyses over the generated IR. This `Engine` implementation should leverage information made available through the rich set of APIs and perform sound (or correct) symbolic execution.
+( We highly recommend the student to give some thought to the high-level design before writing the proposal )
+* Discuss, define and implement communication channels between radare2 - radeco-lib - rune to exchange information. Research shows that decompilers can make use of techniques like SMT solving to derive types for certain identified variables in the binary. We aim to have radeco-lib and rune interact with each other to develop better analyses across both projects.
+* rune should be made available through r2pm with functionality to symbolically execute over sections of code (with the user being in complete control of the various modules used such as the choice of the `Explorer`, `Context` state, etc.) and provide results.
+
+### Skills
+The student should be familiar with Rust and symbolic execution basics or be able to learn it quickly.
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will learn working with an experimental symbolic engine in its early stages of development. They would also involve themselves in understanding more about different program analysis techniques and their implementation.
+
+### Benefits for the project
+This task allows rune to develop into a mature project. Apart from being a side-project under the radare umbrella, completion of the said tasks above would make it ready for use by the community. 
+
+### Mentors
+- sushant
+- xvilka
+
+### Assess requirements for midterm/final evaluation
+- 1st term: The refactor phase should be completed and rune should have a well-defined test suite.
+- 2nd term: Implementation of the new `Engine` module should be complete.
+- Final term: rune should be avaialble through r2pm, with a well-defined interface through radare2. The project should be stable with regression (and unit) tests and updated documentation. It should be able interact with radeco-lib for improving overall analyses.
+
+### Links/Resources
+ - (Resources for getting acquainted with the project can be found on the tasks page)
+ - [Rune](https://github.com/radare/rune)
+ - [Rune issues](https://github.com/radare/rune/issues)
+ - [Relevant papers](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
