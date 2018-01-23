@@ -120,7 +120,7 @@ Currently radare2 [supports PCAP file format](https://github.com/radare/radare2-
 debugging session. For example we record the session between GDB and gdbserver into the PCAP file,
 then we would be able to open this file as a record & replay session. [See issue](https://github.com/radare/radare2/issues/3574) for more details.
 
-![image](https://cloud.githubusercontent.com/assets/1408600/23970352/bd7112d0-09c9-11e7-84b4-11946b3a2c9e.png)
+![image](https://cloud.githubusercontent.com/assets/1408600/23970352/bd7112d0-09c9-11e7-84b4-11946b3a2c9e.png =128x128)
 
 ### Better support for AOT and ART binaries
 
@@ -128,7 +128,7 @@ Current version of r2 is able to load ART and AOT binaries, but we are not yet a
 
 multidex is improtatn feature to support. as well as the feature of loading a jar (and resolve all symbols of all bins, etc.)
 
-![image](https://cloud.githubusercontent.com/assets/1408600/23970539/62632152-09ca-11e7-976e-e35f067af344.png)
+![image](https://cloud.githubusercontent.com/assets/1408600/23970539/62632152-09ca-11e7-976e-e35f067af344.png =256x256)
 
 ### Support objc selrefs and better code analysis for objc/swift code.
 
