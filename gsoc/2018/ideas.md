@@ -208,6 +208,7 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 - [Official .Net resources](http://www.microsoft.com/net)
 
 ## Proper Windows platform support
+
 Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists from some small,
 some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
 platform. Note, task require the computer able to run Windows in virtual machine.
@@ -239,7 +240,9 @@ Since radare2 has a better support for emulation and analysis, this will help to
 
 ### Assess requirements for midterm/final evaluation
 
-The student must finish the regression tests pass stage during the first evaluation. WinDbg protocol support improvements are the requirement to pass the 2nd evaluation. Ability to parse various versions of PDB format + regression tests for them is a final evaluation requirement.
+ - 1st term: student must finish the regression tests pass stage.
+ - 2nd term: WinDbg protocol support improvements and bug fixes.
+ - Final term: heap analysis for dmh is working and regression tests are passing on AppVeyor. Documentation added in radare2 book.
 
 ### Mentors
 - maijin
