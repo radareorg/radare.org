@@ -219,3 +219,23 @@ Reference links:
 * [Falcon](https://github.com/falconre/falcon): A binary analysis framework written in Rust
 * [An introduction to rune](https://chinmaydd.in/2017/07/03/Intro-to-rune/)
 * Other projects: [libsmt.rs](https://github.com/sushant94/libsmt.rs), [arch-rs](https://github.com/radare/arch-rs)
+
+## Cutter
+
+[Cutter](https://github.com/radareorg/cutter) is the radare2 Graphical User Interface. It is written in Qt and C++ and uses the radare2 API and commands.
+
+You can help the project by completing microtasks:
+
+* Add a panel for VTables ([#275](https://github.com/radareorg/cutter/issues/275)): VTables are often useful when reversing object oriented applications (C++ mainly). Having a panel to view the VTables would be useful.
+
+* Add a panel for getting headers information ([#253](https://github.com/radareorg/cutter/issues/253)): Cutter doesn't have any panel to view the header information for the current file. Those information most of the time useful to check and it would be nice to have this implemented in Cutter.
+ 
+* Show manpage/description for given import ([#247](https://github.com/radareorg/cutter/issues/247)): Checking manually every manpage on internet can be time consuming. Having this feature in Cutter can save a lot of time for users.
+
+* Add basic search capability ([#56](https://github.com/radareorg/cutter/issues/56)): Searching information through a binary is very useful. This feature is a must have.
+
+* Improve color themes: Currently Cutter has one "default" theme and one dark theme. It would be nice to differentiate the disassembly colors from the interface theme and to add a light theme (so people with a "default" theme being dark can actually use a light theme). Colors improvements for the graph view are interesting too.
+
+* If you cannot find any suitable microtask here, check our [issues](https://github.com/radareorg/cutter/issues) especially the ones tagged with [good first issue](https://github.com/radareorg/cutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+
+For any question related to GSoC, don't hesitate to come on our IRC and/or Telegram channel and ping @xarkes or @Maijin.
