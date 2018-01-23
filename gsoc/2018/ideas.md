@@ -119,6 +119,7 @@ Huge benefits for end users in UX and better support for localisation
 
 ### Mentors
  - xvilka
+ - pancake
 
 ### Links/Resources
  - [META: Console imrpovements](https://github.com/radare/radare2/issues/8672)
@@ -200,7 +201,7 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 
 ### Mentors
 - pancake
-- alvaro_fe
+- maijin
 
 ### Links/Resources
 - [Issue #662](https://github.com/radare/radare2/issues/662)
@@ -209,18 +210,18 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 ## Proper Windows platform support
 Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists from some small,
 some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
-platform
+platform. Note, task require the computer able to run Windows in virtual machine.
 
 ### Tasks
 1. Fix current features on Windows platform:
    - Debugger: check if it work on Windows XP - 10, native, gdb:// and windbg://
    - Regression tests: make them pass locally
    - Regression tests: run them on AppVeyor automatically (and fix correspondingly)
-2. Improve [PDB loading](https://github.com/radare/radare2/issues/3128) support and [integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
+2. Improve [PDB integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
 3. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
 4. Heap analysis (like it is done with `dmh` for glibc)
-5. Make zignatures for Windows libraries
-6. Better Support for .dll (analysis and debugger) and kernel drivers loading.
+5. Make signatures for Windows libraries
+6. Better support for .dll (analysis and debugger) and kernel drivers loading.
 7. Add support of loading all kinds of kernel dumps (if not done through microtasks)
 8. Ability to find out WinMain automatically, parsing SEH and RTTI
 
@@ -289,7 +290,11 @@ Ability to code and understand C and Go (Go can be learnt in a couple weeks thou
 Medium
 
 ### Benefits for the student
+Student will understand the problems of solving data conflicts in the realtime collaboration
+systems, which can be applied in any other domain.
 ### Benefits for the project
+Radare2 will have a long wanted feature for working in teams, reversing big files or collaborative
+CTF tasks solving.
 ### Assess requirements for evaluation
 - 1st term: Simple server in Go (with conflict resolution) is up and running + some tests of it
 - 2nd term: Add the hooks in radare2 that are can be easily placed, commands for connection to the server
@@ -309,13 +314,14 @@ Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki
 ### Task
 1. Implement a "classic" (`/bin/sh` for example) ropchain as a proof-of-concept, like what [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) does. This can be done is almost any language, thanks to the bindings/r2pipe.
 2. Caching rop gadgets in SDB, for quicker retrieval
-3. Implement a ropchain generator that uses ragg syntax, or something like:
+3. Implement a ropchain syntax parser that uses ragg2, or something like:
 ```
 register reg1 = 0;
 register reg2 = whatever;
 register reg3 = reg1 + reg2;
 system(reg3);
 ```
+4. Write a compiler which uses SMT solver (like Z3 for example) to produce the ropchain.
 
 ### Skills
 The student should be comfortable with the C language, know some assembly and a high-level language. Also, knowing a little bit of automatic binary analysis wouldn’t hurt.
@@ -356,7 +362,7 @@ This task involves complete integration of the rune backend with radeco-lib and 
 
 ### Task
 
-* Refactor existing code to import abstractions defined in radeco-lib to isolate common logic across multiple projects. As an instance: rune should use containers defined in [radeco_containers](https://github.com/radare/radeco-lib/blob/master/src/frontend/radeco_containers.rs). 
+* Refactor existing code to import abstractions defined in radeco-lib to isolate common logic across multiple projects. As an instance: rune should use containers defined in [radeco_containers](https://github.com/radare/radeco-lib/blob/master/src/frontend/radeco_containers.rs).
 * Set up a test-suite to check correctness and fix bugs across module integrations. This suite can contain binaries with deterministic output to check overall state across multiple stages during the execution run.
 * Implement rerune - a new `Engine` module operating over radeco-lib's SSA-based intermediate representation. radeco-lib allows the user to perform multiple analyses over the generated IR. This `Engine` implementation should leverage information made available through the rich set of APIs and perform sound (or correct) symbolic execution.
 ( We highly recommend the student to give some thought to the high-level design before writing the proposal )
@@ -373,7 +379,7 @@ Advanced
 The student will learn working with an experimental symbolic engine in its early stages of development. They would also involve themselves in understanding more about different program analysis techniques and their implementation.
 
 ### Benefits for the project
-This task allows rune to develop into a mature project. Apart from being a side-project under the radare umbrella, completion of the said tasks above would make it ready for use by the community. 
+This task allows rune to develop into a mature project. Apart from being a side-project under the radare umbrella, completion of the said tasks above would make it ready for use by the community.
 
 ### Mentors
 - sushant

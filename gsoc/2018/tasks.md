@@ -200,7 +200,7 @@ As always, feel free to ask for help or discuss issues on #radare channel (teleg
 
 ## rune
 
-[rune](https://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. 
+[rune](https://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. rune is currently uses radare2's ESIL as the IR for performing symbolic execution.
 
 Below are some microtasks up for grabs:
 
