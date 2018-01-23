@@ -6,9 +6,9 @@
 
 [radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
-## Pseudo-C Output
+## Pseudo-C Backend for Decompiler
 
-This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code.
+This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code. Below is a high-level task list that we think is appropriate for this timeline. Feel free to break it down further and bring in new ideas while writing your proposal.
 
 ### Task
 * Define and implement a subset of C Abstract Syntax Tree (AST)
@@ -23,7 +23,7 @@ The student should be familiar with Rust and decompilation basics or be able to 
 Advanced
 
 ### Benefits for the student
-The student will learn decompilation theory and working with AST tree.
+The student will learn decompilation theory and working with radeco-ir.
 
 ### Benefits for the project
 This task allows to produce the first release of radeco which will be able to generate readable C code.

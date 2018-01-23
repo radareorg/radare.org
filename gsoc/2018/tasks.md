@@ -155,6 +155,49 @@ Currently iOS native debugger cannot step, continue and set a breakpoint. See [#
 There are valabind generated bindings and we want them fixed, also merge r2pipe asyncronous and synchronous bindings.
 See [radare2-bindings issues](https://github.com/radare/radare2-bindings/issues)
 
+
+## radeco
+[radeco](https://github.com/radare/radeco-lib) is a binary analysis framework based on radare. This year, we lan to push it further to implement a working decompiler within radare2.
+
+Below are some tasks which help new contributors get start with radeco-lib:
+
+1. [Issue#114](https://github.com/radare/radeco-lib/issues/114). Standardize register usage and structs in radeco using arch-rs repo:
+Moving forward, we want to standardize and share common structs across
+radare-rust repositories. [arch-rs](https://github.com/radare/arch-rs) is an effort towards this and defines
+architecture related structs. We want to replace the current `SubRegisterFile`
+in radeco with structs from arch-rs.
+
+2. [Issue#117](https://github.com/radare/radeco-lib/issues/117). Parsing text-based radeco IR to Graph based IR:
+This would allow us to write IR to files and load them up at a later point in
+the analysis. It would be nice if we could do this with a parser generator in
+rust, such as [lalrpop](https://github.com/nikomatsakis/lalrpop)
+
+3. [Issue#118](https://github.com/radare/radeco-lib/issues/118). Implement a simple type system:
+Currently, we have the ability to mark nodes as either a scalar (not an
+address) or a reference (pointer/reference). We'd like to take this a step
+further and be able to assign primitive (C like) types for nodes to make the
+IR more expressive.
+
+4. [Issue#119](https://github.com/radare/radeco-lib/issues/119). Restore / Update / Improve CLI tool (aka. minidec/radeco):
+Minidec currently uses the old deprecated containers. This should be ported to
+use the latest container systems.
+
+5. [Issue#120](https://github.com/radare/radeco-lib/issues/120). Make accessing bindings in `RadecoFunction` more ergonomic:
+Currently, accessing `Bindings` in `RadecoFunction` is not elegant. We should
+improve support for this. This should also be extended to improve accessing of
+type and other node information related to these bindings.
+
+6. [Issue##46](https://github.com/radare/radeco-lib/issues/114). Port domtree analysis to use `petgraph` domtree construction:
+Dominator tree construction was one of the first analysis implemented in
+radeco. This needs some love. As such, it is works but is inconsistent with
+the other analysis API in radeco. A refactor is needed. petgraph (the graph
+library used inside radeco-lib for all graphs) has
+added dominator tree construction to its set of graph algorithms. It might be
+worthwhile to look into this and ride off their analysis instead of
+reimplementing/refactoring this inside radeco.
+
+As always, feel free to ask for help or discuss issues on #radare channel (telegram or irc, ping: @xvilka or @sushant94).
+
 ## rune
 
 [rune](https://github.com/radare/rune) is the radare2 community's own symbolic execution engine written in Rust. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. 
