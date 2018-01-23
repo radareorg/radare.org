@@ -32,13 +32,14 @@ tasks:
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
 # Mentors
-Members of radare2 core team have volunteered to guide students for GSoC’18. They were already guiding the students for GSoC'16, GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
+Members of radare2 core team have volunteered to guide students for GSoC’18. They were already guiding the students for GSoC'17, GSoC'16, GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
 - Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
 - Maxime Morin IRC: maijin -- [@Maijin212](https://twitter.com/Maijin212)
 - Sushant Dinesh tg: sushant94 -- [sushant94](https://github.com/sushant94)
+- Chinmay Deshpande tg: chinmay_dd -- [chinmaydd](https://github.com/chinmaydd)
 
 # Development methodology
 
