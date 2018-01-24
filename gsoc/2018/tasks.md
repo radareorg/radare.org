@@ -79,13 +79,12 @@ We have decided to not sdbize everything and use RBTree and RDict when necessary
 [See issues](https://github.com/radare/radare2/issues?q=is%3Aopen+is%3Aissue+label%3Asdbtization)
 
 ### ESILization
-Radare2 has its own intermediate language - ESIL, but not yet support it for all architectures. So
-the task is to add ESIL support to any architecture, which doesn't has it yet.
+Radare2 has its own intermediate language - ESIL, but not yet support it for all architectures. So the task is to add ESIL support to any architecture, which doesn't has it yet.
 [See issues](https://github.com/radare/radare2/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3Aesil) for the related bugs.
 
-* implement ARC esil emulation
-* support packed registers (mmx and such)
-* support floating point
+* Implement ARC ESIL emulation
+* Support packed registers (mmx and such)
+* Support floating point operations
 * Implement memory access callback apis in unicorn and make the unicorn plugin for r2 work
 
 ## Unicode (UTF-8) support everywhere
@@ -111,7 +110,7 @@ There is basic MDMP file format support in radare2. But there is still no suppor
 (kernel dumps). It should be properly parsed, added ability to automatically load PDB symbols,
 improved autoanalysis and entry-point searching. Also the support of MDMP files can be improved
 
-![image](https://cloud.githubusercontent.com/assets/1408600/23970288/9ecd3520-09c9-11e7-9733-0e8d2dfe512b.png)
+![image](http://xvilka.me/ms_bsod_2.jpg)
 
 ### PCAP loading support
 Currently radare2 [supports PCAP file format](https://github.com/radare/radare2-extras/blob/master/libr/bin/p/bin_pcap.c) opening, but original idea was to be able to load it as
@@ -132,6 +131,8 @@ multidex is improtatn feature to support. as well as the feature of loading a ja
 Radare2 already [supports](https://radare.gitbooks.io/radare2book/content/debugger/revdebug.html) basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
 See also [Debugger Data Model](https://doar-e.github.io/blog/2017/12/01/debugger-data-model) article about same feature in WinDbg.
 
+![image](http://xvilka.me/windbg-timetravel.jpg)
+
 ### Better support for Activities and Permissions (list them, references, etc)
 
 Take ideas from Androguard, and be able to follow execution flow paths to understand which permissions are used in a specific region of code, how to reach a specific activity, etc.
@@ -142,7 +143,7 @@ See `debugserver -x springboard` and such to spawn apps from the backboard other
 ### Support iOS native debugging
 Currently iOS native debugger cannot step, continue and set a breakpoint. See [#3461](https://github.com/radare/radare2/issues/3461)
 
-### Support Dalvik (and java?) debugging via jdwp://
+### Support Dalvik (and Java in general) debugging via jdwp://
 
 ## Miscellanous
 ### Improving bindings and r2pipe

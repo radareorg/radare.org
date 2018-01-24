@@ -32,7 +32,7 @@ tasks:
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
 # Mentors
-Members of radare2 core team have volunteered to guide students for GSoC’18. They were already guiding the students for GSoC'17, GSoC'16, GSoC’15 (under Openwall umbrella), RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
+Members of radare2 core team have volunteered to guide students for GSoC’18. They were already guiding the students for GSoC'17, GSoC'16, GSoC’15 (under Openwall umbrella), RSoC'16, RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
@@ -49,6 +49,8 @@ We have a [testsuite](https://github.com/radare/radare2-regressions) (that is ru
 We encourage contributors to write test cases and documentation in order to verify the implementation and ensure that everything fits well together. There is also a [Coverity](https://scan.coverity.com/projects/416) instance to catch obvious defects. For the complex bugs and examples we're using our own [asciinema](http://asciinema.org/)
 
 See also our [Contributing Guide](https://github.com/radare/radare2/blob/master/CONTRIBUTING.md) and [Developers Intro](https://github.com/radare/radare2/blob/master/DEVELOPERS.md).
+
+For those who want to meet with radare2 codebase and practices we recommend to pick one of the [easy](https://github.com/radare/radare2/labels/good%20first%20issue) issues to start with.
 
 # License
 

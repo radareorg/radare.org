@@ -91,12 +91,13 @@ Unix-like integration with other tools. But there are still a lot of things to b
 
 ### Task
 1. Unify similar code between all different modes
-2. Write a popup window widget for selection/autocompletion
-3. Add the table API/commands like it is done for graphs
-4. Add API and command for setting graph node background
-5. Show minigraph together with graph
-6. Radiff2 visual split-view mode
-7. Tests and documentation (r2book) for new commands
+2. Fixing Unicode support in RCanvas and Visual Panels mode
+3. Write a popup window widget for selection/autocompletion
+4. Add the table API/commands like it is done for graphs
+5. Add API and command for setting graph node background
+6. Show minigraph together with graph
+7. Radiff2 visual split-view mode
+8. Tests and documentation (r2book) for new commands
 
 ### Skills
 Student should know C and basics of terminal interaction (ESC sequences, TTY, etc)
@@ -136,6 +137,9 @@ Currently we have types support in radare2, including basic (low-level) ability 
 2. Add the ability to apply structure/union types for arguments/return values
 3. Add the ability to autosubstitute structure offset where possible (e.g. when you specified function parameter type and it uses it inside)
 4. Implement basic (without the need of SMT solver) type inference based on function arguments types, function return types and callgraph
+5. Improve variables and argument detection coupled with type inference engine
+6. Export and import return and argument types with function signatures
+7. To think about possibility of implementing simple data flow engine in radare2 and implement it if feasible in time.
 
 ### Skills
 Student should know C. And thould be familiar with basics of the program analysis.
@@ -207,7 +211,7 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 - [Issue #662](https://github.com/radare/radare2/issues/662)
 - [Official .Net resources](http://www.microsoft.com/net)
 
-## Proper Windows platform support
+## Improve Windows platform support
 
 Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists from some small,
 some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
@@ -220,7 +224,7 @@ platform. Note, task require the computer able to run Windows in virtual machine
    - Regression tests: run them on AppVeyor automatically (and fix correspondingly)
 2. Improve [PDB integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
 3. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
-4. Heap analysis (like it is done with `dmh` for glibc)
+4. Heap analysis (like it is done with `dmh` for glibc, unify the code)
 5. Make signatures for Windows libraries
 6. Better support for .dll (analysis and debugger) and kernel drivers loading.
 7. Add support of loading all kinds of kernel dumps (if not done through microtasks)
@@ -276,9 +280,9 @@ Radare2 has been a successfull reverse engineering framework and a toolset for y
 - Operand type changed (I assume hex, dec, str, offset, etc)
 - Enum updates
 - Struct type added, changed, or deleted
-- Function tail? added or deleted
-- Flirt function identified (would just be "function renamed") (signature matched)
-- Xref add/delete (I don't know what this means)
+- Function tail/chunk added or deleted
+- FLIRT function identified (would just be "function renamed" or signature matched)
+- Crossreference addition/deletetion
 
 ### Task
 1. Implement a simple server in Go to handle connections of multiple radare2 instances
@@ -310,13 +314,13 @@ CTF tasks solving.
 ### Links/Resources
 - [Hooks for realtime collaboration](https://github.com/radare/radare2/issues/7410)
 
-## Ropchain generator with ragg2
+## ROPchain generator with ragg2
 
-Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building rop chain by hand can be tedious, this is why some tools can be used to ease this construction: ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet.
+Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building ROP chain by hand can be tedious, this is why some tools can be used to ease this construction: ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet. One of the possible solutions would be to build an external plugin or tool which will reuse power of libr and ragg2. Moreover it makes sense to think about SROP, COOP and BROP support.
 
 ### Task
 1. Implement a "classic" (`/bin/sh` for example) ropchain as a proof-of-concept, like what [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) does. This can be done is almost any language, thanks to the bindings/r2pipe.
-2. Caching rop gadgets in SDB, for quicker retrieval
+2. Caching ROP gadgets in SDB, for quicker retrieval
 3. Implement a ropchain syntax parser that uses ragg2, or something like:
 ```
 register reg1 = 0;
