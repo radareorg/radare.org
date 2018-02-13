@@ -15,6 +15,13 @@ Currently radare2 has support for heap exploration and analysis, but the feature
 
 So the most important part of supporting heap analysis is to create a new subset of commands, and put all that stuff under data analysis or debugger-wide features, not in the target debugger backend. Moreover many things are done in C while they can be solved with format strings.
 
+### Vtables analysis, RTTI and SEH
+Modern object oriented languages such as C++, ObjectiveC, Swift, D, etc are usually implement
+virtual tables for their methods, classes and other entities relationshop. For better understanding
+such programs it is vital to see this relationship loaded as a types and indicated in disassembly
+view. See [#6851](https://github.com/radare/radare2/issues/6851) to check other tools and scripts
+available for this task, articles about vtables structure and requirements for radare2.
+
 ## META - Graphs [#6967](https://github.com/radare/radare2/issues/6967)
 
 ### Better unicode support in graphs
