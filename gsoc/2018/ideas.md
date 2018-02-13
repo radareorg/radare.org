@@ -174,6 +174,7 @@ This feature will make radare2 usable for day-to-day reverse engineering of comp
 
 Windows programs are like Apple's FAT binaries, they contain multiple programs inside, and r2 should be able to list and select them when loading. Also, it may be possible to extract them with rabin2 -x foo.exe.
 The sub-bins inside an EXE are:
+
 1. DOS program
 2. W16 program
 3. W32 program
@@ -181,6 +182,7 @@ The sub-bins inside an EXE are:
 
 ### Task
 This task also includes adding support for .NET in RBin, to be able to list the symbols, get the entrypoint, code metadata, etc. This will require rethinking some of the commands to allow switch between parts of this FAT binary on the fly.
+
 1. Fix current fatmach0
 2. dyldcache is broken
 3. PE (dos, win, .net) separation
