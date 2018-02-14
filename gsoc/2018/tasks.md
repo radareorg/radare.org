@@ -133,6 +133,9 @@ multidex is improtatn feature to support. as well as the feature of loading a ja
 ### Support objc selrefs and better code analysis for objc/swift code.
 
 ## Debugging
+Currently radare2 supports many different debugging modes and protocols, but still have many issues
+to fix. See ["debugger"](https://github.com/radare/radare2/labels/debugger) and ["debug-info"](https://github.com/radare/radare2/labels/debug-info) labels for more information.
+
 ### Improving reversible debugging
 
 Radare2 already [supports](https://radare.gitbooks.io/radare2book/content/debugger/revdebug.html) basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
