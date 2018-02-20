@@ -4,7 +4,7 @@
 
 # Radeco GSoC (radare2 decompiler)
 
-[radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
+[radeco](https://github.com/radare/radeco-lib) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analyses built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
 ## [Radeco] Pseudo-C Backend for Decompiler
 
@@ -26,7 +26,7 @@ Advanced
 The student will learn decompilation theory and working with radeco-ir.
 
 ### Benefits for the project
-This task allows to produce the first release of radeco which will be able to generate readable C code.
+This task involves producing the first release of radeco which will be able to generate readable C code.
 
 ### Mentors
 - sushant
@@ -52,10 +52,10 @@ Cutter currently only works in static analysis. The idea would be to implement a
 ### Task
 1. Make every widget have its own seek/offset/address
 2. Add possibility to create multiple instances of the same Widget (with a different seek)
-3. Create a Widget which prints registers names and values
+3. Create a Widget which prints register names and values
 4. Create a new DebugWindow (QMainWindow) which is proper for debugging (customizable)
 5. Add some debugger toolbar at the top (select dbg plugin, program arguments, run, pause, stop, ...)
-6. Handle correctly emulation
+6. Correctly handle emulation
 
 ### Skills
 The student should be familiar with C++ and experience in Qt would be a plus.
@@ -75,7 +75,7 @@ for both static and dynamic analysis.
 - maijin
 
 ### Assess requirements for midterm/final evaluation
-- 1st term: Managed to separate seeks between differents widgets and has a PoC for debugging.
+- 1st term: Managed to separate seeks between different widgets and has a PoC for debugging.
 - 2nd term: Fully working debugger with multiple IO, and fully working debugger widgets.
 - Final term: Emulation support is complete, every debugging widget is fully implemented and documentation is done.
 
@@ -130,7 +130,7 @@ Huge benefits for end users in UX and better support for localisation
  - [Repainting screen improvements](https://github.com/radare/radare2/issues/4820)
 
 ## Type inference
-Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C header for example, or load from "precompiled" SDB file. Goal of this task is to integrate types handling into the radare2 analysis loop, including automatic inference and suggestions.
+Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C header for example, or load from "precompiled" SDB file. The goal of this task is to integrate types handling into the radare2 analysis loop, including automatic inference and suggestions.
 
 ### Task
 1. Write more tests for `t` commands, fix corresponding bugs
@@ -139,19 +139,19 @@ Currently we have types support in radare2, including basic (low-level) ability 
 4. Implement basic (without the need of SMT solver) type inference based on function arguments types, function return types and callgraph
 5. Improve variables and argument detection coupled with type inference engine
 6. Export and import return and argument types with function signatures
-7. To think about possibility of implementing simple data flow engine in radare2 and implement it if feasible in time.
+7. Think about implementing simple data flow engine in radare2 and implement it if feasible in time.
 
 ### Skills
-Student should know C. And thould be familiar with basics of the program analysis.
+The student should know C. And should be familiar with the basics of the program analysis.
 
 ### Difficulty
 Medium
 
 ### Benefits for the student
-Student will understand modern program analysis problems related to the type inference, will meet the most common reverse engineering task in its advanced incarnation.
+The student will understand modern program analysis problems related to the type inference, will meet the most common reverse engineering task in its advanced incarnation.
 
 ### Benefits for the project
-This feature will make radare2 usable for day-to-day reverse engineering of complex programs, and will make integration with radeco decompilator even easier.
+This feature will make radare2 usable for day-to-day reverse engineering of complex programs, and will make integration with radeco decompiler even easier.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Improved test case and fixed bugs. Structure offsets autorecognition.
@@ -181,7 +181,7 @@ The sub-bins inside an EXE are:
 4. MSIL program (.NET)
 
 ### Task
-This task also includes adding support for .NET in RBin, to be able to list the symbols, get the entrypoint, code metadata, etc. This will require rethinking some of the commands to allow switch between parts of this FAT binary on the fly.
+This task also includes adding support for .NET in RBin, to be able to list the symbols, get the entrypoint, code metadata, etc. This will require rethinking some of the commands to allow switching between parts of this FAT binary on the fly.
 
 1. Fix current fatmach0
 2. dyldcache is broken
@@ -189,7 +189,7 @@ This task also includes adding support for .NET in RBin, to be able to list the 
 4. Add support for iOS OTA images (see issue)
 
 ### Skills
-The student should be comfortable with the C language, and be familiar with windows binaries
+The student should be comfortable with the C language, and be familiar with Windows binaries
 
 ### Difficulty
 Advanced
@@ -198,12 +198,12 @@ Advanced
 The student will gain a deep understanding of Microsoft's executable formats.
 
 ### Benefits for the project
-Currently, there are no up to date modern tools to deal with .Net programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
+Currently, there are no up to date modern tools to deal with .NET programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Refactoring RBin to support FAT and multibin
 - 2nd term: Support of FAT binaries (Win32 native + .NET) with new RBin, basic one
-- Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as long as other metadata. And show this metadata in rabin2 output as well.
+- Final: Also should be working with listing symbols from both parts of the binary (e.g. .NET and native code), as well as other metadata. And show this metadata in rabin2 output as well.
 
 ### Mentors
 - pancake
@@ -211,17 +211,17 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 
 ### Links/Resources
 - [Issue #662](https://github.com/radare/radare2/issues/662)
-- [Official .Net resources](http://www.microsoft.com/net)
+- [Official .NET resources](http://www.microsoft.com/net)
 
 ## Improve Windows platform support
 
-Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists from some small,
+Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists of some small,
 some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
-platform. Note, task require the computer able to run Windows in virtual machine.
+platform. Note, this task requires being able to run Windows in a virtual machine.
 
 ### Tasks
 1. Fix current features on Windows platform:
-   - Debugger: check if it work on Windows XP - 10, native, gdb:// and windbg://
+   - Debugger: check if it works on Windows XP - 10, native, gdb:// and windbg://
    - Regression tests: make them pass locally
    - Regression tests: run them on AppVeyor automatically (and fix correspondingly)
 2. Improve [PDB integration with analysis](https://github.com/radare/radare2/issues/3143) subsystem
@@ -229,7 +229,7 @@ platform. Note, task require the computer able to run Windows in virtual machine
 4. Heap analysis (like it is done with `dmh` for glibc, unify the code)
 5. Make signatures for Windows libraries
 6. Better support for .dll (analysis and debugger) and kernel drivers loading.
-7. Add support of loading all kinds of kernel dumps (if not done through microtasks)
+7. Add support for loading all kinds of kernel dumps (if not done through microtasks)
 8. Ability to find out WinMain automatically, parsing SEH and RTTI
 
 ### Skills
@@ -239,7 +239,7 @@ The student should be comfortable with programming under Windows platform. They 
 Medium. If the student is comfortable with programming for Windows, there shouldn't be major challenges except WinDbg protocol support.
 
 ### Benefits for the student
-The student will gain experience in writing debuggers for Windows platform. Also, the student will learn the Windows platform crucial parts' internals, related to debugging.
+The student will gain experience in writing debuggers for Windows platform. Also, the student will learn the crucial internal parts of the Windows platform, related to debugging.
 
 ### Benefits for the project
 Since radare2 has a better support for emulation and analysis, this will help to migrate from WinDbg to radare2.
@@ -271,7 +271,7 @@ Since radare2 has a better support for emulation and analysis, this will help to
 - [DbgKit](http://www.andreybazhan.com/dbgkit.html) - WinDbg extension for working with processes
 
 ## Real time collaboration platform
-Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successfull examples like [collabREate](), [YaCo]() and [solIDArity]() (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
+Radare2 has been a successful reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successful examples like [collabREate](), [YaCo]() and [solIDArity]() (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
 
 - Change address/region type (code, data, unknown)
 - Segment add, delete, move, change (like 32->64 bit, flags)
@@ -284,7 +284,7 @@ Radare2 has been a successfull reverse engineering framework and a toolset for y
 - Struct type added, changed, or deleted
 - Function tail/chunk added or deleted
 - FLIRT function identified (would just be "function renamed" or signature matched)
-- Crossreference addition/deletetion
+- Crossreference addition/deletion
 
 ### Task
 1. Implement a simple server in Go to handle connections of multiple radare2 instances
@@ -321,7 +321,7 @@ CTF tasks solving.
 Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building ROP chain by hand can be tedious, this is why some tools can be used to ease this construction: ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet. One of the possible solutions would be to build an external plugin or tool which will reuse power of libr and ragg2. Moreover it makes sense to think about SROP, COOP and BROP support.
 
 ### Task
-1. Implement a "classic" (`/bin/sh` for example) ropchain as a proof-of-concept, like what [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) does. This can be done is almost any language, thanks to the bindings/r2pipe.
+1. Implement a "classic" (`/bin/sh` for example) ropchain as a proof-of-concept, like what [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) does. This can be done in almost any language, thanks to the bindings/r2pipe.
 2. Caching ROP gadgets in SDB, for quicker retrieval
 3. Implement a ropchain syntax parser that uses ragg2, or something like:
 ```
