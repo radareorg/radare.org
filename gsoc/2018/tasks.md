@@ -231,8 +231,6 @@ Reference links:
 
 You can help the project by completing microtasks:
 
-* Add a panel for VTables ([#275](https://github.com/radareorg/cutter/issues/275)): VTables are often useful when reversing object oriented applications (C++ mainly). Having a panel to view the VTables would be useful.
-
 * Add a panel for getting headers information ([#253](https://github.com/radareorg/cutter/issues/253)): Cutter doesn't have any panel to view the header information for the current file. Those information most of the time useful to check and it would be nice to have this implemented in Cutter.
  
 * Show manpage/description for given import ([#247](https://github.com/radareorg/cutter/issues/247)): Checking manually every manpage on internet can be time consuming. Having this feature in Cutter can save a lot of time for users.
@@ -240,6 +238,8 @@ You can help the project by completing microtasks:
 * Add basic search capability ([#56](https://github.com/radareorg/cutter/issues/56)): Searching information through a binary is very useful. This feature is a must have.
 
 * Improve color themes: Currently Cutter has one "default" theme and one dark theme. It would be nice to differentiate the disassembly colors from the interface theme and to add a light theme (so people with a "default" theme being dark can actually use a light theme). Colors improvements for the graph view are interesting too.
+
+* ~~Add a panel for VTables ([#275](https://github.com/radareorg/cutter/issues/275)): VTables are often useful when reversing object oriented applications (C++ mainly). Having a panel to view the VTables would be useful.~~
 
 * If you cannot find any suitable microtask here, check our [issues](https://github.com/radareorg/cutter/issues) especially the ones tagged with [good first issue](https://github.com/radareorg/cutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
