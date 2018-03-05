@@ -1,7 +1,15 @@
-* {
+/* **************
+    General 
+*************** */
+
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 body {
   font-family: monospace;
   background: #2c2a2b;
@@ -52,6 +60,11 @@ p a {
   width: 100%;
   margin: 10px 10px 30px;
 }
+
+/* **************
+    Schedule 
+*************** */
+
 .tabs {
   position: relative;
   margin: 3rem 0;
@@ -136,16 +149,8 @@ p a {
 }
 
 /* **************
-    Schedule 
+    Events 
 *************** */
-
-*,
-*:before,
-*:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
 ul.schedule {
   list-style: none;
@@ -353,8 +358,23 @@ h3 {
   background: #b63663;
 }
 
-.WUT:hover {
-  background: #c64673;
+.WUT {
+  background: #b63663;
+  animation:wut-transition 2s;
+  -moz-animation:wut-transition 2s infinite; /* Firefox */
+  -webkit-animation:wut-transition 2s infinite; /* Safari and Chrome */
+}
+
+@-moz-keyframes  wut-transition /* Firefox */
+{
+  0%   {background: #b63663;}
+  50%  {background: #f04c97;}
+}
+ 
+ @-webkit-keyframes wut-transition /* Firefox */
+{
+  0%   {background: #b63663;}
+  50%  {background: #f04c97;}
 }
 
 @media (min-width: 768px) {
