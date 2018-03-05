@@ -29,6 +29,10 @@ code {
   color: #7dffc4;
 }
 
+code a {
+  color: inherit;
+}
+
 .wrapper {
   max-width: 50rem;
   width: 100%;
