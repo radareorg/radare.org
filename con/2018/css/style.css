@@ -320,16 +320,32 @@ h3 {
   background: #afce44;
 }
 
+.WAT:hover {
+  background: #bfde54;
+}
+
 .WEN {
   background: #7bc3e0;
+}
+
+.WEN:hover {
+  background: #8bd3f0;
 }
 
 .WER {
   background: #cf84bc;
 }
 
+.WER:hover {
+  background: #df94cc;
+}
+
 .WUT {
   background: #b63663;
+}
+
+.WUT:hover {
+  background: #c64673;
 }
 
 @media (min-width: 768px) {
