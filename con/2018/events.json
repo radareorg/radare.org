@@ -1,0 +1,25 @@
+{
+  "calendar" : [
+    {
+        "date": "6",
+        "day": "Wednesday",
+        "description" : "Hackathon",
+        "events" : [
+          {
+            "name": "aaa",
+            "description" : "Bbb-bbb",
+            "speaker": "aaa",
+            "time" : "15:00-16:00",
+            "handles" : "@megabeets_"
+          },
+          {
+            "name": "aaa",
+            "description" : "Bbb-bbb",
+            "speaker": "aaa",
+            "time" : "15:00-16:00",
+            "handles" : "@megabeets_"
+          }
+        ]
+    }
+  ]
+}
