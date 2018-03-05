@@ -38,6 +38,10 @@ a {
   text-decoration: none;
 }
 
+p a {
+  color: #7dffc4;
+}
+
 .wrapper {
   max-width: 50rem;
   width: 100%;
