@@ -33,6 +33,11 @@ code a {
   color: inherit;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
 .wrapper {
   max-width: 50rem;
   width: 100%;
