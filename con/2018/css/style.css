@@ -389,3 +389,8 @@ h3 {
     margin-right: 25px;
   }
 }
+
+@media all and (max-width: 768px) {
+  .info-item-box {
+    width: 250px !important;
+  }
