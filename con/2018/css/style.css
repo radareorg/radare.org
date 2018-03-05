@@ -13,6 +13,22 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
+code {
+  font: 15px monospace;
+  border-top-left-radius: 3px 3px;
+  border-top-right-radius: 3px 3px;
+  border-bottom-right-radius: 3px 3px;
+  border-bottom-left-radius: 3px 3px;
+  border-width: 0.5px;
+  border-style: solid;
+  margin: 0px;
+  padding: 1px 6px;
+  border-color: rgb(221, 221, 221);
+  box-sizing: border-box;
+  color: #7dffc4;
+}
+
 .wrapper {
   max-width: 50rem;
   width: 100%;
