@@ -391,6 +391,7 @@ h3 {
 }
 
 @media all and (max-width: 768px) {
-  .info-item-box {
-    width: 250px !important;
+  .info-item a {
+    width:100%;
   }
+}
