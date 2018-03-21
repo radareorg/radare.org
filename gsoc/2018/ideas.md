@@ -354,6 +354,8 @@ This feature would greatly help during exploits development, and people would be
 
 ### Links/Resources
 - [ROPGadget](http://shell-storm.org/project/ROPgadget/)
+- [Ropper](https://github.com/sashs/Ropper)
+- [Angrop](https://github.com/salls/angrop)
 - [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/) from corelan
 - [Hunting for ROP Gadgets in Style](https://media.blackhat.com/us-13/US-13-Quynh-OptiROP-Hunting-for-ROP-Gadgets-in-Style-WP.pdf) (2012)
 - [dropper](https://github.com/rizlik/dropper) a BARF-based rop chain generator
