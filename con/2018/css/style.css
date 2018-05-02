@@ -50,6 +50,10 @@ p a {
   color: #7dffc4;
 }
 
+b {
+  color: #7dffc4 !important;
+}
+
 .wrapper {
   max-width: 50rem;
   width: 100%;
@@ -346,6 +350,14 @@ h3 {
   background: #8bd3f0;
 }
 
+.TIC {
+  background: #f2cb30;
+}
+
+.TIC:hover {
+  background: #ffcc00;
+}
+
 .WER {
   background: #cf84bc;
 }
@@ -388,6 +400,19 @@ h3 {
     height: 150px;
     margin-right: 25px;
   }
+}
+
+.pay-item-box {
+  width: 250px !important; /* TODO: Find out why need to use x2 dimension to be displayed as rect */
+  height: 120px;
+  margin-right: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  font-size: 40px;
+  font-weight: 900;
+  flex-shrink: 0;
 }
 
 @media all and (max-width: 768px) {
