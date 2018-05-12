@@ -20,6 +20,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  background-position: center center;
 }
 
 code {
@@ -63,7 +64,7 @@ b {
 
 .radare-logo {
   margin: 10px 10px 30px;
-  width: 800px !important;
+  width: 90% !important;
 }
 
 /* **************
