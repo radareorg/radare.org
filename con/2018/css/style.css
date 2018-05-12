@@ -60,9 +60,10 @@ b {
   margin: 40px auto 30px auto;
   padding: 10px 20px;
 }
+
 .radare-logo {
-  width: 100%;
   margin: 10px 10px 30px;
+  width: 800px !important;
 }
 
 /* **************
