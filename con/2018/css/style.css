@@ -47,6 +47,18 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  color: #7070f0;
+  text-decoration: underline;
+}
+
+td {
+  background-color:#40f040;
+  padding: 20px;
+  color: black;
+  border: 5px solid #40a040;
+}
+
 p a {
   color: #7dffc4;
 }
