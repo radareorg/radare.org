@@ -23,14 +23,14 @@
             "name": "Lunch Time",
             "description" : "Go eat!",
             "speakers": "r2food",
-            "time" : "14:00-15:00",
+            "time" : "14:00-16:00",
             "location" : "Tasty restaurants"
           },
           {
             "name": "Developing Internals",
             "description" : "A development guidlines for radare2. How and where to start.",
             "speakers": "@trufae, @condr3t",
-            "time" : "15:00-19:00",
+            "time" : "16:00-20:00",
             "location" : "MediaPro building (UPF), Diagonal 177"
           }
         ]
@@ -58,14 +58,14 @@
           "name": "Lunch Time",
           "description" : "Go eat!",
           "speakers": "r2food",
-          "time" : "14:00-15:00",
+          "time" : "14:00-16:00",
           "location" : "Tasty resturants"
         },
         {
           "name": "Debugging Heap Corruptions",
           "description" : "Description will be added soon.",
           "speakers": "morbith ",
-          "time" : "15:00-19:00",
+          "time" : "15:00-20:00",
           "location" : "MediaPro building (UPF), Diagonal 177"
         },
         {
