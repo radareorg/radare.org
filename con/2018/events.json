@@ -307,7 +307,7 @@
           "location" : "MediaPro building, Diagonal 177"
         },
         {
-          "name": "8051 all the way",
+          "name": "It’s 8051s all the way down",
           "description" : "Reverse engineering the SiLabs EZRadioPRO family of sub-GHz radios with radare2.<br>I'll talk about the motivation, process and results of reversing the EZRadioPRO, tips and tricks for using r2 wih 8051 and about challenges using r2 for deep embedded reversing.",
           "speakers" : "@AdiStuder",
           "time" : "19:25 - 20:00",
