@@ -252,7 +252,7 @@
         },
         {
           "name": "GSoC",
-          "description" : "A description will be added soon.",
+          "description" : "Kriw and HMPerson will speak about creating fully functional decompiler on top of radare2 and ESIL.<br><br>@sivaraama will show the custom algorithm for a type inference, problems he met implementing them and future improvements.<br><br>cyanpencil will speak about Unicode problems, improving the radare2 console interface and a short overview of visual modes internals.<br><br>Felipe Casal will demonstrate Cutter debugging capabilities, what was done to implement them, Cutter internals and what can be done to improve it further.",
           "speakers" : "cyanpencil, @sivaramaaa, kriw, HMPerson1, @filipe_casal",
           "time" : "15:00 - 16:00",
           "location" : "MediaPro building, Diagonal 177"
