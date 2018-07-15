@@ -16,21 +16,21 @@
             "name": "Introduction to radare2",
             "description" : "Description will be added soon.",
             "speakers": "jvoisin, @maijin, xvilka",
-            "time" : "10:00-13:00",
+            "time" : "10:00-14:00",
             "location" : "MediaPro building (UPF), Diagonal 177"
           },
           {
             "name": "Lunch Time",
             "description" : "Go eat!",
             "speakers": "r2food",
-            "time" : "13:00-15:00",
+            "time" : "14:00-15:00",
             "location" : "Tasty restaurants"
           },
           {
             "name": "Developing Internals",
             "description" : "A development guidlines for radare2. How and where to start.",
             "speakers": "@trufae, @condr3t",
-            "time" : "15:00-18:00",
+            "time" : "15:00-19:00",
             "location" : "MediaPro building (UPF), Diagonal 177"
           }
         ]
@@ -51,28 +51,28 @@
           "name": "Dynamic Reverse Engineering With Frida",
           "description" : "Description will be added soon.",
           "speakers": "@oleavr",
-          "time" : "10:00-13:00",
+          "time" : "10:00-14:00",
           "location" : "MediaPro building (UPF), Diagonal 177"
         },
         {
           "name": "Lunch Time",
           "description" : "Go eat!",
           "speakers": "r2food",
-          "time" : "13:00-15:00",
+          "time" : "14:00-15:00",
           "location" : "Tasty resturants"
         },
         {
           "name": "Debugging Heap Corruptions",
           "description" : "Description will be added soon.",
           "speakers": "morbith ",
-          "time" : "15:00-18:00",
+          "time" : "15:00-19:00",
           "location" : "MediaPro building (UPF), Diagonal 177"
         },
         {
           "name": "Dinner @ Mussol",
           "description" : "Thursday night (September 6) there will be a dinner at Restaurant Mussol. Organization pays the menu to all speakers, but everyone else is welcome to join (150-200 human slots)",
           "speakers": "r2food",
-          "time" : "17:00-18:00",
+          "time" : "21:00- ∞",
           "location" : "Mussol Restaurant"
         }
       ]
