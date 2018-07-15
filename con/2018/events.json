@@ -1,25 +1,327 @@
 {
   "calendar" : [
     {
-        "date": "6",
+        "date": "5",
         "day": "Wednesday",
-        "description" : "Hackathon",
+        "description" : "Training & Hackathon",
         "events" : [
           {
-            "name": "aaa",
-            "description" : "Bbb-bbb",
-            "speaker": "aaa",
-            "time" : "15:00-16:00",
-            "handles" : "@megabeets_"
+            "name": "Gethering and Registration",
+            "description" : "Registeration",
+            "speakers" : "r2team",
+            "time" : "09:00-10:00",
+            "location" : "MediaPro building, Diagonal 177"
           },
           {
-            "name": "aaa",
-            "description" : "Bbb-bbb",
-            "speaker": "aaa",
-            "time" : "15:00-16:00",
-            "handles" : "@megabeets_"
+            "name": "Introduction to radare2",
+            "description" : "Go eat!",
+            "speakers": "jvoisin, @maijin, xvilka",
+            "time" : "10:00-13:00",
+            "location" : "MediaPro building (UPF), Diagonal 177"
+          },
+          {
+            "name": "Lunch Time",
+            "description" : "Go eat!",
+            "speakers": "r2food",
+            "time" : "13:00-15:00",
+            "location" : "Tasty restaurants"
+          },
+          {
+            "name": "Developing Internals",
+            "description" : "A development guidlines for radare2. How and where to start.",
+            "speakers": "@trufae, @condr3t",
+            "time" : "15:00-18:00",
+            "location" : "MediaPro building (UPF), Diagonal 177"
           }
         ]
+    },
+    {
+      "date": "6",
+      "day": "Thursday",
+      "description" : "Training & Hackathon",
+      "events" : [
+        {
+          "name": "Gathering",
+          "description" : "",
+          "speakers": "r2team",
+          "time" : "09:30-10:00",
+          "location" : "MediaPro building (UPF), Diagonal 177"
+        },
+        {
+          "name": "Dynamic Reverse Engineering With Frida",
+          "description" : "Description will be added soon.",
+          "speakers": "@oleavr",
+          "time" : "10:00-13:00",
+          "location" : "MediaPro building (UPF), Diagonal 177"
+        },
+        {
+          "name": "Lunch Time",
+          "description" : "Go eat!",
+          "speakers": "r2food",
+          "time" : "13:00-15:00",
+          "location" : "Tasty resturants"
+        },
+        {
+          "name": "Debugging Heap Corruptions",
+          "description" : "Description will be added soon.",
+          "speakers": "morbith ",
+          "time" : "15:00-18:00",
+          "location" : "MediaPro building (UPF), Diagonal 177"
+        },
+        {
+          "name": "Dinner @ Mussol",
+          "description" : "Thursday night (September 6) there will be a dinner at Restaurant Mussol. Organization pays the menu to all speakers, but everyone else is welcome to join (150-200 human slots)",
+          "speakers": "r2food",
+          "time" : "17:00-18:00",
+          "location" : "Mussol Restaurant"
+        }
+      ]
+    },
+    {
+      "date": "7",
+      "day": "Friday",
+      "description" : "Conference",
+      "events" : [
+        {
+          "name": "Gethering and Registration",
+          "description" : "Gathering and registration for the conference days.",
+          "speakers" : "r2team",
+          "time" : "09:30 - 10:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Introducing radare2 for humans (+ surprise)",
+          "description" : "The opening talk of the conference will introduce radare2 with a quick overview of capabilities and common usage. We'll see some basic live demos to ensure that every attendee gets a minimum background. I would also go through some fun-facts and myths of radare2, trying to demystify most, if not all of them. <br>Finally, I would present a surprise I will be working on this summer.",
+          "speakers" : "@arnaugamez",
+          "time" : "10:00 - 10:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "How to not write a decompiler",
+          "description" : "This talk will describe r2dec, a radare2 plugin to convert asm to pseudo-C code.",
+          "speakers" : "@Der0ad",
+          "time" : "10:45 - 11:25",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "10 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "11:25 - 11:35",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Recognition Techniques for Renaming Functions in Windows Malware",
+          "description" : "One feature keeping malware reverse engineers tied to IDA Pro is the FLIRT technology designed to recognize standard library code. <br>This talk will feature a similar beta-style technique with higher expected accuracy based on r2pipe and radare2's Zignature implementation. <br>We will then explore two ideas beyond byte-sequence matching - string sets and call chains. <br>Recognizing string sets enables the identification of code such as sqlite while recognizing call chains enables matching common Windows functions with multiple implementation approaches. <br>These additional techniques will also be implemented using r2pipe. <br>The goal is a quicker and more accurate static analysis designed to enable the study of execution and emulation where needed.",
+          "speakers" : "@cmatthewbrooks",
+          "time" : "11:40 - 12:25",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Cutter",
+          "description" : "Radare2 is a free and open-source reverse engineering framework, which is becoming more and more popular. One of its main criticisms is that it is only usable within a terminal (CLI), and that the commands are not intuitive, making the learning curve steep. The Cutter project was created to provide an easy-to-use, but still powerful, interface to radare2 for new users. This is done with a native graphical user interface made in Qt and C++.<br><br>The goal of the talk is to present radare2 history, along with the common complaints from users, and how we try to overcome those with Cutter. I'll be presenting the features that are already implemented, the way we allow our users to script the interface, and obviously the missing features that we will implement in a near future.<br><br>While Cutter is still under heavy development, it's becoming more and more user-friendly and easy to use. It is becoming a great alternative to other reverse engineering tools. ",
+          "speakers" : "@xarkes_",
+          "time" : "12:30 - 13:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Lunch",
+          "description" : "FOOD TIME!",
+          "speakers" : "r2food",
+          "time" : "13:00 - 15:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Evolving binary code.",
+          "description" : "It's possible to create binary code automatically and evolve it towards a target by reducing an error rate. This can be used to many things like finding vulnerabilities, or programming specific algorithms automatically.<br>Radare2 provides the visualization API to represent the evolving code.",
+          "speakers" : "@sha0coder",
+          "time" : "15:00 - 15:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Reversing SR-IOV For Fun and Profit",
+          "description" : "We are surrounded with PCIe devices everywhere. They are in charge of interconnecting extremely important and exciting functionalities inside and outside our systems.<br>Have you ever been wondering how to explore and reverse engineer those devices and their functionalities? SR-IOV (Single-Root I/O Virtualization) is a peripheral component interconnect (PCI) standard for sharing PCIe devices within a single computer.<br>In this talk, I will provide a thorough background of PCIe devices and the standard. Afterwards, I will share my research experience and explain how SR-IOV PCIe devices can be reverse engineered using radare2, what information we can get, how to find vulnerabilities and what we can learn from those findings.",
+          "speakers" : "@adirab",
+          "time" : "15:45 - 16:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "15 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "16:40 - 16:55",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Not another RET",
+          "description" : "In forensics, sometimes, we have some IoC which make us think some group is behind the attack, but, usually, <br>they remove the malware and we can't find how they make some stages or which malware they used.<br>Yara-RET is a file carving tool based in Yara and Radare to extract a toolset related to specific group.<br>I will talk about the forensics case which made me think about this necessity and what improvements I had to do to make this tool useful to the community.",
+          "speakers" : "@w0lfvan",
+          "time" : "17:00 - 17:50",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Unpacking the non-unpackable - mmd",
+          "description" : "In this presentation the author will describe a distributed custom ELF binary packer found in malicious artifacts spotted in several hacked Linux servers around the globe, to infect the target machine with the malicious setup mining software. The packer is cleverly made, with encryption, and can smartly camouflage the original binary to cover the real purpose. The overall depacking process is on memory that will make hard for forensics to examine it later on. The presentation will start from the how the author dissects the packer in steps by static analysis, along with the generation method of the original binary on the radare2 CUI platform. Two different cases will be explained in the presentation. If there's enough time a quick demonstration will be conducted.",
+          "speakers" : "@unixfreaxjp",
+          "time" : "17:55 - 18:30",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Hypervisor-Level Debugger with radare2",
+          "description" : "Virtual Machine Introspection is a technology that reconstructs the execution context of a virtual machine from the outside,<br>by querying the hardware state (VCPU regs, virtual memory, etc...).<br>It has many applications, most of them related to monitoring and sandboxing, however our interactive debugger could make use of this.<br>In 2017, we have seen an attempt with FireEye to create a VMI Debugger based on KVM with rVMI.<br>In this talk, I would like to demonstrate an attempt of a VMI debugger based on radare2,<br>using standardized interfaces provided by LibVMI to be usable on top of Xen and KVM in the future.",
+          "speakers" : "@mtarral",
+          "time" : "18:30 - 19:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "10 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "19:00 - 19:10",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Riding the web",
+          "description" : "A description will be added soon.",
+          "speakers" : "@trufae",
+          "time" : "19:15 - 20:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "r2beers",
+          "description" : "A description will be added soon.",
+          "speakers" : "Everyone",
+          "time" : "20:00 - ∞",
+          "location" : "Unknown yet"
+        }
+      ]
+    },
+    {
+      "date": "8",
+      "day": "Saturday",
+      "description" : "Conference & Chiptune party",
+      "events" : [
+        {
+          "name": "Gathering",
+          "description" : "",
+          "speakers" : "r2team",
+          "time" : "09:30 - 10:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "EVM Bytecode and smart contract internals",
+          "description" : "What is EVM bytecide and why reversing EVM bytcode matters? This talk will cover the internals of EVM virtual machine and the way I implemented the support for its bytecode and debugging in r2.",
+          "speakers" : "Fedor Sakharov",
+          "time" : "10:00 - 10:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Hacking Thimbleweed Park with radare2 ",
+          "description" : "I'll describe how to hack the game with radare2 and r2frida. I'll show a demo with the game and explain the writing of an IO plugin.",
+          "speakers" : "@bezjaje",
+          "time" : "10:45 - 11:30",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "10 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "11:30 - 11:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Reversing a Japanese Wireless SD Card with r2",
+          "description" : "Toshiba FlashAir are wireless SD cards used by photographers and IoT enthusiasts. They integrate both a Japanese SoC and a Japanese Operating System. <br>This talk will present investigations that lead to the discovery of the architecture and the operating system from nearly zero knowledge of the card. These investigations were performed with open-source tools only: miasm2 is used as the assembly, disassembly and emulation backend, while radare2 is used as the interface to reverse the firmware.",
+          "speakers" : "@guedou",
+          "time" : "11:45 - 12:25",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "r2pipe-api ",
+          "description" : "A description will be added soon.",
+          "speakers" : "Quim Aguado",
+          "time" : "12:30 - 13:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Lunch",
+          "description" : "FOOD TIME!",
+          "speakers" : "r2food",
+          "time" : "13:00 - 15:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "GSoC",
+          "description" : "A description will be added soon.",
+          "speakers" : "cyanpencil, @sivaramaaa, kriw, HMPerson1, @filipe_casal",
+          "time" : "15:00 - 16:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "'dumb' fuzzing with a little help of disassembler ",
+          "description" : "A description will be added soon.",
+          "speakers" : "@dark_k3y",
+          "time" : "16:00 - 16:40",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Reversing Torribash Martial Arts Simulator using radare2",
+          "description" : "While working on a Machine Learning application to the 3D martial arts simulator, Toribash, I had to turn into reverse engineering with radare2. This talk will describe why, how and what I did.",
+          "speakers" : "Siarhei Siniak",
+          "time" : "16:45 - 17:20",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "10 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "17:20 - 17:30",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Frida+r2 reversing swift apps",
+          "description" : "I've been working on Swift support for Frida. I was surprised to<br>find out that despite Swift being statically compiled, the compiler<br>embeds very detailed type metadata into the generated binaries that can<br>be used to recover nearly every detail about the data types that are<br>defined in a binary -- e.g. names, types and offsets of<br>struct/class/tuple members. Of course that kind of information is just<br>as relevant for static analysis as it is for dynamic analysis, and so<br>I've also written some scripts to make use of that information from<br>radare2.<br><br>I'll show a demo which describes how to generate a C header file<br>with definitions for all found Swift types and load that into radare2, and show off a r2frida plugin that adds some Swift-<br>specific commands to r2.",
+          "speakers" : "Malte Kraus ",
+          "time" : "17:30 - 18:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "ESIL- a hard pill to swallow",
+          "description" : "We'll start with understanding pushdown automatons, stack machines, and we'll talk a bit about the magical concepts of a Turing Machine. Then, I'll explain, how ESIL evolved, and what can be done with it, if you use it to its limits.",
+          "speakers" : "@condr3t",
+          "time" : "18:00 - 18:50",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "5 minutes break",
+          "description" : "This is a break, do whatever you want with it.",
+          "speakers" : "r2break",
+          "time" : "18:50 - 18:55",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Bug classification using r2",
+          "description" : "I'll present how to classify memory bugs with r2, in order to understand if a bug could be exploitable or not, and write a program that automatizes it using Python r2pipe. The talk introduces a new tool that will be released as an open-source project.",
+          "speakers" : "@invictus1306",
+          "time" : "18:55 - 19:25",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "8051 all the way",
+          "description" : "Reverse engineering the SiLabs EZRadioPRO family of sub-GHz radios with radare2.<br>I'll talk about the motivation, process and results of reversing the EZRadioPRO, tips and tricks for using r2 wih 8051 and about challenges using r2 for deep embedded reversing.",
+          "speakers" : "@AdiStuder",
+          "time" : "19:25 - 20:00",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Chiptune Party!",
+          "description" : "Saturday night, after r2con from 21h to 3am we will organize a chiptune/lofi music party in a bar near the r2con place, so everyone can go by walking, have some drinks and dance with 8bit music. (max 200 humans)<br><p class='bright-p'> confirmed bands: <a href='https://soundcloud.com/4dboy'>4dboy</a>, <a href='https://neuroflip.bandcamp.com/album/hi-tech-lo-life'>neuroflip</a>, <a href='https://3d63.bandcamp.com/album/electric-pawer'>3d63</a>, ... and more! </p>",
+          "speakers" : "r2party",
+          "time" : "21:00 - ∞",
+          "location" : "MediaPro building, Diagonal 177"
+        }
+
+      ]
     }
   ]
 }
