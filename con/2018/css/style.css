@@ -152,7 +152,7 @@ b {
   z-index: 1;
   top: 2.75em;
   left: 0;
-  margin-top: 50px;
+  margin-top: 80px;
   padding: 1.618rem;
   background: #fff;
   color: #2c3e50;
@@ -164,11 +164,20 @@ b {
   overflow-y: auto;
   width: 100%;
 }
-@media (min-width: 503px) {
+
+@media (min-width: 374px) {
+  .tab-content {
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 700px)
+{
   .tab-content {
     margin-top: 0;
   }
 }
+
 .tab-switch:checked + .tab-label {
   background: #fff;
   color: #2c3e50;
