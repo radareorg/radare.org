@@ -7,14 +7,14 @@
         "events" : [
           {
             "name": "Gethering and Registration",
-            "description" : "Registeration",
+            "description" : "Registration",
             "speakers" : "r2team",
             "time" : "09:00-10:00",
             "location" : "MediaPro building, Diagonal 177"
           },
           {
             "name": "Introduction to radare2",
-            "description" : "Go eat!",
+            "description" : "Description will be added soon.",
             "speakers": "jvoisin, @maijin, xvilka",
             "time" : "10:00-13:00",
             "location" : "MediaPro building (UPF), Diagonal 177"
