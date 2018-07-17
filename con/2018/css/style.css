@@ -47,6 +47,29 @@ a {
   text-decoration: none;
 }
 
+/* uncomment if needed 
+a:hover {
+  color: #7070f0;
+  text-decoration: underline;
+}
+
+td {
+  background-color:#40f040;
+  padding: 20px;
+  color: black;
+  border: 5px solid #40a040;
+}
+*/
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 10px; 
+}
+
 p a {
   color: #7dffc4;
 }
@@ -109,6 +132,15 @@ b {
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
 }
+
+.tab-special-events {
+  background-color: #78d278;
+}
+
+.tab-map {
+  background-color: #e68d8d;
+}
+
 .tab-label:hover {
   top: -0.25rem;
   -webkit-transition: top 0.25s;
@@ -120,7 +152,7 @@ b {
   z-index: 1;
   top: 2.75em;
   left: 0;
-  margin-top: 50px;
+  margin-top: 80px;
   padding: 1.618rem;
   background: #fff;
   color: #2c3e50;
@@ -132,11 +164,20 @@ b {
   overflow-y: auto;
   width: 100%;
 }
-@media (min-width: 503px) {
+
+@media (min-width: 374px) {
+  .tab-content {
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 700px)
+{
   .tab-content {
     margin-top: 0;
   }
 }
+
 .tab-switch:checked + .tab-label {
   background: #fff;
   color: #2c3e50;
@@ -152,6 +193,10 @@ b {
   opacity: 1;
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
+}
+
+.bright-p a {
+  color: #008d71;
 }
 
 /* **************
@@ -219,7 +264,19 @@ h3 {
 .event-location {
   font-size: 0.8em;
   color: tomato;
-  margin-left: 70px;
+  /*margin-left: 5px;*/
+}
+
+.event-speakers {
+  font-size: 0.8em;
+  color: limegreen;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.sep-char {
+  font-size: 0.8em;
+  color: gray;
 }
 
 @media all and (max-width: 641px) {
@@ -268,7 +325,10 @@ h3 {
   position: absolute;
   padding: 48px;
   line-height: 1.8;
-  width: 70%;
+  min-width: 30%;
+  max-width: 70%;
+  max-height: 80%;
+  overflow: auto;
   top: 50%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
@@ -300,6 +360,19 @@ h3 {
   opacity: 0.4;
 }
 
+#target-inner h2 {
+  padding: 0;
+  margin: 0px;
+}
+
+.target-speakers {
+  padding: 0;
+  margin: 0;
+}
+
+.target-speakers a{
+  color: limegreen; 
+}
 /* **************
     Information 
 *************** */
