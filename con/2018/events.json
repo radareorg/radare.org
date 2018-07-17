@@ -7,17 +7,17 @@
         "events" : [
           {
             "name": "Gathering and Registration",
-            "description" : "Registration",
+            "description" : "Gathering and registration for the training and hackathon days",
             "speakers" : "r2team",
             "time" : "09:00-10:00",
-            "location" : "MediaPro building, Diagonal 177"
+            "location" : "UPF building, Roc Boronat 138"
           },
           {
             "name": "Introduction to radare2",
             "description" : "Description will be added soon.",
             "speakers": "jvoisin, @maijin, xvilka",
             "time" : "10:00-14:00",
-            "location" : "MediaPro building (UPF), Diagonal 177"
+            "location" : "UPF building, Roc Boronat 138"
           },
           {
             "name": "Lunch Time",
@@ -28,31 +28,31 @@
           },
           {
             "name": "Developing Internals",
-            "description" : "A development guidlines for radare2. How and where to start.",
+            "description" : "A development guideline for radare2. How and where to start.",
             "speakers": "@trufae, @condr3t",
             "time" : "16:00-20:00",
-            "location" : "MediaPro building (UPF), Diagonal 177"
+            "location" : "UPF building, Roc Boronat 138"
           }
         ]
     },
     {
       "date": "6",
       "day": "Thursday",
-      "description" : "Training & Hackathon",
+      "description" : "Training & Hackathon & Dinner",
       "events" : [
         {
           "name": "Gathering",
           "description" : "",
           "speakers": "r2team",
           "time" : "09:30-10:00",
-          "location" : "MediaPro building (UPF), Diagonal 177"
+          "location" : "UPF building, Roc Boronat 138"
         },
         {
           "name": "Dynamic Reverse Engineering With Frida",
           "description" : "Description will be added soon.",
           "speakers": "@oleavr",
           "time" : "10:00-14:00",
-          "location" : "MediaPro building (UPF), Diagonal 177"
+          "location" : "UPF building, Roc Boronat 138"
         },
         {
           "name": "Lunch Time",
@@ -64,9 +64,9 @@
         {
           "name": "Debugging Heap Corruptions",
           "description" : "Description will be added soon.",
-          "speakers": "morbith ",
+          "speakers": "morbith",
           "time" : "15:00-20:00",
-          "location" : "MediaPro building (UPF), Diagonal 177"
+          "location" : "UPF building, Roc Boronat 138"
         },
         {
           "name": "Dinner @ Mussol",
@@ -80,17 +80,17 @@
     {
       "date": "7",
       "day": "Friday",
-      "description" : "Conference",
+      "description" : "Conference talks",
       "events" : [
         {
-          "name": "Gethering and Registration",
-          "description" : "Gathering and registration for the conference days.",
+          "name": "Gathering and Registration",
+          "description" : "Gathering and registration for the conference talks days.",
           "speakers" : "r2team",
           "time" : "09:30 - 10:00",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
-          "name": "Introducing radare2 for humans (+ surprise)",
+          "name": "Introducing radare2 for humans (+surprise)",
           "description" : "The opening talk of the conference will introduce radare2 with a quick overview of capabilities and common usage. We'll see some basic live demos to ensure that every attendee gets a minimum background. I would also go through some fun-facts and myths of radare2, trying to demystify most, if not all of them. <br>Finally, I would present a surprise I will be working on this summer.",
           "speakers" : "@arnaugamez",
           "time" : "10:00 - 10:40",
@@ -181,7 +181,7 @@
           "location" : "MediaPro building, Diagonal 177"
         },
         {
-          "name": "Riding the web",
+          "name": "Riding the wave",
           "description" : "A description will be added soon.",
           "speakers" : "@trufae",
           "time" : "19:15 - 20:00",
@@ -199,7 +199,7 @@
     {
       "date": "8",
       "day": "Saturday",
-      "description" : "Conference & Chiptune party",
+      "description" : "Conference talks & Chiptune party",
       "events" : [
         {
           "name": "Gathering",
@@ -286,7 +286,7 @@
           "location" : "MediaPro building, Diagonal 177"
         },
         {
-          "name": "ESIL- a hard pill to swallow",
+          "name": "ESIL - a hard pill to swallow",
           "description" : "We'll start with understanding pushdown automatons, stack machines, and we'll talk a bit about the magical concepts of a Turing Machine. Then, I'll explain, how ESIL evolved, and what can be done with it, if you use it to its limits.",
           "speakers" : "@condr3t",
           "time" : "18:00 - 18:50",

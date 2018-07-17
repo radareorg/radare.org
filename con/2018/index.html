@@ -31,6 +31,7 @@
                     <span>BUY<br/><br />TICKETS</span>
                 </div>
             </a>
+			
             <br> A merchandising pack will be given only to those who bought the ticket BEFORE August 20th
         </center>
 
@@ -68,7 +69,9 @@
                     </div>
                 </a>
                 <div class="info-item-text">
-                    <p>The conference will take place in <a href="#">Barcelona, Diagonal 177</a>. The MediaPro building.</p>
+					<p>The trainings and hackathon (days 5 & 6) will take place in <b>Barcelona, Roc Boronat 138</b>. The UPF building.
+                    <p>The conference talks (days 7 & 8) will take place in <b>Barcelona, Diagonal 177</b>. The MediaPro building.</p>
+					<p>Note that <b>both buildings are literally in the same block</b>. Check out the maps tab below.</p>
                 </div>
             </div>
         </div>
@@ -256,7 +259,10 @@
     $(mapTabLabel[0]).addClass("tab-map");
     mapTabLabel.html("Map");
     $(".tab-content", mapTab).html(`
-  <p class="bright-p">The conference and trainings will take place in the 
+  <p class="bright-p">The trainings and hackathon will take place in the 
+  <a href="https://www.google.com/maps/place/Universitat+Pompeu+Fabra%E2%80%93Campus+del+Poblenou/@41.4038563,2.1912656,17z/data=!4m13!1m7!3m6!1s0x12a4a33cd51484f7:0xf785dcd173304dfb!2sCarrer+de+Roc+Boronat,+138,+08018+Barcelona!3b1!8m2!3d41.4038523!4d2.1934543!3m4!1s0x12a4a257a38c20e1:0x5ff56d0a8cbc150c!8m2!3d41.4040525!4d2.193956">UPF building, Roc Boronat 138</a></p>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.629295443943!2d2.191265615737454!3d41.403856302936404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a257a38c20e1%3A0x5ff56d0a8cbc150c!2sUniversitat+Pompeu+Fabra%E2%80%93Campus+del+Poblenou!5e0!3m2!1sen!2ses!4v1531825408700" width="90%" height="80%" frameborder="0" style="border:0" allowfullscreen></iframe>
+  <p class="bright-p">The conference talks will take place in the 
   <a href="https://www.google.com/maps/place/Mediapro+Barcelona/@41.4044969,2.1912807,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2eb7970c009:0xeb3b7721d9697283!8m2!3d41.4044969!4d2.1934747">MediaPro building, Diagonal 177</a></p>
   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.599793982916!2d2.1912806511191243!3d41.40449687916091!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2eb7970c009%3A0xeb3b7721d9697283!2sMediapro+Barcelona!5e0!3m2!1sen!2ses!4v1527679698683" width="90%" height="80%" frameborder="0" style="border:0" allowfullscreen></iframe>`);
     $(".tabs").append(mapTab);
