@@ -3,11 +3,11 @@
     {
         "date": "5",
         "day": "Wednesday",
-        "description" : "Trainings & Hackathon",
+        "description" : "Training & Hackathon",
         "events" : [
           {
             "name": "Gathering and Registration",
-            "description" : "Registration",
+            "description" : "Gathering and registration for the training and hackathon days",
             "speakers" : "r2team",
             "time" : "09:00-10:00",
             "location" : "UPF building, Roc Boronat 138"
@@ -38,7 +38,7 @@
     {
       "date": "6",
       "day": "Thursday",
-      "description" : "Trainings & Hackathon & Dinner",
+      "description" : "Training & Hackathon & Dinner",
       "events" : [
         {
           "name": "Gathering",
@@ -84,7 +84,7 @@
       "events" : [
         {
           "name": "Gathering and Registration",
-          "description" : "Gathering and Registration for the conference days.",
+          "description" : "Gathering and registration for the conference talks days.",
           "speakers" : "r2team",
           "time" : "09:30 - 10:00",
           "location" : "MediaPro building, Diagonal 177"
