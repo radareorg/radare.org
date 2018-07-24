@@ -475,6 +475,11 @@ h3 {
     height: 150px;
     margin-right: 25px;
   }
+
+  
+  .h1-title {
+    font-size: 60px;
+  }
 }
 
 .pay-item-box {
@@ -494,4 +499,26 @@ h3 {
   .info-item a {
     width:100%;
   }
+
+  .h1-title {
+    font-size: 50px;
+  }
+
+}
+
+.competitions  {
+  justify-content: center;
+}
+.competitions .info-item-box {
+  width: 200px;
+  margin-top: 10px;
+}
+
+
+@media all and (max-width: 550px) {
+
+  .h1-title {
+    font-size: 30px;
+  }
+
 }
