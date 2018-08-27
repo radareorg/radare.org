@@ -73,7 +73,7 @@
           "description" : "Thursday night (September 6) there will be a dinner at Restaurant Mussol. Organization pays the menu to all speakers, but everyone else is welcome to join (150-200 human slots)",
           "speakers": "r2food",
           "time" : "21:00- ∞",
-          "location" : "Mussol Restaurant"
+          "location" : "Mussol Restaurant, Carrer d'Aragó, 261"
         }
       ]
     },
@@ -86,6 +86,13 @@
           "name": "Gathering and Registration",
           "description" : "Gathering and registration for the conference talks days.",
           "speakers" : "r2team",
+          "time" : "09:00 - 09:25",
+          "location" : "MediaPro building, Diagonal 177"
+        },
+        {
+          "name": "Opening Talk",
+          "description" : "An introduction talk for the conference.",
+          "speakers" : "@trufae",
           "time" : "09:30 - 10:00",
           "location" : "MediaPro building, Diagonal 177"
         },
@@ -105,7 +112,7 @@
         },
         {
           "name": "10 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "11:25 - 11:35",
           "location" : "MediaPro building, Diagonal 177"
@@ -147,7 +154,7 @@
         },
         {
           "name": "15 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "16:40 - 16:55",
           "location" : "MediaPro building, Diagonal 177"
@@ -175,7 +182,7 @@
         },
         {
           "name": "10 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "19:00 - 19:10",
           "location" : "MediaPro building, Diagonal 177"
@@ -224,7 +231,7 @@
         },
         {
           "name": "10 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "11:30 - 11:40",
           "location" : "MediaPro building, Diagonal 177"
@@ -273,7 +280,7 @@
         },
         {
           "name": "10 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "17:20 - 17:30",
           "location" : "MediaPro building, Diagonal 177"
@@ -294,7 +301,7 @@
         },
         {
           "name": "5 minutes break",
-          "description" : "This is a break, do whatever you want with it.",
+          "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
           "time" : "18:50 - 18:55",
           "location" : "MediaPro building, Diagonal 177"
