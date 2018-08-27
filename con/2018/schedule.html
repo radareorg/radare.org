@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>r2con 2018</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+</head>
+
+<body id="bg">
+    <div class="wrapper">
+        <center>
+            <a href="../" ><img src="img/r2con2018.png" class="radare-logo"></a>
+        </center>
+        <br />
+        <br />
+
+        <script>
+                // Scripts to dynamically create the schedule from a json file
+            
+                // Get events from the server
+                var xmlhttp = new XMLHttpRequest();
+                var jObj;
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var myObj = JSON.parse(this.responseText);
+                        jObj = myObj;
+                    }
+                };
+                xmlhttp.open("GET", "events.json", false);
+                xmlhttp.send();
+        
+                    jObj["calendar"].forEach(buildNewTab);
+        
+                function buildNewTab(item, index) {
+
+
+
+
+                    document.write("<h1>" + item.day + ", September " + item.date + "</h1>");
+                    document.write("<h3>" + item.description + "</h3><br><br>");
+
+                    // Generate the daily events
+                    item["events"].forEach(function(_event) {
+                        var speakersText = "";
+                        var eventSpeakers = _event.speakers.split(',');
+                        eventSpeakers.forEach(function(_speaker, index) {
+                            var _speakerText = _speaker.trim();
+
+                                if (_speakerText.startsWith('@')) {
+                                    _speakerText = "<a target='_blank' href='https://twitter.com/" + _speakerText.substr(1) + "'>" + _speakerText + "</a>"
+                                }
+
+                                if (index + 1 != eventSpeakers.length) {
+                                    _speakerText += ", ";
+                                }
+                                speakersText += _speakerText;
+
+                            });
+                        
+                        document.write( "<strong>"+_event.time + "</strong> | <b>" + _event.name + "</b><br>");
+                        document.write("<span class='speakers'>" + speakersText + "</span> | " + _event.location + "<br><br>");
+
+
+        
+                    });
+        
+        
+                }
+        </script>
+
+
+        <br><br><br><br><br>
+        <center>
+                <p>r2con [<a href=../2017>2017</a>, <a href=../2016>2016</a>] | No rights reversed </p>
+                <p>Website done by <a href="https://twitter.com/megabeets_">@megabeets_</a> and <a href="https://twitter.com/trufae">@trufae</a></p>
+        </center>
+    </div>
+</body>
+
+
+
+</html>

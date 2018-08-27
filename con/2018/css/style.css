@@ -274,6 +274,10 @@ h3 {
   margin-right: 5px;
 }
 
+.speakers a {
+  font-weight: bold;
+}
+
 .sep-char {
   font-size: 0.8em;
   color: gray;
@@ -372,6 +376,21 @@ h3 {
 
 .target-speakers a{
   color: limegreen; 
+}
+
+
+
+@media all and (max-width: 768px) {
+  #target-content #target-inner {
+    width: 70%;
+  }
+}
+
+@media all and (max-width: 425px) {
+  #target-content #target-inner {
+    width: 85%;
+    min-width: 85%;
+  }
 }
 /* **************
     Information 
