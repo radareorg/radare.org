@@ -261,70 +261,70 @@
           "name": "GSoC",
           "description" : "Kriw and HMPerson will speak about creating fully functional decompiler on top of radare2 and ESIL.<br><br>@sivaraama will show the custom algorithm for a type inference, problems he met implementing them and future improvements.<br><br>cyanpencil will speak about Unicode problems, improving the radare2 console interface and a short overview of visual modes internals.<br><br>Felipe Casal will demonstrate Cutter debugging capabilities, what was done to implement them, Cutter internals and what can be done to improve it further.",
           "speakers" : "cyanpencil, @sivaramaaa, kriw, HMPerson1, @filipe_casal",
-          "time" : "15:00 - 16:00",
+          "time" : "15:00 - 16:30",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "'dumb' fuzzing with a little help of disassembler ",
           "description" : "A description will be added soon.",
           "speakers" : "@dark_k3y",
-          "time" : "16:00 - 16:40",
+          "time" : "16:30 - 17:10",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "Reversing Torribash Martial Arts Simulator using radare2",
           "description" : "While working on a Machine Learning application to the 3D martial arts simulator, Toribash, I had to turn into reverse engineering with radare2. This talk will describe why, how and what I did.",
           "speakers" : "Siarhei Siniak",
-          "time" : "16:45 - 17:20",
+          "time" : "17:15 - 17:50",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "10 minutes break",
           "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
-          "time" : "17:20 - 17:30",
+          "time" : "17:50 - 18:00",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "Frida+r2 reversing swift apps",
           "description" : "I've been working on Swift support for Frida. I was surprised to<br>find out that despite Swift being statically compiled, the compiler<br>embeds very detailed type metadata into the generated binaries that can<br>be used to recover nearly every detail about the data types that are<br>defined in a binary -- e.g. names, types and offsets of<br>struct/class/tuple members. Of course that kind of information is just<br>as relevant for static analysis as it is for dynamic analysis, and so<br>I've also written some scripts to make use of that information from<br>radare2.<br><br>I'll show a demo which describes how to generate a C header file<br>with definitions for all found Swift types and load that into radare2, and show off a r2frida plugin that adds some Swift-<br>specific commands to r2.",
           "speakers" : "Malte Kraus ",
-          "time" : "17:30 - 18:00",
+          "time" : "18:00 - 18:30",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "ESIL - a hard pill to swallow",
           "description" : "We'll start with understanding pushdown automatons, stack machines, and we'll talk a bit about the magical concepts of a Turing Machine. Then, I'll explain, how ESIL evolved, and what can be done with it, if you use it to its limits.",
           "speakers" : "@condr3t",
-          "time" : "18:00 - 18:50",
+          "time" : "18:30 - 19:20",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "5 minutes break",
           "description" : "This is a break, do whatever you want with it. <a href='https://www.radare.org/con/2018/competitions.html#r2wars'>r2wars</a> time!.",
           "speakers" : "r2break",
-          "time" : "18:50 - 18:55",
+          "time" : "19:20 - 19:25",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "Bug classification using r2",
           "description" : "I'll present how to classify memory bugs with r2, in order to understand if a bug could be exploitable or not, and write a program that automatizes it using Python r2pipe. The talk introduces a new tool that will be released as an open-source project.",
           "speakers" : "@invictus1306",
-          "time" : "18:55 - 19:25",
+          "time" : "19:25 - 19:55",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "It’s 8051s all the way down",
           "description" : "Reverse engineering the SiLabs EZRadioPRO family of sub-GHz radios with radare2.<br>I'll talk about the motivation, process and results of reversing the EZRadioPRO, tips and tricks for using r2 wih 8051 and about challenges using r2 for deep embedded reversing.",
           "speakers" : "@AdiStuder",
-          "time" : "19:25 - 20:00",
+          "time" : "19:55 - 20:30",
           "location" : "MediaPro building, Diagonal 177"
         },
         {
           "name": "Chiptune Party!",
           "description" : "Saturday night, after r2con from 21h to 3am we will organize a chiptune/lofi music party in a bar near the r2con place, so everyone can go by walking, have some drinks and dance with 8bit music. (max 200 humans)<br><p class='bright-p'> confirmed bands: <a href='https://soundcloud.com/4dboy'>4dboy</a>, <a href='https://neuroflip.bandcamp.com/album/hi-tech-lo-life'>neuroflip</a>, <a href='https://3d63.bandcamp.com/album/electric-pawer'>3d63</a>, ... and more! </p>",
           "speakers" : "r2party",
-          "time" : "21:00 - ∞",
+          "time" : "21:30 - ∞",
           "location" : "MediaPro building, Diagonal 177"
         }
 
