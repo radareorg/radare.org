@@ -9,7 +9,7 @@
             "name": "Gathering and Registration",
             "description" : "Gathering and registration for the training and hackathon days",
             "speakers" : "r2team",
-            "time" : "09:00-10:00",
+            "time" : "09:30-10:00",
             "location" : "UPF building, Roc Boronat 138"
           },
           {
@@ -59,7 +59,7 @@
           "description" : "Go eat!",
           "speakers": "r2food",
           "time" : "14:00-16:00",
-          "location" : "Tasty resturants"
+          "location" : "Tasty restaurants"
         },
         {
           "name": "Debugging Heap Corruptions",
