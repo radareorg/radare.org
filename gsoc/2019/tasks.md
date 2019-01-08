@@ -1,7 +1,3 @@
----
-tags: gsoc application, radare2
----
-
 # Microtasks
 
 It is strongly recommended that students who want to apply to the radare2 GSoC/RSoC projects will perform a small tasks, to get the idea of students’ capabilities and make them familiar with radare2 codebase, structure and development process. Note, some tasks mentioned here are "meta" issues, which are quite big lists of smaller tasks. Of course finishing such big issue is impossible in a short period of time, so this means the student can take a few list items from those bugs as their microtask. Here is the list of such “qualification” tasks:
@@ -160,13 +156,13 @@ See `debugserver -x springboard` and such to spawn apps from the backboard other
 ## Miscellanous
 
 ### Improving bindings
-There are valabind generated bindings and we want them fixed, also merge r2pipe asyncronous and synchronous bindings. See [radare2-bindings](https://github.com/radare/radare2-bindings) repository for more information. It has also a different approach - parsing radare2 headers using Clang bindings and generating them without any intermediate files. It has support for Python, Go, Rust and Haskell. It has to be improved and better tested - writing autotests will help a lot.
+There are valabind generated bindings and we want them fixed, also merge r2pipe asyncronous and synchronous bindings. See [radare2-bindings](https://github.com/radare/radare2-bindings) repository for more information. It has also a different approach - parsing radare2 headers using Clang bindings and generating them without any intermediate files. There is support for Python, Go, Rust and Haskell. It should be improved and better tested - writing autotests will help a lot.
 
 ### Improving scripts for importing from IDA Pro IDB files
 Currently radare2 can use [ida2r2](https://github.com/radare/radare2ida) script to import information from the IDA Pro IDB files. It uses [python-idb](https://github.com/williballenthin/python-idb) library for parsing IDB files without IDA Pro installed. Improving both to allow import more information - types, variable and argument names, structures and enums, etc is the main goal of this task.
 
 ### Improving regression suite and testing
-Currently radare2 uses custom solution for running regression tests. Older part is implemented in shell and newer in JavaScript. It is required to move all tests into unified format and one framework and solve [numerours issues](https://github.com/radare/radare2-regressions/issues), along with improving parallel execution and performance. The next interesting idea is to setup and [reuse Godbolt](https://github.com/radare/radare2-regressions/issues/1549) compilation engine for generating tests for different compilers and compilation options. There is even command line tool for interacting with Godbolt - [cce](https://github.com/ethanhs/cce).
+Currently radare2 uses custom solution for running regression tests. It is required to solve [numerours issues](https://github.com/radare/radare2-regressions/issues), along with improving parallel execution and performance. The next interesting idea is to setup and [reuse Godbolt](https://github.com/radare/radare2-regressions/issues/1549) compilation engine for generating tests for different compilers and compilation options. There is even command line tool for interacting with Godbolt - [cce](https://github.com/ethanhs/cce).
 
 ## radeco
 
@@ -189,33 +185,33 @@ These tasks are big enough big to be splitted and picked any small part of them 
 
 ## rune
 
-[rune](http://github.com/radareorg/rune) is the radare2 community's own symbolic execution engine written in Rust. It aims to be a library with replaceable modules for reasoning about sections of a binary. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. Apart from ESIL, we would also be attempting to implement a new `Engine` with radeco-ir as the underlying representation. 
+[rune](http://github.com/radareorg/rune) is the radare2 community's own symbolic execution engine written in Rust. It aims to be a library with replaceable modules for reasoning about sections of a binary. rune is currently uses radare2's ESIL as the IR for performing symbolic execution. Apart from ESIL, we would also be attempting to implement a new `Engine` with radeco-ir as the underlying representation.
 
 Working with rune would give the candidate a good exposure to projects in the radare-rust ecosystem and high-level structures used across libraries such as radeco-lib, arch-rs and libsmt-rs.
 
 Below are some microtasks up for grabs:
 
 * Implementing breakpointing and hooks for the engine ([#7](https://github.com/radareorg/rune/issues/7))
-  Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIl patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary. 
-  
+  Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIl patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
+
 * Integrating a test-benchmark and CI ([#3](https://github.com/radareorg/rune/issues/3))
   Currently, most of the testing is either performed offline or as individual modules. We would like to have a solid test setup for the engine to check for module integration issues. We could use binaries used for testing radeco-lib or similar decompiler/symbolic engine libraries. . This could involve checking for deterministic `Context` (registers, memory, etc.) at different stages of the execution run.
-  
+
 * Improvement to the CLI
   rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
 
 * Implementing a multithreaded model for `Explorer`
   Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
-  
+
 * Incremental solving features for rune ([#5](https://github.com/radare/runeorg/issues/5))
   rune could leverage the use of this z3 feature. This task would involve research and discussion into implementing a PoC and benchmarking the results against a certain set of binaries to observe improvement in performance.
-  
+
 * Implementing rerune - A new engine based on radeco-ir ([Issue #8](https://github.com/radareorg/rune/issues/8))
   This is a big task which could be broken down into multiple stages as mentioned in the above issue. Before we implement the `Engine`, we would be looking to move structures and traits to refactor major modules in rune. This would be extremely useful in bringing the project closer to complete integration with radeco-lib.
-  
+
 Reference links:
 
-* [Unleashing MAYHEM on binary code](https://users.ece.cmu.edu/~dbrumley/pdf/Cha%20et%20al._2012_Unleashing%20Mayhem%20on%20Binary%20Code.pdf): ForAllSecure's CGC winning engine 
+* [Unleashing MAYHEM on binary code](https://users.ece.cmu.edu/~dbrumley/pdf/Cha%20et%20al._2012_Unleashing%20Mayhem%20on%20Binary%20Code.pdf): ForAllSecure's CGC winning engine
 * [(State of) The Art of War](https://www.cs.ucsb.edu/~vigna/publications/2016_SP_angrSoK.pdf): A look into angr, UCSB's binary analysis engine
 * [Falcon](https://github.com/falconre/falcon): A binary analysis framework written in Rust
 * [An introduction to rune](https://chinmaydd.in/2017/07/03/Intro-to-rune/)

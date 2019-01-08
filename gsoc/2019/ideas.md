@@ -393,7 +393,7 @@ Since radare2 has a better support for emulation and analysis, this will help to
 - [DbgKit](http://www.andreybazhan.com/dbgkit.html) - WinDbg extension for working with processes
 
 ## Real time collaboration platform
-Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successfull examples like [collabREate](), [YaCo]() and [solIDArity]() (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
+Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successfull examples like [collabREate](https://github.com/cseagle/collabREate), [YaCo](https://github.com/DGA-MI-SSI/YaCo) and [solIDArity](https://solidarity.re) (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
 
 - Change address/region type (code, data, unknown)
 - Segment add, delete, move, change (like 32->64 bit, flags)
@@ -408,6 +408,14 @@ Radare2 has been a successfull reverse engineering framework and a toolset for y
 - Flirt function identified (would just be "function renamed") (signature matched)
 - Xref add/delete (I don't know what this means)
 
+The possible architecture of the platform:
+
+ "WebUI [1] (microservice in Go) <-> Server [2] (microservice in Go) <-> C library of client [3]"
+
+The project management (create/remove/add user in project/remove user from project) should be done in the Server [2]. The user management - too. Those functions are exported in some way for using in WebUI microservice (RPC maybe?). The file storage is a filesystem, for storing initial files (in binary format), state and differences (in text format) using [Git Go library](https://github.com/src-d/go-git),
+those text differences are "r2 commands", which are sent by C api library.
+Conflict resolution could be done via standard Git features - rebase/merge.
+
 ### Task
 1. Implement a simple server in Go to handle connections of multiple radare2 instances
 2. Add the users and projects manager to the server
@@ -421,9 +429,27 @@ Ability to code and understand C and Go (Go can be learnt in a couple weeks thou
 Medium
 
 ### Benefits for the student
+Student will learn about creating a distributed systems with Go and conflicts resolution
+algorithms in real time.
+
 ### Benefits for the project
+It is crucial for the ability to reverse engineer complex programs in a team, allowing
+managing the changes history. It will also improve the undo features in radare2.
+This kind of work will be beneficial for team-CTF competitions as well.
+
 ### Assess requirements for evaluation
+- 1st term: Simple server in Go (with conflict resolution) is up and running + some tests of it
+- 2nd term: Implement the syncing capabilities and hooks in radare2 code
+- Final term: User management and project management, connect to the server and sync, demo of resolving conflict, tests and documentation.
+
 ### Mentors
+- xvilka
+- pancake
+
 ### Links/Resources
 - [Hooks for realtime collaboration](https://github.com/radare/radare2/issues/7410)
+- SolIDArity - https://solidarity.re
+- CollabREate - https://github.com/cseagle/collabREate
+- YaCo - https://github.com/DGA-MI-SSI/YaCo)
+- revsync - https://github.com/lunixbochs/revsync
 

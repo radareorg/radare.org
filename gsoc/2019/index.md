@@ -80,6 +80,6 @@ Most of radare2 is written in C and hence we expect students to be familiar with
 3. Please, note, how much time a day/week you are going to spend on this project.
 4. Specify your timezone, since so we can assign you a mentor in the same one, to ease communication.
 5. Submit your proposal early, not in the last minute
-6. You can also choose a “backup” idea (the second task you probably want to do), so that in case of some conflicts (two students for one task) it will be easier to solve.
+6. Be sure to choose a “backup” idea (the second task you probably want to do), so that in case of some conflicts (two students for one task) it will be easier to solve.
 
 
