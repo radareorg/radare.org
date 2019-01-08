@@ -126,6 +126,7 @@ Cutter's benefits are huge, because having a stable open source debugger that is
 ### Mentors
 - xarkes
 - Megabeets
+- thestr4ng3r
 
 ### Assess requirements for evaluations
 - 1st term: The native debugger works correctly for most binaries on at least Linux and macOS.
@@ -211,7 +212,7 @@ This feature will reduce the complexity of adding new command or change existing
 ### Mentors
 - pancake
 - xvilka
-- thestranger
+- thestr4ng3r
 
 ### Links/Resources
 - Refactor commands parsing - [Issue #7967](https://github.com/radare/radare2/issues/7967)
@@ -247,7 +248,7 @@ This feature will make radare2 usable for day-to-day reverse engineering of comp
 ### Mentors
 - pancake
 - xvilka
-- thestranger
+- thestr4ng3r
 
 ### Links/Resources
 - [META - Analysis improvements](https://github.com/radare/radare2/issues/4868)
