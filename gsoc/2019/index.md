@@ -42,7 +42,8 @@ Members of radare2 core team have volunteered to guide students for GSoC’19. T
 - Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
 - Maxime Morin tg: @Maijin -- [@Maijin212](https://twitter.com/Maijin212)
 - Chinmay Deshpande tg: chinmay_dd -- [chinmaydd](https://github.com/chinmaydd)
-- Antide Petit IRC: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)
+- Antide Petit IRC/tg: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)
+- Itay Cohen tg: @Megabeets [@Megabeets\_](https://twitter.com/Megabeets_)
 
 # Development methodology
 

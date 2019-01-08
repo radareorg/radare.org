@@ -7,7 +7,7 @@
 
 [radeco](https://github.com/radareorg/radeco) (based on [radeco-lib](https://github.com/radareorg/radeco-lib)) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
-## 1. Memory SSA and platforms
+## Memory SSA and platforms
 
 This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code.
 
@@ -47,7 +47,7 @@ Representing Memory Operations](http://www.airs.com/dnovillo/Papers/mem-ssa.pdf)
  - [Effective Representation of Aliases and Indirect Memory Operations in SSA Form](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.6974&rep=rep1&type=pdf)
  - [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
 
-## 2. Type System
+## Type System
 
 This task is for improving the results of decompilation with recovering types  (`char`, `char *`, structures, unions, classes, etc). Apart from ability to inference them through analysing data flow, radeco should be able to exchange this information with radare2 and Cutter, initially loading from them, then synchornizing back refined results.
 
@@ -93,7 +93,7 @@ This task allows to produce the more readable IR/C output.
 
 [Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Its goal is to make an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
 
-## Debugger Improvements
+## Debugger Improvements Cutter and radare2
 Having a way to dynamically analyze binaries is something very demanded by the reverse engineering community.
 Cutter now supports radare2 debugger, however, having a fully stable debugger is not a piece of cake. There are bugs that remain in the current implementation of our debugger.
 For this year, the student will have to improve our current debugger for all platforms (Windows, macOS and Linux) and move it from its current unstable state to a solid and stable debugger.
@@ -138,7 +138,7 @@ None.
 ---------------------
 # Radare GSoC -- Idea List
 
-## Console interface improvement
+## Console Interface Improvements
 
 Radare2 has a very flexible console interface, including command line, different visual modes and Unix-like integration with other tools. But there are still a lot of things to be done.
 
