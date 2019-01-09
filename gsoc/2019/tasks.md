@@ -22,7 +22,7 @@ Modern GPU are now basically a powerful embedded computer networks. Every video 
 
 Currently there is a support already for disassembling Python bytecode. But like with LUA the architecture is largely untested and can be easily broken. Moreover, analysis plugin is not implemented, so a lot of information is still missing in the output. We need to add the proper tests and see if there are bugs (and fix them).
 
-See [universal python disassembler](https://github.com/evanw/unwind) for example and [basic](https://github.com/radare/radare2-extras/tree/master/libr/bin/format/pyc) [implementation](https://github.com/radare/radare2-extras/blob/master/libr/asm/p/asm_pyc.c) in radare2-extras for current state of it.
+See [universal python disassembler](https://github.com/evanw/unwind) and [python cross-version decompiler](https://github.com/rocky/python-uncompyle6) for example and [basic](https://github.com/radare/radare2-extras/tree/master/libr/bin/format/pyc) [implementation](https://github.com/radare/radare2-extras/blob/master/libr/asm/p/asm_pyc.c) in radare2-extras for current state of it.
 
 ![image](https://image.slidesharecdn.com/tailbytespygotham-140819135745-phpapp02/95/tco-in-python-via-bytecode-manipulation-7-638.jpg)
 
@@ -164,6 +164,24 @@ Currently radare2 can use [ida2r2](https://github.com/radare/radare2ida) script 
 ### Improving regression suite and testing
 Currently radare2 uses custom solution for running regression tests. It is required to solve [numerours issues](https://github.com/radare/radare2-regressions/issues), along with improving parallel execution and performance. The next interesting idea is to setup and [reuse Godbolt](https://github.com/radare/radare2-regressions/issues/1549) compilation engine for generating tests for different compilers and compilation options. There is even command line tool for interacting with Godbolt - [cce](https://github.com/ethanhs/cce).
 
+## Cutter (GUI)
+
+[Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Its goal is making an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
+
+While it is very useful for all the community behind Cutter, working on the interface can be very interesting for people that want to gain experience in UI/UX design, or simply in Qt/C++.
+
+Below are some improvements that can be done to the interface:
+
+* Hexdump widget improvements ([Project #8](https://github.com/radareorg/cutter/projects/8))
+As radare2, Cutter also provides a hexdump widget, however this one is not very interesting to use as of now. Most of the opened issues about this widget are easy to solve and could be a good way to start learning the code base of Cutter.
+* Improve the "Run Script" option ([#753](https://github.com/radareorg/cutter/issues/753))
+* Add the ability to import '*.idb' files ([#693](https://github.com/radareorg/cutter/issues/693))
+* Add a font ratio option ([#686](https://github.com/radareorg/cutter/issues/686))
+* Increase graph margins ([#727](https://github.com/radareorg/cutter/issues/727))
+* Improve layout functionnality ([#694](https://github.com/radareorg/cutter/issues/694))
+
+Also [any issue in our issue tracker marked as "Good First Issue"](https://github.com/radareorg/cutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good candidate for a microtask.
+
 ## radeco
 
 [radeco-lib](https://github.com/radareorg/radeco-lib) is a decompiler library which uses radare2 and [radeco](https://github.com/radareorg/radeco) is its user interface.
@@ -181,7 +199,6 @@ These tasks are big enough big to be splitted and picked any small part of them 
 * Simplify the conditions [#216](https://github.com/radareorg/radeco-lib/issues/216)
 * Use basic block information from radare2 [#207](https://github.com/radareorg/radeco-lib/issues/207)
 * Use SDB to determine the number of argument of a given function [#213](https://github.com/radareorg/radeco-lib/issues/213)
-
 
 ## rune
 
@@ -216,22 +233,4 @@ Reference links:
 * [Falcon](https://github.com/falconre/falcon): A binary analysis framework written in Rust
 * [An introduction to rune](https://chinmaydd.in/2017/07/03/Intro-to-rune/)
 * Other projects: [libsmt.rs](https://github.com/sushant94/libsmt.rs), [arch-rs](https://github.com/radareorg/arch-rs)
-
-## Cutter (GUI)
-
-[Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Its goal is making an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
-
-While it is very useful for all the community behind Cutter, working on the interface can be very interesting for people that want to gain experience in UI/UX design, or simply in Qt/C++.
-
-Below are some improvements that can be done to the interface:
-
-* Hexdump widget improvements ([Project #8](https://github.com/radareorg/cutter/projects/8))
-As radare2, Cutter also provides a hexdump widget, however this one is not very interesting to use as of now. Most of the opened issues about this widget are easy to solve and could be a good way to start learning the code base of Cutter.
-* Improve the "Run Script" option ([#753](https://github.com/radareorg/cutter/issues/753))
-* Add the ability to import '*.idb' files ([#693](https://github.com/radareorg/cutter/issues/693))
-* Add a font ratio option ([#686](https://github.com/radareorg/cutter/issues/686))
-* Increase graph margins ([#727](https://github.com/radareorg/cutter/issues/727))
-* Improve layout functionnality ([#694](https://github.com/radareorg/cutter/issues/694))
-
-Also [any issue in our issue tracker marked as "Good First Issue"](https://github.com/radareorg/cutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good candidate for a microtask.
 

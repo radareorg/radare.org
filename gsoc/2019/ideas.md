@@ -129,12 +129,15 @@ Cutter's benefits are huge, because having a stable open source debugger that is
 - thestr4ng3r
 
 ### Assess requirements for evaluations
-- 1st term: The native debugger works correctly for most binaries on at least Linux and macOS.
+- 1st term: The native debugger works correctly for most binaries on at least Linux and OS X.
 - 2nd term: The native debugger is now stable for all platforms.
-- 3rd term: Native debugging is fully functionnal on all three major OS, as well as remote debugging, and the interface is easy to use and understand.
+- 3rd term: Native debugging is fully functional on all three major OSes, as well as remote debugging, and the interface is easy to use and understand.
 
 ### Links/Resources
-None.
+- [OLD (unmerged) debug support PR](https://github.com/radareorg/cutter/pull/594)
+- [Cutter Debugger project](https://github.com/radareorg/cutter/projects/1)
+- [Radare2 Debugger project](https://github.com/radare/radare2/projects/4)
+- [Radare2 debuging issues](https://github.com/radare/radare2/labels/debugger)
 
 ---------------------
 # Radare GSoC -- Idea List
@@ -145,7 +148,7 @@ Radare2 has a very flexible console interface, including command line, different
 
 ### Task
 1. Implement table commands and API (like it is done for graphs)
-2. Generalize the code of popup widget, reuse it other places
+2. Generalize the code of popup widget, merge with visual widgets (see PR), reuse them in other places
 3. Support colorscheme in radiff2 graphs
 4. Further improvements for RTL and BiDirectional text
 5. Improving autocompletion and dietline modes (vi/emacs-like hotkeys)
@@ -179,6 +182,7 @@ Huge benefits for end users in UX and better support for localisation
  - [Popup console widget](https://github.com/radare/radare2/issues/8476)
  - [Table commands/API](https://github.com/radare/radare2/issues/7519)
  - [Repainting screen improvements](https://github.com/radare/radare2/issues/4820)
+ - [PR - Initial visual widgets support](https://github.com/radare/radare2/pull/12693)
 
 ## Radare2 commands syntax parser
 Radare2 is a well known for the abundance of the commands and complex syntax. At this point every command (almost) performs its own parsing for
@@ -295,6 +299,7 @@ Huge benefits for end users in UX and better support for extension.
 
 ### Mentors
  - xvilka
+ - maijin
 
 ## Handle EXE/DLL as FAT binaries
 
@@ -448,6 +453,8 @@ This kind of work will be beneficial for team-CTF competitions as well.
 - pancake
 
 ### Links/Resources
+- [Syncing radare2 project](https://github.com/radare/radare2/projects/5)
+- [Projects radare2 roadmap](https://github.com/radare/radare2/projects/9)
 - [Hooks for realtime collaboration](https://github.com/radare/radare2/issues/7410)
 - SolIDArity - https://solidarity.re
 - CollabREate - https://github.com/cseagle/collabREate
