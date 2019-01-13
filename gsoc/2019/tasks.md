@@ -37,6 +37,7 @@ Java support has landed in radare2 a long time ago. At the same time it is large
 
 ### Reviving .NET bytecode support
 It is widely adopted these days and there are many tools available for decompilation. On the other hand radare2 provides many useful features across all architectures and scripting capabilities, which can help to improve the state of .NET reverse engineering tooling. Currently the most basic MSIL support lives in [radare2 extras](https://github.com/radare/radare2-extras/tree/master/libr/asm/arch/msil). It can be revived, improved and enhanced to add newer format of the .NET bytecode. See other tools that work with .NET bytecode:
+
 - [ILSpy](https://github.com/icsharpcode/ILSpy)
 - Telerik [JustDecompile engine](https://github.com/telerik/justdecompileengine)
 - JetBrains [dotPeek](https://www.jetbrains.com/decompiler)
@@ -86,7 +87,15 @@ When that is implemented, one could also add a command that does the same thing,
 
 `Vb` already supports browsing bin classes. The same thing should be implemented for anal classes.
 
-## Signatures
+## META - Signatures [#6947](https://github.com/radare/radare2/issues/6947)
+
+Radare2 has a good support for loading and creating signatures, but it is not yet complete, thus
+improving the signature contents (their variables, arguments, types, local flags and comments),
+their testing coverage and user interface (commands, [reviving `rasign2` tool](https://github.com/radare/radare2/issues/9336)).
+Apart from that, [better integration with analysis loop](https://github.com/radare/radare2/issues/5331) is
+required for the best results of autoanalysis.
+Of course all these features are worthless without the actual signatures provided, thus the task to
+[create the default pack](https://github.com/radare/radare2/issues/7310).
 
 ## META - Graphs [#6967](https://github.com/radare/radare2/issues/6967)
 

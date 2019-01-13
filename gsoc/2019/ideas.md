@@ -2,7 +2,6 @@
 
 ### INDEX
 
--------------------
 # Radeco GSoC -- Idea List
 
 [radeco](https://github.com/radareorg/radeco) (based on [radeco-lib](https://github.com/radareorg/radeco-lib)) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
@@ -15,7 +14,7 @@ This task involves completion of a decompiler backend using the analysis in rade
 * Implement the Memory SSA
 * Complete the VSA (Value Set Analysis)
 * Expanding supported architectures list
-* Improving pseudocode output and adding more tests
+* Improving pseudocode output and adding more tests (compared with output of Hex Rays)
 * Using Godbolt to produce different compilers and optimization level tests
 
 ### Skills
@@ -80,15 +79,15 @@ This task allows to produce the more readable IR/C output.
 - Final term: integration with radare2 and Cutter, regression tests, complex types inference, radare2 book documentation
 
 ### Links/Resources
- - Commands and API for setting/changing types of the variables - [Issue #183](https://github.com/radareorg/radeco-lib/issues/183)
- - Constrained types support in Radeco - [Issue #232](https://github.com/radareorg/radeco-lib/issues/232)
- - Value limits support and analysis - [Issue #91](https://github.com/radareorg/radeco-lib/issues/91)
- - [Radeco-lib issues](https://github.com/radareorg/radeco-lib/issues)
- - [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
- - [Radare2 types issues](https://github.com/radare/radare2/labels/types)
- - [HexRaysCodeXxplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- Commands and API for setting/changing types of the variables - [Issue #183](https://github.com/radareorg/radeco-lib/issues/183)
+- Constrained types support in Radeco - [Issue #232](https://github.com/radareorg/radeco-lib/issues/232)
+- Value limits support and analysis - [Issue #91](https://github.com/radareorg/radeco-lib/issues/91)
+- [Radeco-lib issues](https://github.com/radareorg/radeco-lib/issues)
+- [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
+- [Radare2 types issues](https://github.com/radare/radare2/labels/types)
+- [HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
 
----------------------
 # Cutter GSoC -- Idea List
 
 [Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Its goal is to make an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
@@ -139,7 +138,6 @@ Cutter's benefits are huge, because having a stable open source debugger that is
 - [Radare2 Debugger project](https://github.com/radare/radare2/projects/4)
 - [Radare2 debuging issues](https://github.com/radare/radare2/labels/debugger)
 
----------------------
 # Radare GSoC -- Idea List
 
 ## Console Interface Improvements
@@ -181,6 +179,7 @@ Huge benefits for end users in UX and better support for localisation
  - [META: Unicode/UTF-8 support](https://github.com/radare/radare2/issues/2032)
  - [Popup console widget](https://github.com/radare/radare2/issues/8476)
  - [Table commands/API](https://github.com/radare/radare2/issues/7519)
+ - [Tree commands/API](https://github.com/radare/radare2/issues/12745)
  - [Repainting screen improvements](https://github.com/radare/radare2/issues/4820)
  - [PR - Initial visual widgets support](https://github.com/radare/radare2/pull/12693)
 
@@ -233,7 +232,7 @@ Currently we have types support in radare2, including basic (low-level) ability 
 5. Improve the type inference based on function arguments types, function return types and callgraph
 
 ### Skills
-Student should know C. And thould be familiar with basics of the program analysis.
+Student should know C as well as be familiar with basics of the program analysis.
 
 ### Difficulty
 Medium
@@ -267,7 +266,8 @@ This feature will make radare2 usable for day-to-day reverse engineering of comp
 - More DWARF information - [Issue #2079](https://github.com/radare/radare2/issues/2079)
 - Constrained types - [Issue #11828](https://github.com/radare/radare2/issues/11828)
 - [TIE: Principled Reverse Engineering of Types in Binary Programs]()
-- [HexRaysCodeXxplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- [HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
 
 ## CPU/Platform profiles
 While instruction set defines architecture, it is widely common that particular CPU or SoC models implement only a subset of it or extend it with custom instructions and registers. Moreover, various SoC modifications can define peripheral devices interaction through ports (rare), registers or MMIO spaces. All this widely helps for a reverse engineering process, because a lot of the code will make sense upon a glance once you see it accesses certain registers (if named) or peripheral devices (when MMIO area is defined).
@@ -398,6 +398,52 @@ Since radare2 has a better support for emulation and analysis, this will help to
 - [WinDbg cheatsheet](http://windbg.info/doc/1-common-cmds.html)
 - [DbgKit](http://www.andreybazhan.com/dbgkit.html) - WinDbg extension for working with processes
 
+## Radiff2 improvements
+Radare2 had a features to perform binary diffing more than a decade. Nevertheless the support is quite basic and there is a room for improvement. One of the most important tasks is to deepen the integration with analysis loop, allowing to find and highlight the difference between arguments count, local variables count, their types and other analysis metainformation. The next big task is to modernize the radiff2 (and corresponding parts in the RCore) in terms of performance and user interface. And of course - cover the radiff2 and radare2 diffing features with regression tests and unit tests.
+
+### Tasks
+- Support diffing of the different parts of the same buffer/file
+- Visual [diffing mode with Unicode/ASCII graphs](https://github.com/radare/radare2/issues/7332) in radare2 and radiff2
+- Split view for [hexadecimal view](https://github.com/radare/radare2/issues/8115) and disassembly diffing mode
+- Improve the integration with analysis (variables and types differences)
+- Integrate ESIL and Radeco IL/pseudocode as an options for binary diffing
+- Implementing most important diffing strategies from Diaphora
+- Writing the test cases for radare2 regression tests and improving the results.
+
+### Skills
+Student should know C as well as be familiar with basics of the program analysis. Having an
+experience with other binary diffing software is a plus.
+
+### Difficulty
+Medium
+
+### Benefits for the student
+Student will understand modern program analysis problems in application to binary diffing, and how to improve the performance of patch analysis.
+
+### Benefits for the project
+This feature will make radare2 usable for day-to-day patch analysis of modern software, as well as improving the automation and performance of this task.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: radiff2/radare2 should support highlighting types, arguments, and variables differences between functions.
+- 2nd term: Implement split-view for hex, disassembly, and graph modes. Their interface and performance improvements.
+- Final term: Write the regression tests for all implemented features, add the documentation in
+	radare2 book.
+
+### Mentors
+- pancake
+- xvilka
+
+### Links/Resources
+- [META - Radiff2](https://github.com/radare/radare2/issues/6971)
+- [Radiff2-labeled issues](https://github.com/radare/radare2/labels/radiff2)
+- [Signature-labeled issues](https://github.com/radare/radare2/labels/zignatures)
+- Cutter: Diffing interface feature request [#1104](https://github.com/radareorg/cutter/issues/1104)
+- [PatchDiff2](https://github.com/filcab/patchdiff2)
+- [BinDiff](https://www.zynamics.com/bindiff.html)
+- [Diaphora](https://github.com/joxeankoret/diaphora)
+- [SimHash](https://github.com/googleprojectzero/functionsimsearch)
+
+
 ## Real time collaboration platform
 Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successfull examples like [collabREate](https://github.com/cseagle/collabREate), [YaCo](https://github.com/DGA-MI-SSI/YaCo) and [solIDArity](https://solidarity.re) (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
 
@@ -456,8 +502,8 @@ This kind of work will be beneficial for team-CTF competitions as well.
 - [Syncing radare2 project](https://github.com/radare/radare2/projects/5)
 - [Projects radare2 roadmap](https://github.com/radare/radare2/projects/9)
 - [Hooks for realtime collaboration](https://github.com/radare/radare2/issues/7410)
-- SolIDArity - https://solidarity.re
-- CollabREate - https://github.com/cseagle/collabREate
-- YaCo - https://github.com/DGA-MI-SSI/YaCo)
-- revsync - https://github.com/lunixbochs/revsync
+- [SolIDArity](https://solidarity.re)
+- [CollabREate](https://github.com/cseagle/collabREate)
+- [YaCo](https://github.com/DGA-MI-SSI/YaCo)
+- [revsync](https://github.com/lunixbochs/revsync)
 
