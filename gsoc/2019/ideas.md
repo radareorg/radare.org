@@ -86,6 +86,7 @@ This task allows to produce the more readable IR/C output.
 - [Papers about decompilation](https://drive.google.com/drive/folders/0B1X32SwXTZPuYWwxWW5BNi1oWDA?usp=sharing)
 - [Radare2 types issues](https://github.com/radare/radare2/labels/types)
 - [HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- [Virtuailor](https://github.com/0xgalz/Virtuailor) - vtables reconstruction based on runtime information
 - [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
 
 # Cutter GSoC -- Idea List
@@ -267,6 +268,7 @@ This feature will make radare2 usable for day-to-day reverse engineering of comp
 - Constrained types - [Issue #11828](https://github.com/radare/radare2/issues/11828)
 - [TIE: Principled Reverse Engineering of Types in Binary Programs]()
 - [HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer)
+- [Virtuailor](https://github.com/0xgalz/Virtuailor) - vtables reconstruction based on runtime information
 - [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
 
 ## CPU/Platform profiles
