@@ -4,18 +4,18 @@
 
 # Radeco GSoC -- Idea List
 
-[radeco](https://github.com/radareorg/radeco) (based on [radeco-lib](https://github.com/radareorg/radeco-lib)) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis built into it. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
+[radeco](https://github.com/radareorg/radeco) (based on [radeco-lib](https://github.com/radareorg/radeco-lib)) is a radare2 based static binary analysis framework. Currently, radeco is stable enough and has several analysis passes built in. We believe that this GSoC is a good opportunity to push radeco further and implement our very own decompiler within radare2!
 
 ## Memory SSA and platforms
 
 This task involves completion of a decompiler backend using the analysis in radeco. Once the preliminary results are obtained, students are expected to continue working on improving the quality of decompiled code.
 
 ### Task
-* Implement the Memory SSA
+* Implement Memory SSA
 * Complete the VSA (Value Set Analysis)
-* Expanding supported architectures list
-* Improving pseudocode output and adding more tests (compared with output of Hex Rays)
-* Using Godbolt to produce different compilers and optimization level tests
+* Expand the supported architectures list
+* Improve the pseudocode output and add more tests (compared with output of Hex Rays)
+* Use Godbolt to produce binaries with different compilers and optimization levels for tests
 
 ### Skills
 The student should be familiar with Rust and decompilation basics or be able to learn it quickly.
@@ -24,18 +24,18 @@ The student should be familiar with Rust and decompilation basics or be able to 
 Advanced
 
 ### Benefits for the student
-The student will learn decompilation theory and performing complex graph transformations and specifics of particular compiler optimization passes.
+The student will learn decompilation theory and perform complex graph transformations, as well as learn the specifics of particular compiler optimization passes.
 
 ### Benefits for the project
-This task allows to produce the first release of radeco which will be able to generate readable and optimized C code.
+Successful completion of this task will mean the first release of radeco which can generate readable and optimized C code.
 
 ### Mentors
 - xvilka
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Implementing Memory SSA and VSA.
-- 2nd term: Supporting architectures: x86, ARMv7, ARMv8, PowerPC, MIPS, V850, regression tests for them.
-- Final term: Refined C output, finished integration with radare2 and Cutter, written regression and unit tests, updated documentation (including r2book).
+- 2nd term: Supporting architectures: x86, amd64, ARMv7, ARMv8, PowerPC, MIPS, V850, and implementing regression tests for them.
+- Final term: Refining C output, finished integration with radare2 and Cutter, writing regression and unit tests, updating documentation (including r2book).
 
 ### Links/Resources
  - [Radeco](https://github.com/radareorg/radeco)
@@ -48,7 +48,7 @@ Representing Memory Operations](http://www.airs.com/dnovillo/Papers/mem-ssa.pdf)
 
 ## Type System
 
-This task is for improving the results of decompilation with recovering types  (`char`, `char *`, structures, unions, classes, etc). Apart from ability to inference them through analysing data flow, radeco should be able to exchange this information with radare2 and Cutter, initially loading from them, then synchornizing back refined results.
+This task is for improving the results of decompilation by recovering types  (`char`, `char *`, structures, unions, classes, etc). Apart from ability to inference them through analyzing data flow, radeco should be able to exchange this information with radare2 and Cutter, initially loading from them, then synchornizing back refined results.
 
 ### Task
 * Define and implement type system
@@ -65,7 +65,7 @@ The student should be familiar with Rust and decompilation basics or be able to 
 Advanced
 
 ### Benefits for the student
-The student will learn decompilation theory and working with type system.
+The student will learn decompilation theory and work with the type system.
 
 ### Benefits for the project
 This task allows to produce the more readable IR/C output.
@@ -74,9 +74,9 @@ This task allows to produce the more readable IR/C output.
 - xvilka
 
 ### Assess requirements for midterm/final evaluation
-- 1st term:  Basic and structured types support in IR and propagating them through all stages
+- 1st term:  Basic and structured types support in IR and propagation through all stages of radeco
 - 2nd term: Types inference engine
-- Final term: integration with radare2 and Cutter, regression tests, complex types inference, radare2 book documentation
+- Final term: Integration with radare2 and Cutter, regression tests, complex types inference, radare2 book documentation
 
 ### Links/Resources
 - Commands and API for setting/changing types of the variables - [Issue #183](https://github.com/radareorg/radeco-lib/issues/183)
@@ -91,19 +91,19 @@ This task allows to produce the more readable IR/C output.
 
 # Cutter GSoC -- Idea List
 
-[Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Its goal is to make an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
+[Cutter](https://github.com/radareorg/cutter) is a Qt and C++ GUI for radare2. Cutter's goal is to make an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind. Cutter is created by reverse engineers for reverse engineers.
 
 ## Debugger Improvements Cutter and radare2
-Having a way to dynamically analyze binaries is something very demanded by the reverse engineering community.
-Cutter now supports radare2 debugger, however, having a fully stable debugger is not a piece of cake. There are bugs that remain in the current implementation of our debugger.
-For this year, the student will have to improve our current debugger for all platforms (Windows, macOS and Linux) and move it from its current unstable state to a solid and stable debugger.
+Having a way to dynamically analyze binaries is something required by the reverse engineering community.
+Cutter now supports radare2's debugger, however, having a stable debugger is not simple. There are bugs that remain in the current implementation of our debugger.
+For this year, the student will have to improve our current debugger for all major platforms (Windows, macOS and Linux), and move it from its current unstable state to a solid and stable debugger.
 This includes working on both Cutter and radare2 code, and especially handle the events coming from r2's debugger to update the interface.
 The student will have to add tests to radare2 testsuite to make sure any debug scenario is working as expected.
 
 ### Task
-1. Improve native debugger for Linux and OS X
+1. Improve native debugger for Linux and macOS
 2. Handle events coming from r2 to update the interface (debugging stopped, debuggee received a signal, interruption, etc.)
-3. Improve native debugger for Windows
+3. Improve the native debugger for Windows
 4. At this point, the debugger should work flawlessly with simple tasks such as "Start debugging", "Step", "Step over", "Software breakpoints", "Restart"
 5. Add tests for all platforms to make sure the native debugger works as expected
 6. Improve the existing widgets and make sure that Threads, Exceptions, Backtrace all work as exepected
@@ -121,7 +121,7 @@ The difficulty of the task remains in the ability to make something solid and st
 The student will learn various things about debuggers, linkers, loaders on multiple environments and architectures. This task is a very good experience to get more knowledge in such domain. The student will also learn the basics of designing a User Interface.
 
 ### Benefits for the project
-Cutter's benefits are huge, because having a stable open source debugger that is easy to script is very demanded by the community.
+Cutter's benefits are huge, because having a stable open source debugger that is easy to script is demanded by the community.
 
 ### Mentors
 - xarkes
@@ -129,7 +129,7 @@ Cutter's benefits are huge, because having a stable open source debugger that is
 - thestr4ng3r
 
 ### Assess requirements for evaluations
-- 1st term: The native debugger works correctly for most binaries on at least Linux and OS X.
+- 1st term: The native debugger works correctly for most binaries on at least Linux and macOS.
 - 2nd term: The native debugger is now stable for all platforms.
 - 3rd term: Native debugging is fully functional on all three major OSes, as well as remote debugging, and the interface is easy to use and understand.
 
@@ -165,7 +165,7 @@ will gain the knowledge of Unicode internals and the experience of
 tuning the redrawing performance. It might also improve the efficiency of working inside the console programs.
 
 ### Benefits for the project
-Huge benefits for end users in UX and better support for localisation
+Huge benefits for end users in UX and better support for localization
 
 ### Assess requirements for evaluations
 - 1st term: Table commands and API, popup widget generalization
@@ -185,12 +185,12 @@ Huge benefits for end users in UX and better support for localisation
  - [PR - Initial visual widgets support](https://github.com/radare/radare2/pull/12693)
 
 ## Radare2 commands syntax parser
-Radare2 is a well known for the abundance of the commands and complex syntax. At this point every command (almost) performs its own parsing for
-the arguments and autocompletion. Some parts of the syntax being parsed in the main processing loop. Main goal of this task is to implement generic parser for all the radare2 commands, providing a simple interface with arguments list and count for every subcommand, easing any extending of the syntax and even performing real-time (as you type) syntax highlighting of the command right in radare2 REPL. We already have [mpc](https://github.com/orangeduck/mpc) as a parser for ragg2. So having it as a core for radare2 commands parsing seems like a good idea too.
+Radare2 is a well known for the abundance of the commands and complex syntax. At this point nearly every command performs its own parsing for
+the arguments and autocompletion. Some parts of the syntax are parsed in the main processing loop. The main goal of this task is to implement a generic parser for all radare2 commands, providing a simple interface with an arguments list and count for every subcommand, allowing for easy extension of the syntax and even performing real-time (as you type) syntax highlighting of the command right in radare2 REPL. We already have [mpc](https://github.com/orangeduck/mpc) as a parser for ragg2. So having it as a core for radare2 commands parsing seems like a good idea too.
 
 ### Task
 1. Implement parsing core in radare2
-2. Implement syntax extensions (macroses, aliases, loops, conditionals, etc) in the new parser
+2. Implement syntax extensions (macros, aliases, loops, conditionals, etc) in the new parser
 3. Gradually switch all radare2 command to the new parser
 4. Port external plugins, like radeco, r2dec, radare2-extras to the new parser API
 5. Write unit and regression tests for the parser
@@ -203,15 +203,15 @@ Student should know C. And thould be familiar with writing parsers and writing p
 Medium
 
 ### Benefits for the student
-Student will understand the logic behind writing different kinds of parsers, and will learn a lot about radare2 internals and all complexity of its commands' syntax.
+Student will understand the logic behind writing different kinds of parsers, and will learn a lot about radare2 internals and the complexity of its commands' syntax.
 
 ### Benefits for the project
-This feature will reduce the complexity of adding new command or change existing one, it will bring also the better syntax extensions and ability to syntax highlight the language.
+This feature will reduce the complexity of adding new command or changing existing one, it will bring also the better syntax extensions and ability to syntax highlight the language.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Write the core of the parser with all syntax constructs available in radare2 commands.
 - 2nd term: Migrate radare2 commands and external plugins to a new API.
-- Final term: Documentation in r2book and commands, working testcases and unittests for implemented things.
+- Final term: Documentation in r2book and commands, working testcases and unittests for the new parser.
 
 ### Mentors
 - pancake
@@ -223,7 +223,7 @@ This feature will reduce the complexity of adding new command or change existing
 - [MPC](https://github.com/orangeduck/mpc) - a parser combinator library for C
 
 ## Type Analysis Improvements
-Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C header for example, or load from "precompiled" SDB file. Goal of this task is to integrate more types handling into the radare2 analysis loop, including automatic inference and suggestions.
+Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C headers for example, or load from "precompiled" SDB file. The goal of this task is to integrate more types handling into the radare2 analysis loop, including automatic inference and suggestions.
 
 ### Task
 1. Importing types and variables information from DWARF and PDB files
@@ -239,10 +239,10 @@ Student should know C as well as be familiar with basics of the program analysis
 Medium
 
 ### Benefits for the student
-Student will understand modern program analysis problems related to the type inference, will understand lowlevel details on how compilers produce native code from OOP concepts, and will meet the most common reverse engineering task in its advanced incarnation.
+Student will understand modern program analysis problems related to type inference, understand low level details on how compilers produce native code from OOP concepts, and will meet the most common reverse engineering task in its advanced incarnation.
 
 ### Benefits for the project
-This feature will make radare2 usable for day-to-day reverse engineering of complex programs, and will make integration with radeco decompilator even easier.
+This feature will make radare2 more usable for day-to-day reverse engineering of complex programs, and will make integration with radeco decompilator even easier.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Loading types information from DWARF and PDB, integrated them with `t` and `pf` commands.
@@ -272,11 +272,11 @@ This feature will make radare2 usable for day-to-day reverse engineering of comp
 - [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
 
 ## CPU/Platform profiles
-While instruction set defines architecture, it is widely common that particular CPU or SoC models implement only a subset of it or extend it with custom instructions and registers. Moreover, various SoC modifications can define peripheral devices interaction through ports (rare), registers or MMIO spaces. All this widely helps for a reverse engineering process, because a lot of the code will make sense upon a glance once you see it accesses certain registers (if named) or peripheral devices (when MMIO area is defined).
+While instruction set defines architecture, it is common that particular CPU or SoC models implement only a subset of it or extend it with custom instructions and registers. Moreover, various SoC modifications can define peripheral devices interaction through ports (rare), registers or MMIO spaces. All this helps the reverse engineering process, because a lot of the code will make sense upon a glance once you see it accesses certain registers (if named) or peripheral devices (when MMIO area is defined).
 
 ### Task
-1. Implement support for CPU profile
-2. Implement support for platform profile
+1. Implement support for CPU profiles
+2. Implement support for platform profiles
 3. Add support for register and MMIO specific setups
 4. Integrate these in analysis loop, handling register and memory accesses.
 5. Implement tests and documentation in radare2 book
@@ -289,7 +289,7 @@ Student should know C and understand basics of the hardware platforms, architect
 Medium
 
 ### Benefits for the student
-The student will improve his familiarity with reverse engineering for various architectures and platforms, along with the improving the efficiency.
+The student will improve familiarity with reverse engineering for various architectures and platforms, along with the improving the efficiency of radare2.
 
 ### Benefits for the project
 Huge benefits for end users in UX and better support for extension.
@@ -330,7 +330,7 @@ Advanced
 The student will gain a deep understanding of Microsoft's executable formats.
 
 ### Benefits for the project
-Currently, there are no up to date modern tools to deal with .Net programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
+Currently, there are no up to date modern tools to deal with .NET programs in a low-level manner, when decompilers fail. With this task, we'd like to fill this gap.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Support of FAT binaries (Win32 native + .NET) in RBin, basic one
@@ -347,13 +347,13 @@ Currently, there are no up to date modern tools to deal with .Net programs in a 
 - [Official .Net resources](http://www.microsoft.com/net)
 
 ## Proper Windows platform support
-Radare2 has a basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 does not work properly. This task consists from some small,
-some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
+Radare2 has basic support for Windows but not all tests are passing under AppVeyor, debugging has still problems, and some features of radare2 do not work properly. This task consists of some small,
+and some big unrelated tasks to improve the basic and advanced support of running radare2 on Windows
 platform
 
 ### Tasks
 1. Fix current features on Windows platform:
-   - Debugger: check if it work on Windows XP - 10, native, gdb:// and windbg://
+   - Debugger: check if it works on modern Windows NT (XP - 10), native, gdb:// and windbg://
    - Regression tests: make them pass locally
    - Regression tests: run them on AppVeyor automatically (and fix correspondingly)
 2. Improve [WinDbg protocol](https://github.com/radare/radare2/tree/master/shlr/wind) support and integration with analysis
@@ -369,7 +369,7 @@ The student should be comfortable with programming under Windows platform. They 
 Medium. If the student is comfortable with programming for Windows, there shouldn't be major challenges except WinDbg protocol support.
 
 ### Benefits for the student
-The student will gain experience in writing debuggers for Windows platform. Also, the student will learn the Windows platform crucial parts' internals, related to debugging.
+The student will gain experience in writing debuggers for Windows platform. Also, the student will learn the Windows platform internals, related to debugging.
 
 ### Benefits for the project
 Since radare2 has a better support for emulation and analysis, this will help to migrate from WinDbg to radare2.
@@ -401,7 +401,7 @@ Since radare2 has a better support for emulation and analysis, this will help to
 - [DbgKit](http://www.andreybazhan.com/dbgkit.html) - WinDbg extension for working with processes
 
 ## Radiff2 improvements
-Radare2 had a features to perform binary diffing more than a decade. Nevertheless the support is quite basic and there is a room for improvement. One of the most important tasks is to deepen the integration with analysis loop, allowing to find and highlight the difference between arguments count, local variables count, their types and other analysis metainformation. The next big task is to modernize the radiff2 (and corresponding parts in the RCore) in terms of performance and user interface. And of course - cover the radiff2 and radare2 diffing features with regression tests and unit tests.
+Radare2 has had the ability to perform binary diffing for over a decade. Nevertheless the support is quite basic and there is room for improvement. One of the most important tasks is to deepen the integration with analysis loop. Integration with the analysis loop will allow radare2 to find and highlight the difference between arguments count, local variables count, their types and other analysis metainformation. The next big task is to modernize radiff2 (and corresponding parts in RCore) in terms of performance and user interface. And of course - cover the radiff2 and radare2 diffing features with regression tests and unit tests.
 
 ### Tasks
 - Support diffing of the different parts of the same buffer/file
@@ -409,8 +409,8 @@ Radare2 had a features to perform binary diffing more than a decade. Nevertheles
 - Split view for [hexadecimal view](https://github.com/radare/radare2/issues/8115) and disassembly diffing mode
 - Improve the integration with analysis (variables and types differences)
 - Integrate ESIL and Radeco IL/pseudocode as an options for binary diffing
-- Implementing most important diffing strategies from Diaphora
-- Writing the test cases for radare2 regression tests and improving the results.
+- Implement the most important diffing strategies from Diaphora
+- Write the test cases for radare2 regression tests and improve the results.
 
 ### Skills
 Student should know C as well as be familiar with basics of the program analysis. Having an
@@ -423,7 +423,7 @@ Medium
 Student will understand modern program analysis problems in application to binary diffing, and how to improve the performance of patch analysis.
 
 ### Benefits for the project
-This feature will make radare2 usable for day-to-day patch analysis of modern software, as well as improving the automation and performance of this task.
+This feature will make radare2 usable for day-to-day patch analysis of modern software, as well as improve the automation and performance of this task.
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: radiff2/radare2 should support highlighting types, arguments, and variables differences between functions.
@@ -447,7 +447,7 @@ This feature will make radare2 usable for day-to-day patch analysis of modern so
 
 
 ## Real time collaboration platform
-Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from the decompilation the biggest missing feature - lack of the real time collaboration, which is important in case of reversing large files, playing CTFs in a teams. There are successfull examples like [collabREate](https://github.com/cseagle/collabREate), [YaCo](https://github.com/DGA-MI-SSI/YaCo) and [solIDArity](https://solidarity.re) (proprietary/$$$). From public tools collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
+Radare2 has been a successfull reverse engineering framework and a toolset for years. But apart from decompilation, the biggest missing feature is the lack of real time collaboration, which is important when reversing large files, or playing CTFs in a team. There are successfull examples like [collabREate](https://github.com/cseagle/collabREate), [YaCo](https://github.com/DGA-MI-SSI/YaCo) and [solIDArity](https://solidarity.re) (proprietary/$$$). When it comes to public tools, collabREate is the most complete and common, and it supports notifications (and online propagation) of those actions:
 
 - Change address/region type (code, data, unknown)
 - Segment add, delete, move, change (like 32->64 bit, flags)
@@ -459,7 +459,7 @@ Radare2 has been a successfull reverse engineering framework and a toolset for y
 - Enum updates
 - Struct type added, changed, or deleted
 - Function tail? added or deleted
-- Flirt function identified (would just be "function renamed") (signature matched)
+- FLIRT function identified (would just be "function renamed") (signature matched)
 - Xref add/delete (I don't know what this means)
 
 The possible architecture of the platform:
@@ -467,13 +467,13 @@ The possible architecture of the platform:
  "WebUI [1] (microservice in Go) <-> Server [2] (microservice in Go) <-> C library of client [3]"
 
 The project management (create/remove/add user in project/remove user from project) should be done in the Server [2]. The user management - too. Those functions are exported in some way for using in WebUI microservice (RPC maybe?). The file storage is a filesystem, for storing initial files (in binary format), state and differences (in text format) using [Git Go library](https://github.com/src-d/go-git),
-those text differences are "r2 commands", which are sent by C api library.
+those text differences are "r2 commands", which are sent by a C api library.
 Conflict resolution could be done via standard Git features - rebase/merge.
 
 ### Task
 1. Implement a simple server in Go to handle connections of multiple radare2 instances
 2. Add the users and projects manager to the server
-3. Patch the radare2 to add hooks for the most important actions
+3. Patch radare2 to add hooks for the most important actions
 4. Write a simple unit tests for those hooks for easy testing on Travis CI and AppVeyor
 
 ### Skills
@@ -483,7 +483,7 @@ Ability to code and understand C and Go (Go can be learnt in a couple weeks thou
 Medium
 
 ### Benefits for the student
-Student will learn about creating a distributed systems with Go and conflicts resolution
+Student will learn about creating a distributed systems with Go and conflict resolution
 algorithms in real time.
 
 ### Benefits for the project
