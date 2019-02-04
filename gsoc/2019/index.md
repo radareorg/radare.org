@@ -39,7 +39,8 @@ Members of radare2 core team have volunteered to guide students for GSoC’19. T
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
-- Julien Voisin IRC: jvoisin -- [dustri.org](http://dustri.org)
+- Julien Voisin IRC: jvoisin -- [dustri.org](https://dustri.org)
+- Florian Märkl tg: @thestr4ng3r -- [@thestr4ng3r](https://twitter.com/thestr4ng3r)
 - Maxime Morin tg: @Maijin -- [@Maijin212](https://twitter.com/Maijin212)
 - Chinmay Deshpande tg: chinmay_dd -- [chinmaydd](https://github.com/chinmaydd)
 - Antide Petit IRC/tg: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)

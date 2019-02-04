@@ -216,7 +216,7 @@ This feature will reduce the complexity of adding new command or changing existi
 ### Mentors
 - pancake
 - xvilka
-- thestr4ng3r
+- ret2libc
 
 ### Links/Resources
 - Refactor commands parsing - [Issue #7967](https://github.com/radare/radare2/issues/7967)
