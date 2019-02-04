@@ -224,6 +224,7 @@ This feature will reduce the complexity of adding new command or changing existi
 
 ## Type Analysis Improvements
 Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C headers for example, or load from "precompiled" SDB file. The goal of this task is to integrate more types handling into the radare2 analysis loop, including automatic inference and suggestions.
+Some basic type inference is already implemented as a part of `aft` and `afc` commands, and `anal.types.*` configuration options.
 
 ### Task
 1. Importing types and variables information from DWARF and PDB files

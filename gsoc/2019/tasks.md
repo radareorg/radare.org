@@ -117,9 +117,10 @@ Ragg2 - simplistic [compiler for C-like syntax](http://radare.today/posts/payloa
 
 ## RAFIND2 - Various enhancement
 
-Rafind2 - Binwalk parity
+Rafind2 - binwalk parity
 Various issues to improve rafind2 such as being able to extract known file types automatically and recursively if the file is an archive (a la binwalk).
-- [11163](https://github.com/radare/radare2/issues/11163) - Binwalk -Me support
+
+- [11163](https://github.com/radare/radare2/issues/11163) - `binwalk -Me` support
 - [Other rafind2 issues](https://github.com/radare/radare2/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Arafind2+)
 
 ## Refactoring
