@@ -45,6 +45,7 @@ Members of radare2 core team have volunteered to guide students for GSoC’19. T
 - Chinmay Deshpande tg: chinmay_dd -- [chinmaydd](https://github.com/chinmaydd)
 - Antide Petit IRC/tg: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)
 - Itay Cohen tg: @Megabeets [@Megabeets\_](https://twitter.com/Megabeets_)
+- Giovanni Dante Grazioli tg: @deroad [@der0ad\_](https://twitter.com/der0ad)
 
 # Development methodology
 
