@@ -31,6 +31,7 @@ Successful completion of this task will mean the first release of radeco which c
 
 ### Mentors
 - xvilka
+- deroad
 
 ### Assess requirements for midterm/final evaluation
 - 1st term: Implementing Memory SSA and VSA.
@@ -174,6 +175,7 @@ Huge benefits for end users in UX and better support for localization
 
 ### Mentors
  - xvilka
+ - deroad
 
 ### Links/Resources
  - [META: Console improvements](https://github.com/radare/radare2/issues/8672)
