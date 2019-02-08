@@ -1,0 +1,29 @@
+
+a, a:visited, a:link, a:active {
+	text-decoration: none !important ;
+	color:black !important;
+}
+a:hover {
+	text-decoration: underline !important;
+	color: #ffb900!important;
+}
+body {
+	background-color:white;
+	font-family:montserrat;
+}
+ul {
+	list-style:none;
+}
+
+h2 {
+	color: #ffb900!important;
+}
+
+.console {
+	padding:16px;
+	background-color:#f0f0e0;
+	max-width:600px;
+	color:#101010;
+	border-radius: 1em;
+	text-align:left;
+}
