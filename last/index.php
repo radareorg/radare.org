@@ -1,0 +1,3 @@
+<? include ("../y/config.php"); ?>
+<?=$r2v?> <?=$r2d?>
+
