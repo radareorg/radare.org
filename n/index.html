@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>radare</title>
+  <script src="/r/js/index.js"></script>
   <meta charset="utf-8">
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
@@ -17,18 +18,30 @@
 <table >
 <tr>
 <td>
-    <a class="rtopbutton" href="index.html"><img width="200" height="83" src="r2logo.png" alt="radare.org"></a>
+    <a class="rtopbutton" href="index.html"><img width="150" height="62" src="r2logo.png" alt="radare.org"></a>
 </td>
 <td width="100%" style="text-align:right;font-family:montserrat">
+<a class="link" href="#install">INSTALL</a>
+&nbsp;
+&nbsp;
+&nbsp;
 <a class="link" href="">DOCS</a>
 &nbsp;
 &nbsp;
 &nbsp;
-<a class="link" href="">CODE</a>
+<a class="link" href="https://github.com/radare/radare2" target=_blank href="">CODE</a>
 &nbsp;
 &nbsp;
 &nbsp;
-<a href="">CONF</a>
+<a href="/con/2019" target=_blank>CONF</a>
+&nbsp;
+&nbsp;
+&nbsp;
+<a href="#swag" target=_blank>SWAG</a>
+&nbsp;
+&nbsp;
+&nbsp;
+<a title="donate" href="/con/2019" target=_blank>DONATE</a>
 &nbsp;
 &nbsp;
 &nbsp;
@@ -36,35 +49,31 @@
 </tr>
 </table>
 <center>
-<div style="padding:32px;max-width:800px;text-align:center">
-<font style="font-size:2.6em;font-weight:bold;font-family:montserrat;color:#ffb900">The OpenSource Framework and Tooling for Reverse Engineering</font>
+<div style="max-width:800px;text-align:center">
+<h1>Radare2 is the Unix-Friendly Framework for Reverse Engineering</h1>
 </div>
+<div style="width:100%;overflow:scroll">
 <table style="max-width:800px;width:100%;font-family:montserrat;text-align:center;font-weight:bold;line-height:2em">
-<tr style="color:#909090">
-<td>Shell</td>
-<td>GUI</td>
-<td>Script</td>
-</tr>
 <tr>
-<td><img width="200px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></td>
-<td><img width="200px" src="http://beta.rada.re/en/latest/_images/cutter.png"></td>
-<td><img width="200px" src="http://beta.rada.re/en/latest/_images/writeasm.png"></td>
+	<td><a href="https://github.com/radare/radare2"><img class=button2 width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/>Radare2</td>
+<td><a href="/cutter/"><img class=button2 width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
+<td><a href="https://github.com/radare/radare2-r2pipe"><img class=button2 width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
 </tr>
 <tr style="top:20px;text-align:left;font-weight:normal;border:16px">
 <td>
   <ul>
-<li> <a href="#">Learn</a>
-<li> <a href="#">Download</a>
-<li> <a href="#">Sources</a>
-<li> <a href="#">Community</a>
+<li> <a href="https://radare.gitbooks.io/radare2book/content/">The Book</a>
+<li> <a href="https://t.me/radare">Community</a>
+<li> <a href="https://github.com/radare/radare2">Sources</a> / 
+     <a href="https://radare.mikelloc.com">Binaries</a>
+<li> <a id="button_download" href="#">Download</a>
   </ul>
 </td>
 <td>
   <ul>
-<li> <a href="#">Learn</a>
-<li> <a href="#">Download</a>
-<li> <a href="#">Sources</a>
-<li> <a href="#">Community</a>
+<li> <a href="https://github.com/radareorg/cutter/releases">Download</a>
+<li> <a href="https://github.com/radareorg/cutter">Sources</a>
+<li> <a href="https://t.me/r2cutter">Community</a>
   </ul>
 </td>
 <td>
@@ -76,8 +85,11 @@
 </td>
 </tr>
 </table>
+</div>
 
-<h2>Install from Git</h2>
+<h1>Install from Git</h1>
+<a name="install">
+</a>
 <div class="console">
 <pre>
 $ git clone https://github.com/radare/radare2

@@ -21,9 +21,54 @@ h2 {
 
 .console {
 	padding:16px;
+	overflow-x:scroll;
 	background-color:#f0f0e0;
+	border: 0.2em solid #f0e0a0;
 	max-width:600px;
 	color:#101010;
 	border-radius: 1em;
 	text-align:left;
+}
+
+.button {
+	border-radius: 1em;
+	border: 0.2em solid red;
+	border-color: #ffd940;
+	padding:1em;
+	background-color:#fff0c0;
+	text-decoration: underline;
+}
+
+.button:hover {
+	border-radius: 1em;
+	padding:1em;
+	border: 0.2em solid red;
+	border-color: #ffb900;
+	background-color:#ffffca;
+	text-decoration: underline;
+}
+
+.button2 {
+	border-radius: 1em;
+	border: 0.1em solid white;
+	padding:0.2em;
+	background-color:white;
+	text-decoration: underline;
+}
+
+.button2:hover {
+	border-radius: 0.8em;
+	border: 0.1em solid #ffd940;
+	background-color:#ffb900;
+	cursor:pointer;
+	text-decoration: underline;
+}
+
+h1 {
+font-size:2.6em;font-weight:bold;font-family:montserrat;color:#ffb900;
+}
+
+
+td {
+	padding:16px;
 }
