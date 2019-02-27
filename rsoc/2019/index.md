@@ -6,7 +6,7 @@ Since then, the project has grown with the new aim of providing a complete frame
 
 Radare2 is composed of an hexadecimal editor as central point, with several assemblers/disassemblers, code analysis capabilities, scripting features, visualization of code and data through graphs and other means, a visual mode, easy unix integration, a diff engine, a shellcode compiler, and much more.
 
-![graph](http://radare.today/images/graph.png)
+![graph](http://radare.org/img/radare2_graph.jpg)
 
 # Previous Years
 
