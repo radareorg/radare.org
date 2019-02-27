@@ -79,7 +79,7 @@ It is a requirement that students who want to apply to the radare2 project for t
 
 ## Programming languages
 
-Most of radare2 is written in C and hence we expect students to be familiar with C programming language. For some of our tasks or microtasks, such as [collaborative RE](http://radare.org/rsoc/2019/ideas.html), students should know the Go programming language. For the [radeco](http://radare.org/rsoc/2019/ideas.html) task, students should know rust or be able to quickly pick up the rust language.
+Most of radare2 is written in C and hence we expect students to be familiar with C programming language. For some of our tasks or microtasks, such as [collaborative RE](http://radare.org/rsoc/2019/ideas.html), students should know the Go programming language.
 
 ## Recommended steps
 
