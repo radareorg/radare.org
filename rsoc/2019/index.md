@@ -33,9 +33,21 @@ tasks:
 
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
+# Schedule
+
+- March 10 - Begin applications
+- March 25 - End of application acceptance
+- April 1 - Announce the selected students
+- May 15 - Start coding!
+- July 1 - First midterm evaluation
+- August 5 - Second Midterm evaluation
+- September 5 - "Pencils down" - final term evaluation
+- September 12 - Hard deadline, all changes should be in master branch and covered by tests
+
 # Mentors
 
-Members of radare2 core team have volunteered to guide students for GSoC’19. They were already guiding the students for GSoC'18 - GSoC’15, RSoC'16, RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
+Members of radare2 core team have volunteered to guide students for RSoC’19. They were already guiding the students for previos GSoCs and RSoCs.
+Please feel free to reach out to any of them in case you need any help in selecting a project.
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
@@ -63,23 +75,24 @@ Radare2 is modular: this means that it aims to make all the elements and feature
 
 # Instructions for students
 
-It is a requirement that students who want to apply to the radare2 project for the Google Summer of Code 2019 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/gsoc/2019/tasks.html) as part of their application. Though you can also choose any of the GitHub issues for radare2 if they are big enough to be a qualification task, and still small enough to be finished no more than in a couple of weeks.
+It is a requirement that students who want to apply to the radare2 project for the Radare Summer of Code 2019 should submit a small pull request accomplishing one of the [microtasks](http://radare.org/rsoc/2019/tasks.html) as part of their application. Though you can also choose any of the GitHub issues for radare2 if they are big enough to be a qualification task, and still small enough to be finished no more than in a couple of weeks.
 
 ## Programming languages
 
-Most of radare2 is written in C and hence we expect students to be familiar with C programming language. For some of our tasks or microtasks, such as [collaborative RE](http://radare.org/gsoc/2019/ideas.html), students should know the Go programming language. For the [radeco](http://radare.org/gsoc/2019/ideas.html) task, students should know rust or be able to quickly pick up the rust language.
+Most of radare2 is written in C and hence we expect students to be familiar with C programming language. For some of our tasks or microtasks, such as [collaborative RE](http://radare.org/rsoc/2019/ideas.html), students should know the Go programming language. For the [radeco](http://radare.org/rsoc/2019/ideas.html) task, students should know rust or be able to quickly pick up the rust language.
 
 ## Recommended steps
 
-1. Read Google's instructions for participating
-2. Grab any of the project from [list of ideas](http://radare.org/gsoc/2019/ideas.html)  that you're interested in (or propose your own).
-3. Write a first draft proposal using Google Docs and [our template](https://docs.google.com/document/d/1kDPGgr_D5tQuYLQi_gEGlkuQ-DlU8GH5kDBqZbVSC7I/edit?usp=sharing) and ask one of the mentors or administrators to review it with you.
-4. Submit it using Google's web interface.
+1. Read [our instructions for participating](http://radare.org/rsoc/2019/rules.html).
+2. Grab any of the project from [list of ideas](http://radare.org/rsoc/2019/ideas.html)  that you're interested in (or propose your own).
+3. Write a first draft proposal using Google Docs and [our template]() and ask one of the mentors or administrators to review it with you.
+4. Fix a few bugs and send Pull Requests and link them in your proposal.
+5. Submit it to [rsoc@radare.org](mailto:rsoc@radare.org).
 
 ## Student proposal guidelines
 
 1. Keep it simple enough to fit in no more than a couple of pages. Try to be clear and concise in your writing.
-2. Try to split GSoC period into tasks, and each task into subtasks. It helps us to understand how you plan to accomplish your goals, but more importantly, it'll help you to understand the task deep enough before starting, and prioritize important things to do first.
+2. Try to split RSoC period into tasks, and each task into subtasks. It helps us to understand how you plan to accomplish your goals, but more importantly, it'll help you to understand the task deep enough before starting, and prioritize important things to do first.
 3. Please, note, how much time a day/week you are able to spend on this project.
 4. Specify your timezone, since so we can assign you a mentor in the same one, to ease communication.
 5. Submit your proposal early, not in the last minute!

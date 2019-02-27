@@ -1,9 +1,10 @@
-YEAR=2017
+YEAR=2019
 
 # TODO: make this dynamic .md
 INDEX=$(addprefix $(YEAR)/,$(addsuffix .tmpl,head index tail))
 IDEAS=$(addprefix $(YEAR)/,$(addsuffix .tmpl,head ideas tail))
 TASKS=$(addprefix $(YEAR)/,$(addsuffix .tmpl,head tasks tail))
+RULES=$(addprefix $(YEAR)/,$(addsuffix .tmpl,head rules tail))
 
 all: node_modules
 	mkdir -p $(YEAR)
@@ -15,6 +16,8 @@ all: node_modules
 	cat $(IDEAS) > $(YEAR)/ideas.html
 	node md2html.js $(YEAR)/tasks.md | node makeindex.js > $(YEAR)/tasks.tmpl
 	cat $(TASKS) > $(YEAR)/tasks.html
+	node md2html.js $(YEAR)/rules.md | node makeindex.js > $(YEAR)/rules.tmpl
+	cat $(RULES) > $(YEAR)/rules.html
 	rm -rf tmp
 	echo '<meta http-equiv="refresh" content="0; url=$(YEAR)/" />' > index.html
 

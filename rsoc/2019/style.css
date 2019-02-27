@@ -1,0 +1,36 @@
+
+a { color:#0060a0; text-decoration: none; }
+a:visited { color:#0060a0; text-decoration: none; }
+a:hover { color:#0099ff; text-decoration: underline;}
+a:active { color:blue; text-decoration: underline;}
+
+#topbar a { color:white; text-decoration: none; }
+#topbar a:visited { color:white; text-decoration: none; }
+#topbar a:hover { color:white; text-decoration: underline;}
+#topbar a:active { color:#808080; text-decoration: underline;}
+p, ul, ol {
+  max-width: 100% !important;
+}
+body {
+  max-width:760px !important; 
+  text-align: justify;
+font-family: 'Droid Sans';
+}
+.topbar {
+  border:1em;
+  padding-left:1em;
+  height: 3em;
+  font-size: 1em;
+  color:white;
+  left:0px;
+  background-color: #F23A07;
+  position:fixed;
+  width:100%;
+  top:0px;
+}
+img {
+  display: block;
+  width:80%;
+  margin-left:auto;
+  margin-right:auto;
+}
