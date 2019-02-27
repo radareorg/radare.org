@@ -51,10 +51,8 @@ Please feel free to reach out to any of them in case you need any help in select
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
-- Julien Voisin IRC: jvoisin -- [dustri.org](https://dustri.org)
 - Florian Märkl tg: @thestr4ng3r -- [@thestr4ng3r](https://twitter.com/thestr4ng3r)
 - Maxime Morin tg: @Maijin -- [@Maijin212](https://twitter.com/Maijin212)
-- Chinmay Deshpande tg: chinmay_dd -- [chinmaydd](https://github.com/chinmaydd)
 - Antide Petit IRC/tg: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)
 - Itay Cohen tg: @Megabeets [@Megabeets\_](https://twitter.com/Megabeets_)
 - Giovanni Dante Grazioli tg: @deroad [@der0ad\_](https://twitter.com/der0ad)
@@ -85,7 +83,7 @@ Most of radare2 is written in C and hence we expect students to be familiar with
 
 1. Read [our instructions for participating](http://radare.org/rsoc/2019/rules.html).
 2. Grab any of the project from [list of ideas](http://radare.org/rsoc/2019/ideas.html)  that you're interested in (or propose your own).
-3. Write a first draft proposal using Google Docs and [our template]() and ask one of the mentors or administrators to review it with you.
+3. Write a first draft proposal using Google Docs and [our template](https://docs.google.com/document/d/11lT4-EYHJHPs6jPTftFGaDzA41zrpt-L70LdAnFettQ/edit?usp=sharing) and ask one of the mentors or administrators to review it with you.
 4. Fix a few bugs and send Pull Requests and link them in your proposal.
 5. Submit it to [rsoc@radare.org](mailto:rsoc@radare.org).
 
