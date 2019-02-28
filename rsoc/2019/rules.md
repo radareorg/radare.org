@@ -9,10 +9,11 @@
 ### Responsibilies
 
 Every mentor should:
-	- participate in the bonding period
-	- provide guidance to the accepted Student
-	- respond to Student requests in timely fashion, not longer than 2 days
-	- evaluate Student for designated terms in accordance with plans and project criteria
+
+- participate in the bonding period
+- provide guidance to the accepted Student
+- respond to Student requests in timely fashion, not longer than 2 days
+- evaluate Student for designated terms in accordance with plans and project criteria
 
 If Radare2 administrators reasonably believes that a Mentor has failed to meet any of the foregoing responsibilities, team will designate a replacement Mentor and remove the former Mentor from the Program.
 
