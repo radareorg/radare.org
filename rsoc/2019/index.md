@@ -38,8 +38,8 @@ If you have questions or comments, visit our IRC channel #radare on Freenode.
 # Schedule
 
 - March 10 - Begin applications
-- March 25 - End of application acceptance
-- April 1 - Announce the selected students
+- March 30 - End of application acceptance
+- April 2 - Announce the selected students
 - May 15 - Start coding!
 - July 1 - First midterm evaluation
 - August 5 - Second Midterm evaluation
