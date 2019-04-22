@@ -69,7 +69,7 @@ Radare2 book is distributed and developed under [CC-BY-SA 4.0](https://creativec
 
 ## Required experience
 
-Most of radare2 workflow happens in the command line. And the target domain is software reversring. So some experience with UNIX-like command line is expected. And basic knowledge about process of software debugging can be helpful as well.
+Most of radare2 workflow happens in the command line. And the target domain is software reverse engineering. So some experience with UNIX-like command line is expected. And basic knowledge about process of software debugging can be helpful as well.
 
 ## Recommended steps
 
