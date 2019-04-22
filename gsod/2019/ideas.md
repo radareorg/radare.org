@@ -1,5 +1,11 @@
 # Project Ideas
 
+This year Radare2 project applied for participation in [Google Season of Docs](https://developers.google.com/season-of-docs), the program aiming to bring technical writers closer to the open source community, to raise the quality of documentation for the corresponding projects. For years
+we maintain the reference manual - [radare2 book](https://radare.gitbooks.io/radare2book/content).
+But as it is often the case, the writing is done by developers themselves, thus of a substandard
+quality and hard to read. We hope participation in GSoC will help our users for better understanding
+of the framework, and grasp the vast feature set provided by the toolkit.
+
 ### INDEX
 
 ## Prepare formatting for printable book
