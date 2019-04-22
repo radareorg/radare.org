@@ -6,7 +6,7 @@ Since then, the project has grown with the new aim of providing a complete frame
 
 Radare2 is composed of an hexadecimal editor as central point, with several assemblers/disassemblers, code analysis capabilities, scripting features, visualization of code and data through graphs and other means, a visual mode, easy unix integration, a diff engine, a shellcode compiler, and much more.
 
-![graph](http://radare.today/images/graph.png)
+![graph](http://radare.org/img/radare2_graph.jpg)
 
 # Previous Years
 
@@ -33,6 +33,16 @@ tasks:
 
 If you have questions or comments, visit our IRC channel #radare on Freenode.
 
+# Schedule
+
+- May 29 - Begin applications
+- June 28 - End of application acceptance
+- July 30 - Announce the selected technical writer projects
+- August 1 - Community bonding
+- September 2 - Documentation development begins!
+- November 25-29 - Evaluation period
+- December 10 - Results announcement
+
 # Mentors
 
 Members of radare2 core team have volunteered to guide technical writers for GSoD’19. They were already guiding the students for GSoC'18 - GSoC’15, RSoC'16, RSoC’15 and RSoC’14. Please feel free to reach out to any of them in case you need any help in selecting a project.
@@ -44,10 +54,13 @@ Members of radare2 core team have volunteered to guide technical writers for GSo
 
 # Development methodology
 
+Radare2 is very portable framework and toolkit in C, thus it is very easy to setup a local copy.
 Currently, all repositories are hosted on GitHub [main](https://github.com/radare/) organization and [community](https://github.com/radareorg) accounts, bugs are tracked on GitHub [issues](https://github.com/radare/radare2/issues) too. We are mostly using [HackMD](https://hackmd.io), IRC, and Telegram ([telegraph#radare](https://t.me/radare)) for communication.
 We have a [testsuite](https://github.com/radare/radare2-regressions) (that is running on [Travis CI](https://travis-ci.org/radare/radare2/), [AppVeyor](https://ci.appveyor.com/project/radare/radare2) and our [Jenkins](http://ci.rada.re/) instance) to test and verify that all the features are still working and that a pull requests or commits don't break anything, and to find regressions.
 We believe some test cases can inspire for writing documentation.
 
+Radare2 book itself is written using Markdown, and compiled using
+[GitBook](https://www.gitbook.com). It targets both eBook and printed version formats.
 For those who want to get introduced to the radare2 book, we recommend to pick one of the [easy](https://github.com/radare/radare2book/labels/good%20first%20issue) issues to start with.
 
 # License
@@ -69,6 +82,6 @@ Most of radare2 workflow happens in the command line. And the target domain is s
 1. Try to split GSoD period into tasks, and each task into subtasks. It helps us to understand how you plan to accomplish your goals, but more importantly, it'll help you to understand the task deep enough before starting, and prioritize important things to do first.
 2. Please, note, how much time a day/week you are able to spend on this project.
 3. Specify your timezone, since so we can assign you a mentor in the same one, to ease communication.
-4. Submit your proposal early, not in the last minute!
+4. Submit your proposal early, not the last minute!
 
 
