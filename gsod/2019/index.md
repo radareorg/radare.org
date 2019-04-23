@@ -6,6 +6,12 @@ Since then, the project has grown with the new aim of providing a complete frame
 
 Radare2 is composed of a hexadecimal editor as central point, with several assemblers/disassemblers, code analysis capabilities, scripting features, visualization of code and data through graphs and other means, a visual mode, easy Unix integration, a diff engine, a shellcode compiler, and much more.
 
+This year Radare2 project applied for participation in [Google Season of Docs](https://developers.google.com/season-of-docs), the program aiming to bring technical writers closer to the open source community, to raise the quality of documentation for the corresponding projects. For years
+we maintain the reference manual - [radare2 book](https://radare.gitbooks.io/radare2book/content).
+But as it is often the case, the writing is done by developers themselves, thus of substandard
+quality and hard to read. We hope participation in GSoC will help our users for a better understanding
+of the framework and grasp the vast feature set provided by the toolkit.
+
 ![graph](http://radare.org/img/radare2_graph.jpg)
 
 # Previous Years
