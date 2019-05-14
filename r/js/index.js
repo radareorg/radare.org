@@ -2,9 +2,9 @@
 (function () {
   'use strict';
 
-  var version = "3.4.1";
+  var version = "3.5.0";
   var oss = {
-    Win: { url: 'http://radare.mikelloc.com/get/'+version+'/radare2_installer-msvc_64-'+version+'.zip', name: 'for Windows' },
+    Win: { url: 'http://radare.mikelloc.com/get/'+version+'/radare2_installer-msvc_32-'+version+'.exe', name: 'for Windows' },
     Mac: { url: 'http://radare.mikelloc.com/get/'+version+'/radare2-'+version+'.pkg', name: 'for OSX' },
     iPhone: { url: 'http://cydia.radare.org', name: 'Cydia' },
     Android: { url: 'https://play.google.com/store/apps/details?id=org.radare.radare2installer', name: 'Android' }
