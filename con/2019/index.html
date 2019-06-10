@@ -167,28 +167,32 @@
       <div id="containers" class="item">
 
         <div class="nes-container with-title is-rounded">
-          <p class="title">WIP: Conference Talks</p>
+          <p class="title">Accepted Talks</p>
           <p>
-<ul>
-<li> Reversing an Advanced Obfuscated Shellcode (unixfreax)
-<li> Updates from RSoC2019 (dodocodo+oxcabe)
-<li> Something about ESIL (condret)
-<li> Object Diversificaation with the help of radare2 (Alex Gaines)
-<li> Dissecting Smart Contracts (silur)
-<li> Retdec internals + integration (retdec authors)
-<li> Breaking Mobile Userland walls with Dwarf (iGio)
-<li> Street Radare2 Fighter (pof)
-<li> I want to debug back and forth.. forever (anonymous)
-<li> More to confirm...
-</ul>
+            This is a partial list of accepted talks. We will add more talks and publish the full description and the info soon.
+          </p>
+          <p>
+            <ul>
+            <li> Reversing an Advanced Obfuscated Shellcode (<a href="https://twitter.com/unixfreaxjp">@unixfreax</a>)
+            <li> Updates from RSoC2019 (dodocodo + <a href="https://twitter.com/oxcabe">oxcabe</a>)
+            <li> ESIL - The IL of radare2 (<a href="https://twitter.com/condr3t">condret</a>)
+            <li> Object Diversificaation with the help of radare2 (Alex Gaines)
+            <li> Cutter - The radare2 GUI (<a href="https://twitter.com/xarkes">@xarkes</a>), <a href="https://twitter.com/thestr4ng3r">thestr4ng3r</a>, <a href="https://twitter.com/megabeets">@megabeets</a> (Check Point Research))
+            <li> Dissecting Smart Contracts (silur)
+            <li> RetDec Decompiler Internals + radare2 & Cutter Integration (RetDec Authors)
+            <li> Breaking Mobile Userland walls with Dwarf (iGio)
+            <li> Street Radare2 Fighter (<a href="https://twitter.com/pof">pof</a>)
+            <li> I want to debug back and forth... FOREVER (anonymous)
+            <li> More talks to be announced...
+            </ul>
           </p>
         </div>
+
+
+      <h4> Advanced Trainings</h4>
       <p>
         We are happy to present our Training for the 2019 edition of r2con.
       </p>
-
-      <h4> Advanced Trainings</h4>
-
       <div id="containers" class="item">
 
         <div class="nes-container with-title is-rounded">
@@ -201,7 +205,7 @@
             During this workshop, we will walk you through how to use r2frida, primarily on mobile apps. Attendees will learn about offensive mobile security, e.g how to unpack malware, bypass jailbreak protections, SSL pinning, anti-debugging or even Frida detections using Frida itself. The workshop is suitable for pentesters, reversers, malware analysts and mobile developers who want to learn more about mobile security.
           </p>
 
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription('r2frida');">Read More</button>
+          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'r2frida');">Read More</button>
         </div>
 
         <div class="nes-container with-title is-rounded">
@@ -213,7 +217,7 @@
           <p id="smt" style="display: none;">
               In this workshop, we give a basic overview about common code obfuscation techniques and deobfuscation techniques. In the second part, we introduce advanced techniques such as compiler optimizations and symbolic execution and use them to break state-of-the art code protections schemes in a semi-automatic manner. The workshop is suitable for everyone who has experience in reverse engineering of x86 code and wants to deepen his/her knowledge in advanced program analysis or code obfuscation techniques.
           </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription('smt');">Read More</button>
+          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'smt');">Read More</button>
         </div>
         <br>
         <h4> Basic Trainings</h4>
@@ -227,7 +231,7 @@
           <p id="devinternals" style="display: none;">
               The knowledge adquired in the training can be applied to other opensource projects, so it is interesting not just to anybody that wants to contribute to the project, but also for those who want to learn better good coding practices in C.
           </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription('devinternals');">Read More</button>
+          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'devinternals');">Read More</button>
         </div>
 
         <div class="nes-container with-title is-rounded ">
@@ -239,7 +243,7 @@
           <p id="cutter" style="display: none;">
               In this training we will take you to a journey inside Cutter. We'll explore many features of Cutter through real-life examples and we will get our hands dirty with analyzing a malware found in the wild. You will also learn how we can script and extend Cutter with C++ and Python plugins. And last, for those of you who are radare2 junkies, don't worry - we will learn how you can use radare2 commands straight within Cutter.
           </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription('cutter');">Read More</button>
+          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'cutter');">Read More</button>
         </div>
 
         <div class="nes-container with-title is-rounded">
@@ -251,7 +255,7 @@
             <p id="r2survive" style="display: none;">
                 Step by step, trainers will show you the radare2 powers, both basic and hidden: from the simple disassembly and file formats analysis to the scripting and emulating, from the debugging to recording the traces and combining radare2 with other tools. We will cover core features and standard tools from the radare2 kit. In no time, everyone, who knows how to type and know the basics of reverse engineering, will be able to juggle radare2 commands in the console to impress his friends and family.
             </p>
-            <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription('r2survive');">Read More</button>
+            <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'r2survive');">Read More</button>
           </div>
 
       </div>
@@ -464,12 +468,14 @@
   document.getElementById("cfp-progress").value = daysPassed;
 
   /* Toggle object by nmae */
-  function toggleDescription(id) {
+  function toggleDescription(button, id) {
     var x = document.getElementById(id);
     if (x.style.display === "none") {
       x.style.display = "block";
+      button.innerHTML = "Read Less";
     } else {
       x.style.display = "none";
+      button.innerHTML = "Read More";
     }
   }
 
