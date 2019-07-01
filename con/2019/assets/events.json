@@ -1,0 +1,118 @@
+{
+  "events": [
+    {
+      "title": "So now you don't like shellcodes too?",
+      "speakers": "unixfreaxjp",
+      "handles": "unixfreaxjp",
+      "description": "<p>Shellcode is often spotted to execute a malformed code in a way that</p><p>can trigger the injection or further exploitation process, mostly in offensive ways.</p><p>In this presentation I would like to present the way I use radare2 in handling several shellcode cases I dealt on multiple operating systems and architectures. But beforehand I will try to present several categories of them in a simple and practical ways that maybe can help other analysts or beginners to help their work on their blue teamer field. In the end of presentation a case(s) of dissection obfuscated shellcode will be presented.</p>"
+    },
+    {
+      "title": "ESIL applied for Graphs and Analysis",
+      "speakers": "Condret",
+      "handles": "condr3t",
+      "description": "<p>Improving analysis in r2 by focusing on graphs generated from esil seems doable. In this talk, I tell you about how I want to generate esil expressions that compute what we want to know from graphs that were generated from esil expression themself.</p>"
+    },
+    {
+      "title": "Object Diversification with the help of r2",
+      "speakers": "Alex Gaines",
+      "description": "<p>Software diversification is a well-established method of mitigating the risk of vulnerabilities; ASLR functionality is included in most modern operating systems. By employing software diversification techniques, we aim to increase attacker workload by thwarting vulnerability amplification. In this talk, we leverage radare2’s analysis library, “LibR”, to obfuscate, diversify, and protect objects compiled for Intel’s x86_64 platform. We use LibR to implement techniques such as junk code insertion, stack register reordering, stack frame modification, and help solve the complications that come with them.</p>"
+    },
+    {
+      "title": "Cutter - The radare2 GUI",
+      "speakers": ["Antide Petit", "Itay Cohen (Check Point Research)", "Florian Märkl"],
+      "handles": [
+        "xarkes_",
+        "megabeets_",
+        "thestr4ng3r"
+      ],
+      "description": "<p>Cutter is a powerful open-source, multi-platform GUI that is powered by radare2. Cutter was created to provide an easy-to-use, but still powerful, interface to radare2 for new users and for anyone who wants more GUI in their life.</p><p>In this talk we will take you to the journey of creating and maintaining Cutter. We will discuss the current state of the project as well as its future. Let's talk about our goals, successes and failures and even share some takeouts following the recent release of Ghidra</p>"
+    },
+    {
+      "title": "Dissecting Smart Contracts with r2",
+      "speakers": "Silur",
+      "description": "<p>We know from the past that EVM is prone to design flaws that could lead to serious leaks from greedy and suicidal contracts.</p><p>There are several specific tools in the OSS community to search for these, mostly symbolic executors.</p><p>In this talk we show how scripting radare can be used for more generic analysis.</p>"
+    },
+    {
+      "title": "RetDec Decompiler Internals + radare2 & Cutter Integration",
+      "speakers": ["Peter Matula", "Marek Milkovic"],
+      "handles": [ "", ""],
+      "description": "<p>After a light & short RetDec introduction, we dive into advanced options of influencing its output using additional information. Then, we will show how to extract such information from r2, and how to put it all together to make a RetDec-in-r2 decompilation plugin. We demonstrate its capabilities in a short live demo. Furthermore, we explore tighter integration with Cutter and possible future improvements.</p>"
+    },
+    {
+      "title": "Reverse engineering ARM packers and obfuscators with Dwarf",
+      "speakers": "iGio",
+      "description": "<p>In this talk I'm going to show how you can debug, reverse engineer and break with ease some of the harder protections used nowadays to protect intellectual property and users sensitive data. We will see how a combination of tools built on top of frida and r2 can be used to win almost any situations</p>"
+    },
+    {
+      "title": "Not only Street Fighter: A journey into Moo",
+      "speakers": "Pau Oliva - synacktiv",
+      "handles": "pof",
+      "description": "<p>We will talk about the emulator used in Street Fighter 30th Anniversary Edition: the emulator internals and how we instrument it to run different games.</p>"
+    },
+    {
+      "title": "Windows Malware Analysis with r2 for Beginners",
+      "speakers": "Abraham Pasamar",
+      "handles": "apasamar",
+      "description": "<p>This talk is intended as a guide for assistants to understand how to start analysing a PE malware binary.</p>"
+    },
+    {
+      "title": "Detecting and reversing crypto patterns - the r2 way",
+      "speakers": "Adir Abraham",
+      "handles": "adirab",
+      "description": "<p>Crypto? radare2? oh my! In this presentation we will walk through some famous cryptosystems and provide tips and tricks to detect cryptographic patterns using classic and creative reverse engineering techniques - the radare2 way.</p>"
+    },
+    {
+      "title": "ELF Crafting. Uncovering Advance Anti-analysis techniques for the Linux Platform.",
+      "speakers": "Nacho Sanmillan",
+      "handles": "ulexec",
+      "description": "<p>Linux Malware is becoming more complex as newer Linux dominated ecosystems rise in today's IT landscape.</p><p>There is not much visibility of the Linux Threat Landscape and its capabilities. Recently, the security community has experienced a rise of awareness of Linux Threats as more malware is being found on this platform.</p><p>This talk will not be based on common Linux Malware but on advanced anti-analysis techniques that could make Linux Malware harder to analyse as a rise of awareness attempt of modern Linux Threats.</p>"
+    },
+    {
+      "title": "r2learn - Your Personal Interactive Teacher",
+      "speakers": "Ki (telegram @lv_ki)",
+      "description": "<p>The talk presents the completely revolutionary tool to learn to use r2 the fun way — r2lrn. This is command-line based tutorial/challenge with progressive difficulty. Currently it is aimed at beginners (and IDA/gdb refugees), but framework can be easily extended in the future to include actually challenging tasks up to CTF level.</p>"
+    },
+    {
+      "title": "Narrowing semantinc gap in binary analysis",
+      "speakers": "Solmaz Salimi",
+      "handles": "y3noor",
+      "description": "<p>One of the promising binary analysis techniques is binary partitioning based on function-level boundaries; without it, it is impractical to analyze binary files for most applications, including vulnerability search, binary instrumentation, and binary similarity detection. Although because of the overlapping instructions and the fact that disassembling a stripped binary file is equivalent to the halting problem, modern binary disassemblers including Radare2, this elegant and decent open-source software, achieve high accuracy in term of instruction recovery. Although, in most cases, accurate instruction recovery does not necessarily imply that function identification is as assuring. However, Radare2 provides an active core to identify the function-level boundaries; given a memory address that points to an instruction, it is possible to get the function that instruction belongs to it with a straightforward step.</p><p>In this talk, we are going to elaborate on how to function identification is done in Radare2 and then discuss how the function-level boundaries do not bridge the semantic-gap for binary analysis and on the other hand, developing a core to extract binary semantics is not as straightforward and accurate as function identifications.</p><p>Then we discuss how the function-level boundaries can be refined in Radare2 to obtain further semantic-based functionalities rather than comparable source-code level functions.</p>"
+    },
+    {
+      "title": "RSoC 2019",
+      "speakers": ["XVilka", "pancake"],
+      "handles": [
+        "akochkov",
+        "trufae"
+      ],
+      "description": "<p>This year's students in the Radare Summer of Code program will tell how the made radare2 console experience more robust, and polished the type analysis algorithms.</p>"
+    },
+    {
+      "title": "A journey through ESIL: understanding code emulation within radare2",
+      "speakers": "Arnau Gàmez ",
+      "handles": "arnaugamez",
+      "description": "<p>This talk will serve as an introduction to ESIL in order to understand  the basics of code emulation within radare2. </p>"
+    },
+    {
+      "title": "SpaceRadare: The part of Evil in your favourite disassembler",
+      "speakers": "Boris Ryutin",
+      "handles": "dukebarman",
+      "description": "<p>In this talk, I’ll present a set of plugins for IDA and Ghidra. The goal of this project is added powerful features of radare2 (emulation, support a lot of plugins and architectures, etc.) in popular disassemblers and make using this more useful.</p>"
+    },
+    {
+      "title": "TEB/PEB/../DLL binary Blob for ESIL to parse",
+      "speakers": "Dennis",
+      "description": "<p> A common trick in Windows malware and shellcode is to walk various structures down to the exported DLL function names. To discover the functions used, the reverser typically lets the binary run until all the important function pointers are saved. This means starting a Windows VM and debugging. I try to avoid using Windows whenever possible, so I took the longer route of reproducing the needed Windows structures as a binary blob in r2's memory. ESIL can then be used to emulate the malware until all the functions are exposed. Since Windows is never even used, this approach might allow for easier automation.</p>"
+    },
+    {
+      "title": "Me and You and Everyone we debug",
+      "speakers": "anonymous",
+      "description": "<p>Using radare2 and PIN to create a tracing tool for debugging</p>"
+    },
+    {
+      "title": "radare2 and Frida in the OWASP Mobile Security Testing Guide",
+      "speakers": "Carlos Holguera",
+      "description": "<p>In this talk we will give a brief introduction to the OWASP Mobile Security Testing Guide: what is it, how to use it and how to contribute. In addition, we will introduce some use cases where we usually make use of radare2 and Frida when testing mobile apps and that can be found throughout the guide."
+    }
+  ]
+}
