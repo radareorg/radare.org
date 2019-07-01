@@ -10,6 +10,7 @@
   <link href="./assets/css/nes.css" rel="stylesheet" />
   <link href="./assets/css/style.css" rel="stylesheet" />
 
+
 </head>
 
 <body>
@@ -57,8 +58,8 @@
       <button type="button" class="nes-btn is-primary" onclick="location.href='#WHAT';">WHAT</button>
       <button type="button" class="nes-btn is-success" onclick="location.href='#WHEN';">WHEN</button>
       <button type="button" class="nes-btn is-warning" onclick="location.href='#WHERE';">WHERE</button>
-      <button type="button" class="nes-btn is-error" onclick="location.href='#CFP';">CFP</button>
-      <button type="button" class="nes-btn is-primary" onclick="location.href='#AGENDA';">AGENDA</button>
+      <button type="button" class="nes-btn is-primary" onclick="location.href='./agenda.html';">AGENDA</button>
+      <button type="button" class="nes-btn is-error" onclick="location.href='#COMPETITIONS';">COMPETITIONS</button>
       <button type="button" class="nes-btn" onclick="location.href='#FAQ';">FAQ</button>
       <!--
           <button type="button" class="nes-btn is-disabled" onclick="location.href='#';">SCHEDULE</button>
@@ -72,19 +73,18 @@
     <h2 class="title">ANNOUNCEMENTS</h2>
     <div class="containers">
       <p>
-          <span class="nes-text is-primary">Trainings announced! </span>
+        <span class="nes-text is-primary">Agenda published!</span>
       </p>
       <p>
-        Check our <a href="#AGENDA">agenda</a> section to see which trainings are waiting for you in r2con 2019!
+        Check our <a href="./agenda.html">agenda</a> page to see what will be going on in r2con 2019!
       </p>
       <hr>
-      <p>Conference and Training tickets are now available!<p>
+      <p>Conference and Training tickets are available!<p>
           <button type="button" class="nes-btn is-primary"
             onclick="window.open('https://events.eventzilla.net/e/r2con2019-2138720257');">BUY TICKETS</button>
-          <hr size=1>
-          <p>You are invited to submit talk proposals for r2con 2019!<p>
-              <p>Please check our <a href="#CFP">CFP section</a>.<p>
-                  <i class="nes-pokeball"></i>
+          <p>
+            <i class="nes-pokeball"></i>
+          <p>
     </div>
   </section>
 
@@ -136,159 +136,74 @@
     </div>
   </section> <!-- Where? end -->
 
-  <section class="nes-container with-title border-red">
-    <!-- CFP begin -->
-    <h2 class="title" id="CFP">CFP</h2>
-    <div class="containers">
-      <p>
-        Have an idea for a <b>radare2-related talk</b> and want to give it in r2con? Please send your submission to <a
-          href="mailto:r2con@radare.org">r2con@radare.org</a> with the following information in plain-text format:
-        <ul class="nes-list is-disc">
-          <li>Your nick/name(s)</li>
-          <li>Contact information (e-mail, twitter, telegram)</li>
-          <li>Talk title and description with optional speaker bio</li>
-          <li>Length: (20 or 50 minutes)</li>
-        </ul>
-      </p>
-      <p>
-        CFP is open until July 1st
-      </p>
-      <div style="text-align: center">
-        <p><i class="nes-icon trophy is-large is-centered"></i></p>
-      </div>
-    </div>
-  </section> <!-- CFP end -->
 
   <section class="nes-container with-title border-blue">
     <!-- AGENDA begin -->
-    <h2 class="title" id="AGENDA">AGENDA</h2>
+    <h2 class="title" id="COMPETITIONS">COMPETITIONS</h2>
     <div class="containers">
-      <h4> Conference Days (September 6-7th)</h4>
       <div id="containers" class="item">
 
         <div class="nes-container with-title is-rounded">
-          <p class="title">Accepted Talks</p>
+          <p class="title">CTF</p>
           <p>
-            This is a partial list of accepted talks. We will add more talks and publish the full description and the info soon.
-          </p>
+            The R2Con CTF is a Jeopardy style competition. You are given with several questions, tasks and challenges in
+            range of different categories of RE. A player can gain points by solving the challenges. Some challenges
+            could have Hints, but there is a score penalty for using them. All challenges need to be solved using
+            radare2.</p>
           <p>
-            <ul>
-            <li> Radare Summer of Code 2019 (dodocodo + <a href="https://twitter.com/oxcabe">oxcabe</a>)
-            <li> ESIL applied for Graphs and Analysis (<a href="https://twitter.com/condr3t">@condr3t</a>)
-            <li> Object Diversification with the help of radare2 (Alex Gaines)
-            <li> Reversing an Advanced Obfuscated Shellcode (<a href="https://twitter.com/unixfreaxjp">@unixfreax</a>)
-            <li> Cutter - The radare2 GUI (<a href="https://twitter.com/xarkes_">@xarkes_</a>, <a href="https://twitter.com/thestr4ng3r">@thestr4ng3r</a>, <a href="https://twitter.com/megabeets_">@megabeets</a> (Check Point Research))
-            <li> Dissecting Smart Contracts (<a href="https://silur.me">silur</a>)
-            <li> RetDec Decompiler Internals + radare2 &amp; Cutter Integration (RetDec Authors)
-            <li> Who you gonna’ syscall: using automation to analyze protected iOS apps (<a href="https://twitter.com/hexploitable">Hexploitable</a>)
-            <li> Windows Malware Analysis for Beginners (<a href="https://twitter.com/apasamar">Abraham Pasamar</a>)
-            <li> Reverse engineering ARM packers and obfuscators (<a href="https://twitter.com/iGio90">@iGio90</a>)
-            <li> Street Radare2 Fighter (<a href="https://twitter.com/pof">@pof</a> + <a href="https://twitter.com/synacktiv">@synacktiv</a>)
-            <li> Evan Zhang of Anlu Tianxing Food and Oil Processing Machinery Equipment Security Team
-            <li> A journey through ESIL: understanding code emulation within radare2 (<a href="https://twitter.com/arnaugamez">@arnaugamez</a>)
-            <li> More talks to be announced...
-            </ul>
+            More information will come soon.
           </p>
-        </div>
-
-      <h4> Advanced Trainings (September 4-5th)</h4>
-      <p>
-        We are happy to present our Training for the 2019 edition of r2con.
-      </p>
-      <div id="containers" class="item">
-
-        <div class="nes-container with-title is-rounded">
-          <p class="title">Mobile Reverse Engineering with R2frida</p>
-          <span class="nes-text is-success">8 hours | Edu Novella @enovella_, Alex Soler (aka murphy) @as0ler</span>
-          <p>
-            Combining dynamic with static analysis is the key to quickly solving many challenges when performing binary analysis. Have you ever thought about combining Radare2 with Frida? This combination has given birth to "r2frida", an IO plugin that allows you to put the power of Frida into r2land.
-          </p>
-          <p id="r2frida" style="display: none;">
-            During this workshop, we will walk you through how to use r2frida, primarily on mobile apps. Attendees will learn about offensive mobile security, e.g how to unpack malware, bypass jailbreak protections, SSL pinning, anti-debugging or even Frida detections using Frida itself. The workshop is suitable for pentesters, reversers, malware analysts and mobile developers who want to learn more about mobile security.
-          </p>
-
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'r2frida');">Read More</button>
         </div>
 
         <div class="nes-container with-title is-rounded">
-          <p class="title">Advanced Techniques for Semi-automatic Code Deobfuscation</p>
-          <span class="nes-text is-primary">8 hours | Tim Blazytko</span>
+          <p class="title">r2wars</p>
           <p>
-              In modern businesses, code obfuscation has become a vital tool to protect, for example, intellectual property against competitors. In general, it attempts to impede program understanding by making the to-be-protected program more complex.
+            This is always the most awaited and fun competition at r2con. Participants must submit small programs
+            written in assembly (assembled by rasm2) to be executed with ESIL in a shared memory space inside r2.</p>
+          <p>The objective of those programs is to find out the other program location and overwrite its code to make it
+            crash, the last program to survive wins.</p>
+          <p>Thanks to the flexibility of r2 it is posssible to emulate multiple programs of different architectures at
+            the same time in the same instance.</p>
+          <p>The r2wars engine is written in C# and runs in Mac, Windows and Linux, you can find out more about it in <a
+              href="https://github.com/radareorg/r2wars">the repository</a>.</p>
+          <p>If you want to make the game even better, please take some time and fix any of those <a
+              href="https://github.com/radare/radare2/labels/r2wars">issues</a>.</p>
+          <p>Check out the videos of the previous competitions in <a
+              href="https://www.youtube.com/results?search_query=r2wars">YouTube</a>.
           </p>
-          <p id="smt" style="display: none;">
-              In this workshop, we give a basic overview about common code obfuscation techniques and deobfuscation techniques. In the second part, we introduce advanced techniques such as compiler optimizations and symbolic execution and use them to break state-of-the art code protections schemes in a semi-automatic manner. The workshop is suitable for everyone who has experience in reverse engineering of x86 code and wants to deepen his/her knowledge in advanced program analysis or code obfuscation techniques.
+          <p>
+            More information will come soon.
           </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'smt');">Read More</button>
         </div>
-        <br>
-        <h4> Basic Trainings</h4>
-
         <div class="nes-container with-title is-rounded">
-          <p class="title">Radare2 Developing Internals</p>
-          <span class="nes-text is-error">4 hours | Pancake (@trufae)</span>
-          <p>
-              Learning how to fix bugs, add new features, write plugins or modify the behaviour of any command in r2 by modifying its source is a very important task for any hacker, not just to make it work in the way you like but also to understand better the internals and small details.
-          </p>
-          <p id="devinternals" style="display: none;">
-              The knowledge adquired in the training can be applied to other opensource projects, so it is interesting not just to anybody that wants to contribute to the project, but also for those who want to learn better good coding practices in C.
-          </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'devinternals');">Read More</button>
-        </div>
-
-        <div class="nes-container with-title is-rounded ">
-          <p class="title">Dissecting binaries with Cutter</p>
-          <span class="nes-text is-success">4 hours | @Megabeets_ (Check Point Research), @xarkes_, @thestr4ng3r</span>
-          <p>
-              Who said radare2 does not have a decent GUI? Cutter is The official multi-platform GUI for radare2. Its goal is making an advanced, customizable and FOSS reverse-engineering platform while keeping the user experience at mind.
-          </p>
-          <p id="cutter" style="display: none;">
-              In this training we will take you to a journey inside Cutter. We'll explore many features of Cutter through real-life examples and we will get our hands dirty with analyzing a malware found in the wild. You will also learn how we can script and extend Cutter with C++ and Python plugins. And last, for those of you who are radare2 junkies, don't worry - we will learn how you can use radare2 commands straight within Cutter.
-          </p>
-          <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'cutter');">Read More</button>
-        </div>
-
-        <div class="nes-container with-title is-rounded">
-            <p class="title">Radare2 survival training</p>
-            <span class="nes-text is-primary">8 hours | @xvilka, @maijin, @jvoisin</span>
+            <p class="title">Contributions</p>
             <p>
-                Since ancient history, humanity seeks the answer to the essential properties of software systems. To date the best answer known is UNIX. In this training, we will pull the dust off the old concepts, and refit them to the modern world of reverse engineering. During these few hours, we will learn how to survive in a console jungle without even guide.
+                In r2con 2018 we had a hardware support competition in which we encouraged the community to send a pull request to implement a support for a new architecture, or significantly improve an existing one. 
+                This year you are invited to send a significant pull request adding any new feature, or improving an existing one. We will give prizes for the TOP 10 pull requests.
             </p>
-            <p id="r2survive" style="display: none;">
-                Step by step, trainers will show you the radare2 powers, both basic and hidden: from the simple disassembly and file formats analysis to the scripting and emulating, from the debugging to recording the traces and combining radare2 with other tools. We will cover core features and standard tools from the radare2 kit. In no time, everyone, who knows how to type and know the basics of reverse engineering, will be able to juggle radare2 commands in the console to impress his friends and family.
+            <p>
+                If you submit a pull request for this contest - please start the PR title with "R2CON2019".
+          </p>
+          <p>
+            Eventually, we will triage all the participating Pull Requests and announce the winners in the conference.
+          </p>  
+          <p>               
+                * Solving issues labeled under "good first issue" won't be counted.</p>
+            <p>
+              More information will come soon.
             </p>
-            <button type="button" class="nes-btn is-primary showcode" onclick="toggleDescription(this, 'r2survive');">Read More</button>
           </div>
 
+
       </div>
+    </div>
+    <br>
+    <div style="text-align: center">
+      <p><i class="nes-icon trophy is-large is-centered"></i></p>
     </div>
   </section> <!-- AGENDA end -->
 
 
-
-
-
-  <!--
-    <section class="nes-container with-title">
-      <h2 class="title" id="COMPETITIONS">COMPETITIONS</h2>
-      <div class="containers">
-
-          <p>
-              As in previous years, we'll have several competitions during and before r2con:
-              <ul class="nes-list is-disc">
-                  <li>CTF Competitions - solve Reverse Engineering challenges using radare2</li>
-                  <li>R2WARS - May the best assembly program win</li>
-                  <li>Architectures support improvement</li>
-              </ul>
-              More details would be published soon.
-          </p>
-
-          <div style="text-align: center">
-              <p><i class="nes-icon trophy is-large is-centered"></i></p>
-          </div>
-        </div>
-    </section>
-  -->
 
   <section class="balloon nes-container with-title">
     <h2 class="title" id="FAQ">FAQ</h2>
@@ -298,12 +213,13 @@
       <div class="message -left">
         <i class="nes-ash"></i>
         <div class="nes-balloon from-left">
-          <p>When will the registration for the training days be open?</p>
+          <p>When will the registration be open?</p>
         </div>
       </div>
       <div class="message -right">
         <div class="nes-balloon from-right">
-          <p>Registration for trainings is now open! Tickets are available <a href="https://events.eventzilla.net/e/r2con2019-2138720257">here</a>.</p>
+          <p>Registration is now open! Tickets for talks and trainings are available <a
+              href="https://events.eventzilla.net/e/r2con2019-2138720257">here</a>.</p>
         </div>
         <i class="nes-charmander"></i>
       </div>
@@ -315,18 +231,18 @@
       <div class="message -left">
         <i class="nes-mario"></i>
         <div class="nes-balloon from-left">
-          <p>When will the CFP open?</p>
+          <p>Is the CFP still open?</p>
         </div>
       </div>
       <div class="message -right">
         <div class="nes-balloon from-right">
-          <p>The CFP is now open! Please check our <a href="#CFP">CFP section</a>.</p>
+          <p>No. The CFP is now closed and the <a href="./agenda.html">agenda</a> is published.</p>
         </div>
         <i class="nes-mushroom"></i>
       </div>
     </div>
     </div> <!-- End Message -->
-<!--
+    <!--
     <div class="messages">
       <div class="message -left">
         <i class="nes-ash"></i>
@@ -371,7 +287,8 @@
           </p>
           <p>
             Tickets for the trainings are sold separately and include tickets for the two days of the
-            trainings. Different trainings will have different prices. Check out the <a href="https://events.eventzilla.net/e/r2con2019-2138720257">purchasing page</a> to learn more.
+            trainings. Different trainings will have different prices. Check out the <a
+              href="https://events.eventzilla.net/e/r2con2019-2138720257">purchasing page</a> to learn more.
           </p>
         </div>
         <i class="nes-squirtle"></i>
@@ -407,7 +324,7 @@
     <br />
     <br />
 
-    CFP Deadline <span id="cfp-progress-text"></span>
+    <span id="cfp-progress-text"></span>
     <progress id="cfp-progress" class="nes-progress is-pattern" value="50" max="100"></progress>
 
     <div id="walking">
@@ -465,9 +382,9 @@
   document.getElementById("conference-progress").max = totalConference.toString();
   document.getElementById("conference-progress").value = daysPassed;
 
-  document.getElementById('cfp-progress-text').textContent = " (" + (totalCFP - daysPassed) + " days)";
+  document.getElementById('cfp-progress-text').textContent = " CFP IS OVER";
   document.getElementById("cfp-progress").max = totalCFP.toString();
-  document.getElementById("cfp-progress").value = daysPassed;
+  document.getElementById("cfp-progress").value = totalCFP.toString();
 
   /* Toggle object by nmae */
   function toggleDescription(button, id) {
@@ -481,6 +398,8 @@
     }
   }
 
+
 </script>
+<script src="./assets/js/script.js"></script>
 
 </html>
