@@ -46,7 +46,7 @@
     {
       "title": "Not only Street Fighter: A journey into Moo",
       "speakers": ["Pau Oliva", "Synacktiv"],
-      "handles": ["pof"],
+      "handles": ["pof", "synacktiv"],
       "description": "<p>We will talk about the emulator used in Street Fighter 30th Anniversary Edition: the emulator internals and how we instrument it to run different games.</p>"
     },
     {
