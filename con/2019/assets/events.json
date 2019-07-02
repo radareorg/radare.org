@@ -85,7 +85,7 @@
         "akochkov",
         "trufae"
       ],
-      "description": "<p>This year's students in the Radare Summer of Code program will tell how the made radare2 console experience more robust, and polished the type analysis algorithms.</p>"
+      "description": "<p>This year's students in the Radare Summer of Code program will speak about their work on radare2. How they made radare2 console experience more robust, and describe recent improvements to the type analysis algorithms.</p>"
     },
     {
       "title": "A journey through ESIL: understanding code emulation within radare2",
@@ -98,6 +98,12 @@
       "speakers": "Boris Ryutin",
       "handles": "dukebarman",
       "description": "<p>In this talk, I’ll present a set of plugins for IDA and Ghidra. The goal of this project is added powerful features of radare2 (emulation, support a lot of plugins and architectures, etc.) in popular disassemblers and make using this more useful.</p>"
+    },
+    {
+      "title": "Who you gonna' syscall: using automation to analyze protected iOS apps",
+      "speakers": "Grant Douglas",
+      "handles": "Hexploitable",
+      "description": "<p>Analyzing protected apps can be slow and painful and often you don't have a lot of time to spend on these activities. During this talk, we'll look at how we can use r2pipe to speed up some of the common tasks that help make reversing protected iOS apps even easier.</p>"
     },
     {
       "title": "TEB/PEB/../DLL binary Blob for ESIL to parse",
