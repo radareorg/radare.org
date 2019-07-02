@@ -74,7 +74,7 @@
     },
     {
       "title": "Narrowing semantinc gap in binary analysis",
-      "speakers": "Solmaz Salimi",
+      "speakers": ["Solmaz Salimi", "Samad Alaamati"],
       "handles": "y3noor",
       "description": "<p>One of the promising binary analysis techniques is binary partitioning based on function-level boundaries; without it, it is impractical to analyze binary files for most applications, including vulnerability search, binary instrumentation, and binary similarity detection. Although because of the overlapping instructions and the fact that disassembling a stripped binary file is equivalent to the halting problem, modern binary disassemblers including Radare2, this elegant and decent open-source software, achieve high accuracy in term of instruction recovery. Although, in most cases, accurate instruction recovery does not necessarily imply that function identification is as assuring. However, Radare2 provides an active core to identify the function-level boundaries; given a memory address that points to an instruction, it is possible to get the function that instruction belongs to it with a straightforward step.</p><p>In this talk, we are going to elaborate on how to function identification is done in Radare2 and then discuss how the function-level boundaries do not bridge the semantic-gap for binary analysis and on the other hand, developing a core to extract binary semantics is not as straightforward and accurate as function identifications.</p><p>Then we discuss how the function-level boundaries can be refined in Radare2 to obtain further semantic-based functionalities rather than comparable source-code level functions.</p>"
     },
@@ -118,7 +118,17 @@
     {
       "title": "radare2 and Frida in the OWASP Mobile Security Testing Guide",
       "speakers": "Carlos Holguera",
-      "description": "<p>In this talk we will give a brief introduction to the OWASP Mobile Security Testing Guide: what is it, how to use it and how to contribute. In addition, we will introduce some use cases where we usually make use of radare2 and Frida when testing mobile apps and that can be found throughout the guide."
+      "description": "<p>In this talk we will give a brief introduction to the OWASP Mobile Security Testing Guide: what is it, how to use it and how to contribute. In addition, we will introduce some use cases where we usually make use of radare2 and Frida when testing mobile apps and that can be found throughout the guide.</p>"
+    },
+    {
+      "title": "Towards Side Channel Attacks",
+      "speakers": "Marios Dimitriadis",
+      "description": "<p>Side Channel Attacks have become prevalent both as a technique and as a topic. In this talk the possibility of gathering sensitive mobile app information will be analysed through the usage of a website that is loaded either directly by the app or by a third party library that the app uses. The tools utilised will be the [Radare](https://rada.re/r/) reverse engineering framework for the examination of the source code of the app in question, and the [Frida](https://www.frida.re) instrumentation framework for the injection of any code necessary during the execution of the app, which will revolve around the requirements of being able to execute JavaScript. The scope of the information that can be possibly gathered will be more relevant to privacy rather than security, and will include mainly data on the users, rather than on the devices in question. This is one of the main points of how it differs from attacks like Spectre which are capable of retrieving system security related data.<br /> More specifically, what will be covered (not necessarily in this order):<ul><li> - Summary of how CPU caches work</li><li> - Summary of Side Channel attacks and how they can be performed in this specific case</li><li> - Showcase of how Radare and Frida were used to aid the purposes mentioned</li></ul></p>"
+    },
+    {
+      "title": "Who is gonna syscall?",
+      "speakers": "Grant Douglas",
+      "description": "<p>Analyzing protected apps can be slow and painful and often you don't have a lot of time to spend on these activities. During this talk, we'll look at how we can use r2pipe to speed up some of the common tasks that help make reversing protected iOS apps even easier.</p>"
     }
   ]
 }

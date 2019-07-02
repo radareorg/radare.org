@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var version = "3.5.1";
+  var version = "3.6.0";
   var oss = {
     Win: { url: 'http://radare.mikelloc.com/get/'+version+'/radare2-msvc_64-'+version+'.zip', name: 'for Windows' },
     Mac: { url: 'http://radare.mikelloc.com/get/'+version+'/radare2-'+version+'.pkg', name: 'for OSX' },
