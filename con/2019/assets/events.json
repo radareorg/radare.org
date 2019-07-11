@@ -39,7 +39,7 @@
       "description": "<p>After a light & short RetDec introduction, we dive into advanced options of influencing its output using additional information. Then, we will show how to extract such information from r2, and how to put it all together to make a RetDec-in-r2 decompilation plugin. We demonstrate its capabilities in a short live demo. Furthermore, we explore tighter integration with Cutter and possible future improvements.</p>"
     },
     {
-      "title": "Reverse engineering ARM packers and obfuscators with Dwarf",
+      "title": "Down the business with r2dwarf",
       "speakers": "iGio",
       "description": "<p>In this talk I'm going to show how you can debug, reverse engineer and break with ease some of the harder protections used nowadays to protect intellectual property and users sensitive data. We will see how a combination of tools built on top of frida and r2 can be used to win almost any situations</p>"
     },
