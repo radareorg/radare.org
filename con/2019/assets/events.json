@@ -119,7 +119,7 @@
       "title": "radare2 and Frida in the OWASP Mobile Security Testing Guide",
       "speakers": "Carlos Holguera",
       "handles": [
-        "grepharder",
+        "grepharder"
       ],
       "description": "<p>In this talk we will give a brief introduction to the OWASP Mobile Security Testing Guide: what is it, how to use it and how to contribute. In addition, we will introduce some use cases where we usually make use of radare2 and Frida when testing mobile apps and that can be found throughout the guide.</p>"
     },
