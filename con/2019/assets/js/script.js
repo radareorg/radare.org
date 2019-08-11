@@ -5,11 +5,23 @@ const getEventsJSON = async () => {
     return jsonEvents;
 }
 
-
-
 async function fillEvents() {
     let eventsJSON =  await getEventsJSON();
-    eventsJSON["events"].forEach(fillSingleEvent);
+    calendar = eventsJSON["calendar"]
+    calendar.forEach(function(day) {
+        eventsContainer = $("<div></div>").addClass("containers");
+        $("#agendaSection").append($('<h3>').attr('id', "sep"+day["date"]).append(day["day"] + ", September " + day["date"] + " | " + day["description"]));
+        eventsList = $("<div></div>").addClass("item");
+        $(".dayNavigator").append($("<span></span>").append($('<a>',{href : "#sep"+day["date"], text: day["day"]})).append(" | "))
+
+
+        dailyEvents = day["events"];
+        dailyEvents.forEach( function(event, index) {
+            eventDiv = fillSingleEvent(event);
+            $("#agendaSection").append(eventDiv);
+        });
+        $("#agendaSection").append("<p><br><hr><br></p>")        
+    });
 }
 
 function generateSpeakersHTML (speakers, handles) {
@@ -27,21 +39,28 @@ function generateSpeakersHTML (speakers, handles) {
     return '<a href="' + prefix + handles + '">' + speakers + '</a>';
 }
 
-async function fillSingleEvent(item, index) {
+function fillSingleEvent(event) {
     var colors = ["blue", "green", "yellow", "red"];
     var randomColor = colors[Math.floor(Math.random()*colors.length)];
-    title = item.title;
-    handles = "handles" in item ? item.handles : "#";
-    speakers = item.speakers;
-    speakersHTML = generateSpeakersHTML(speakers, handles);
-    description = item.description;
-    $("#talks").append(
+    eventDiv = $("<div>").addClass("nes-container with-title border-"+randomColor);
+
+    title = event.title;
+    time = event["time"];
+    eventDiv.append(
         `
-        <div class="nes-container with-title border-` + randomColor + `">
         <p class="title"><b>` + title + `</b></p>
-        <span class="nes-text is-primary">` + speakersHTML + `</span>
-        <p>` + item.description  + `</p>
-        </div>`);
+        <p><i class="fa fa-clock-o"> </i><small> `  + time + `</small></p>`);
+
+    if ("description" in event) {
+        handles = "handles" in event ? event.handles : "#";
+        speakers = event.speakers;
+        speakersHTML = generateSpeakersHTML(speakers, handles);
+        description = event.description;
+        eventDiv.append(
+            `<span class="nes-text is-primary">` + speakersHTML + `</span>
+            <p>` + event.description  + `</p>`);
+    }
+    return eventDiv;
 }
 
 fillEvents();
