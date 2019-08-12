@@ -93,7 +93,7 @@
             "megabeets_",
             "thestr4ng3r"
           ],
-          "description": "<p>Cutter is a powerful open-source, multi-platform GUI that is powered by radare2. Cutter was created to provide an easy-to-use, but still powerful, interface to radare2 for new users and for anyone who wants more GUI in their life.</p><p>In this talk we will take you to the journey of creating and maintaining Cutter. We will discuss the current state of the project as well as its future. Let's talk about our goals, successes and failures and even share some takeouts following the recent release of Ghidra</p>",
+          "description": "<p>Cutter is a powerful open-source, multi-platform GUI that is powered by radare2. Cutter was created to provide an easy-to-use, but still powerful, interface to radare2 for new users and for anyone who wants more GUI in their life.</p><p>In this talk we will take you to the journey of creating and maintaining Cutter. We will discuss the current state of the project as well as its future. Let's talk about our goals, successes and failures and even share some takeouts following the recent release of Ghidra.</p>",
           "time": "09:20 - 9:50"
         },
         {
