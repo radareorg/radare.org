@@ -250,8 +250,9 @@
           "time": "13:05 - 14:45"
         },
         {
-          "title": "r2learn - Your Personal Interactive Teacher",
-          "speakers": "Ki (telegram @lv_ki)",
+          "title": "r2lrn - Your Personal Interactive Teacher",
+          "speakers": "Kirils Solovjovs",
+          "handles": "KirilsSolovjovs",
           "description": "<p>The talk presents the completely revolutionary tool to learn to use r2 the fun way — r2lrn. This is command-line based tutorial/challenge with progressive difficulty. Currently it is aimed at beginners (and IDA/gdb refugees), but framework can be easily extended in the future to include actually challenging tasks up to CTF level.</p>",
           "time": "14:50 - 15:20"
         },
