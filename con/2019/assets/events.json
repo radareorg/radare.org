@@ -166,10 +166,7 @@
           "time": "15:35 - 16:20"
         },
         {
-          "title": "SpaceRadare: The part of Evil in your favourite disassembler",
-          "speakers": "Boris Ryutin",
-          "handles": "dukebarman",
-          "description": "<p>In this talk, I’ll present a set of plugins for IDA and Ghidra. The goal of this project is added powerful features of radare2 (emulation, support a lot of plugins and architectures, etc.) in popular disassemblers and make using this more useful.</p>",
+          "title": "tbd",
           "time": "16:25 - 16:45"
         },
         {
