@@ -258,18 +258,18 @@
           "speakers": "Nacho Sanmillan",
           "handles": "ulexec",
           "description": "<p>Linux Malware is becoming more complex as newer Linux dominated ecosystems rise in today's IT landscape.</p><p>There is not much visibility of the Linux Threat Landscape and its capabilities. Recently, the security community has experienced a rise of awareness of Linux Threats as more malware is being found on this platform.</p><p>This talk will not be based on common Linux Malware but on advanced anti-analysis techniques that could make Linux Malware harder to analyse as a rise of awareness attempt of modern Linux Threats.</p>",
-          "time": "15:25 - 16:00"
+          "time": "15:25 - 16:10"
         },
         {
           "title": "ESIL applied for Graphs and Analysis",
           "speakers": "Condret",
           "handles": "condr3t",
           "description": "<p>Improving analysis in r2 by focusing on graphs generated from esil seems doable. In this talk, I tell you about how I want to generate esil expressions that compute what we want to know from graphs that were generated from esil expression themself.</p>",
-          "time": "16:30 - 17:15"
+          "time": "16:15 - 17:00"
         },
         {
           "title": "30 minutes break",
-          "time": "17:15 - 17:45"
+          "time": "17:00 - 17:30"
         },
         {
           "title": "RSoC 2019",
@@ -282,11 +282,11 @@
             "trufae"
           ],
           "description": "<p>This year's students in the Radare Summer of Code program will speak about their work on radare2. How they made radare2 console experience more robust, and describe recent improvements to the type analysis algorithms.</p>",
-          "time": "17:50 - 18:35"
+          "time": "17:35 - 18:20"
         },
         {
           "title": "Closing and Competition Winners",
-          "time": "18:40 - 19:10"
+          "time": "18:25 - 19:00"
         },
         {
           "title": "Chiptune Party",
