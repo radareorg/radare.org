@@ -1,0 +1,13 @@
+{
+  "class": "FeaturedBannersView",
+  "itemSize": "{263, 148}",
+  "itemCornerRadius": 10,
+  "banners": [
+    {
+      "url": "http://cydia.radare.org/radare-featured.png",
+      "title": "Radare2",
+      "package": "radare2",
+      "hideShadow": false
+    }
+  ]
+}

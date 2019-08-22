@@ -8,9 +8,23 @@ all:
 	done 
 	${MAKE} copy
 
+www:
+	python -m SimpleHTTPServer 8000
+
 copy sync:
-	cp dists/stable/main/binary-iphoneos-arm/Packages.gz .
+	#cp -f dists/stable/main/binary-iphoneos-arm/Packages.gz .
+	cp -f dists/stable/Release .
+	cp dists/stable/main/binary-iphoneos-arm/Packages .
 	cp conf/CydiaIcon.png .
+	cp conf/sileo-featured.json .
+	cp conf/distributions Release
+	bzip2 Packages
+	echo SHA256: >> Release
+	export H=`shasum -a 256 Packages.bz2 | cut -d ' ' -f1` \
+	export S=`wc -c < Packages.bz2 | awk '{print $$1}'` \
+		echo "S$$S";\
+		echo "H$$H";\
+		echo " $${H} $${S} Packages.bz2" >> Release
 
 update:
 	reprepro -b . update
