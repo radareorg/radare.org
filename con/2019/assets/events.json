@@ -24,11 +24,13 @@
           "title": "Advanced Training: Mobile Reverse Engineering with R2frida",
           "speakers": [
             "Edu Novella",
-            "Alex Soler"
+            "Alex Soler",
+	    "Grant Douglas"
           ],
           "handles": [
             "enovella_",
-            "as0ler"
+            "as0ler",
+	    "hexploitable"
           ],
           "description": "<p>Combining dynamic with static analysis is the key to quickly solving many challenges when performing binary analysis. Have you ever thought about combining Radare2 with Frida? This combination has given birth to \"r2frida\", an IO plugin that allows you to put the power of Frida into r2land.</p><p>During this workshop, we will walk you through how to use r2frida, primarily on mobile apps. Attendees will learn about offensive mobile security, e.g how to unpack malware, bypass jailbreak protections, SSL pinning, anti-debugging or even Frida detections using Frida itself. The workshop is suitable for pentesters, reversers, malware analysts and mobile developers who want to learn more about mobile security</p>",
           "time": "10:00 - 19:00"
