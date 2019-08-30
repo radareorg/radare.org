@@ -19,15 +19,23 @@ h2 {
 	color: #ffb900!important;
 }
 
+.botton {
+    display: inline-block;
+	padding: 8px;
+}
+
 .console {
 	padding:16px;
-	overflow-x:scroll;
-	background-color:#f0f0e0;
+	background-color:#f5f5e0;
 	border: 0.2em solid #f0e0a0;
 	max-width:600px;
 	color:#101010;
 	border-radius: 1em;
 	text-align:left;
+}
+
+pre {
+	font-weight:bold;
 }
 
 .button {

@@ -4,7 +4,7 @@
   "itemCornerRadius": 10,
   "banners": [
     {
-      "url": "http://cydia.radare.org/radare-featured.png",
+      "url": "http://cydia.radare.org/radare-featured.jpg",
       "title": "Radare2",
       "package": "radare2",
       "hideShadow": false
