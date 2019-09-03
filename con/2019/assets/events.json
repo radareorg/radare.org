@@ -10,12 +10,14 @@
           "speakers": [
             "xvilka",
             "maijin",
-            "jvoisin"
+            "jvoisin",
+            "deroad"
           ],
           "handles": [
             "xvilka",
             "maijin",
-            "jvoisin"
+            "jvoisin",
+            "der0ad"
           ],
           "description": "<p>Since ancient history, humanity seeks the answer to the essential properties of software systems. To date the best answer known is UNIX. In this training, we will pull the dust off the old concepts, and refit them to the modern world of reverse engineering. During these few hours, we will learn how to survive in a console jungle without even guide.</p><p>Step by step, trainers will show you the radare2 powers, both basic and hidden: from the simple disassembly and file formats analysis to the scripting and emulating, from the debugging to recording the traces and combining radare2 with other tools. We will cover core features and standard tools from the radare2 kit. In no time, everyone, who knows how to type and know the basics of reverse engineering, will be able to juggle radare2 commands in the console to impress his friends and family.</p>",
           "time": "10:00 - 19:00"
