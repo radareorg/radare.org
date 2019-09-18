@@ -148,3 +148,17 @@ right:0px;
 background-color:white !important;
 z-index:100;
 }
+
+.action {
+border:10px;
+padding:10px;
+width:200px;
+font-weight:bold;
+margin:10px;
+border: #f0b900;
+border-radius: 10px;
+background-color:#f09b00;
+color:black;
+    display: inline-block;
+
+}
