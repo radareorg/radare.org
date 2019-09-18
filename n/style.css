@@ -5,7 +5,8 @@ a, a:visited, a:link, a:active {
 }
 a:hover {
 	text-decoration: underline !important;
-	color: yellow!important;
+  text-shadow: 0px 0px 2px black;
+	color: #f0e000!important;
 }
 body {
 	background-color:#404040;
@@ -28,6 +29,7 @@ text-decoration:none;
 }
 .botton a:hover {
 color:#000000 !important;
+  text-shadow: 0px 0px 2px black;
 font-family:montserrat;
 text-decoration:none !important;
 }

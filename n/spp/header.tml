@@ -1,3 +1,4 @@
+
 <html>
 <head>
   <title>radare</title>
@@ -53,50 +54,4 @@
 </tr>
 </table>
 </div>
-
-<center>
-<div style="width:100%;overflow-x:auto;padding-top:6em">
-<table style="max-width:800px;width:100%;font-family:montserrat;text-align:center;font-weight:bold;line-height:2em">
-<tr>
-<td><a href="radare2.html"><img class=button2 width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/>Radare2</td>
-<td><a href="https://github.com/radare/radare2-r2pipe" target=_blank><img class=button2 width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
-<td><a href="https://cutter.re/" target=_blank><img class=button2 width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
-</tr>
-<tr>
-</tr>
-<tr style="top:20px;text-align:left;font-weight:normal;border:16px">
-<td>
-  <ul>
-<li> <a href="https://github.com/radare/radare2/releases">Sources</a> / 
-     <a href="https://radare.mikelloc.com">Binaries</a>
-<li> <a href="https://t.me/radare">Community</a> /
-     <a href="https://radare.gitbooks.io/radare2book/content/">Book</a>
-  </ul>
-</td>
-<td>
-
-  <ul>
-<li> <a href="https://github.com/radare/radare2-r2pipe">Sources</a>
-<li> <a href="https://github.com/radare/radare2-r2pipe/tree/master/python/examples">Examples</a>
-  </ul>
-
-</td>
-<td>
-  <ul>
-<li> <a href="https://github.com/radareorg/cutter">Sources</a>
-<li> <a href="https://t.me/r2cutter">Community</a>
-  </ul>
-</td>
-</tr>
-</table>
-</div>
-<div style="max-width:800">
-<center>
-<h1>The Free/Libre Unix-Friendly Framework for Reverse Engineering</h1>
-</center>
-</div>
-</div>
-
-</center>
-</body>
-</html>
+<div style="width:100%;overflow-x:auto;margin-top:6em">

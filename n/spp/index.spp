@@ -1,0 +1,12 @@
+<{include header.tml}>
+
+
+<h1>This is new</h1>
+
+<p>
+And i wont permit this kkind of fthings to happen again
+
+* Never
+* Again
+
+<{include footer.tml}>
