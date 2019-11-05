@@ -43,6 +43,8 @@ ul {
 }
 
 .console {
+	overflow-x:scroll;
+	overflow-y:hidden;
 	padding:16px;
 	padding-top:0px;
 	margin-top:16px;
@@ -55,7 +57,6 @@ ul {
 	text-align:left;
 	white-space: pre;
 	font-family: consolas, courier new;
-	overflow:scroll;
 }
 
 p {
@@ -128,6 +129,7 @@ td {
 
 .topbut {
 	position:fixed;
+	overflow:hidden;
 	padding-right:2em;
 	padding-top:1em;
 	top:0px;
@@ -138,7 +140,6 @@ td {
 	background-color:#ffb900;
 	padding-top:0em;
 	padding-bottom:0px;
-	overflow:scroll;
 	border-radius: 0px 0px 10px 0px;
 }
 
@@ -147,6 +148,7 @@ img {
 }
 
 .topbar {
+	overflow:hidden;
 	border-radius: 0px 0px 10px 10px;
 	position:fixed;
 	top:0px;

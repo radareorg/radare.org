@@ -65,7 +65,7 @@
 <div style="width:100%;overflow-x:auto;padding-top:6em;padding-bottom:0em">
 <table style="max-width:800px;width:100%;font-family:montserrat;text-align:center;font-weight:bold;line-height:2em">
 <tr>
-<td><a href="index.html"><img class=button2 width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/>Radare2</td>
+<td><a href="index.html"><img class=button2 width="240px" src="img/typical.jpg"></a><br/>Radare2</td>
 <td><a href="r2pipe.html"><img style="opacity:0.3;" class=button2 width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
 <td><a href="cutter.html"><img style="opacity:0.3;" class=button2 width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
 </tr>
@@ -136,21 +136,36 @@ All the programs are also accessible as commands inside r2:
 nop
 </div>
 <p>
-$ r2 /bin/ls
+Those are some common commands you may use in your daily life:
+</p>
+<div class="console">
+<b>$ r2 /bin/ls</b>
 &gt; aaa    # analyze all the things
 &gt; is     # list symbols
 &gt; afl    # list functions found
 &gt; pdf    # disassemble function
 &gt; s &lt;tab&gt;# seek to address
 &gt; v      # enter visual panels mode
-</p>
+</div>
 
 <h2>Debugger</h2>
 <p>
-Everything is seen as a file virtually mapped inside r2, reading process memory is the same
-Use the <b>-d</b> flag to start in debugger mode, this is, spawning
+The IO layer selected by the file URI when opening a file in r2 can be anything, from local file, remote r2 shell, a full disk, another process memory, etc.
 </p>
-<br />
+<p>
+To simplify things, the <b>-d</b> flag will use the dbg:// uri to spawn or attach to a process to read/write its memory, modify registers and inspect the execution flow. It's a low level debugger, don't worry, we don't try to replace gdb/lldb.
+</p>
+<div class="console">
+<b>$ r2 -d gdb://127.0.0.1</b>
+&gt; ds          # step into
+&gt; dso         # step over
+&gt; dr=         # show registers in columns
+&gt; dbt         # show backtrace
+&gt; dsu entry0  # continue until entrypoint
+&gt; dr rax=33   # change value of register
+&gt; pxr@rsp     # inspect stack
+&gt; drr         # periscoped register values
+</div>
 
 <h2>Plugins</h2>
 
@@ -161,10 +176,34 @@ Using the integrated package manager you can easily install external plugins fro
 <b>$ r2pm update
 $ r2pm -i r2ghidra r2dec r2frida</b>
 </div>
+
 <h2>Frida</h2>
+<p>
+The favourite in-process debugger/tracer for many people is also available within r2 after installing the <b>r2frida</b> plugin you may be able to attach/spawn to a local or remote program via usb or tcp and be able to read/write process memory in live.
+</p>
+<p>
+One of the main benefits of using r2frida instead of frida is, despite not depending on Python, the fact that you can type short commands instead of typing multiple lines of Javascript.
+</p>
+<p>
+- Access remote filesystems<br/>
+- Modify filedescriptors<br />
+- Breakpoints (Like in DWARF)<br />
+- Load/Unload agent scripts as plugins<br/>
+- Sybolicate from local bins, scripts or runtime info<br/>
+- Supports macOS/iOS/Linux/Android/QNX/Windows<br />
+</p>
+
 <div class="console">
 <b>$ r2 frida:///bin/ls
-&gt; \dc</b>
+&gt; \dc         # continue the execution<br />
+&gt; \dd         # list file descriptors<br/>
+&gt; \dm         # show process memory maps<br/>
+&gt; \dmm        # show modules mapped <br/>
+&gt; \dl foo.so  # load a shlib<br />
+&gt; \dt write   # trace every call to 'write'<br />
+&gt; \isa read   # find where's the read symbol located<br />
+&gt; \ii         # list imports off the current module<br />
+&gt; \dxc exit 0 # call 'exit' symbol with argument 0<br />
 </div>
 
 <h2>Documentation</h2>
