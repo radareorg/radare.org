@@ -73,11 +73,33 @@
 </div>
 <h1>radare2</h1>
 <p>
-A free/libre toolchain for easing several low level tasks like forensics, reverse engineering, exploiting, debugging, ...
+A free/libre toolchain for easing several low level tasks like forensics, software reverse engineering, exploiting, debugging, ...
 </p>
 <p>
 It is composed by a bunch of libraries (which are extended with plugins) and programs that can be automated with almost any programming language.
 </p>
+<h2>Installation</h2>
+<p>
+It is recommended to install it from git, alternatively you can pick the last release (every 6 weeks) from <a href="https://github.com/radare/radare2/releases">Github</a>.
+</p>
+<p>
+Release builds are available <a href="https://radare.mikelloc.com">here</a>.
+</p>
+<div class="console">
+$ git clone https://github.com/radareorg/radare2
+$ cd radare2 ; sys/install.sh
+</div>
+<p>
+In case of build problems try the following:
+</p>
+<div class="console">
+$ sudo make purge
+$ rm -rf shlr/capstone
+$ git clean -xdf
+$ git reset --hard @~50
+$ sys/install.sh
+</div>
+
 <h2>Features</h2>
 <p>
 - Batch, commandline, visual and panels interactive modes<br />
@@ -92,17 +114,6 @@ It is composed by a bunch of libraries (which are extended with plugins) and pro
 - Easy to extend and modify<br />
 - Commandline, C API, script with r2pipe in any language<br />
 </p>
-<h2>Installation</h2>
-<p>
-The sources are available on <a href="https://github.com/radare/radare2/releases">Github</a>.
-<br />
-Each release have <a href="https://radare.mikelloc.com">precompiled binaries</a> in a separate server.
-</p>
-<div class="console">
-$ git clone https://github.com/radare/radare2
-$ cd radare2
-$ sys/install.sh
-</div>
 
 <h2>Usage</h2>
 <p>
@@ -111,6 +122,7 @@ Radare2 can be used in many ways, from commandline or shellscripts by calling th
 <div class="console">
 <b>$ rasm2 -a arm -b 32 -d `rasm2 -a arm -b 32 nop`
 $ rabin2 -Ss /bin/ls  # list symbols and sections
+$ rahash2 -a md5 /bin/ls
 $ rafind2 -x deadbeef bin</b>
 </div>
 <p>
@@ -124,7 +136,19 @@ All the programs are also accessible as commands inside r2:
 nop
 </div>
 <p>
-Use the <b>-d</b> flag to start in debugger mode, but
+$ r2 /bin/ls
+&gt; aaa    # analyze all the things
+&gt; is     # list symbols
+&gt; afl    # list functions found
+&gt; pdf    # disassemble function
+&gt; s &lt;tab&gt;# seek to address
+&gt; v      # enter visual panels mode
+</p>
+
+<h2>Debugger</h2>
+<p>
+Everything is seen as a file virtually mapped inside r2, reading process memory is the same
+Use the <b>-d</b> flag to start in debugger mode, this is, spawning
 </p>
 <br />
 
@@ -134,11 +158,13 @@ Use the <b>-d</b> flag to start in debugger mode, but
 Using the integrated package manager you can easily install external plugins from different sources, most interesting ones are the native ghidra decompiler, the r2dec decompiler and the frida integration. But there are more!
 </p>
 <div class="console">
-$ r2pm update
-$ r2pm -i r2ghidra
-$ r2pm -i r2dec
-$ r2pm -i r2frida
+<b>$ r2pm update
+$ r2pm -i r2ghidra r2dec r2frida</b>
 </div>
+<h2>Frida</h2>
+<div class="console">
+<b>$ r2 frida:///bin/ls
+&gt; \dc</b>
 </div>
 
 <h2>Documentation</h2>
@@ -150,8 +176,11 @@ In addition you can read <a href="https://radare.gitbooks.io/radare2book/content
 
 but everything in r2 is self-documented (just append the '?' char) or read the manpages/-h:
 </p>
+<p>
+You can use the HUD mode to interactively browse all the commands inside r2 using this oneliner:
+</p>
 <div class="console">
-$ man radare2
+<b>$ r2 -qq -c '?*~...' --</b>
 </div>
 </div>
 </center>
