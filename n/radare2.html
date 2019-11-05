@@ -16,12 +16,12 @@
 </head>
 <body>
 <div class="topbar">
-<table>
+<table >
 <tr>
 <td style="padding:0.6em;margin:0px">
-    <a class="rtopbutton" href="index.html"><img width="100" height="41" src="r2logo.png" alt="radare.org"></a>
+<a class="rtopbutton" href="index.html"><img width="100" height="40" src="r2logo.png" alt="radare.org"></a>
 </td>
-<td width="100%" style="text-align:right;font-family:montserrat">
+<td width="100%" style="text-align:right;font-family:montserrat;vertical-align:middle">
 <!--
 <a class="link" href="#install">INSTALL</a>
 &nbsp;
@@ -30,22 +30,25 @@
 -->
 
 <div class="topbut">
-
+<br />
+<!--
 <div class="botton">
-<a class="link" href="https://radare.gitbooks.io/radare2book/">DOCS</a>
+<a class="link" target=_blank href="https://radare.gitbooks.io/radare2book/">DOCS</a>
 </div>
+-->
 <div class="botton">
-<a class="link" href="https://github.com/radare/radare2" target=_blank href="">CODE</a>
+<a class="link" href="https://github.com/radareorg" target=_blank href="">GitHub</a>
 </div>
+<!--
+/
 <div class="botton">
-<a href="/con/2019" target=_blank>CONF</a>
+<a class="link" target=_blank href="https://t.me/radare/">CHAT</a>
 </div>
+/
 <div class="botton">
-<a href="#swag" target="https://camisetasfrikis.es/31-radare">SWAG</a>
+<a href="/con/2019" target="_blank" target=_blank>CONF</a>
 </div>
-<div class="botton">
-<a target=_blank href="https://github.com/radare/radare.org/edit/master/n/index.html">EDIT</a>
-</div>
+-->
 </div>
 <!--
 <a title="donate" href="/con/2019" target=_blank>DONATE</a>
@@ -58,27 +61,38 @@
 </table>
 </div>
 
-
 <center>
-<div style="width:100%;overflow-x:auto;margin-top:6em">
+<div style="width:100%;overflow-x:auto;padding-top:6em;padding-bottom:0em">
 <table style="max-width:800px;width:100%;font-family:montserrat;text-align:center;font-weight:bold;line-height:2em">
 <tr>
-<td><a href="index.html"><img class=button2 width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/><b>Radare2</b></td>
-<td><a href="index.html" target=_blank><img class=button2 style="opacity: 0.3;" width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
-<td><a href="index.html" target=_blank><img class=button2 style="opacity: 0.3;" width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
+<td><a href="index.html"><img class=button2 width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/>Radare2</td>
+<td><a href="r2pipe.html"><img style="opacity:0.3;" class=button2 width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
+<td><a href="cutter.html"><img style="opacity:0.3;" class=button2 width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
 </tr>
 </table>
 </div>
-
-<h1>What's radare2?</h1>
+<h1>radare2</h1>
 <p>
 A free/libre toolchain for easing several low level tasks like forensics, reverse engineering, exploiting, debugging, ...
-<br />
-<br />
-The toolchain is composed by a bunch of libraries (which are extended with plugins) and programs that can be automated with almost any programming language.
 </p>
-<a name="install">&nbsp;</a>
-<h1>Installation</h1>
+<p>
+It is composed by a bunch of libraries (which are extended with plugins) and programs that can be automated with almost any programming language.
+</p>
+<h2>Features</h2>
+<p>
+- Batch, commandline, visual and panels interactive modes<br />
+- Embedded webserver with js scripting and webui<br/>
+- Assemble and disassemble a large list of CPUs<br />
+- Runs on Windows and any other UNIX flavour out there<br />
+- Analyze and emulate code with ESIL<br />
+- Native debugger and GDB, WINDBG, QNX and FRIDA<br />
+- Navigate ascii-art control flow graphs<br />
+- Ability to patch binaries, modify code or data<br />
+- Search for patterns, magic headers, function signatures<br />
+- Easy to extend and modify<br />
+- Commandline, C API, script with r2pipe in any language<br />
+</p>
+<h2>Installation</h2>
 <p>
 The sources are available on <a href="https://github.com/radare/radare2/releases">Github</a>.
 <br />
@@ -90,16 +104,31 @@ $ cd radare2
 $ sys/install.sh
 </div>
 
-<h1>Simple Session</h1>
+<h2>Usage</h2>
 <p>
-Radare2 can be used in many ways, a
+Radare2 can be used in many ways, from commandline or shellscripts by calling the individual tools:
+</p>
 <div class="console">
-$ rasm2 -a arm -b 32 -d `rasm2 -a arm -b 32 nop`
+<b>$ rasm2 -a arm -b 32 -d `rasm2 -a arm -b 32 nop`
+$ rabin2 -Ss /bin/ls  # list symbols and sections
+$ rafind2 -x deadbeef bin</b>
 </div>
+<p>
+All the programs are also accessible as commands inside r2:
+</p>
+<div class="console">
+<b>$ r2 -
+&gt; pa nop</b>
+90
+<b>&gt; pad 90</b>
+nop
+</div>
+<p>
+Use the <b>-d</b> flag to start in debugger mode, but
 </p>
 <br />
 
-<h1>Package Manager</h1>
+<h2>Plugins</h2>
 
 <p>
 Using the integrated package manager you can easily install external plugins from different sources, most interesting ones are the native ghidra decompiler, the r2dec decompiler and the frida integration. But there are more!
@@ -112,8 +141,7 @@ $ r2pm -i r2frida
 </div>
 </div>
 
-<a name="install">&nbsp;</a>
-<h1>Documentation</h1>
+<h2>Documentation</h2>
 <p>
 
 Join the <a href="https://t.me/radare">Telegram / IRC</a> channels and feel free to ask anything.

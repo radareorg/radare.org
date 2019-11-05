@@ -1,0 +1,164 @@
+<html>
+<head>
+  <title>radare</title>
+  <script src="/r/js/index.js"></script>
+  <meta charset="utf-8">
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="fira.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="js/index.js"></script>
+  <link rel="shortcut icon" href="img/favicon.ico">
+</head>
+<body>
+<div class="topbar">
+<table >
+<tr>
+<td style="padding:0.6em;margin:0px">
+<a class="rtopbutton" href="index.html"><img width="100" height="40" src="r2logo.png" alt="radare.org"></a>
+</td>
+<td width="100%" style="text-align:right;font-family:montserrat;vertical-align:middle">
+
+<div class="topbut">
+<br />
+<!--
+<div class="botton">
+<a class="link" target=_blank href="https://radare.gitbooks.io/radare2book/">DOCS</a>
+</div>
+-->
+<div class="botton">
+<a class="link" href="https://github.com/radareorg" target=_blank href="">GitHub</a>
+</div>
+<!--
+/
+<div class="botton">
+<a class="link" target=_blank href="https://t.me/radare/">CHAT</a>
+</div>
+/
+<div class="botton">
+<a href="/con/2019" target="_blank" target=_blank>CONF</a>
+</div>
+-->
+</div>
+<!--
+<a title="donate" href="/con/2019" target=_blank>DONATE</a>
+&nbsp;
+&nbsp;
+&nbsp;
+-->
+</td>
+</tr>
+</table>
+</div>
+
+<center>
+<div style="width:100%;overflow-x:auto;padding-top:6em;padding-bottom:0em">
+<table style="max-width:800px;width:100%;font-family:montserrat;text-align:center;font-weight:bold;line-height:2em">
+<tr>
+<td><a href="radare2.html"><img class=button2 style="opacity: 0.3;" width="240px" src="http://beta.rada.re/en/latest/_images/typical.jpg"></a><br/>Radare2</td>
+<td><a href="index.html"><img class=button2 width="240px" src="img/r2pipe.png"></a><br />R2Pipe</td>
+<td><a href="cutter.html"><img style="opacity: 0.3;" class=button2 width="240px" src="img/r2cutter.png"></a><br />Cutter</td>
+</tr>
+</table>
+</div>
+
+<div style="max-width:800">
+<h1>r2pipe</h1>
+<p>
+The simplest and most effective way to script radare2, which consists in 1 method API that takes a string representing the r2 command to run and returns the output as a string.
+</p>
+<p>
+Checkout some <a href="https://github.com/radareorg/radare2-r2pipe/tree/master/python/examples">examples</a> in the r2pipe repository.
+</p>
+<div class="console">
+<b>$ pip3 install r2pipe
+$ python3
+&gt;&gt;&gt; import r2pipe
+&gt;&gt;&gt; r2 = r2pipe.open('/bin/ls')
+&gt;&gt;&gt; print(r2.cmd('?e Hello World'))</b>
+Hello World
+<b>&gt;&gt;&gt; r2.quit()</b>
+</div>
+<h2>JSON</h2>
+<p>
+Many r2 commands print JSON as output when the 'j' suffix is used, many r2pipe implementations provide the `.cmdj()` API to automatically parse the json and return a native object for the language.
+</p>
+<div class="console">
+<b>$ r2 /bin/ls
+&gt; cat test.py</b>
+import r2pipe
+r2 = r2pipe.open()
+print(r2.cmdj('ij')['core']['type'])
+<b>&gt; . test.py</b>
+Executable file
+</div>
+<h2>Open</h2>
+<p>
+The argument passed to r2pipe.open() selects the way to talk to r2, this is by spawning a new process, sending commands to the r2 http webserver, using dlopen+dlsym, etc
+</p>
+<div class="console">
+<b>$ r2 -c=H /bin/ls</b>
+Starting http server at http://localhost:9090/
+
+<b>$ python
+&gt;&gt;&gt; import r2pipe
+&gt;&gt;&gt; r2 = r2pipe.open('http://localhost:9090/cmd')</b>
+</div>
+<h2>Languages</h2>
+<p>
+Use r2pipe from your favourite programming language:
+<div class="console">
+<b>$ pwd</b>
+~/prg/radare2-r2pipe
+<b>$ echo $(ls -F | grep /|sed -e 's./.,.')</b>
+c, clojure, cxx-qt, dlang, dotnet, erlang, go, haskell, java,
+lisp, newlisp, nim, nodejs, ocaml, perl, php, prolog, python,
+r2core-js, ruby, rust, shell, swift, v, vala
+</div>
+</p>
+<h2>Plugins</h2>
+<p>
+Radare2 plugins can written via r2pipe using the rlang plugins.
+RLang plugins run an instance of the language VM inside r2:<br />
+</p>
+<p>
+- io, asm, anal, bin, core plugins in !C<br />
+- faster execution of scripts<br/>
+- keep global state </br>
+- repl<br />
+</p>
+<div class="console">
+<b>$ r2pm -i lang-python
+$ cat core-plugin.py</b>
+import r2lang
+def pycore(a):
+  def _call(s):
+    if s[0:4] == "test":
+      print("Testing Python core plugin")
+      return 1
+    return 0
+  return {
+    "name": "PyCore",
+    "license": "MIT",
+    "desc": "r2 core plugin in python",
+    "call": _call,
+  }
+r2lang.plugin('core', pycore)
+</div>
+<h2>Bindings</h2>
+<p>
+The low level C APIs are also available for other programmming language thanks to Valabind and Swig, they are not very well maintained, but they will at some point, contribs are welcome.
+</p>
+<div class="console">
+<b>$ r2pm -i r2api-python
+$ cat test-core-api.py</b>
+from r_core import RCore
+core = RCore()
+core.file_open("/bin/ls", False, 0)
+core.bin_load("/bin/ls", 0, 0, 0, 0, 0)
+entry0 = core.cmd_str("?v entry0")
+print(entry0)
+</div>
+</center>
+</body>
+</html>
