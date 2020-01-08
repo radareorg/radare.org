@@ -44,7 +44,7 @@ The student must focus on the material webui as long is the one used by default 
 
 ### Links/Resources
 - The [current](http://cloud.rada.re/m) web interface
-- [Announcement](http://radare.today/the-new-web-interface/) of its release
+- [Announcement](http://radare.today/posts/the-new-web-interface/) of its release
 - [Related issues](https://github.com/radare/radare2-webui/issues) on github
 
 ## Completing Radeco
