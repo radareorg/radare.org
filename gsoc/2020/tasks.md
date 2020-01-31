@@ -96,7 +96,7 @@ Of course all these features are worthless without the actual signatures provide
 
 ### Binary diffing - [radiff2](https://github.com/radareorg/radare2/labels/radiff2)
 
-Bindiffing has been a known feature of radiff2, but it has been unmaintained for years. Improving the output, adding visual diffing modes, using analysis results and optimizing speed are the most important things here.
+Bindiffing has been a known feature of radiff2, but it lacked the attention from developers for years. Improving the output, enhancing visual diffing modes (issue [#8115](https://github.com/radareorg/radare2/issues/8115)), using analysis results and optimizing speed are the most important things here.
 
 ### Node groups
 

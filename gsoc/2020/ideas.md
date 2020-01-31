@@ -172,14 +172,112 @@ Currently, there are no up to date modern tools to deal with .NET programs in a 
 - [RBin refactoring project](https://github.com/radareorg/radare2/projects/11)
 - [Official .Net resources](http://www.microsoft.com/net)
 
-## R2Ghidra - SLEIGH Disassembler Backend
+## Cutter
+
+## Plugins and Python High Level API
+
+We currently don't have API almost for plugin authors to use. We need to improve a lot of things about our Plugins support and take it few steps ahead.
+
+### Task
+ - Expose everything Cutter can offer for plugins authors. This includes high level API, integration of the plugin management etc.
+ - Accessing everything from Python (like Blender) - see [issue #1662](https://github.com/radareorg/cutter/issues/1662)
+ - Python integration and IPython console.
+
+### Skills
+The student should be comfortable with the C++ and Python languages, and be familiar with Qt framework
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will gain an experience of creating a suitable API for scripting graphical interface
+programs.
+
+### Benefits for the project
+It will greatly improve the scripting experience, will make API more consistent and will ease
+creating Cutter plugins by the community. Moreover, it will simplify testing of the Cutter features.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: Design of the high level API and required radare2 changes
+- 2nd term: Review and implement all missing API functions that are accessible as interface controls
+- Final term: Implement the way to show the API when hovered over some interface control, create documentation.
+
+### Mentors
+- thestr4ng3r
+- Megabeets
+
+### Links/Resources
+- [SDB Module/API for Cutter Python/Jupyter integration](https://github.com/radareorg/cutter/issues/1778)
+- [Jupyter plugin for Cutter](https://github.com/radareorg/cutter-jupyter)
+
+### Heap viewer
+
+We already have a nice heap (and memory map) parser and visualizer in radare2 (`dm` and `dmh` commands). After debugging becomes a first-class citizen in cutterland it would be awesome to have memory map and heap visualizations.
+
+### Mentors
+- xvilka
+- Megabeets
+
+### Links/Resources
+- [Issue #1041](https://github.com/radareorg/cutter/issues/1041)
+- [Heap Viewer plugin for IDA Pro](https://github.com/danigargu/heap-viewer)
+- [META - Heap Explorer/Analysis](https://github.com/radare/radare2/issues/5390)
+- [Dynamic Allocator Detection](https://github.com/radare/radare2/issues/8185)
+
+## Diffing mode
+
+Binary diffing is one of the most common tasks for the reverse engineer. There are many various
+tools available, but most of them are either detached from the main RE toolbox or poorly integrated.
+Radare2 provides basic diffing features out of the box with `radiff2` tool, but Cutter has no
+interface to represent similar functionality.
+
+### Task
+- Expose basic `radiff2` features in the Cutter
+- Create the interface to choose two files for diffing
+- Create the way to show the differences in all main widgets:
+	- Hexadecimal view
+	- Disassembly view
+	- Graph view
+	- Pseudocode view
+
+### Skills
+The student should be comfortable with the C++ language, and be familiar with Qt framework
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will gain an experience of creating efficient graphical interfaces.
+
+### Benefits for the project
+It will greatly benefit the project since Cutter will be the only FOSS RE tool to provide this
+feature out of the box.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: Expose the `radiff2` features in the Cutter core and create the interface for opening
+	files for diffing.
+- 2nd term: Implement the diff modes for hexadecimal and disassembly views
+- Final term: Implement the diff modes for graph and pseudocode views, create the documentation.
+
+### Mentors
+- xvilka
+- Megabeets
+
+### Links/Resources
+- [Issue #1104](https://github.com/radareorg/cutter/issues/1104)
+- [BinDiff]()
+- [Diaphora](https://github.com/joxeankoret/diaphora)
+
+## R2Ghidra
+
+## SLEIGH Disassembler Backend
 
 The release of the Ghidra reverse engineering suite has had a great impact on the reverse engineering landscape in the sense that it instantly became highly popular. For disassembling raw binary data, it uses an interesting special purpose language called SLEIGH to define all of its supported instruction sets. Because of the mentioned popularity, many SLEIGH modules for various architectures have been written by users of the tool.
 
 ### Tasks
 
 The goal is to integrate SLEIGH as a disassembly backend into radare2. This will make it possible to directly support all architectures that are supported by Ghidra, but also take advantage of the interface, analysis and flexibility of radare2.
-A similar project that has been very successful is the existing integration of Ghidra's decompiler into radare2, r2ghidra-dec. The C++ code of this decompiler includes a full implementation of the SLEIGH-based disassembly engine. A proof-of-concept of disassembling using this engine is already available as the `pdgsd` command. This task should thus be implemented in r2ghidra's codebase.
+A similar project that has been successful is the existing integration of Ghidra's decompiler into radare2, r2ghidra-dec. The C++ code of this decompiler includes a full implementation of the SLEIGH-based disassembly engine. A proof-of-concept of disassembling using this engine is already available as the `pdgsd` command. This task should thus be implemented in r2ghidra's codebase.
 Radare2's disassembly is based on plugins, which expose C functions that, given raw binary data, return the corresponding disassembled instruction along with additional information about its semantics. One such plugin should be implemented that will use SLEIGH.
 As an optional task, a translator from P-code, Ghidra's intermediate language for analysis, to ESIL, which is radare2's intermediate language, can be implemented. This will enable additional features, such as emulation and emulation-based analysis.
 
@@ -196,8 +294,8 @@ The student will gain deep insight in the SLEIGH disassembly engine, as well as 
 Radare2 will be able to reuse any architecture module that has been created for the Ghidra framework.
 
 ### Assess requirements for midterm/final evaluation
-- 1st term: The basic asm and anal plugins are implemented and disassembly in text form is displayed through radare2's default disassembly pipeline. Partial instruction semantics information is provided by the anal plugin.
-- 2nd term: The anal plugin provides all information about instruction semantics to perform automatic analysis.
+- 1st term: The basic RAsm and RAnal plugins are implemented and disassembly in text form is displayed through radare2's default disassembly pipeline. Partial instruction semantics information is provided by the anal plugin.
+- 2nd term: The RAnal plugin provides all information about instruction semantics to perform automatic analysis.
 - Final term: Regression- and Unit Tests are written. (Optional: P-code to ESIL translation is implemented)
 
 ### Mentors
