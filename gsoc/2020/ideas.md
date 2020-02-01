@@ -2,7 +2,7 @@
 
 ### INDEX
 
-## Radare2
+# Radare2
 
 ## Type Analysis Improvements
 Currently we have types support in radare2, including basic (low-level) ability to edit type with `pf` and higher-level, C-like types with `t` command. Currently you can parse the C type definition from C headers for example, or load from "precompiled" SDB file. The goal of this task is to integrate more types handling into the radare2 analysis loop, including automatic inference and suggestions.
@@ -172,7 +172,61 @@ Currently, there are no up to date modern tools to deal with .NET programs in a 
 - [RBin refactoring project](https://github.com/radareorg/radare2/projects/11)
 - [Official .Net resources](http://www.microsoft.com/net)
 
-## Cutter
+## Exploitation capabilities improvements
+
+Since modern architectures are now enforcing [W^X](https://en.wikipedia.org/wiki/W%5EX), exploiters are using [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming). (Un)fortunately, building ROP chain by hand can be tedious, this is why some tools can be used to ease this construction: ImmunityDBG has [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/), there is also [ROPgadget](http://www.shell-storm.org/project/ROPgadget/) and [dropper](https://github.com/rizlik/dropper).There exist even tools that can generate ROP chains automatically, for example [exrop](https://github.com/d4em0n/exrop). It's a shame that despite having [ESIL](https://github.com/radare/radare2/wiki/ESIL), radare2 doesn't have something similar yet. One of the possible solutions would be to build an external plugin or tool which will reuse power of libr and ragg2. Moreover it makes sense to think about SROP, COOP and BROP support.
+
+The `ragg2` tool while has the ability to create a custom shellcode has the outdated database of the shellcodes, so [updating them](https://github.com/radareorg/radare2/issues/14769) is crucial for the tool to be relevant.
+
+### Task
+1. Update the shellcodes database, imrove `ragg2` features and documentation
+2. Implement a ropchain syntax parser that uses `ragg2` or a custom DSL, something like:
+```
+register reg1 = 0;
+register reg2 = whatever;
+register reg3 = reg1 + reg2;
+system(reg3);
+```
+3. Write a compiler which uses SMT solver (like Z3 for example) to produce the ropchain.
+4. Support main architectures - x86, ARM, MIPS, PowerPC
+
+### Skills
+The student should be comfortable with the C language, know some assembly and a high-level language. Also, knowing a little bit of automatic binary analysis wouldn’t hurt.
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will improve their skills in software exploitation and solvers.
+
+### Benefits for the project
+This feature would greatly help during exploits development, and people would be able to ditch mona.py for radare2 ;)
+
+### Assess requirements for evaluation
+- 1st term: Creating the language for defining the ROP chain semantics
+- 2nd term: Writing integration with SMT solver and producing SMT constraints
+- Final term: Working ropchain compiler, covered by tests and documented in r2book.
+
+### Mentors
+- xvilka
+- pancake
+
+### Links/Resources
+- [Exploitation project in radare2](https://github.com/radareorg/radare2/projects/24)
+- [ROPGadget](http://shell-storm.org/project/ROPgadget/)
+- [Ropper](https://github.com/sashs/Ropper)
+- [Angrop](https://github.com/salls/angrop)
+- [ROPC](https://github.com/pakt/ropc)
+- [exrop](https://github.com/d4em0n/exrop)
+- [roper2](https://github.com/oblivia-simplex/roper2)
+- [mona.py](https://www.corelan.be/index.php/2012/12/31/jingle-bofs-jingle-rops-sploiting-all-the-things-with-mona-v2/) from corelan
+- [Hunting for ROP Gadgets in Style](https://media.blackhat.com/us-13/US-13-Quynh-OptiROP-Hunting-for-ROP-Gadgets-in-Style-WP.pdf) (2012)
+- [dropper](https://github.com/rizlik/dropper) a BARF-based rop chain generator
+- [Materials](http://dustri.org/b/files/hacklu2014_r2_exploitation.tar.xz) about the exloitation workshop at Hack.lu 2014
+- [Slides](https://github.com/XVilka/hacklu) for the exploitation part of workshop at Hack.lu 2015
+- [ROP related bugs](https://github.com/radareorg/radare2/labels/ROP)
+
+# Cutter
 
 ## Plugins and Python High Level API
 
@@ -268,7 +322,7 @@ feature out of the box.
 - [BinDiff]()
 - [Diaphora](https://github.com/joxeankoret/diaphora)
 
-## R2Ghidra
+# R2Ghidra
 
 ## SLEIGH Disassembler Backend
 
