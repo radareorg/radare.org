@@ -264,9 +264,34 @@ creating Cutter plugins by the community. Moreover, it will simplify testing of 
 - [SDB Module/API for Cutter Python/Jupyter integration](https://github.com/radareorg/cutter/issues/1778)
 - [Jupyter plugin for Cutter](https://github.com/radareorg/cutter-jupyter)
 
-### Heap viewer
+## Heap viewer
 
 We already have a nice heap (and memory map) parser and visualizer in radare2 (`dm` and `dmh` commands). After debugging becomes a first-class citizen in cutterland it would be awesome to have memory map and heap visualizations.
+
+### Task
+ - Expose radare2 API/commands for Cutter to use for visualization
+ - Design and implement heap navigation and inspection widgets
+ - Provide the integration with current debugging mode in Cutter
+ - Make the implementation work with both local (native) and remote debugging modes
+
+### Skills
+The student should be comfortable with the C++, and be familiar with Qt framework
+
+### Difficulty
+Medium
+
+### Benefits for the student
+The student will gain the understanding on how modern runtimes provide the heap for various
+programs, which will be beneficial for the binary exploitation skills.
+
+### Benefits for the project
+It will greatly improve the debugging and reverse engineering experience for complex programs,
+also provides the way to design the exploitation techniques with the help of radare2/Cutter.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: Design and implement heap visualization widgets
+- 2nd term: Make corresponding radare2 fixes and changes for the navigation to work
+- Final term: Various bugfixes related to the heap inspection support on various platforms and allocators, tests and documentation.
 
 ### Mentors
 - xvilka
@@ -321,6 +346,65 @@ feature out of the box.
 - [Issue #1104](https://github.com/radareorg/cutter/issues/1104)
 - [BinDiff]()
 - [Diaphora](https://github.com/joxeankoret/diaphora)
+
+## Debugging and reverse debugging improvements (both radare2 and Cutter)
+
+Radare2 already [supports](https://radare.gitbooks.io/radare2book/content/debugger/revdebug.html) a basic "Record and Replay" feature, similar to gdb's process recorded. The reverse debugger is designed to work by logging the execution of each machine instruction in the debugee, together with each corresponding change in machine state (the values of memory and registers). While the feature exists, it is still basic and somewhat unstable.
+Also, radare2 includes support for reverse debugging gdbserver based targets with reverse debugging support.
+A good [recent example from Tetrane](https://blog.tetrane.com/2019/11/17/Analyzing_an_Out_of_Bounds_read_in_a_TTF_font_file.html)
+which shows the workflow of working with reversible debugging. Another part of the task will be improving existing GDB/LLDB remote debugging implementation along with WinDbg improvements. Recently WinDbg added support for the record and replay, supporting it would be beneficial for radare2 and Cutter users. Currently, radare2 only supports WinDbg debug over the unencrypted serial protocol using windows/qemu pipes. To improve our Windows debugging capabilities we would like to add proper ethernet WinDbg protocol support to reach remote targets and improve the user experience.
+This task will require reverse engineering of WinDbg's protocol using programs like [windbgshark](https://github.com/CyberTech/windbgshark) which will also require decryption and encryption of protocol packets.
+
+#### Tasks
+
+- Solve stability issues in the current implementation of reverse debugging in radare2 and Cutter
+- Log and handle syscalls
+    - Detect blocked system calls
+    - Add state restoration of kernel handles after reverting certain syscalls
+    - Add ptrace emulation
+- Properly record signal arrivals and emulate sigprocmask behavior
+- Properly record nondeterministic instructions such as RDTSC and RDRAND
+- Reduce trace sizes and recording performance
+- Implement WinDbg Ethernet protocol support [#1246](https://github.com/radareorg/radare2/issues/1246)
+- Support record and replay in GDB, LLDB, and WinDbg protocols handling
+- Implement DLL debugging - add an option to debug a DLL directly using a generic that you'll have to implement. This should include the ability to call the DLL's functions with user-set stack and register values.
+
+### Skills
+The student should be comfortable with the C and C++ languages, basic Qt framework knowledge will be
+beneficial.
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will gain an experience of understanding modern debugging techniques and tools,
+understanding how debugging works "under the hood", and will practice on creating useful interfaces
+for debugging tools.
+
+### Benefits for the project
+It will greatly benefit the project since Cutter will be the only FOSS RE tool to provide this
+feature out of the box.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: Make the current radare2 and Cutter implementation of reversible debugging stable.
+- 2nd term: Support reversible debugging in all debugger plugins (native Linux/Windows/MacOS, GDB/LLDB, WinDbg)
+- Final term: Improve Cutter interface, performance of the reversible debugging, adding support for
+	debugging DLLs, documentation and tests.
+
+### Mentors
+- xvilka
+- Megabeets
+- yossizap
+
+### Links/Resources
+- [WIP PR for Cutter adding Reversible Debugging](https://github.com/radareorg/cutter/pull/1918)
+- [Record and Replay radare2 Project dashboard](https://github.com/radareorg/radare2/projects/25)
+- [Debugger radare2 Project dashboard](https://github.com/radareorg/radare2/projects/4)
+- [Cutter Debugger Project dashboard](https://github.com/radareorg/radare2/projects/18)
+- [Wireshark WinDbg protocol dissector - KDNET](https://github.com/Lekensteyn/kdnet)
+- [VirtualKD](http://sysprogs.com/legacy/virtualkd/)
+- [WinBagility KD implementation](https://github.com/Winbagility/Winbagility/tree/master/src/Winbagility)
+- [Tetrane REVEN timeless debugger](https://www.tetrane.com/)
 
 # R2Ghidra
 

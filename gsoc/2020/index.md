@@ -1,6 +1,6 @@
 # Introduction
 
-The [radare]( http://rada.re/ ) project started in February of 2006 aiming to provide a free and simple command line interface for an hexadecimal editor supporting 64 bit offsets to search within and recover data from hard-disks.
+The [radare]( http://rada.re/ ) project started in February 2006 aiming to provide a free and simple command line interface for an hexadecimal editor supporting 64 bit offsets to search within and recover data from hard-disks.
 Since then, the project has grown with the new aim of providing a complete framework for analyzing binaries with some basic \*NIX concepts in mind like everything is a file, small programs that interact together using stdin/out, and keep it simple.
 [Radare2](https://github.com/radareorg/radare2) is a complete [LGPL](https://opensource.org/licenses/lgpl-license) rewrite of the original project to remove design issues of the first iteration, and to make it more modular and easier to script and maintain. Radare2 features a testsuite that aims to cover as many cases as possible in order to catch regressions.
 
@@ -40,11 +40,11 @@ Members of radare2 and Cutter core teams have volunteered to guide students for 
 
 - Sergi Alvarez IRC: pancake -- [@trufae](https://twitter.com/trufae)
 - Anton Kochkov IRC: xvilka -- [@akochkov](https://twitter.com/akochkov)
-- Julien Voisin IRC: jvoisin -- [dustri.org](https://dustri.org)
 - Florian Märkl tg: @thestr4ng3r -- [@thestr4ng3r](https://twitter.com/thestr4ng3r)
 - Antide Petit IRC/tg: xarkes -- [@xarkes\_](https://twitter.com/xarkes_)
 - Itay Cohen tg: @Megabeets [@Megabeets\_](https://twitter.com/Megabeets_)
 - Giovanni Dante Grazioli tg: @deroad [@der0ad\_](https://twitter.com/der0ad)
+- Yossi Zapesochini tg: @yossizap
 - And many others
 
 # Development methodology

@@ -153,31 +153,11 @@ this requires a refactor of rbin that hasn't happened yet, but also, we want to 
 
 ## Debugging
 
-### Improve reverse debug
-
-Radare2 already [supports](https://radare.gitbooks.io/radare2book/content/debugger/revdebug.html) a basic "Record and Replay" feature, similar to gdb's process recorded. The reverse debugger is designed to work by logging the execution of each machine instruction in the debugee, together with each corresponding change in machine state (the values of memory and registers). While the feature exists, it is still basic and somewhat unstable.
-Also, radare2 includes support for reverse debugging gdbserver based targets with reverse debugging support.
-A good [recent example from Tetrane](https://blog.tetrane.com/2019/11/17/Analyzing_an_Out_of_Bounds_read_in_a_TTF_font_file.html) which shows the workflow of working with reversible debugging.
-
-#### Tasks
-
-- Solve stability issues in the current implementation.
-- Log and handle syscalls
-    - Detect blocked system calls
-    - Add state restoration of kernel handles after reverting certain syscalls
-    - Add ptrace emulation
-- Properly record signal arrivals and emulate sigprocmask behavior
-- Properly record nondeterministic instructions such as RDTSC and RDRAND
-- Reduce trace sizes
-
-### Implement WinDBG Ethernet protocol support [#1246](https://github.com/radareorg/radare2/issues/1246)
-
-Currently, radare2 only supports WinDBG debug over the unencrypted serial protocol using windows/qemu pipes. To improve our Windows debugging capabilities we would like to add proper ethernet WinDBG protocol support to reach remote targets and improve the user experience.
-This task will require reverse engineering of WinDBG's protocol using programs like [windbgshark](https://github.com/CyberTech/windbgshark) which will also require decryption and encryption of protocol packets.
-
-### Implement DLL debugging
-
-Add an option to debug a DLL directly using a generic that you'll have to implement. This should include the ability to call the DLL's functions with user-set stack and register values.
+### Decoupling debugging profiles from the code
+Currently radare2 has harcoded debugging profiles and Cutter blindly uses them for both native and
+remote debugging. It is vital for easier improvement of debugging on various platforms and working
+with custom or less popular targets to be able to change the register/stack profile for either
+native or a remote debugger. See corresponding issues for radare2 ([Issue #](https://github.com/radareorg/radare2/issues/15928)) and Cutter ([Issue #](https://github.com/radareorg/cutter/issues/2052)).
 
 ### Better support for Activities and Permissions (list them, references, etc)
 
