@@ -38,6 +38,7 @@ This feature will make radare2 more usable for day-to-day reverse engineering of
 - thestr4ng3r
 
 ### Links/Resources
+- [Type Analysis Improvements Project](https://github.com/radareorg/radare2/projects/19)
 - [META - Analysis improvements](https://github.com/radareorg/radare2/issues/4868)
 - [META - VTable detection](https://github.com/radareorg/radare2/issues/6851)
 - [META - Rethink types storage](https://github.com/radareorg/radare2/issues/10905)
@@ -48,7 +49,7 @@ This feature will make radare2 more usable for day-to-day reverse engineering of
 - Load types information - [Issue #741](https://github.com/radareorg/radare2/issues/741)
 - More DWARF information - [Issue #2079](https://github.com/radareorg/radare2/issues/2079)
 - Constrained types - [Issue #11828](https://github.com/radareorg/radare2/issues/11828)
-- [TIE: Principled Reverse Engineering of Types in Binary Programs]()
+- [TIE: Principled Reverse Engineering of Types in Binary Programs](https://www.ndss-symposium.org/wp-content/uploads/2017/09/lee.pdf)
 - [HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer)
 - [Virtuailor](https://github.com/0xgalz/Virtuailor) - vtables reconstruction based on runtime information
 - [Pharos - types inference with Prolog](https://github.com/cmu-sei/pharos)
@@ -92,7 +93,7 @@ Radare2 has had the ability to perform binary diffing for over a decade. Neverth
 - Support diffing of the different parts of the same buffer/file
 - Split view for [hexadecimal view](https://github.com/radareorg/radare2/issues/8115) and disassembly diffing mode
 - Improve the integration with analysis (variables and types differences)
-- Integrate ESIL and Radeco IL/pseudocode as an options for binary diffing
+- Integrate ESIL and decompilation ([r2ghidra](https://github.com/radareorg/r2ghidra-dec), [r2dec](https://github.com/radareorg/r2dec-js)) pseudocode as an options for binary diffing
 - Implement the most important diffing strategies from Diaphora
 - Write the test cases for radare2 regression tests and improve the results.
 
@@ -120,6 +121,7 @@ This feature will make radare2 usable for day-to-day patch analysis of modern so
 - xvilka
 
 ### Links/Resources
+- [Code Diffing Project](https://github.com/radareorg/radare2/projects/29)
 - [META - Radiff2](https://github.com/radareorg/radare2/issues/6971)
 - [Radiff2-labeled issues](https://github.com/radareorg/radare2/labels/radiff2)
 - [Signature-labeled issues](https://github.com/radareorg/radare2/labels/zignatures)
@@ -302,6 +304,7 @@ also provides the way to design the exploitation techniques with the help of rad
 - [Heap Viewer plugin for IDA Pro](https://github.com/danigargu/heap-viewer)
 - [META - Heap Explorer/Analysis](https://github.com/radare/radare2/issues/5390)
 - [Dynamic Allocator Detection](https://github.com/radare/radare2/issues/8185)
+- ["heap"-marked radare2 issues](https://github.com/radareorg/radare2/labels/heap)
 
 ## Diffing mode
 
@@ -343,8 +346,9 @@ feature out of the box.
 - Megabeets
 
 ### Links/Resources
+- [Code Diffing Project (radare2)](https://github.com/radareorg/radare2/projects/29)
 - [Issue #1104](https://github.com/radareorg/cutter/issues/1104)
-- [BinDiff]()
+- [BinDiff](https://www.zynamics.com/bindiff.html)
 - [Diaphora](https://github.com/joxeankoret/diaphora)
 
 ## Debugging and reverse debugging improvements (both radare2 and Cutter)
