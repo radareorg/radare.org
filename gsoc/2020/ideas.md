@@ -266,6 +266,129 @@ creating Cutter plugins by the community. Moreover, it will simplify testing of 
 - [SDB Module/API for Cutter Python/Jupyter integration](https://github.com/radareorg/cutter/issues/1778)
 - [Jupyter plugin for Cutter](https://github.com/radareorg/cutter-jupyter)
 
+
+
+## Decompiler Widget
+In recent years, the Decompiler has become an almost essential features for reverse-engineers. It takes the disassembly and turns it into a readable C program.
+Cutter has a Decompiler widget in which several decompiler plugins can show the decompiled output. The curretnly supported decompilers are
+[Ghidra](https://github.com/radareorg/r2ghidra-dec), [r2dec](https://github.com/radareorg/r2dec-js), and [retdec](https://github.com/avast/retdec-r2plugin/tree/master/cutter-plugin).
+
+The current Decompiler widget provides only basic features and interaction, and it is far from being as advanced as IDA's or Ghidra's views.
+
+The following task aims to take the Decompiler usage experience in Cutter to the next steps to be as good as in Hex-Rays and Ghidra. This is a highly demanded features from our users.
+
+### Skills
+The student should be comfortable with the C++, and be familiar with Qt framework.
+
+
+### Difficulty
+Advanced
+
+
+### Tasks
+This is a big task and among others, it contains the following sub-tasks:
+
+ - Create a context menu for the decompielr widget. Currently is is using the Disassembly context menu and does not have its own context menu.
+ - Allow editing of function names, local variables, arguments, function types, and more
+ - Support cross references cross-functions and for variables in function.
+ - Improve usage of structs and types
+ - Improve the implementation of [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec)
+ - Allow setting immediate base
+ - Enable Syntax Highlighting (KSyntaxHighlighting) by default on Windows builds
+ - Add a dedicated notification and warning are in the widget, for decompilation warnings.
+ - Add public API for scripting
+ - Mouse hover on debug mode will show the memory values
+ - and more...
+
+### Mentors
+- thestr4ng3r
+- Megabeets
+
+
+## Debugger
+
+Recently, Cutter introduced an implementation of a cross-platform debugger. The initial introduction of the debugger was a huge success and received good feedback from the commuity. However, the feature-set is currently in Beta and many features can be implemented and improved. This will help our user to have the best debugging experience.
+
+
+### Skills
+The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
+
+
+### Difficulty
+Advanced
+
+
+### Tasks
+Since debugger is a big project for Cutter, we described its specifications in a dedicated [hackmd file](https://hackmd.io/__K1e8IaRpSrcrYWTF5gNQ) which is still a work in progress, That said, here are some of the subtasks that are part of this task.
+
+
+ - Add support for macOS
+ - Support execution of python code on breakpoints hit
+ - Show memory values while hovering on operands
+ - Add signal handling manager
+ - Add reverse debugging
+ - Add Memory map view including duming and modifying of memory dumps
+ 
+ More information could be find in the hackmd file linked above.
+
+
+### Mentors
+- Yossizap
+- Karliss
+- Megabeets
+
+
+
+## Multi-Tasking and Event-driven
+
+Cutter is a reverse engineering framework that is powered by radare2. The information it gets about functions, strings, imports, and the analysis are all performed in radare2 and displayed in Cutter. Currently, Cutter is pulling information from radare2 only on demand. This is problematic because sometimes the user performs changes (via plugins, the console widget, and more), that are affecting the information from radare2, but Cutter doesn't know about these changes to apply the to the UI. For example, if  a user will define a new function in a Python script or via the console widget by using the radare2 commadn `af @ <addr>`, Cutter will now show this new function in the Functions widget until the user will refresh the interface manually (edit -> Refresh Contents).
+
+In addition, this task will also handle the analysis in the background feature, to allow the analysis performed by radare2 to happen while the interface is active.
+
+### Skills
+The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
+
+
+### Difficulty
+Advanced
+
+
+### Tasks
+The overall implementation of this taks should start from radare2 by adding events to many of the functions. This can be done using r_events. For example, add an even for function creating, for section creation, for flag deletion, for name changed, and more
+
+- Add events to all the relevant functions inside radare2
+- Add support for these events in Cutter and refresh and update the relevant widgets per each event
+- Support analysis in the background and allow the user to start its session while radare2 is analyszing (see [#1856](https://github.com/radareorg/cutter/issues/1856), [#1574](https://github.com/radareorg/cutter/issues/1574))
+
+### Mentors
+- thestr4ng3r
+- Karliss
+
+
+
+## Exploitation
+More and more vulnerability researchers are starting to use Cutter as their RE platform. This task aims to make Cutter a swiss-knife for exploitation tasks. By taking advantage of the ragg2 utility from radare2, and adding more features, Cutter can be the go-to tool for writing exploits from the GUI.
+
+### Skills
+The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
+
+### Difficulty
+Advanced
+
+
+### Tasks
+
+- Add support for ragg2 functionalities from inside Cutter
+- Improve ROP gadget finder
+- Create a ROP gadget builder
+- Add Shellcode injector
+- Add De-Bruijn pattern support and pattern matching (wopD)
+- Search for writable function pointers in debug
+
+### Mentors
+- Megabeets
+- xvilka
+
 ## Heap viewer
 
 We already have a nice heap (and memory map) parser and visualizer in radare2 (`dm` and `dmh` commands). After debugging becomes a first-class citizen in cutterland it would be awesome to have memory map and heap visualizations.
