@@ -85,6 +85,7 @@ Huge benefits for end users in UX and better support for extension.
 ### Mentors
  - xvilka
  - maijin
+ - deroad
 
 ## Radiff2 improvements
 Radare2 has had the ability to perform binary diffing for over a decade. Nevertheless the support is quite basic and there is room for improvement. One of the most important tasks is to deepen the integration with analysis loop. Integration with the analysis loop will allow radare2 to find and highlight the difference between arguments count, local variables count, their types and other analysis metainformation. The next big task is to modernize radiff2 (and corresponding parts in RCore) in terms of performance and user interface. And of course - cover the radiff2 and radare2 diffing features with regression tests and unit tests.
