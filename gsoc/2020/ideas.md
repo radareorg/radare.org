@@ -267,8 +267,6 @@ creating Cutter plugins by the community. Moreover, it will simplify testing of 
 - [SDB Module/API for Cutter Python/Jupyter integration](https://github.com/radareorg/cutter/issues/1778)
 - [Jupyter plugin for Cutter](https://github.com/radareorg/cutter-jupyter)
 
-
-
 ## Decompiler Widget
 In recent years, the Decompiler has become an almost essential features for reverse-engineers. It takes the disassembly and turns it into a readable C program.
 Cutter has a Decompiler widget in which several decompiler plugins can show the decompiled output. The curretnly supported decompilers are
@@ -278,117 +276,74 @@ The current Decompiler widget provides only basic features and interaction, and 
 
 The following task aims to take the Decompiler usage experience in Cutter to the next steps to be as good as in Hex-Rays and Ghidra. This is a highly demanded features from our users.
 
-### Skills
-The student should be comfortable with the C++, and be familiar with Qt framework.
-
-
-### Difficulty
-Advanced
-
-
 ### Tasks
 This is a big task and among others, it contains the following sub-tasks:
 
- - Create a context menu for the decompielr widget. Currently is is using the Disassembly context menu and does not have its own context menu.
+ - Create a context menu for the decompiler widget. Currently is is using the Disassembly context menu and does not have its own context menu.
  - Allow editing of function names, local variables, arguments, function types, and more
  - Support cross references cross-functions and for variables in function.
- - Improve usage of structs and types
+ - Improve usage of data structures and types
  - Improve the implementation of [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec)
  - Allow setting immediate base
  - Enable Syntax Highlighting (KSyntaxHighlighting) by default on Windows builds
  - Add a dedicated notification and warning are in the widget, for decompilation warnings.
  - Add public API for scripting
  - Mouse hover on debug mode will show the memory values
- - and more...
+
+### Skills
+The student should be comfortable with the C++, and be familiar with Qt framework.
+
+### Difficulty
+Advanced
+
+### Benefits for the student
+The student will gain an experience of creating efficient graphical interfaces.
+
+### Benefits for the project
+It will put Cutter on par with the rest of the advanced reverse engineering tools.
+
+### Assess requirements for midterm/final evaluation
+- 1st term: Add a context menu, allow editing of the function names, variables, etc
+- 2nd term: Implement the missing features with `r2ghidra` integration, types integration
+- Final term: Implement the Python API for scripting, documentation.
 
 ### Mentors
 - thestr4ng3r
 - Megabeets
 
-
-## Debugger
-
-Recently, Cutter introduced an implementation of a cross-platform debugger. The initial introduction of the debugger was a huge success and received good feedback from the commuity. However, the feature-set is currently in Beta and many features can be implemented and improved. This will help our user to have the best debugging experience.
-
-
-### Skills
-The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
-
-
-### Difficulty
-Advanced
-
-
-### Tasks
-Since debugger is a big project for Cutter, we described its specifications in a dedicated [hackmd file](https://hackmd.io/__K1e8IaRpSrcrYWTF5gNQ) which is still a work in progress, That said, here are some of the subtasks that are part of this task.
-
-
- - Add support for macOS
- - Support execution of python code on breakpoints hit
- - Show memory values while hovering on operands
- - Add signal handling manager
- - Add reverse debugging
- - Add Memory map view including duming and modifying of memory dumps
- 
- More information could be find in the hackmd file linked above.
-
-
-### Mentors
-- Yossizap
-- Karliss
-- Megabeets
-
-
-
-## Multi-Tasking and Event-driven
+## Multi-Tasking and Event-driven architecture
 
 Cutter is a reverse engineering framework that is powered by radare2. The information it gets about functions, strings, imports, and the analysis are all performed in radare2 and displayed in Cutter. Currently, Cutter is pulling information from radare2 only on demand. This is problematic because sometimes the user performs changes (via plugins, the console widget, and more), that are affecting the information from radare2, but Cutter doesn't know about these changes to apply the to the UI. For example, if  a user will define a new function in a Python script or via the console widget by using the radare2 commadn `af @ <addr>`, Cutter will now show this new function in the Functions widget until the user will refresh the interface manually (edit -> Refresh Contents).
 
 In addition, this task will also handle the analysis in the background feature, to allow the analysis performed by radare2 to happen while the interface is active.
 
+### Tasks
+The overall implementation of this task should start from radare2 by adding events to many of the functions. This can be done using `r_events`. For example, add an even for function creating, for section creation, for flag deletion, for name changed, and more
+
+- Add events to all the relevant functions inside radare2
+- Add support for these events in Cutter and refresh and update the relevant widgets per each event
+- Support analysis in the background and allow the user to start its session while radare2 is analyzing (see [#1856](https://github.com/radareorg/cutter/issues/1856), [#1574](https://github.com/radareorg/cutter/issues/1574))
+
 ### Skills
 The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
-
 
 ### Difficulty
 Advanced
 
+### Benefits for the student
+The student will gain an experience of creating complex event-driven software in both C and C++ languages.
 
-### Tasks
-The overall implementation of this taks should start from radare2 by adding events to many of the functions. This can be done using r_events. For example, add an even for function creating, for section creation, for flag deletion, for name changed, and more
+### Benefits for the project
+It will allow to work on big files effortlessly in Cutter, will improve analysis quality as well.
 
-- Add events to all the relevant functions inside radare2
-- Add support for these events in Cutter and refresh and update the relevant widgets per each event
-- Support analysis in the background and allow the user to start its session while radare2 is analyszing (see [#1856](https://github.com/radareorg/cutter/issues/1856), [#1574](https://github.com/radareorg/cutter/issues/1574))
+### Assess requirements for midterm/final evaluation
+- 1st term: Implement events everywhere in the relevant places across radare2 code.
+- 2nd term: Implement event-driven interaction interface between Cutter and radare2.
+- Final term: Add support for the Cutter interface refresh based on the events from radare2, implement analysis in background.
 
 ### Mentors
 - thestr4ng3r
 - Karliss
-
-
-
-## Exploitation
-More and more vulnerability researchers are starting to use Cutter as their RE platform. This task aims to make Cutter a swiss-knife for exploitation tasks. By taking advantage of the ragg2 utility from radare2, and adding more features, Cutter can be the go-to tool for writing exploits from the GUI.
-
-### Skills
-The student should be comfortable with the C++ for Cutter and C for radare2. The student should be familiar with Qt framework.
-
-### Difficulty
-Advanced
-
-
-### Tasks
-
-- Add support for ragg2 functionalities from inside Cutter
-- Improve ROP gadget finder
-- Create a ROP gadget builder
-- Add Shellcode injector
-- Add De-Bruijn pattern support and pattern matching (wopD)
-- Search for writable function pointers in debug
-
-### Mentors
-- Megabeets
-- xvilka
 
 ## Heap viewer
 
@@ -485,13 +440,17 @@ This task will require reverse engineering of WinDbg's protocol using programs l
 
 #### Tasks
 
+- Add support for Mac OS for the debugger
+- Support execution of Python code on breakpoints hit
+- Show memory values while hovering on operands
+- Add signal handling manager
 - Solve stability issues in the current implementation of reverse debugging in radare2 and Cutter
 - Log and handle syscalls
     - Detect blocked system calls
     - Add state restoration of kernel handles after reverting certain syscalls
     - Add ptrace emulation
-- Properly record signal arrivals and emulate sigprocmask behavior
-- Properly record nondeterministic instructions such as RDTSC and RDRAND
+- Properly record signal arrivals and emulate `sigprocmask` behavior
+- Properly record nondeterministic instructions such as `RDTSC` and `RDRAND`
 - Reduce trace sizes and recording performance
 - Implement WinDbg Ethernet protocol support [#1246](https://github.com/radareorg/radare2/issues/1246)
 - Support record and replay in GDB, LLDB, and WinDbg protocols handling
