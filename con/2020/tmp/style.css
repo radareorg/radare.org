@@ -58,6 +58,7 @@ a:hover {
 }
 
 .frame {
+    z-index: 8;
     pointer-events: none;
     background-color: transparent;
     border-radius: 2rem;
