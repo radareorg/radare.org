@@ -1,79 +1,32 @@
-<html>
-<head>
- <meta charset="UTF-8">
-  <title>r2con2020</title>
-<style>
-body  {
-color:grey;
-background-color:black;
-  font-family: monospace, Consolas, Courier;
-}
-a {
-	color:orange;
-}
-b {
-	color:white;
-}
-.pre {
-  white-space: pre;
-  font-family: monospace, Consolas, Courier;
-  text-align:left;
-  margin-left:10%;
-  font-weight:bold;
-}
-</style>
-</head>
-<body>
-<center>
-<div class=pre>
-.-[<font color=white>xo_</font>]-------------------.
-| <font color=white> ___  ___ ___ ___ _  _ </font> |__________________________________________________________________
-| <font color=white>| _ \(__ \  _|   | \| |</font> |:                                                                 |
-| <font color=white>|   (/ __/ (_, 0 |    |</font> |: <font color=white>Days:</font> 4 days (from 2020-09-02 to 2020-09-05)                    |
-| <font color=white>|_\__|___|___|___|_|\_|</font> |: <font color=white>Schedule:</font> 3-4h every day                                        |
-| <font color=white> ____  ___  ____  ___  </font> |: <font color=white>Ticket Price:</font> $0 :D                                             |
-| <font color=white>(__  \/   \(__  \/   \ </font> |: <font color=white>CFP:</font> <a href="https://con.rada.re/r2con-2020/">Open until 2020-08-17</a>                                      |
-| <font color=white>/  __/  0  /  __/  0  |</font> |: <font color=white>Anouncements:</font> <a href="https://t.me/r2con2020">Telegram Channel</a>                                  |
-| <font color=white>|____|\___/|____|\___/ </font> |: <font color=white>Contact</font> via <a href="mailto:r2con@con.rada.re">mail</a>                                                |
-| <font color=white>                       </font> |: <i>Chiptune party and online beers</i>                                 |
-`---.---------------------'                                                                  |
- _  |                                                                                        |
-|_|-+--[ <font color=white>CONFERENCE</font> ]------------------------------------------------------------------------(
-    |                                                                                        |
-    | Thanks to the COVID19 global pandemic we decided to make the conference purely online. |
-    |                                                                                        |
-    | r2con is a the annual conference about <a href="https://radare.org"/>radare2</a>                                         |
-    | The conference aims to gather all the r2 users and developers around the world to      |
-    | enjoy a 4 day event full of experiments, hacking, teaching, discussing and coding      |
-    | stuff while having fun and drinking beers (safely at home).                            |
-    |                                                                                        |
-    | Join the <a href="https://t.me/r2con2020">Telegram Channel</a> (broadcast) for further updates or refresh this page.        |
- _  |                                                                                        |
-|_|-+--[ <font color=white>COMPETITIONS</font> ]----------------------------------------------------------------------(
-    |                                                                                        |
-    | As we did in previous editions we will be holding them, but in remote, and prizes for  |
-    | the winners will be sent to their homes directly for free.                             |
-    |                                                                                        |
-    | * <b>r2wars</b> - the codewars-style assembly game on top of r2                               |
-    | * <b>hackathon</b> - fix bugs and implement things in r2                                      |
-    | * <b>ctf</b> - capture the flag reversing challenges to solve with r2                         |
- _  |                                                                                        |
-|_|-+--[ <font color=white>CFP</font> ]-------------------------------------------------------------------------------(
-    |                                                                                        |
-    | The Call for papers is also optimized for online:                                      |
-    |                                                                                        |
-    | Login in <a href="https://con.rada.re/r2con-2020/">https://con.rada.re/r2con-2020</a> to submit your presentation!                   |
-    |                                                                                        |
-    | * Topics related to radare2 using radare2                                              |
-    | * Talks can be 15/30/50 min long                                                       |
-    | * Workshops (not trainings) of 2h                                                      |
-    |                                                                                        |
-    `----------------------------------------------------------------------------------------'
-</br />
-</br />
-</br />
-</body>
-</div>
-</center>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link rel="stylesheet" type="text/css" href="animations.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+		<title>r2CON 2020</title>
+		<script src="terminal.js" type="module"></script>
 
+		<svg style="display: none;">
+			<style>
+				.handle {
+					cursor: grab;
+				}
+			</style>
+		</svg>
+	</head>
+
+	<body class="theme-green" onLoad="togglePower()">
+		<div id="monitor">
+			<div id="screen">
+				<div id="crt" class="on">
+					<div class="scanline"></div>
+					<div class="terminal"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
