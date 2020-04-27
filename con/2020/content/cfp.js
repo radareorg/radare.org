@@ -3,7 +3,7 @@ const content = "The Call for papers is also optimized for online: Login in <a h
 const options = [
 				"Topics related to radare2 using radare2",	
 				"Talks can be 15/30/50 min long",
-				"Workshops (not trainings) of 2h"
+				"2h Workshops (not trainings)"
 ];
 
 export default { title, content, options};
