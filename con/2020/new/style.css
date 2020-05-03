@@ -6,8 +6,8 @@
 :root {
 	--green-color: #5bf870;
 	--green-bg: #05321e;
-	--red-color: #c0100a;
-	--red-bg: #1b0302;
+	--orange-color: #c0100a;
+	--orange-bg: #1b0302;
 	--blue-color: #a5a5ff;
 	--blue-bg: #4242e7;
 	--off: #050505;
@@ -317,9 +317,9 @@ body.fullscreen #fullscreen:hover {
 	opacity: 1;
 }
 
-button[data-theme="red"] {
-	background: var(--red-bg);
-	border-color: var(--red-color);
+button[data-theme="orange"] {
+	background: var(--orange-bg);
+	border-color: var(--orange-color);
 }
 button[data-theme="green"] {
 	background: var(--green-bg);
