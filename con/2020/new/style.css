@@ -17,11 +17,6 @@
 
 /*********** THEMES  *************/
 
-.theme-red {
-	--color: var(--red-color);
-	--bg: var(--red-bg);
-	--term: "$ ";
-}
 .theme-green {
 	--color: var(--green-color);
 	--bg: var(--green-bg);
@@ -32,12 +27,10 @@
 	--term: "";
 }
 
-.theme-red .char {
-	animation: type 0.5s linear 0s 1;
+a {
+ color: #31c76e;
 }
-.theme-red .terminal {
-	font-family: "Share Tech Mono", monospace;
-}
+
 .theme-blue #crt {
 	background-image: none;
 	background-color: var(--color);
@@ -352,38 +345,6 @@ button[data-theme="blue"] {
 	z-index: 999;
 }
 
-.post-it {
-	transform: rotate(3deg);
-	line-height: 1;
-	text-align: center;
-	padding: 1rem;
-	border: 1px solid #e8e8e8;
-	font-family: "Share Tech Mono";
-	font-size: 1rem;
-	color: #333;
-	border-bottom-right-radius: 40px 14px;
-	display: inline-block;
-	background: #ffff88;
-	background: linear-gradient(
-		135deg,
-		#ffff88 81%,
-		#ffff88 82%,
-		#ffff88 82%,
-		#ffffc6 100%
-	);
-	transition-property: left top transform;
-	transition-duration: 0.5s;
-	transition-timing-function: ease-in-out;
-	cursor: pointer;
-}
-.post-it:hover {
-	border-bottom-left-radius: 20px 5px;
-	border-bottom-right-radius: 40px 28px;
-}
-.post-it.fly {
-	transform: translate(-5rem, 10rem) rotate(270deg);
-}
-
 /*********** BROGUE *************/
 .rogue {
 	background: var(--off);
@@ -419,7 +380,6 @@ button[data-theme="blue"] {
 .enter {
 	animation: cursor 1s infinite 2s step-end;
 }
-/*********** SLIDER ********************/
 
 #slider {
 	display: none;
