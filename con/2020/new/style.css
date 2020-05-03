@@ -6,8 +6,8 @@
 :root {
 	--green-color: #5bf870;
 	--green-bg: #05321e;
-	--red-color: #c0100a;
-	--red-bg: #1b0302;
+	--red-color: #f49d3e;
+	--red-bg: #031e11;
 	--blue-color: #a5a5ff;
 	--blue-bg: #4242e7;
 	--off: #050505;
@@ -32,6 +32,17 @@
 	--term: "";
 }
 
+.theme-green a {
+  color: #61ff00;
+}
+
+.theme-blue a {
+  color: ##0012ff;
+}
+
+.theme-red a {
+  color: #9e6000;
+}
 .theme-red .char {
 	animation: type 0.5s linear 0s 1;
 }
@@ -350,38 +361,6 @@ button[data-theme="blue"] {
 	top: 40%;
 	transform: translateX(-50%);
 	z-index: 999;
-}
-
-.post-it {
-	transform: rotate(3deg);
-	line-height: 1;
-	text-align: center;
-	padding: 1rem;
-	border: 1px solid #e8e8e8;
-	font-family: "Share Tech Mono";
-	font-size: 1rem;
-	color: #333;
-	border-bottom-right-radius: 40px 14px;
-	display: inline-block;
-	background: #ffff88;
-	background: linear-gradient(
-		135deg,
-		#ffff88 81%,
-		#ffff88 82%,
-		#ffff88 82%,
-		#ffffc6 100%
-	);
-	transition-property: left top transform;
-	transition-duration: 0.5s;
-	transition-timing-function: ease-in-out;
-	cursor: pointer;
-}
-.post-it:hover {
-	border-bottom-left-radius: 20px 5px;
-	border-bottom-right-radius: 40px 28px;
-}
-.post-it.fly {
-	transform: translate(-5rem, 10rem) rotate(270deg);
 }
 
 /*********** BROGUE *************/
