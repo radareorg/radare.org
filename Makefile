@@ -5,7 +5,7 @@ all: r/node_modules gsoc/node_modules
 	$(MAKE) -C r
 
 gsoc/node_modules:
-	cd r ; npm install node-markdown
+	cd r ; npm i
 
 r/node_modules:
-	cd r ; npm install markdown
+	cd r ; npm i
