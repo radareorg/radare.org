@@ -138,7 +138,7 @@ to fix. See ["debugger"](https://github.com/radare/radare2/labels/debugger) and 
 
 ### Improving reversible debugging
 
-Radare2 already [supports](https://radare.gitbooks.io/radare2book/content/debugger/revdebug.html) basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
+Radare2 already [supports](https://radareorg.github.io/radare2book/index.htmldebugger/revdebug.html) basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
 See also [Debugger Data Model](https://doar-e.github.io/blog/2017/12/01/debugger-data-model) article about same feature in WinDbg.
 
 ![image](http://xvilka.me/windbg-timetravel.png)

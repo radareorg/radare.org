@@ -7,7 +7,7 @@ Since then, the project has grown with the new aim of providing a complete frame
 Radare2 is composed of a hexadecimal editor as central point, with several assemblers/disassemblers, code analysis capabilities, scripting features, visualization of code and data through graphs and other means, a visual mode, easy Unix integration, a diff engine, a shellcode compiler, and much more.
 
 This year Radare2 project applied for participation in [Google Season of Docs](https://developers.google.com/season-of-docs), the program aiming to bring technical writers closer to the open source community, to raise the quality of documentation for the corresponding projects. For years
-we maintain the reference manual - [radare2 book](https://radare.gitbooks.io/radare2book/content).
+we maintain the reference manual - [radare2 book](https://radareorg.github.io/radare2book/index.html/content).
 But as it is often the case, the writing is done by developers themselves, thus of substandard
 quality and hard to read. We hope participation in GSoC will help our users for a better understanding
 of the framework and grasp the vast feature set provided by the toolkit.
@@ -66,7 +66,7 @@ We have a [testsuite](https://github.com/radare/radare2-regressions) (that is ru
 We believe some test cases can inspire for writing documentation.
 
 Radare2 book itself is written using Markdown and compiled using
-[GitBook](https://www.gitbook.com). It targets both eBook and printed version formats.
+[mdBook](https://github.com/rust-lang/mdBook). It targets both eBook and printed version formats.
 For those who want to get introduced to the radare2 book, we recommend picking one of the [easy](https://github.com/radare/radare2book/labels/good%20first%20issue) issues to start with.
 
 # License

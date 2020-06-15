@@ -6,24 +6,23 @@ are explained there, some of the examples may not be compatible with
 radare2.
 
 You can read it [online](http://radare.org/doc/html/contents.html) or
-download the [PDF](http://radare.org/get/radare.pdf). 
+download the [PDF](http://radare.org/get/radare.pdf).
 
 Recently, maijin started a project to update the radare book for
 radare2:
 
-* [Online](http://radare.gitbooks.io/radare2book/content/)
-* [PDF](https://www.gitbook.com/download/pdf/book/radare/radare2book)
+* [Online](http://radareorg.github.io/radare2book/index.html)
 
 The API
 =======
 
 radare2 api (aka libr) is described in vapi files. Those files are
 translated by valaswig into swig interface files to generate the
-bindings for python, ruby, perl and others. 
+bindings for python, ruby, perl and others.
 
 Those [Vala](http://live.gnome.org/Vala) vapi files are at the same
 time parsed by [Valadoc](http://live.gnome.org/Valadoc) to generate the
-[online](http://radare.org/vdoc) documentation. 
+[online](http://radare.org/vdoc) documentation.
 
 Articles
 ========
@@ -51,11 +50,11 @@ Examples
 
 Many articles are published in the [examples](?p=examples) in order to
 explain specific features of r2 with practical use cases. We are open to
-accept submissions of new articles 
+accept submissions of new articles.
 
 Talks
 =====
 
 You may find slides, videos and audios of [many talks](?p=talks) about
 the features, capabilities and practical examples of using r2 for
-different tasks. 
+different tasks.

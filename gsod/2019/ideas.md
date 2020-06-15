@@ -1,7 +1,7 @@
 # Project Ideas
 
 This year Radare2 project applied for participation in [Google Season of Docs](https://developers.google.com/season-of-docs), the program aiming to bring technical writers closer to the open source community, to raise the quality of documentation for the corresponding projects. For years
-we maintain the reference manual - [radare2 book](https://radare.gitbooks.io/radare2book/content).
+we maintain the reference manual - [radare2 book](https://radareorg.github.io/radare2book/index.html).
 But as it is often the case, the writing is done by developers themselves, thus of substandard
 quality and hard to read. We hope participation in GSoC will help our users for a better understanding
 of the framework and grasp the vast feature set provided by the toolkit.
@@ -18,8 +18,7 @@ illustrations and references to be both suitable for electronic, and printing fo
 
 ### Task
 * Better split into the paragraphs.
-* Use [GitBook Markdown](https://docs.gitbook.com/content-editing/markdown) enhancements.
-* Consider alternatives: [mdBook](https://github.com/rust-lang-nursery/mdBook) or [pandoc](https://pandoc.org).
+* Use [mdBook](https://github.com/rust-lang-nursery/mdBook) Markdown.
 * Rework screenshots and illustrations to be both suitable for printing and eBook ([#144](https://github.com/radare/radare2book/issues/144)).
 * Improve generating the TOC/index and paging
 
