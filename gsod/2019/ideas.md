@@ -19,7 +19,7 @@ illustrations and references to be both suitable for electronic, and printing fo
 ### Task
 * Better split into the paragraphs.
 * Use [mdBook](https://github.com/rust-lang-nursery/mdBook) Markdown.
-* Rework screenshots and illustrations to be both suitable for printing and eBook ([#144](https://github.com/radare/radare2book/issues/144)).
+* Rework screenshots and illustrations to be both suitable for printing and eBook ([#144](https://github.com/radareorg/radare2book/issues/144)).
 * Improve generating the TOC/index and paging
 
 ## Rework the structure of the book
@@ -32,11 +32,11 @@ and gather information on what is possibly missing.
 
 ### Task
 * Refactor the structure of sections and chapters
-* Gather related features together, e.g. [Graphs](https://github.com/radare/radare2book/issues/196)).
-* Extract the "Crackmes" part from the book into the separate tutorial - [#199](https://github.com/radare/radare2book/issues/199).
+* Gather related features together, e.g. [Graphs](https://github.com/radareorg/radare2book/issues/196)).
+* Extract the "Crackmes" part from the book into the separate tutorial - [#199](https://github.com/radareorg/radare2book/issues/199).
 * Extract information from the "Crackmes" tutorial that is missing in the book and add it.
 * Setup "autobuilds" of the book, with spell-checking and other good documentation CI practices.
-* To think about running some example snippets as autotests - [#76](https://github.com/radare/radare2book/issues/#76).
+* To think about running some example snippets as autotests - [#76](https://github.com/radareorg/radare2book/issues/#76).
 
 One of the good examples of a fine structured book for reverse engineering systematic manual is
 [Reverse Engineering for Beginners](https://beginners.re). A similar format can be used in case of the radare2 book as well.
@@ -64,10 +64,10 @@ help with setting it up), and adding into the book. This task requires heavy dig
 line, gathering sand all of internet and developers' minds, constant interaction with developers.
 
 ### Task
-* Skim through [section](https://github.com/radare/radare2book/labels/section) and
-    [chapter](https://github.com/radare/radare2book/labels/chapter) issue labels and make a plan on adding corresponding information.
+* Skim through [section](https://github.com/radareorg/radare2book/labels/section) and
+    [chapter](https://github.com/radareorg/radare2book/labels/chapter) issue labels and make a plan on adding corresponding information.
 * Follow the plan, and add the missing pieces gradually.
-* Check the [paragraph](https://github.com/radare/radare2book/labels/paragraph) issue labels and add
+* Check the [paragraph](https://github.com/radareorg/radare2book/labels/paragraph) issue labels and add
     the missing pieces gradually.
 * Reread the book, and upgrade the parts with changed commands, command syntax or an API.
 

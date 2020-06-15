@@ -67,7 +67,7 @@ We believe some test cases can inspire for writing documentation.
 
 Radare2 book itself is written using Markdown and compiled using
 [mdBook](https://github.com/rust-lang/mdBook). It targets both eBook and printed version formats.
-For those who want to get introduced to the radare2 book, we recommend picking one of the [easy](https://github.com/radare/radare2book/labels/good%20first%20issue) issues to start with.
+For those who want to get introduced to the radare2 book, we recommend picking one of the [easy](https://github.com/radareorg/radare2book/labels/good%20first%20issue) issues to start with.
 
 # License
 
