@@ -11,7 +11,7 @@ Nevertherless we've chosen a few as the most important ones:
 
 ### LLVM bitcode [#2778](https://github.com/radare/radare2/issues/2778)
 
-LLVM bitcode is very common format of the bytecode, used in many different compilers and tools.
+LLVM bitcode is a common format of a bytecode, used in many different compilers and tools.
 
 See [llvm-bcanalyzer](https://github.com/llvm-mirror/llvm/blob/master/tools/llvm-bcanalyzer/llvm-bcanalyzer.cpp) and [BitCodeReader.cpp](https://github.com/llvm-mirror/llvm/blob/master/lib/Bitcode/Reader/BitcodeReader.cpp) on how to implement its parsing and decoding. See also [#3896](https://github.com/radare/radare2/issues/3896) for integration with Mach-O format parser.
 
@@ -160,7 +160,7 @@ this requires a refactor of rbin that hasn't happened yet, but also, we want to 
 ## Debugging
 ### Improving reversible debugging
 
-Radare2 already [supports](https://radareorg.github.io/radare2book/index.htmldebugger/revdebug.html) a basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
+Radare2 already [supports](https://radareorg.github.io/radare2book/debugger/revdebug.html) a basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
 See also [Debugger Data Model](https://doar-e.github.io/blog/2017/12/01/debugger-data-model) article about same feature in WinDbg.
 
 ### Better support for Activities and Permissions (list them, references, etc)

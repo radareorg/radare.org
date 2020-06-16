@@ -6,7 +6,7 @@ It is strongly recommended that students who want to apply to the radare2 GSoC/R
 
 ## Analysis
 
-The current code analysis have many little caveats and issues which may be good to be addressed, fixing them and writing more tests is very important to stabilize and enhance it.
+The current code analysis have many little caveats and issues which may be good to be addressed, fixing them and writing more tests is important to stabilize and enhance it.
 
 [See these issues](https://github.com/radare/radare2/issues?q=is%3Aissue+is%3Aopen+label%3Aanal)
 
@@ -81,7 +81,7 @@ Ragg2 - simplistic [compiler for C-like syntax](http://radare.today/posts/payloa
 ### Sdbtization
 Radare2 is being slowly refactored to store all the information about session, user metadata and state of debugger in the [SDB](https://github.com/radare/sdb) - simple key-value database. This work still ungoing. So helping us with a few sdbtization bugs will introduce you into the radare2 codebase structure.
 
-We have decided to not sdbize everything and use RBTree and RDict when necessary. Also, some places in r2 (like the version bin parser) is using Sdb in a very poor way.
+We have decided to not sdbize everything and use RBTree and RDict when necessary. Also, some places in r2 (like the version bin parser) is using Sdb in a poor way.
 
 [See issues](https://github.com/radare/radare2/issues?q=is%3Aopen+is%3Aissue+label%3Asdbtization)
 
@@ -138,7 +138,7 @@ to fix. See ["debugger"](https://github.com/radare/radare2/labels/debugger) and 
 
 ### Improving reversible debugging
 
-Radare2 already [supports](https://radareorg.github.io/radare2book/index.htmldebugger/revdebug.html) basic "Record and Replay" feature, but the support is still very basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
+Radare2 already [supports](https://radareorg.github.io/radare2book/debugger/revdebug.html) basic "Record and Replay" feature, but the support is still basic and quite unstable. [See issue #8198](https://github.com/radare/radare2/issues/8198) for more information. See also [issue #8996](https://github.com/radare/radare2/issues/8996) for adding the reverse continue/step support via gdb:// (GDB remote) protocol.
 See also [Debugger Data Model](https://doar-e.github.io/blog/2017/12/01/debugger-data-model) article about same feature in WinDbg.
 
 ![image](http://xvilka.me/windbg-timetravel.png)
@@ -211,7 +211,7 @@ Below are some microtasks up for grabs:
 
 * Implementing breakpointing and hooks for the engine ([#7](https://github.com/radare/rune/issues/7)) : Symbolic execution engines often require user control at different stages of the run. This task would involve setting up the foundations for a breakpointing/hook feature based on ESIL patterns or tokens as required by the consumer. The user would then be given control over the `Context` to modify the state as necessary.
 
-* Improvement to the CLI : rune currently supports a very basic CLI through the `Interactive Explorer` module. We would like to have a more complete set of features implemented for a better user experience.
+* Improvement to the CLI : rune currently supports a basic CLI through the `Interactive Explorer` module. We would like to have a complete set of features implemented for a better user experience.
 
 * Implementing a multithreaded model for `Explorer` : Currently, rune supports 3 (Interactive, BFS and DFS) `Explorer` modules. For the BFS and DFS `Explorer` the current implementation is naive and state exploration is done sequentially with states being pushed into a pipeline of sorts. We would like to make full use of Rust's concurrency model and implement multithreaded exploration possible. This is a little advanced task with familiarity with Rust as a pre-requisite.
 
@@ -232,10 +232,10 @@ Reference links:
 You can help the project by completing microtasks:
 
 * Add a panel for getting headers information ([#253](https://github.com/radareorg/cutter/issues/253)): Cutter doesn't have any panel to view the header information for the current file. Those information most of the time useful to check and it would be nice to have this implemented in Cutter.
- 
+
 * Show manpage/description for given import ([#247](https://github.com/radareorg/cutter/issues/247)): Checking manually every manpage on internet can be time consuming. Having this feature in Cutter can save a lot of time for users.
 
-* Add basic search capability ([#56](https://github.com/radareorg/cutter/issues/56)): Searching information through a binary is very useful. This feature is a must have.
+* Add basic search capability ([#56](https://github.com/radareorg/cutter/issues/56)): Searching information through a binary is useful. This feature is a must have.
 
 * Improve color themes: Currently Cutter has one "default" theme and one dark theme. It would be nice to differentiate the disassembly colors from the interface theme and to add a light theme (so people with a "default" theme being dark can actually use a light theme). Colors improvements for the graph view are interesting too.
 
