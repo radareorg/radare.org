@@ -37,6 +37,11 @@ sake or ratafia (safely at home).
 
 Like in the last year, the event will be fully online and there's no access
 restriction or ticket price.
+
+* <b><a href="#schedule">schedule</a></b> - Conference schedule                          
+* <b><a href="#r2wars">r2wars</a></b> - the codewars-style assembly game on top of r2 
+* <b><a href="#ctf">CTF</a></b> - capture the flag reversing challenges to solve with r2
+* <b><a href="#contributors">Conference Contributors</a></b> - Take time to say thanks to the people make this happen. 
 <!--
 
 <h2># Competitions</h2>
@@ -89,38 +94,21 @@ In this year's event we accept:
 - Workshops/Trainings (4-8h)
 					    -->
 
-<h2>## Schedule (GMT+1)</h2>
+<a name="schedule"></a><h2>## Schedule (GMT+2)</h2>
 
 ## Thursday (Sep30)
 
-* 16:00 Opening Keynote
-* 16:15 (ctf begin)
-* 17:00 Deobfuscation Training (4h)
-* 21:00 Developers Training (2h)
-* 22:00 First r2wars round
+<img src="assets/r2con2021_day1.png" style="width:600"/>
 
 ## Friday (Oct1)
 
-* 16:00 r2frida kung fu - murphy
-* 17:00 Non Mainstream Architectures - pancake
-* 18:00 Hacking for Dildos - Captain Banana
-* 18:30 Qiling+r2 - Lazymio
-* 19:00 Feeding Neural Networks with Reversed - sha0
-* 19:30 Last bits on Frida - Ole
-* 20:00 flip.re - Lars
-* 21:00 Second r2wars round
+<img src="assets/r2con2021_day2.png" style="width:600"/>
+
 
 ## Saturday (Oct2)
 
-* 16:00 Debugging and bugfixing r2 - unixfreaxjp
-* 17:00 r2pipe optimizations in diaphora
-* 18:00 r2env - murphy + pancake
-* 19:00 Swift support in Frida and R2Frida
-* 19:00 (ctf ends)
-* 20:00 EsilSolver in Rust - Austin
-* 21:00 r2wars and ctf finals finals - skuater/murphy
-* 21:30 Closing Keynote - pancake
-* 22:00 chiptune party
+<img src="assets/r2con2021_day3.png" style="width:600"/>
+
 
 <!--
 <h2>## R2Zine</h2>
@@ -130,12 +118,98 @@ articles for the r2zine, presented talks are also welcome to provide a textual
 version.
 -->
 
-<h2>## Chiptune (October 2nd: Saturday 22:00)</h2>
+<a name="chiptune"></a><h2>## Chiptune (October 2nd: Saturday 22:00)</h2>
 At the end of the conference, we will hold our traditional chiptune concert by:
 
-<img width="600px" src="poster.jpg" />
+<img width="600px" src="assets/poster.jpg" />
+
+<img width="600px" src="assets/r2con_2021_chiptune.png" />
+
+
+<a name="ctf"></a><h2>## CTF </h2>
+
+Website: <a href="https://ctf.radare.org">ctf.radare.org</a> 
+
+<font color=white> Registration will be opened at 12:00 (GMT+2) time on Thursday September 30th. </font>
+
+The R2Con CTF is a Jeopardy CaptureTheFlag style competition that must be solved with r2.
+You are given several questions, tasks &amp; challenges related to different categories of
+RE which may be solved using radare2. Players get points by solving them. Using hints
+to solve the challenges lowers the score.
+
+The CTF last from <font color=white>September 30th 16:15 (GMT+2)</font> to <font color=white>October 2nd 19:00 (GMT+2)</font>
+
+
+- <font color=white>Individual CTF</font>.
+- All level challenges <font color=white>basic, intermediate & difficult</font>. 
+- The CTF at r2con is about reversing. You may encounter crypto, mobile and others but <font color=white>always related to reversing</font>
+- <font color=white>All challenges</font> should be solved <font color=white>using radare2</font>, a <font color=white>write up will be requested!</font>
+- The CTF will be closed the last day of r2con2020, Sep 5th.
+- There will be <font color=white>prizes</font> for the <font color=white>3 highest scores</font>.
+- All <font color=white>winners</font> will be <font color=white>disclosed during the closing talk</font> of the con
+- Updates will be informed on the official Discord and Telegram channels.
+
+Join the telegram channel <a href="https://t.me/joinchat/Arasvlgr6iwf71B059aBSg">here</a>
+Join the #ctf discord channel <a href="https://discord.gg/KAk5DF3ZRH">here</a>
+
+<a name="r2wars"></a><h2>## R2WARS </h2>
+
+Join the telegram channel <a href="https://t.me/joinchat/AnoeOVDr7--s_89_DFhyrw">here</a> to <font color=orange>contact with skuater and upload your bot for the competition!</font>
+
+- <font color=white>Training rounds</font> are held <font color=white>Wednesday, Thursday & Friday at 17:00 GMT+2</font>
+- <font color=white>Knockout final round</font> is <font color=white>Saturday at 17:00 GMT+2</font>
+- There will be <font color=white>prizes</font> for <font color=white>3 contestants</font>.
+- All <font color=white>winners</font> will be <font color=white>disclosed during the closing talk</font> of the con
+
+This game is inspired by <a href="https://en.wikipedia.org/wiki/Core_War">CoreWar</a>, but running on top of radare2's ESIL emulation. 
+To win please submit your bots written in assembly (this time we will accept x86-32, arm64,
+arm32, mips) which will run in the same memory space trying to make the other bot crash by
+corrupting their memory.
+
+To learn more check out the following links:
+
+* <a href="https://github.com/radareorg/r2wars">https://github.com/radareorg/r2wars</a> 
+* <a href="https://www.youtube.com/results?search_query=r2wars">https://www.youtube.com/results?search_query=r2wars</a> 
+* <a href="https://github.com/radare/radare2/labels/r2wars">https://github.com/radare/radare2/labels/r2wars</a> 
+
+
+<a name="contributors"></a><h2>Conference contributors</h2>
+<font color=white>Speakers</font>
+* Keynote / Non Mainstream Architectures / dev Training / r2env <a href="https://twitter.com/trufae">@trufae</a> 
+* Workshop: Analysis of Virtualization-based Obfuscation <a href="https://twitter.com/mr_phrazer">Tim Blazytko</a>
+* r2frida Kung Fu / r2env <a href="https://twitter.com/as0ler">Alex Soler (Murphy)</a>
+* Adventures in Dildo Hacking <a href="https://twitter.com/CaptnBanana">@CaptBanana</a>
+* Qiling+r2: Details @LAZYMIO
+* Feeding Neural Networks with Reversed <a href="https://twitter.com/sha0coder">@sha0coder</a>
+* Last bits on Frida <a href="https://twitter.com/oleavr">@oleavr</a>
+* Flipping malware with flip.re @Lars
+* Debugging and bugfixing r2 @unixfreakjp
+* Code similarity analysis with r2 and diaphora @FDD
+* Introducing the Swift Bridge for Frida and r2frida <a href="https://twitter.com/hot3eed">@hot3eed</a>  
+* EsilSolver in Rust <a href="https://twitter.com/alkalinesec">@alkalinesec</a> 
+
+<font color=white>Capture The Flag</font>
+* Alex Soler <a href="https://twitter.com/as0ler">@as0ler</a>   
+* Mario Vilas <a href="https://twitter.com/Mario_Vilas">@Mario_Vilas</a>  
+* Oriol Castejon <a href="https://twitter.com/foolisses">@foolisses</a>
+* Arnau Gamez <a href="https://twitter.com/arnaugamez">@arnaugamez</a> 
+* Pancake <a href="https://twitter.com/trufae">@trufae</a> 
+* Sylvain <a href="https://twitter.com/Pelissier_S">@Pelissier_S</a>  
+
+<font color=white>r2wars Tournament</font> <a href="https://twitter.com/sanguinawer">@skuater</a> <a href="https://twitter.com/trufae">@pancake</a>
 
 See you soon in r2land!
+
+<font color=white>Chiptune artists</font>
+Delivering live music to your ears made with <3, GameBoys, C64 and amiga computers
+* <a href="https://twitter.com/ggsokolov">sokolov</a>
+* <a href="https://twitter.com/iamVaultKid">vaultkid</a>
+* <a href="https://twitter.com/the4Dboy">4Dboy</a>
+* <a href="">havocCc</a> 
+* <a href="">wofs</a>
+* <a href="https://twitter.com/0x3D63">3D63</a>
+
+
 
 --r2con2021
 </pre>
