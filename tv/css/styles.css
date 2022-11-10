@@ -13,7 +13,7 @@ body{margin: 0;padding: 0;font-family: monospace;background-color: rgba(0, 0, 0,
 #peu{position: fixed; bottom: 0;width: 100%;text-align: center; color: #fff; background-color: #000;}
 #peu a{color: #fff;}
 #resultat{text-align: left; color: #fff; font-size: 1em; margin: 1em 0 0 0; display: flex; /*flex-direction: row;*/}
-.miniatura{width: 100%; height: auto;}
+.miniatura{width: 100%; height: auto; cursor: pointer}
 p{color: #fff;}
 a{color: #f0f0f0;}
 #credits{display: none;}
@@ -25,6 +25,6 @@ a{color: #f0f0f0;}
 }
 @media only screen and (min-width: 769px){
   #resultat{flex-direction: row; flex-wrap: wrap;}
-  .videoelement{width: 250px; margin: 0 1em 0 0;}
+  .videoelement{width: 250px; height:auto; margin: 0 1em 0 0;}
   #player{width: 50%; height: 70%;}
 }
