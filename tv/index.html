@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>radare.tv</title>
+<meta name="description" content="A video site for Radare2 tutorials">
+<meta name="author" content="Enric Pineda">
+<meta property="og:title" content="radare.tv">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://radare.tv">
+<meta property="og:description" content="A video site for Radare2 tutorials">
+<meta property="og:image" content="image.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="css/styles.css?v=1.0">
+<link rel="stylesheet" href="css/styles.css?v=1.0">
+</head>
+<body>
+
+  <div id="fons-total">
+
+
+    <div id="contingut-central">
+      <img src="img/logo.png" id="logo" />
+      <br />
+      <div id="formulari">
+<input type="text" class="sercxilo" placeholder="Enter your search" id="sercxilo">
+<p>Or click one of this tags: <a href="#" onClick="javascript: showTag('r2con');">r2con</a>, <a href="#" onClick="javascript: showTag('intro');">intro</a>, <a href="#" onClick="javascript: showTag('demo');">demo</a>, <a href="#" onClick="javascript: showTag('r2frida');">r2frida</a>, <a href="#" onClick="javascript: showTag('debug');">debug</a>
+<div id="resultat"></div>
+</div>
+<div id="credits">
+  <p>Idea and conceptualization: <strong>Pancake</strong></p>
+    <p>Coding: <strong><a href="https://www.enricpineda.cat/" target="_blank">Enric Pineda</a></strong></p>
+    <p>This project uses code from <a href="https://github.com/bradsec/jsonsearch" target="_blank">JSONSearch</a> by <a href="https://github.com/bradsec/">Bradsec</a>, and the <a href="https://github.com/benborgers/opensheet" target="_blank">Opensheet app</a> from <a href="https://benborgers.com/">Ben Borgers</a>.</p>
+    <p><a href="#" onclick="javascript: showCredits(false);">Back to search</a></p>
+</div>
+    </div>
+<div id="player-bg">
+<div id="player">
+<div class="tancar"><a href="#" onclick="closeVideo();">[X]</a></div>
+<div id="ytplayer"></div>
+</div>
+</div>
+    <div id="peu">
+<a href="#" onclick="javascrit: showCredits(true);">Credits</a>
+    </div>
+  </div>
+  <script src="js/scripts.js"></script>
+  </body>
+
+</html>

@@ -1,0 +1,30 @@
+body{margin: 0;padding: 0;font-family: monospace;background-color: rgba(0, 0, 0, 1);}
+#fons{width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;}
+#fons-total{width: 100vw; height: 100vh;position: relative;}
+#player-bg {width: 100vw; height: 100vh; position: relative; background-color: rgba(0,0,0,0.85); display: none; overflow: hidden; box-sizing: content-box;}
+#contingut-central{position: absolute; top: 0; bottom: 0; right: 0; left: 0; margin: auto; width: 80%; height: 80%; text-align: center;}
+#player{position: absolute; top: 0; bottom: 0; right: 0; left: 0; margin: auto; text-align: center; color: #fff;}
+.tancar{width: 100%; text-align: right; padding: 1em;}
+.tancar a {color: #fff;}
+#ytplayer {position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;}
+#ytplayer iframe {position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
+.sercxilo{border: 1px solid rgba(255,255,255,0.5); background-color: rgba(0,0,0,0); margin: 0; padding: 1em; width: 100%; color: #fff; font-family: monospace;box-sizing: border-box; font-size: 2em;}
+#logo{margin: 1em; width: 50%; max-width: 350px;}
+#peu{position: fixed; bottom: 0;width: 100%;text-align: center; color: #fff; background-color: #000;}
+#peu a{color: #fff;}
+#resultat{text-align: left; color: #fff; font-size: 1em; margin: 1em 0 0 0; display: flex; /*flex-direction: row;*/}
+.miniatura{width: 100%; height: auto;}
+p{color: #fff;}
+a{color: #f0f0f0;}
+#credits{display: none;}
+@media only screen and (max-width: 768px){
+  #resultat{flex-direction: column;}
+  .videoelement{width: 90%; margin: 0 1em 0 0;}
+  #player{width: 100%; height: 100%; text-align: center; color: #fff;}
+
+}
+@media only screen and (min-width: 769px){
+  #resultat{flex-direction: row; flex-wrap: wrap;}
+  .videoelement{width: 250px; margin: 0 1em 0 0;}
+  #player{width: 50%; height: 70%;}
+}
