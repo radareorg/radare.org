@@ -32,9 +32,9 @@ function resetDefaults(){
   SEARCH_BAR.focus()
 }
 function showCredits(e){
-  const t = document.getElementById("formulari");
-  const n = document.getElementById("credits");
-  !0==e?(t.style.display="none",n.style.display="block"):(t.style.display="block",n.style.display="none");
+  var t=document.getElementById("formulari"),
+  n=document.getElementById("credits");
+  !0==e?(t.style.display="none",n.style.display="block"):(t.style.display="block",n.style.display="none")
 }
 
 SEARCH_BAR.addEventListener("keyup",function(e){
@@ -48,10 +48,12 @@ SEARCH_BAR.addEventListener("keyup",e=>{
     .then(function(e){
       t=(t=t.trim()).replace(/[|&;$%@"<>()\.//\\+,]/g,"");
       let r="",l=0,o="",i="";
-      if (l !== 0 || t.length > 0){
+      if(0!==l||t.length>0){
         t.split(" ").forEach(function(e){
-          r+=`(?=.*${e=e.trim()})`});let s=RegExp(r,"gi");
-	  e.forEach(function(e,t){(-1!=e.title.search(s)||-1!=e.tags.search(s)||-1!=(e.descriptions? e.descriptions: "").search(s))&&(l+=1,o+=`
+          r+=`(?=.*${e=e.trim()})`});let s=RegExp(r,"gi");e.
+
+forEach(function(e,t){(-1!=e.title.search(s)||-1!=e.tags.search(s))&&(l+=1,o+=`
+
           <div class="videoelement">
                   <a href="#" onCLick="openVideo('${e.videoid}')"><img src="https://i.ytimg.com/vi/${e.videoid}/hqdefault.jpg" class="miniatura"></a>
                 <p><strong>${e.title}</strong></p>
@@ -88,7 +90,7 @@ function openVideo(videoid) {
   var player = document.getElementById("player-bg");
   var ytplayer = document.getElementById("ytplayer");
   ytplayer.innerHTML = '<iframe width="50%" height="auto" src="https://www.youtube.com/embed/'+videoid+'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-  
+
   player.style.display='block';
 }
 
@@ -106,3 +108,13 @@ function showTag(thetag) {
   cercador.dispatchEvent(e);
   //trigger(cercador,"onkeyup");
 }
+
+document.getElementById("player-bg").addEventListener("click", function() {
+  closeVideo();
+});
+
+window.addEventListener('keydown', function(event){
+  if (event.key === 'Escape') {
+    closeVideo();
+  }
+})
