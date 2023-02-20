@@ -11,5 +11,5 @@
   ],
   "name": "radare2",
   "short_name": "r2",
-  "start_url": "/?mode=standalone"
+  "start_url": "/online?mode=standalone"
 }
