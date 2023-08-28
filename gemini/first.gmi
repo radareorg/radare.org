@@ -1,0 +1,8 @@
+# First Steps
+
+To begin with you may want to install radare2, when reading a binary:
+
+From now on we will use `r2` instead of `radare2`, as it's a valid symlink to the same program and it's shorter to type.
+
+> r2 /bin/ls
+
