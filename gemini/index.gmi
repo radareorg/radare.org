@@ -1,17 +1,20 @@
+# radare.org
 ```
- ____  ___  ___  ___ ____  ___   ____
-|  _ \/   \|   \/   \  _ \/ _ \ (__  \
-|    (  -  | |  ) -  |   (   _/ /  __/
-|__\__|_|__|___/__|__|_\__|___| |____|
+   ____  ___  ___  ___ ____  ___   ____
+  |  _ \/   \|   \/   \  _ \/ _ \ (__  \
+  |    (  -  | |  ) -  |   (   _/ /  __/
+  |__\__|_|__|___/__|__|_\__|___| |____|
 ```
- 👋 Welcome to gemini://radare.org 😊
 
-=> first.gmi First Steps
-=> build.gmi How to compile
-=> plugins.gmi Plugins
+✨ free and libre reverse engineering framework for unix geeks ✨
 
-## Documentation
+=> first.gmi First Steps and Introduction
+=> build.gmi How to Compile and Install
+=> plugins.gmi Plugins and Tools
 
+## Read more
+
+=> gemlog Gemlog
 => book The Book
 
 ## External Links
