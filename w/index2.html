@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <title>My Web Component</title>
+  <script src="https://unpkg.com/@antonz/runno/dist/runno.js"></script>
+  <script src="ansi_to_html.js"></script>
+</head>
+<body>
+  <textarea id="script">
+pd 2
+?E Hello World
+  </textarea>
+  <button onclick="run_r2()">Run R2</button>
+  <button onclick="run_js()">Run JS</button>
+<div id="shell" style="display:block;background-color:black;color:white;white-space:pre;font-family:monospace">
+</div>
+
+  <script>
+  const { WASI } = window.Runno;
+
+//...
+  let script_name = "/script.r2";
+  let script_r2_js = `
+pd 2
+?E Hello World
+  `;
+  let script_r2 = `
+pd 2
+?E Hello World
+  `;
+  function run_js() {
+	  script_name = "/script.r2.js";
+	  const el = document.getElementById("script");
+	  script_r2_js = el.value;
+    	div = document.getElementById("shell");
+    	div.innerHTML = 'Loading...';
+	  run_wasm();
+  }
+  function run_r2() {
+	  script_name = "/script.r2";
+	  const el = document.getElementById("script");
+	  script_r2 = el.value;
+    	div = document.getElementById("shell");
+    	div.innerHTML = 'Loading...';
+	  run_wasm();
+  }
+var convert = new Convert();
+
+function run_wasm() {
+    	div = document.getElementById("shell");
+    	div.innerHTML = '';
+	const options = { method: 'GET', mode: 'no-cors', redirect: 'follow',
+		referrerPolicy: "no-referrer",
+		 headers: {
+      "Content-Type": "application/wasm",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+	};
+	const source = "https://github.com/radareorg/radare2/releases/download/5.8.8/radare2.wasm";
+// "radare2.wasm?v=5.8.8")
+const result = WASI.start(fetch(source, options), {
+    //args: ["radare2", "-qescr.color=0", "-i", script_name, "some-file.txt"],
+    args: ["radare2", "-i", script_name, "some-file.txt"],
+    env: { SOME_KEY: "some value" },
+    stdout: (out) => {
+    	div = document.getElementById("shell");
+    	div.innerHTML += convert.toHtml(out);
+///console.log("stdout", out),
+    },
+    stderr: (err) => {
+    console.error("stderr", err),
+    	div = document.getElementById("shell");
+    	div.innerHTML += out;
+	},
+   /// stdin: () => prompt("stdin:"),
+    fs: {
+        "/script.r2": {
+            path: "/script.r2",
+            timestamps: {
+                access: new Date(),
+                change: new Date(),
+                modification: new Date(),
+            },
+            mode: "string",
+            content: script_r2,
+        },
+        "/script.r2.js": {
+            path: "/script.r2.js",
+            timestamps: {
+                access: new Date(),
+                change: new Date(),
+                modification: new Date(),
+            },
+            mode: "string",
+            content: script_r2_js,
+        },
+        "/some-file.txt": {
+            path: "/some-file.txt",
+            timestamps: {
+                access: new Date(),
+                change: new Date(),
+                modification: new Date(),
+            },
+            mode: "string",
+            content: "Some content for the file.",
+        },
+    },
+});
+}
+  </script>
+</body>
+</html>
