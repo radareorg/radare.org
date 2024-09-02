@@ -1,8 +1,8 @@
-# Code Analysis
+## Code Analysis
 
-Code analysis is a common technique used to extract information from assembly code.
+Code analysis is the process of finding patterns, combining information from different sources and process the disassembly of the program in multiple ways in order to understand and extract more details of the logic behind the code.
 
-Radare2 has different code analysis techniques implemented in the core and available in different commands.
+Radare2 has many different code analysis techniques implemented under different commands and configuration options, and it's important to understand what they do and how that affects in the final results before going for the default-standard `aaaaa` way because on some cases this can be too slow or just produce false positive results.
 
 As long as the whole functionalities of r2 are available with the API as well as using commands. This gives you the ability to implement your own analysis loops using any programming language, even with r2 oneliners, shellscripts, or analysis or core native plugins.
 
@@ -72,7 +72,7 @@ There is also a mapping of those commands to the r2 CLI options: `r2 -A`, `r2 -A
 
 It is a common sense that completely automated analysis can produce non sequitur results, thus radare2 provides separate commands for the particular stages of the analysis allowing fine-grained control of the analysis process. Moreover, there is a treasure trove of configuration variables for controlling the analysis outcomes. You can find them in `anal.*` and `emu.*` cfg variables' namespaces.
 
-## Analyze functions
+### Analyze functions
 
 One of the most important "basic" analysis commands is the set of `af` subcommands. `af` means "analyze function". Using this command you can either allow automatic analysis of the particular function or perform completely manual one.
 
@@ -137,23 +137,15 @@ Before changing the basic blocks of the function it is recommended to check the 
 0x00003ba8 0x00003bf9 00:0000 81
 ```
 
-### Hand craft function before start, let's prepare a binary file first, for example:
+### Hand craft function
 
-```C
-int code_block()
-{
-  int result = 0;
+Before we start, let's prepare a binary file first. Write in `example.c`: ```C int code_block() {   int result = 0;
 
-  for(int i = 0; i < 10; ++i)
-    result += 1;
+for(int i = 0; i < 10; ++i)     result += 1;
 
-  return result;
-}
-```
+return result; } ``` then compile with `gcc -c example.c -m32 -O0 -fno-pie`, and open the object file `example.o` with radare2.
 
-then compile it with `gcc -c example.c -m32 -O0 -fno-pie`, we will get the object file `example.o`. open it with radare2.
-
-since we haven't analyzed it yet, the `pdf` command will not print out the disassembly here: ``` $ r2 example.o  [0x08000034]> pdf p: Cannot find function at 0x08000034 [0x08000034]> pd             ;-- section..text:
+Since we haven't analyzed it yet, the `pdf` command will not print out the disassembly here: ``` $ r2 example.o  [0x08000034]> pdf p: Cannot find function at 0x08000034 [0x08000034]> pd             ;-- section..text:
 
 ```
         ;-- .text:
@@ -170,7 +162,7 @@ since we haven't analyzed it yet, the `pdf` command will not print out the disas
 0x0800004a      8345f801       add dword [ebp - 8], 1        :|   0x0800004e      8345fc01       add dword [ebp - 4], 1        :`-> 0x08000052      837dfc09       cmp dword [ebp - 4], 9        `==< 0x08000056      7ef2           jle 0x800004a             0x08000058      8b45f8         mov eax, dword [ebp - 8]             0x0800005b      c9             leave             0x0800005c      c3             ret
 
 ```
-our goal is to hand craft a function with the following structure
+our goal is to handcraft a function with the following structure
 
 ![analyze_one](analyze_one.png)
 
@@ -208,9 +200,9 @@ There are two very important commands for this: `afc` and `afB`. The latter is a
 
 `afc` on the other side, allows to manually specify function calling convention. You can find more information on its usage in calling_conventions[1].
 
-=> calling_conventions.md 1: calling_conventions
+=> calling_conventions.gmi 1: calling_conventions
 
-## Recursive analysis
+### Recursive analysis
 
 There are 5 important program wide half-automated analysis commands:
 
@@ -301,7 +293,7 @@ mov rbp, rsp
 
 on x86\_64 platform. It should be specified _before_ any analysis commands.
 
-## Configuration
+### Configuration
 
 Radare2 allows to change the behavior of almost any analysis stages or commands.
 
@@ -386,7 +378,7 @@ vv2[1]
 
 This mode allows you to see the disassembly of each node separately, just navigate between them using `Tab` key.
 
-## Analysis hints
+### Analysis hints
 
 It is not an uncommon case that analysis results are not perfect even after you tried every single configuration option. This is where the "analysis hints" radare2 mechanism comes in. It allows to override some basic opcode or meta-information properties, or even to rewrite the whole opcode string. These commands are located under `ah` namespace:
 

@@ -1,4 +1,4 @@
-# Managing variables
+## Managing variables
 
 Radare2 allows managing local variables, no matter their location, stack or registers.
 
@@ -41,7 +41,7 @@ If we check the help for `afvr` we will get the way two others commands works to
 
 Like many other things variables detection is performed by radare2 automatically, but results can be changed with those arguments/variables control commands. This kind of analysis relies heavily on preloaded function prototypes and the calling-convention, thus loading symbols can improve it. Moreover, after changing something we can rerun variables analysis with `afva` command. Quite often variables analysis is accompanied with types analysis[1], see `afta` command.
 
-=> types.md 1: types analysis
+=> types.gmi 1: types analysis
 
 The most important aspect of reverse engineering - naming things. Of course, you can rename variable too, affecting all places it was referenced. This can be achieved with `afvn` for _any_ type of argument or variable. Or you can simply remove the variable or argument with `afv-` command.
 
@@ -101,7 +101,7 @@ local_32h
 [0x00003b92]>
 ```
 
-## Type inference
+### Type inference
 
 The type inference for local variables and arguments is well integrated with the command `afta`.
 
@@ -171,5 +171,5 @@ Then change your default specification to newly created one using this config va
 
 For more information about primitive and user-defined types support in radare2 refer to types[1] chapter.
 
-=> types.md 1: types
+=> types.gmi 1: types
 

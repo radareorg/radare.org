@@ -1,4 +1,4 @@
-## Charset
+## Charset Plugins
 
 1. Create a file in `radare2/libr/util/d/yourfile.sdb.txt`. The extension .sdb.txt is important.
 

@@ -1,4 +1,4 @@
-# Binary Diffing
+### Binary Diffing
 
 This section is based on the http://radare.today article "binary diffing[1]"
 

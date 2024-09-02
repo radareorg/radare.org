@@ -1,4 +1,4 @@
-# Types
+## Types
 
 Radare2 supports the C-syntax data types description.
 
@@ -99,7 +99,7 @@ dir.types: Default path to look for cparse type files
 
 Notice below we have used `ts` command, which basically converts the C type description (or to be precise it's SDB representation) into the sequence of `pf` commands. See more about print format[1].
 
-=> ../basic_commands/print_modes.md 1: print format
+=> ../basic_commands/print_modes.gmi 1: print format
 
 The `tp` command uses the `pf` string to print all the members of type at the current offset/given address:
 

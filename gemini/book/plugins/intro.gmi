@@ -4,9 +4,39 @@ radare2 is implemented on top of a bunch of libraries, almost every of those lib
 
 This section aims to explain what are the plugins, how to write them and use them
 
-## Types of plugins ``` $ ls libr/*/p | grep : | awk -F / '{ print $2 }' anal      # analysis plugins asm       # assembler/disassembler plugins bin       # binary format parsing plugins bp        # breakpoint plugins core      # core plugins (implement new commands) crypto    # encrypt/decrypt/hash/...
+## Most Famous Plugins
 
-debug     # debugger backends egg       # shellcode encoders, etc fs        # filesystems and partition tables io        # io plugins lang      # embedded scripting languages parse     # disassembler parsing plugins reg       # arch register logic ```
+All of them can be installed via r2pm.
+
+- r2frida[1] - Frida and radare2 better together
+=> r2frida.gmi 1: r2frida
+
+- r2ghidra - use the Ghidra decompiler from radare2
+- r2dec - a decompiler written in JS for r2
+- r2yara - loading, scanning and creating Yara rules
+
+## Skeletons
+
+See r2skel[1]
+
+=> r2skel.gmi 1: r2skel
+
+```
+$ ls libr/*/p | grep : | awk -F / '{ print $2 }'
+anal      # analysis plugins
+asm       # assembler/disassembler plugins
+bin       # binary format parsing plugins
+bp        # breakpoint plugins
+core      # core plugins (implement new commands)
+crypto    # encrypt/decrypt/hash/...
+debug     # debugger backends
+egg       # shellcode encoders, etc
+fs        # filesystems and partition tables
+io        # io plugins
+lang      # embedded scripting languages
+parse     # disassembler parsing plugins
+reg       # arch register logic
+```
 
 ## Listing plugins
 
@@ -21,7 +51,15 @@ rahash2 -L  # list hash/crypto/encoding plugins
 
 There are more plugins in r2land, we can list them from inside r2, and this is done by using the `L` suffix.
 
-Those are some of the commands: ``` L          # list core plugins iL         # list bin plugins dL         # list debug plugins mL         # list fs plugins ph         # print support hash algoriths ```
+Those are some of the commands:
+
+```
+L          # list core plugins
+iL         # list bin plugins
+dL         # list debug plugins
+mL         # list fs plugins
+ph         # print support hash algorithms
+```
 
 You can use the `?` as value to get the possible values in the associated eval vars.
 

@@ -1,4 +1,4 @@
-## List Libraries
+### List Libraries
 
 Rabin2 can list libraries used by a binary with the `-l` option: ``` $ rabin2 -l `which r2` [Linked libraries] libr_core.so libr_parse.so libr_search.so libr_cons.so libr_config.so libr_bin.so libr_debug.so libr_anal.so libr_reg.so libr_bp.so libr_io.so libr_fs.so libr_asm.so libr_syscall.so libr_hash.so libr_magic.so libr_flag.so libr_egg.so libr_crypto.so libr_util.so libpthread.so.0 libc.so.6
 

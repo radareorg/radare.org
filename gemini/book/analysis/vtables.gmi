@@ -1,4 +1,4 @@
-# Virtual Tables
+## Virtual Tables
 
 There is a basic support of virtual tables parsing (RTTI and others).
 

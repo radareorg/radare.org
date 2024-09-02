@@ -1,4 +1,4 @@
-# Syscalls
+## Syscalls
 
 Radare2 allows manual search for assembly code looking like a syscall operation.
 
@@ -39,19 +39,9 @@ If you setup ESIL stack with `aei` or `aeim`, you can use `/as` command to searc
 
 To reduce searching time it is possible to restrict the searching[1] range for only executable segments or sections with `/as @e:search.in=io.maps.x`
 
-=> ../search_bytes/configurating_the_search.md 1: restrict the searching
+=> ../search_bytes/configurating_the_search.gmi 1: restrict the searching
 
-Using the ESIL emulation[1] radare2 can print syscall arguments in the disassembly output. To enable the linear (but very rough) emulation use `asm.emu` configuration variable:
-
-=> emulation.md 1: ESIL emulation
-
-```
-[0x0001ece0]> e asm.emu=true
-[0x0001ece0]> s 0x000187c2
-[0x000187c2]> pdf~svc
-   0x000187c2   svc 0x76  ; 118 = sd_ble_gap_disconnect
-[0x000187c2]>
-```
+Using the [ESIL emulation](emulation.gmi) radare2 can print syscall arguments in the disassembly output. To enable the linear (but very rough) emulation use `asm.emu` configuration variable: ``` [0x0001ece0]> e asm.emu=true [0x0001ece0]> s 0x000187c2 [0x000187c2]> pdf~svc    0x000187c2   svc 0x76  ; 118 = sd_ble_gap_disconnect [0x000187c2]> ```
 
 In case of executing `aae` (or `aaaa` which calls `aae`) command radare2 will push found syscalls to a special `syscall.` flagspace, which can be useful for automation purpose:
 

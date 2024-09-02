@@ -52,7 +52,7 @@ Note that `z.` command just checks the signatures against the current address.
 
 To search signatures across the all file we need to do a bit different thing.
 
-There is an important moment though, if we just run it "as is" - it wont find anything: ``` [0x000051c0]> z/ [+] searching 0x0021dfd0 - 0x002203e8 [+] searching function metrics hits: 0 [0x000051c0]> ``` Note the searching address - this is because we need to [adjust the searching](../search_bytes/configurating_the_search.md) range first:
+There is an important moment though, if we just run it "as is" - it wont find anything: ``` [0x000051c0]> z/ [+] searching 0x0021dfd0 - 0x002203e8 [+] searching function metrics hits: 0 [0x000051c0]> ``` Note the searching address - this is because we need to [adjust the searching](../search_bytes/configurating_the_search.gmi) range first:
 
 ```
 [0x000051c0]> e search.in=io.section

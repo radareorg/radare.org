@@ -1,19 +1,23 @@
-# Radare2 Reference Card
+# Reference Card
 
-This chapter is based on the Radare 2 reference card by Thanat0s, which is under the GNU GPL. Original license is as follows:
+This chapter is based on the Radare 2 reference card by Thanat0s, which is written under the GNU/GPL licence.
 
 ```
 This card may be freely distributed under the terms of the GNU
 general public licence — Copyright by Thanat0s - v0.1 -
 ```
 
+## Cheatsheets
+
+If you are looking for updated and ready to be printed cheatsheets please check the radare2-cheatsheets[1] repository.
+
+=> https://github.com/radareorg/radare2-cheatsheets 1: radare2-cheatsheets
+
 ## Survival Guide
 
 Those are the basic commands you will want to know and use for moving around a binary and getting information about it.
 
-| Command                 | Description                             | |:| | s (tab)                 | Seek to a different place               | | x [nbytes]              | Hexdump of nbytes, $b by default        | | aa                      | Auto analyze                            | | pdf@ funcname[1]    | Disassemble function (main, fcn, etc.)  | | f fcn(Tab)              | List functions                          | | f str(Tab)              | List strings                            | | fr [flagname] [newname] | Rename flag                             | | psz [offset]~grep       | Print strings and grep for one          | | axF [flag]              | Find cross reference for a flag         |
-
-=> Tab 1: funcname
+| Command                 | Description                             | |:| | s (tab)                 | Seek to a different place               | | x [nbytes]              | Hexdump of nbytes, $b by default        | | aa                      | Auto analyze                            | | pdf@ [funcname]\(Tab)   | Disassemble function (main, fcn, etc.)  | | f fcn(Tab)              | List functions                          | | f str(Tab)              | List strings                            | | fr [flagname] [newname] | Rename flag                             | | psz [offset]~grep       | Print strings and grep for one          | | axF [flag]              | Find cross reference for a flag         |
 
 ## Flags
 
@@ -47,7 +51,7 @@ To enter in visual mode use the `v` or `V` command, and then you'll only have to
 
 | Command        | Description                                       | |:| | V              | Enter visual mode                                 | | p/P            | Rotate modes (hex, disasm, debug, words, buf)     | | c              | Toggle (c)ursor                                   | | q              | Back to Radare shell                              | | hjkl           | Move around (or HJKL) (left-down-up-right)        | | Enter          | Follow address of jump/call                       | | sS             | Step/step over                                    | | o              | Toggle asm.pseudo and asm.esil                    | | .              | Seek to program counter                           | | /              | In cursor mode, search in current block           | | :cmd           | Run radare command                                | | ;[-]cmt        | Add/remove comment                                | | /*+-[]         | Change block size, [] = resize hex.cols           | | <,>            | Seek aligned to block size                        | | i/a/A          | (i)nsert hex, (a)ssemble code, visual (A)ssembler | | b              | Toggle breakpoint                                 | | B              | Browse evals, symbols, flags, classes, ...        | | d[f?]          | Define function, data, code, ..                   | | D              | Enter visual diff mode (set diff.from/to)         | | e              | Edit eval configuration variables                 | | f/F            | Set/unset flag                                    | | gG             | Go seek to begin and end of file (0-$s)           | | mK/’K          | Mark/go to Key (any key)                          | | M              | Walk the mounted filesystems                      | | n/N            | Seek next/prev function/flag/hit (scr.nkey)       | | C              | Toggle (C)olors                                   | | R              | Randomize color palette (ecr)                     | | tT             | Tab related. see also tab[1]     | | v              | Visual code analysis menu                         | | V              | (V)iew graph (agv?)                               | | wW             | Seek cursor to next/prev word                     | | uU             | Undo/redo seek                                    | | x              | Show xrefs of current func from/to data/code      | | yY             | Copy and paste selection                          | | z              | fold/unfold comments in diassembly                |
 
-=> visual_panels.md 1: tab
+=> visual_panels.gmi 1: tab
 
 ## Searching
 

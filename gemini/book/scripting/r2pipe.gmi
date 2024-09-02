@@ -1,4 +1,4 @@
-# R2pipe
+## R2pipe
 
 The r2pipe api was initially designed for NodeJS in order to support reusing the web's r2.js API from the commandline. The r2pipe module permits interacting with r2 instances in different methods:
 
@@ -24,9 +24,11 @@ dlang     x     -     -    -    -    -   x
 perl      x     -     -    -    -    -   -
 ```
 
-Examples ========
+## Examples
 
-Python 
+Here there are some examples about scripting with r2pipe in different languages
+
+### Python
 
 ```
 $ pip install r2pipe
@@ -41,7 +43,7 @@ print(r2.cmd("afl"))
 print(r2.cmdj("aflj"))  # evaluates JSONs and returns an object
 ```
 
-NodeJS 
+### NodeJS
 
 Use this command to install the r2pipe bindings
 
@@ -68,9 +70,9 @@ r2pipe.open('/bin/ls', (err, res) => {
 
 Checkout the GIT repository for more examples and details.
 
-https://github.com/radareorg/radare2-r2pipe/blob/master/nodejs/r2pipe/README.md
+https://github.com/radareorg/radare2-r2pipe/blob/master/nodejs/r2pipe/README.gmi
 
-Go --
+### Go
 
 ```
 $ r2pm -i r2pipe-go
@@ -104,7 +106,7 @@ func main() {
 }
 ```
 
-Rust ----
+### Rust
 
 ```
 $ cat Cargo.toml
@@ -127,107 +129,157 @@ fn main() {
 }
 ```
 
-Ruby ---- ``` $ gem install r2pipe ``` ```ruby require 'r2pipe' puts 'r2pipe ruby api demo' puts '====================' r2p = R2Pipe.new '/bin/ls' puts r2p.cmd 'pi 5' puts r2p.cmd 'pij 1' puts r2p.json(r2p.cmd 'pij 1') puts r2p.cmd 'px 64' r2p.quit ```
-
-Perl ---- ```perl #!/usr/bin/perl
-
-use R2::Pipe; use strict;
-
-my $r = R2::Pipe->new ("/bin/ls"); print $r->cmd ("pd 5")."\n";
-
-print $r->cmd ("px 64")."\n"; $r->quit ();
+### Ruby
 
 ```
+$ gem install r2pipe
+```
 
-Erlang
+```ruby
+require 'r2pipe'
+puts 'r2pipe ruby api demo'
+puts '===================='
+r2p = R2Pipe.new '/bin/ls'
+puts r2p.cmd 'pi 5'
+puts r2p.cmd 'pij 1'
+puts r2p.json(r2p.cmd 'pij 1')
+puts r2p.cmd 'px 64'
+r2p.quit
+```
+
+### Perl
+
+```perl
+#!/usr/bin/perl
+
+use R2::Pipe;
+use strict;
+
+my $r = R2::Pipe->new ("/bin/ls");
+print $r->cmd ("pd 5")."\n";
+print $r->cmd ("px 64")."\n";
+$r->quit ();
+```
+
+### Erlang
 
 ```erlang
+#!/usr/bin/env escript
+%% -*- erlang -*-
+%%! -smp enable
 
-# !/usr/bin/env escript %% -*- erlang -*- %%! -smp enable
-
-%% -sname hr -mode(compile).
+%% -sname hr
+-mode(compile).
 
 -export([main/1]).
-main(_Args) ->   %% adding r2pipe to modulepath, set it to your r2pipe_erl location   R2pipePATH = filename:dirname(escript:script_name()) ++ "/ebin",   true = code:add_pathz(R2pipePATH),
 
-%% initializing the link with r2   H = r2pipe:init(lpipe),
+main(_Args) ->
+  %% adding r2pipe to modulepath, set it to your r2pipe_erl location
+  R2pipePATH = filename:dirname(escript:script_name()) ++ "/ebin",
+  true = code:add_pathz(R2pipePATH),
 
-%% all work goes here   io:format("~s", [r2pipe:cmd(H, "i")]).
+  %% initializing the link with r2
+  H = r2pipe:init(lpipe),
 
+  %% all work goes here
+  io:format("~s", [r2pipe:cmd(H, "i")]).
 ```
 
-Haskell
+### Haskell
 
 ```haskell
+import R2pipe
+import qualified Data.ByteString.Lazy as L
 
-import R2pipe import qualified Data.ByteString.Lazy as L
+showMainFunction ctx = do
+  cmd ctx "s main"
+  L.putStr =<< cmd ctx "pD `fl $$`"
 
-showMainFunction ctx = do   cmd ctx "s main"   L.putStr =<< cmd ctx "pD `fl $$`"
+main = do
+  -- Run r2 locally
+  open "/bin/ls" >>= showMainFunction
+  -- Connect to r2 via HTTP (e.g. if "r2 -qc=h /bin/ls" is running)
+  open "http://127.0.0.1:9090" >>= showMainFunction
+```
 
-main = do   -- Run r2 locally   open "/bin/ls" >>= showMainFunction   -- Connect to r2 via HTTP (e.g. if "r2 -qc=h /bin/ls" is running)   open "http://127.0.0.1:9090" >>= showMainFunction ```
+### Dotnet
 
-Dotnet  ```csharp using System;
-
-using System.Collections.Generic; using System.Diagnostics;
-
-using System.Linq; using System.Text;
-
-using System.Threading.Tasks; using r2pipe;
-
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using r2pipe;
 ```
 
 ```csharp
-
-namespace LocalExample {   class Program {     static void Main(string[] args) { #if __MonoCS__       using(IR2Pipe pipe = new R2Pipe("/bin/ls")) { #else       using (IR2Pipe pipe = new R2Pipe(@"C:\Windows\notepad.exe",         @"C:\radare2\radare2.exe")) { #endif         Console.WriteLine("Hello r2! " + pipe.RunCommand("?V"));
-
-```
-    Task<string> async = pipe.RunCommandAsync("?V");
-    Console.WriteLine("Hello async r2!" + async.Result);
-    QueuedR2Pipe qr2 = new QueuedR2Pipe(pipe);
-    qr2.Enqueue(new R2Command("x", (string result) => {
-         Console.WriteLine("Result of x:\n {0}", result); }));
-    qr2.Enqueue(new R2Command("pi 10", (string result) => {
-         Console.WriteLine("Result of pi 10:\n {0}", result); }));
-    qr2.ExecuteCommands();
+namespace LocalExample {
+  class Program {
+    static void Main(string[] args) {
+#if __MonoCS__
+      using(IR2Pipe pipe = new R2Pipe("/bin/ls")) {
+#else
+      using (IR2Pipe pipe = new R2Pipe(@"C:\Windows\notepad.exe",
+        @"C:\radare2\radare2.exe")) {
+#endif
+        Console.WriteLine("Hello r2! " + pipe.RunCommand("?V"));
+        Task<string> async = pipe.RunCommandAsync("?V");
+        Console.WriteLine("Hello async r2!" + async.Result);
+        QueuedR2Pipe qr2 = new QueuedR2Pipe(pipe);
+        qr2.Enqueue(new R2Command("x", (string result) => {
+             Console.WriteLine("Result of x:\n {0}", result); }));
+        qr2.Enqueue(new R2Command("pi 10", (string result) => {
+             Console.WriteLine("Result of pi 10:\n {0}", result); }));
+        qr2.ExecuteCommands();
+      }
+    }
   }
 }
 ```
 
-} } ```
+### Java
 
-Java ---- ```java import org.radare.r2pipe.R2Pipe;
+```java
+import org.radare.r2pipe.R2Pipe;
 
-public class Test {   public static void main (String[] args) {     try {       R2Pipe r2p = new R2Pipe ("/bin/ls");
-
-```
-  // new R2Pipe ("http://cloud.rada.re/cmd/", true);
-  System.out.println (r2p.cmd ("pd 10"));
-  System.out.println (r2p.cmd ("px 32"));
-  r2p.quit();
-} catch (Exception e) {
-  System.err.println (e);
+public class Test {
+  public static void main (String[] args) {
+    try {
+      R2Pipe r2p = new R2Pipe ("/bin/ls");
+      // new R2Pipe ("http://cloud.rada.re/cmd/", true);
+      System.out.println (r2p.cmd ("pd 10"));
+      System.out.println (r2p.cmd ("px 32"));
+      r2p.quit();
+    } catch (Exception e) {
+      System.err.println (e);
+    }
+  }
 }
 ```
 
-} } ```
+### Swift
 
-Swift ----- ```swift if let r2p = R2Pipe(url:nil) {   r2p.cmd ("?V", closure:{     (str:String?) in     if let s = str {       print ("Version: \(s)");
-
-```
-  exit (0);
+```swift
+if let r2p = R2Pipe(url:nil) {
+  r2p.cmd ("?V", closure:{
+    (str:String?) in
+    if let s = str {
+      print ("Version: \(s)");
+      exit (0);
+    } else {
+      debugPrint ("R2PIPE. Error");
+      exit (1);
+    }
+  });
+  NSRunLoop.currentRunLoop().run();
 } else {
-  debugPrint ("R2PIPE. Error");
-  exit (1);
+  print ("Needs to run from r2")
 }
 ```
 
-});   NSRunLoop.currentRunLoop().run();
-
-} else {   print ("Needs to run from r2") } ```
-
-Vala
-
-----
+### Vala
 
 ```vala
 public static int main (string[] args) {
@@ -249,7 +301,7 @@ public static int main (string[] args) {
 }
 ```
 
-NewLisp 
+### NewLisp
 
 ```lisp
 (load "r2pipe.lsp")
@@ -257,14 +309,19 @@ NewLisp
 (exit)
 ```
 
-Dlang ----- ```d import std.stdio;
+### Dlang
 
+```d
+import std.stdio;
 import r2pipe;
 
-void main() {    auto r2 = r2pipe.open ();
+void main() {
+   auto r2 = r2pipe.open ();
+   writeln ("Hello "~ r2.cmd("?e World"));
+   writeln ("Hello "~ r2.cmd("?e Works"));
 
-writeln ("Hello "~ r2.cmd("?e World"));    writeln ("Hello "~ r2.cmd("?e Works"));
+   string uri = r2.cmdj("ij")["core"]["uri"].str;
+   writeln ("Uri: ",uri);
+}
+```
 
-string uri = r2.cmdj("ij")["core"]["uri"].str;    writeln ("Uri: ",uri);
-
-} ``` 

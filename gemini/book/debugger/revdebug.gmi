@@ -1,4 +1,4 @@
-# Reverse Debugging
+## Reverse Debugging
 
 Radare2 has reverse debugger, that can seek the program counter backward.
 
@@ -106,5 +106,5 @@ In addition to the native reverse debugging capabilities in radare2, it's also p
 
 `=!dsb` and `=!dcb` are available as `dsb` and `dcb` replacementments for this purpose, see remote gdb's documentation[1] for more information.
 
-=> remote_gdb.md 1: remote gdb's documentation
+=> remote_gdb.gmi 1: remote gdb's documentation
 
