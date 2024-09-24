@@ -3,6 +3,17 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+.archived {
+    background-color:red;
+    color:white;
+	  font-size:1em;
+    font-weight:bold;
+    z-index: 1000;
+    width:100%;
+    text-align:center;
+    position:fixed;
+    bottom:0;
+}
 .comparison {
     width: 640px;
 }
