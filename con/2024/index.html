@@ -25,8 +25,15 @@ img {
 	max-width: 100%;
 	height: auto;
 }
+
 .content {
-	margin-left: 20px;
+    margin-left: 20px;
+}
+
+.content2 {
+	margin: auto;
+	max-width: 800px;
+	padding : 20px;
 }
 h2 {
 	text-align: center;
@@ -44,12 +51,14 @@ h1 {
 	}
 	.content {
 		margin-left: 0;
+		width:100%;
 	}
 	h1, h2 {
 		width: 100%;
 		box-sizing: border-box;
 	}
 }
+
 </style>
 </head>
 <body>
@@ -66,43 +75,106 @@ h1 {
 		<b>chat:</b> Join our <a href="https://discord.gg/YBey7CR9jf">Discord</a> or <a href="https://t.me/r2con2024">Telegram</a> channels<br />
 		<b>news:</b> Follow <a href="https://infosec.exchange/tags/r2con2024">#r2con2024</a> and <a href="https://infosec.exchange/@radareorg">@radareorg</a> for the latest updates!<br />
 		<b>else:</b> Vegan food, beers and chiptune
-		<h2>Tickets</h2>
+		<br /><br />
+		Tickets are only required to physically attend the event.<br />
+		<br />
 		[09/25-10/25] Click the <a target=_blank href="https://www.eventzilla.net/e/r2con-2024-2138650032">link</a> to buy your ticket!
-		<h2>CFP</h2>
+		<br />
 		[06/10-10/10] Send a <a href="mailto:r2con@radare.org">email</a> (online sunday slots only)
 		<h2>Schedule</h2>
 		<h3>Friday</b> November 8th - trainings</h3>
 		<hr size=1 />
-		09:00-10:45 - Introducing malware analysis with radare2 (sha0)<br/>
+		09:00-10:45 - <a href="#malintro">Introducing malware analysis with radare2</a> (sha0)<br/>
 		09:00-10:30 - r2wars, battling for the memory (hanemile)<br/>
 		<hr size=1 />
-		11:00-13:00 - Scripting to automate and extend r2 (pancake)<br />
-		11:00-13:00 - Advanced IO capabilities (condret)<br/>
+		11:00-13:00 - <a href="#script">Scripting to automate and extend r2</a> (pancake)<br />
+		11:00-13:00 - <a href="#io">Advanced IO capabilities</a> (condret)<br/>
 		<hr size=1 />
-		15:00-17:00 - Keylogger for all stacks (dreg)<br/>
-		15:00-17:00 - GameBoy ROM Recovery Workshop (Travis Goodspeed)<br />
+		15:00-17:00 - <a href="#kl">Keylogger for all stacks</a> (dreg)<br/>
+		15:00-17:00 - <a href="#gb">GameBoy ROM Recovery Workshop</a> (Travis Goodspeed)<br />
 		<br />
 		<h3>Saturday</b> November 9th - talks</h3>
 		09:00-09:30 - Keynote (pancake)</br>
-		09:30-10:00 - Bad sportsmanship - Beating chess with r2frida (hexploitable)</br>
-		10:15-11:00 - Uncovering more crypto secrets (Sylvain+Karim Sudki)<br />
+		09:30-10:00 - <a href="#chess">Beating chess with r2frida</a> (hexploitable)</br>
+		10:15-11:00 - <a href="#cry">Uncovering more crypto secrets</a> (Sylvain+Karim Sudki)<br />
 		<hr size=1 />
-		11:40-13:00 - Frida hooking tricks on non-jailbroken iOS (mrmacete)<br />
+		11:40-13:00 - <a href="#nojb">Frida hooking tricks on non-jailbroken iOS</a> (mrmacete)<br />
 		<hr size=1 />
-		14:00-14:45 - r2owasp: Hack-proof your mobile apps (grepharder)<br />
-		15:00-15:30 - Reversing faster, together (lars)<br />
-		15:40-16:20 - A Hitchhikers Guide for Unity: Reversing iOS games (murphy)<br />
-		16:30-17:00 - Final words and r2wars live (pancake)<br />
+		14:00-14:45 - <a href="#r2owasp">Hack-proof your mobile apps</a> (grepharder)<br />
+		15:00-15:30 - <a href="#lars">Reversing faster, together</a> (lars)<br />
+		15:40-16:20 - <a href="#unity">A Hitchhikers Guide for Unity: Reversing iOS games</a> (murphy)<br />
+		16:30-17:00 - Final words and live r2wars (pancake)<br />
 		<br />
 		<h3><b>Sunday</b> November 10th - online</h3>
 		09:00-10:00 - Analysing and patching an ECU Firmware Binary (kcdq)<br />
-		10:00-11:00 - afen - a tool for renaming expressions (satk0)<br />
-		11:00-12:00 - Exploring and cracking binaries with r2ai visual mode (dnakov)<br />
-		12:00-13:00 - Reversing Flutter apps (apkunpacker)<br />
-		13:00-14:00 - Running over an STM8 firmware (brainstorm)<br />
-		14:00-15:00 - Cracking Pickles with r2 (Dennis Goodlett)<br />
-		15:00-16:00 - Combining frida-trace with radare2 (Ole Andre)<br />
-	</div>
+		10:00-11:00 - <a href="#afen">afen - a tool for renaming expressions</a> (satk0)<br />
+		11:00-12:00 - Cracking binaries with r2ai visual mode (dnakov)<br />
+		12:00-13:00 - <a href="#dart">Reversing Flutter apps</a> (apkunpacker)<br />
+		13:00-14:00 - <a href="#stm">Running over an STM8 firmware</a> (brainstorm)<br />
+		14:00-15:00 - <a href="#pickles">Cracking Pickles with r2</a> (Dennis Goodlett)<br />
+		15:00-16:00 - <a href="#ft">Combining frida-trace with radare2</a> (Ole Andre)<br />
+		</div>
+		</div>
+<div class="content2">
+	<h2>TLDR</h2>
+<h4 id="malintro">Introducing malware analysis with radare2 (sha0)</h4>
+Introduction to malware analysis with radare. We will cover many radare commands from the practical prespective with basic malware, mainly static analisis, automation and some of emulation. There are use cases where is clearly more convinient and comfortable using radare than other multiple tools. We will work based on this cases.
+<h4 id="script">Scripting to automate and extend r2 (pancake)</h4>
+Attendees will learn how to use Python and JavaScript with radare2 to automate tasks and support new architecture, file formats, commands and io backends via plugins. We will also cover the high level and idiomatic r2papi library for easier scripting, as well as tips to make our scripts run faster.
+<h4 id="io">Advanced RIO capabilities (condret)</h4>
+We will look at some aspects of simulating memory spaces for emulating GameBoy with esil and radare2 apis. The focus lies on the following features of the r_io api: Adding io plugins for individual usecase, managing and switching between virtual mappings through io banks, map overlays, treebuf:// as a dynamic malloc:// replacement, io desc vs io fd.
+<h4 id="kl">Keylogger for all stacks (dreg)</h4>
+We will dive deep into the world of PS2 keylogging, exploring various methods to implement keyloggers across different layers & components: user space, kernel, and hardware. The presentation will also highlight the indispensable role of sophisticated debuggers like Radare2 in developing and debugging keyloggers.
+<h4 id="gb">GameBoy ROM Recovery Workshop (Travis Goodspeed)</h4>
+Mask ROM Tool is a CAD tool for extracting the bits of a mask-programmed ROM from a photograph of the chip die.  In this workshop, we will begin with die photographs of the Nintendo Game Boy's CPU, working our way forward until we have a disassembled firmware image of the boot ROM.
+<br /> <br />
+<i>Bio: Travis Goodspeed is a reverse engineer of embedded systems from East Tennessee, where he drives a Studebaker and knows every good dog in town by name.  His new release, Microcontroller Exploits, is available wherever fine technical books are sold.</i>
+<br /> <br />
+<i>Prerequisites: Please arrive with Radare2 and the latest release of MaskRomTool installed from Github on your Windows, Mac or Linux laptop.  An external mouse is very handy, but not required.</i>
+<h4 id="chess">Bad sportsmanship - Beating chess with r2frida (hexploitable)</h4>
+We will explore the process of reverse engineering a mobile chess app using r2 and r2frida combining several static and dynamic instrumentation tecniques. With the aim to identify inaccessible functionalities within the app by identifying critical functions and injecting scripts in real time.
+<h4 id="cry">Uncovering more crypto secrets (Sylvain & azox)</h4>
+Since r2con2020, Radare2 has made substantial progress in enhancing its ability to search for cryptographic materials. This presentation will focus on how these improvements enable the recovery and analysis of cryptographic materials in real-world situations. To bridge the gap between expectations and reality, demonstrations will be showcased on anonymized binaries.
+
+<h4 id="nojb">Frida hooking tricks on non-jailbroken iOS (mrmacete)</h4>
+After removing the jailbreak superpowers, what options remain for placing Frida hooks in the context of an app process on iOS? A survey of "jailed" Frida hooking techniques and their trade-offs in terms of depth and requirements, with step-by-step practical examples where Radare2 and its dyldcache-exploring capabilities will be leveraged heavily.
+
+
+<h4 id="r2owasp">Hack-proof your mobile apps (grep harder)</h4>
+Learn how to design hack-proof apps and identify security or privacy issues in production apps for iOS and Android by using static and dynamic analysis techniques to improve your mobile app security skills.
+<br /><br />
+Presented by the OWASP Mobile App Security project leader, attendees will be introduced to the new Mobile Application Security Weakness Enumeration (MASWE) and dive into several practical demos.
+
+<h4 id="lars">Reversing faster, together (lars)</h4>
+We're experimenting with new ways of reverse engineering, and we want you to take part in our experiments! We'll present the underlying technology, combining event-based dynamic analysis, code tracing, hypervisor-level debugging, and static code analysis techniques to find, disassemble, decompile, and understand interesting code fast. Then, we'll introduce the concept of iterative reverse engineering, and spark a discussion on what types of actionable intelligence is most relevant in contexts such as incident response and threat research. We'd love to hear what information is most useful to _you_!
+
+<h4 id="unity">A Hitchhikers Guide for Unity: Reversing mobile games on iOS (Murphy)</h4>
+
+This presentation will teach how to reverse-engineer Unity applications on iOS. Alex Soler (Murphy) will show how to sideload the associated metadata, use r2 capabilities to symbolicate the application and decompile the code back into C#. Our main goal is to recover as much as possible of the original code and understand the game's logic as the developer would. This will help us analyze essential parts of the app and identify critical parts, allowing us to manipulate its behavior using r2frida dynamically.
+<h4 id="afen">afen - a tool for renaming expressions (satk0)</h4>
+
+Simple utility that renames expressions while reversing a binary. It follows the same principle as `afvn` command. It explains how afen is built as a parse plugin, allowing more control over how the disassembly is shown by using per-function patterns. To be included hopefully in r2 v6.0.
+
+<h4 id="dart">Reversing Flutter apps (apkunpacker)</h4>
+
+Reverse engineering a simple Flutter application by decompiling it with Radare2 to uncover its logic and use of Frida to hook into the application at runtime to tamper with its behavior.
+
+<h4 id="stm">Running over an STM8 firmware (brainstorm)</h4>
+
+In this talk we will explore reusing e-waste for multiple purposes:
+
+* Improving the r2 analysis and pseudo-C of the STM8 8-bit microcontrollers, still ubiquitous IC in consumer electronics.
+* Leveraging r2ai and decai to accelerate our firmware decompilation efforts.
+* Exploring project decompilation via custom decai prompting while swapping and comparing inference backend performance.
+* Have good project management skills and finishing this project and talk in time for demonstration, thanks to generative AI.
+
+<h4 id="pickles">Cracking Pickles with r2 (Dennis Goodlett)</h4>
+
+Despite the incredible simplicity of python pickle architecture, incredibly strong obfuscation methods are possible. In this talk we will attempt to fool common pickle parsing tools, bypass malicious pickle detection and show how these tools can be improved. This talk will show why Radare2 is currently the best tool for reversing pickles. Even still, the python pickle language is expressive enough to give even my own tools trouble.
+
+<h4 id="ft">Combining frida-trace with radare2 (Ole Andre)</h4>
+
+This presentation will introduce the integration of radare2 with frida-trace, built on top of webassembly, easing the introspection of assembly code right from the browser and changing hooks in realtime with few clicks.
 </div>
 </body>
 </html>
