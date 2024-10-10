@@ -10,7 +10,7 @@ a:hover {
 }
 body {
 	background-color:#151515;
-	font-family:montserrat;
+	font-family:montserrat,Verdana;
 	color:#f0f0f0;
 	border:0px;
 	padding-bottom:4em;
@@ -21,14 +21,14 @@ ul {
 
 .botton a {
 	color:#505050 !important;
-	font-family:montserrat;
+	font-family:montserrat,Verdana;
 	text-decoration:none;
 }
 
 .botton a:hover {
 	color:#000000 !important;
 	text-shadow: 0px 0px 2px black;
-	font-family:montserrat;
+	font-family:montserrat,Verdana;
 	text-decoration:none !important;
 }
 
@@ -64,7 +64,7 @@ p {
 	line-height:1.3em;
 	border:1em;
 	font-size: 1.1em;
-	font-family: montserrat;
+	font-family: montserrat, Verdana;
 }
 
 pre {
@@ -108,7 +108,7 @@ pre {
 h1 {
 	font-size:2.6em;
 	font-weight:bold;
-	font-family:montserrat;
+	font-family:montserrat, Verdana;
 	color:white; /*#ffb900; */
 	line-height:1.5em;
 }
@@ -117,7 +117,7 @@ h2 {
 	/* color: #ffb900!important; */
 	font-size:2em;
 	font-weight:bold;
-	font-family:montserrat;
+	font-family:montserrat,Verdana;
 	color:#e0e0e0; /*#ffb900; */
 	line-height:1.5em;
 }
