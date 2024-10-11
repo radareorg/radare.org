@@ -106,9 +106,9 @@ h1 {
 		16:30-17:00 - Final words and live r2wars (pancake)<br />
 		<br />
 		<h3><b>Sunday</b> November 10th - online</h3>
-		09:00-10:00 - Analysing and patching an ECU Firmware Binary (kcdq)<br />
+		09:00-10:00 - <a href="#ecus">Analysing and patching an ECU Firmware Binary</a> (kcdq)<br />
 		10:00-11:00 - <a href="#afen">afen - a tool for renaming expressions</a> (satk0)<br />
-		11:00-12:00 - Cracking binaries with r2ai visual mode (dnakov)<br />
+		11:00-12:00 - <a href="#auto">Cracking binaries with r2ai visual mode</a> (dnakov)<br />
 		12:00-13:00 - <a href="#dart">Reversing Flutter apps</a> (apkunpacker)<br />
 		13:00-14:00 - <a href="#stm">Running over an STM8 firmware</a> (brainstorm)<br />
 		14:00-15:00 - <a href="#pickles">Cracking Pickles with r2</a> (Dennis Goodlett)<br />
@@ -151,9 +151,18 @@ We're experimenting with new ways of reverse engineering, and we want you to tak
 <h4 id="unity">A Hitchhikers Guide for Unity: Reversing mobile games on iOS (Murphy)</h4>
 
 This presentation will teach how to reverse-engineer Unity applications on iOS. Alex Soler (Murphy) will show how to sideload the associated metadata, use r2 capabilities to symbolicate the application and decompile the code back into C#. Our main goal is to recover as much as possible of the original code and understand the game's logic as the developer would. This will help us analyze essential parts of the app and identify critical parts, allowing us to manipulate its behavior using r2frida dynamically.
+
+<h4 id="ecus">Analysing and patching an ECU Firmware Binary (kcdq)</h4>
+
+we will explore the process of analyzing and patching ECU firmware binaries, with a focus on the advantages radare2 offers over other tools. Attendees will learn how to efficiently navigate large firmware files, identify points of interest, and handle references in Xtensa architectures. The session will demonstrate how radare2’s features can accelerate analysis and patching in automotive firmware, offering practical insights for those working with complex embedded systems.
+
 <h4 id="afen">afen - a tool for renaming expressions (satk0)</h4>
 
 Simple utility that renames expressions while reversing a binary. It follows the same principle as `afvn` command. It explains how afen is built as a parse plugin, allowing more control over how the disassembly is shown by using per-function patterns. To be included hopefully in r2 v6.0.
+
+<h4 id="auto">Cracking binaries with r2ai visual mode (dnakov)</h4>
+
+This presentation introduces the latest enhancements in radare2, focusing on the integration of r2ai and its new visual mode. Through practical examples, we will explore how auto mode can be used to tackle crackmes, uncover passwords, and identify vulnerabilities within binaries. The session highlights the efficiency and ease provided by the visual interface, offering insights into how these new features can streamline analysis workflows.
 
 <h4 id="dart">Reversing Flutter apps (apkunpacker)</h4>
 
