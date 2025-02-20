@@ -1,1 +1,8 @@
-2025-02-20T19:51:00Z	Hello World
+# nick = radare
+# url = https://radare.org/tw.txt
+# link = Website https://radare.org
+# avatar = https://radare.org/avatar.png
+# description = the free unix-friendly reverse engineering framework
+# type = bot
+
+2025-02-20T20:15+00:00	Hello World
