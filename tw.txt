@@ -5,4 +5,4 @@
 # description = the free unix-friendly reverse engineering framework
 # type = bot
 
-2025-02-20T20:15+00:00	Hello World
+2025-02-20T20:15:00Z	Hello World
