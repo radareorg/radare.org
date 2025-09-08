@@ -12,7 +12,7 @@ This time you don't have to worry about booking flights or hotels, it will be pu
 
 * **Event Date**: October 24, 25
 * **Closing** [CFP](mailto:r2con@radare.org): October 12th
-* **Location**: [Online](https://discord.gg/RWtFctRe) (Youtube+Telegram+Discord)
+* **Location**: [Online](https://discord.gg/RWtFctRe) YouTube/Discord
 
 Stay tuned!
 
@@ -50,7 +50,7 @@ Chameleon is a polymorphic engine for `x86_64` position-independent shellcode th
 
 ### Accessing radare2 from anywhere, anytime
 
-(IncognitoMafia) - 15m
+(AbhiTheModder) - 15m
 
 Introduction to r2web, which brings the webassembly builds radare2 to the browser while still being totally client-side, enabling quick, setup-free reverse engineering for education, collaboration, and lightweight analysis. We'll also cover current limitations and future plans for cross-platform improvements.
 
