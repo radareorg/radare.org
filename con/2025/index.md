@@ -36,11 +36,11 @@ Windows process emulation was already possible with mwemu, and in most of cases 
 
 R4Ghidra is a full rewrite of the radare2 commandline parser and the most representative commands in pure Java. Yeah that sounds weird, but how does having all your favorite commandline oneliners and scripts to work inside Ghidra without depending on external binaries? What if radare2 can talk to your current Ghidra project and get all the metadata in sync? We will Highlight the challenges and opportunities of reverse engineering tool integration based on lessons learned from r4ghidra development.
 
-### Analyzing Solana Binaries
+### Reverse Engineering Solana Programs with radare2
 
-(ulexec) - 30m
+(ulexec + secoalba) - 30m
 
-An Introduction to the Solana runtime and the sBPF arquitecture.
+An Introduction to the Solana runtime and the sBPF architecture with the brand new sBPF plug-in in radare2
 
 ### Chameleon: polymorphic engine for position independent shellcode
 
