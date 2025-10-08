@@ -92,7 +92,8 @@ pre {
 .button2 {
 	border-radius: 1em;
 	border: 0.1em solid white;
-	padding:0.2em;
+	padding: 0.2em;
+	width: 240px;
 	background-color:white;
 	text-decoration: underline;
 }
