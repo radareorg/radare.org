@@ -1,12 +1,14 @@
 
 a, a:visited, a:link, a:active {
 	text-decoration: none !important ;
-	color:#ffb900!important;
+	color:#a0a0a0!important;
 }
 a:hover {
 	text-decoration: underline !important;
-  	text-shadow: 0px 0px 2px black;
-	color: #f0e000!important;
+	color: #ffb900!important;
+}
+link {
+	color: #ffb900!important;
 }
 body {
 	background-color:#151515;
@@ -55,7 +57,8 @@ ul {
 	border-radius: 1em;
 	text-align:left;
 	white-space: pre;
-	font-family: consolas, courier new;
+	font-family: consolas, courier new, monospace;
+	color:#b07000;
 }
 
 p {
@@ -171,9 +174,10 @@ padding:10px;
 width:200px;
 font-weight:bold;
 margin:10px;
-border: #f0b900;
+border:5px;
+border-color: #f0b900;
 border-radius: 10px;
-background-color:#606060;
+background-color:#303030;
 color:black;
     display: inline-block;
 }
