@@ -72,11 +72,11 @@ AI is rapidly transforming the way we work, and MCPs open the door for agents to
 
 In this presentation we’ll dive into how virtual machines tick, how VM-based obfuscation is applied in Android apps, and how r2 can be used to crack open those layers and devirtualize them.
 
-### Emulating, Dumping, and Detecting RASP Checks with Radare2
+### Reversing Android RASP using Radare2 & Frida
 
 (apkunpacker) - 30m
 
-Practical use of radare2 to emulate and dump libraries in real-world scenarios, along with techniques to efficiently detect and analyze RASP checks during RE
+Practical use of radare2 & frida to efficiently analyze RASP checks during RE
 
 ### Crack Rust with r2ai
 
