@@ -8,7 +8,7 @@ body {
 	background-color: black;
 	font-family: monospace;
 	color: #c0c0c0;
-       margin-top: 2em;
+	margin-top: 2em;
 	margin: 10;
 	padding: 0;
 }
@@ -40,15 +40,19 @@ strong {
 	max-width: 800px;
 	padding : 20px;
 }
+h3 {
+	color:orange;
+}
 h2 {
 	text-align: center;
 	background-color: #202020;
 	margin: 20px 0;
+	color:orange;
 }
 h1 {
 	margin-top: 0;
 	text-align: center;
-color:orange;
+	color:orange;
 }
 
 @media (max-width: 800px) {
@@ -73,8 +77,8 @@ will be purely online, join the chats and watch the stream!</p>
 <li><strong>Event Date</strong>: October 24, 25</li>
 <li><strong>Closing</strong> <a href="mailto:r2con@radare.org">CFP</a>:
 October 12th</li>
-<li><strong>Location</strong>: <a
-href="https://discord.gg/FhMEt7mA">Online</a> YouTube/Discord</li>
+<li><strong>Location</strong>: <a href="/discord">Online</a>
+YouTube/Discord</li>
 </ul>
 <p>Stay tuned!</p>
 <h2 id="schedule">Schedule</h2>
@@ -139,6 +143,16 @@ from 5.9 to 6.0, radare2 changed the way these APIs work and improved
 the state of the art by introducing plugins and generic APIs to help
 developers reduce code complexity and maintainability while producing
 more solid results.</p>
+<h3 id="automated-binary-morphing-and-evasion-analytics">Automated
+Binary Morphing and Evasion Analytics</h3>
+<p>(seilfreed) - 30m</p>
+<p>This talk introduces r2morph, a framework for transforming binaries
+while preserving their behaviour. Built on radare2, it performs
+semantic-aware mutations such as instruction substitution, NOP
+insertion, and control-flow flattening. We’ll explore its architecture,
+multi-architecture support, and practical uses in obfuscation, evasion
+testing, and binary research, with live examples of extending it through
+custom mutation passes.</p>
 <h3 id="vibereversing-binaries-with-r2mcp">Vibereversing binaries with
 r2mcp</h3>
 <p>(pancake) - 30m</p>
@@ -153,10 +167,11 @@ VM-Based Obfuscation in Android</h3>
 <p>In this presentation we’ll dive into how virtual machines tick, how
 VM-based obfuscation is applied in Android apps, and how r2 can be used
 to crack open those layers and devirtualize them.</p>
-<h3
-id="reversing-android-rasp-using-radare2-frida">Reversing Android RASP using Radare2 & Frida</h3>
+<h3 id="reversing-android-rasp-using-radare2-frida">Reversing Android
+RASP using Radare2 &amp; Frida</h3>
 <p>(apkunpacker) - 30m</p>
-<p>Practical use of radare2 & frida to efficiently analyze RASP checks during RE</p>
+<p>Practical use of radare2 &amp; frida to efficiently analyze RASP
+checks during RE</p>
 <h3 id="crack-rust-with-r2ai">Crack Rust with r2ai</h3>
 <p>(cryptax) - 30m</p>
 <p>Have you ever reversed Rust binaries? No? Lucky you! Simple code
@@ -165,6 +180,15 @@ way to reverse it: println is a macro, strings are fat pointers,
 compiler uses monomorphization… So, how can we solve a Rust CrackMe? We
 are going to use r2ai - r2’s Artificial Intelligence plugin. It helps,
 but we’ll nevertheless need practice and brains ;P</p>
+<h3 id="revamping-rfs">Revamping rfs</h3>
+<p>(mikelloc) - 30m</p>
+<p>Join us for a fast-paced overview of the recent enhancements to
+radare2’s filesystem library. We’ll explore the addition of UBIFS
+support, the introduction of a visual, interactive interface for
+filesystem navigation, and new capabilities for extracting metadata and
+recovering on-disk file locations. Learn how these improvements fill in
+the missing bits and open up new possibilities for filesystem analysis,
+debugging, and forensics in radare2.</p>
 <h3 id="rapid-insights-for-malware-analysts">Rapid Insights for Malware
 Analysts</h3>
 <p>(seifreed) - 30m</p>

@@ -60,6 +60,12 @@ Introduction to r2web, which brings the webassembly builds radare2 to the browse
 
 Parsing disassembly has been always a quick and dirty way to extract information from the code, but also to improve the readability replacing inmediates with symbolic information like local variables or function names. This feature has been also very useful for translating any architecture into pseudocode which let high level decompilers like Decai to handle lots of targets with very little effort. During the transition from 5.9 to 6.0, radare2 changed the way these APIs work and improved the state of the art by introducing plugins and generic APIs to help developers reduce code complexity and maintainability while producing more solid results.
 
+### Automated Binary Morphing and Evasion Analytics
+
+(seilfreed) - 30m
+
+This talk introduces r2morph, a framework for transforming binaries while preserving their behaviour. Built on radare2, it performs semantic-aware mutations such as instruction substitution, NOP insertion, and control-flow flattening. We’ll explore its architecture, multi-architecture support, and practical uses in obfuscation, evasion testing, and binary research, with live examples of extending it through custom mutation passes.
+
 ### Vibereversing binaries with r2mcp
 
 (pancake) - 30m
@@ -83,6 +89,12 @@ Practical use of radare2 & frida to efficiently analyze RASP checks during RE
 (cryptax) - 30m
 
 Have you ever reversed Rust binaries? No? Lucky you! Simple code turns into 600+ functions, and many of its concepts have impact on the way to reverse it: println is a macro, strings are fat pointers, compiler uses monomorphization... So, how can we solve a Rust CrackMe? We are going to use r2ai - r2's Artificial Intelligence plugin. It helps, but we'll nevertheless need practice and brains ;P
+
+### Revamping rfs
+
+(mikelloc) - 30m
+
+Join us for a fast-paced overview of the recent enhancements to radare2’s filesystem library. We’ll explore the addition of UBIFS support, the introduction of a visual, interactive interface for filesystem navigation, and new capabilities for extracting metadata and recovering on-disk file locations. Learn how these improvements fill in the missing bits and open up new possibilities for filesystem analysis, debugging, and forensics in radare2.
 
 ### Rapid Insights for Malware Analysts
 
