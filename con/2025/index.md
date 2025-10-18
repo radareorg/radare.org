@@ -12,7 +12,7 @@ This time you don't have to worry about booking flights or hotels, it will be pu
 
 * **Event Date**: October 24, 25
 * **Closing** [CFP](mailto:r2con@radare.org): October 12th
-* **Location**: [Online](/discord) YouTube/Discord
+* **Location**: Online [YouTube](https://youtube.com/r2con)/[Discord](/discord)
 
 Stay tuned!
 
