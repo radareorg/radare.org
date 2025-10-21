@@ -9,14 +9,14 @@ Starting at 16h CEST
 * 40;apkunpacker; <a href="#rasp">Reversing Android RASP using Radare2 & Frida</a>
 * 40;Ahmethan; <a href="#devirt">Devirtualizing VM Based Obfuscations on Android</a>
 * 40;sha0; <a href="#mwemu">Running r2 in mwemu emulated processes</a>
-* 40;pancake; <a href="#toctou">TocTouMaps</a>
+* 20;gum3t; <a href="#chameleon">Chameleon - polymorphic shell engine</a>
 * 10;pancake;<a href="#close0">Closing day</a>
 
 ### Saturday 25th October
 
 Starting at 16h CEST
 
-* 20;gum3t; <a href="#chameleon">Chameleon - polymorphic shell engine</a>
+* 40;pancake; <a href="#toctou">TocTouMaps</a>
 * 40;ulexec; <a href="#solana">Analyzing Solana Binaries</a>
 * 20;satk0; <a href="#parse">Refreshing the state of parsing disassemblya</a>
 * 40;buherator;<a href="#r4ghidra">When worlds collide: r4ghidra</a>
