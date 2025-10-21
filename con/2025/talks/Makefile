@@ -1,0 +1,2 @@
+all:
+	node generate.js

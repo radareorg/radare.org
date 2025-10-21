@@ -74,7 +74,8 @@ engineering framework!</p>
 <p>This time you don’t have to worry about booking flights or hotels, it
 will be purely online, join the chats and watch the stream!</p>
 <ul>
-<li><strong>Event Date</strong>: October 24, 25</li>
+<li><strong>Event Date</strong>: <a href="talks/r2con2025.ics">October
+24, 25</a></li>
 <li><strong>Closing</strong> <a href="mailto:r2con@radare.org">CFP</a>:
 October 12th</li>
 <li><strong>Location</strong>: Online <a
@@ -82,7 +83,115 @@ href="https://youtube.com/r2con">YouTube</a>/<a
 href="/discord">Discord</a></li>
 </ul>
 <p>Stay tuned!</p>
-<h2 id="schedule">Schedule</h2>
+<p><h2>Friday 24th October</h2>
+<table border="0"><tr data-start="2025-10-24T15:00:00.000Z" data-end="2025-10-24T15:30:00.000Z">
+<td class="time">17:00</td>
+<td>pancake</td>
+<td> Welcome to r2con2025</td>
+</tr>
+<tr data-start="2025-10-24T15:30:00.000Z" data-end="2025-10-24T16:10:00.000Z">
+<td class="time">17:30</td>
+<td>grepharder</td>
+<td> Uncovering Mobile App Weaknesses</td>
+</tr>
+<tr data-start="2025-10-24T16:10:00.000Z" data-end="2025-10-24T16:50:00.000Z">
+<td class="time">18:10</td>
+<td>cryptax</td>
+<td> Crack Rust with r2ai</td>
+</tr>
+<tr data-start="2025-10-24T16:50:00.000Z" data-end="2025-10-24T17:30:00.000Z">
+<td class="time">18:50</td>
+<td>seifreed</td>
+<td> Rapid Insights for Malware Analysts</td>
+</tr>
+<tr data-start="2025-10-24T17:30:00.000Z" data-end="2025-10-24T18:10:00.000Z">
+<td class="time">19:30</td>
+<td>apkunpacker</td>
+<td> Emulating</td>
+</tr>
+<tr data-start="2025-10-24T18:10:00.000Z" data-end="2025-10-24T18:50:00.000Z">
+<td class="time">20:10</td>
+<td>Ahmethan</td>
+<td> Devirtualizing VM Based Obfuscations on Android</td>
+</tr>
+<tr data-start="2025-10-24T18:50:00.000Z" data-end="2025-10-24T19:30:00.000Z">
+<td class="time">20:50</td>
+<td>sha0</td>
+<td> Running r2 in mwemu emulated processes</td>
+</tr>
+<tr data-start="2025-10-24T19:30:00.000Z" data-end="2025-10-24T20:10:00.000Z">
+<td class="time">21:30</td>
+<td>pancake</td>
+<td> TocTouMaps</td>
+</tr>
+<tr data-start="2025-10-24T20:10:00.000Z" data-end="2025-10-24T20:20:00.000Z">
+<td class="time">22:10</td>
+<td>pancake</td>
+<td>Closing day</td>
+</tr>
+</table>
+<h2>Saturday 25th October</h2>
+<table border="0"><tr data-start="2025-10-25T15:00:00.000Z" data-end="2025-10-25T15:20:00.000Z">
+<td class="time">17:00</td>
+<td>gum3t</td>
+<td> Chameleon - polymorphic shell engine</td>
+</tr>
+<tr data-start="2025-10-25T15:20:00.000Z" data-end="2025-10-25T16:00:00.000Z">
+<td class="time">17:20</td>
+<td>ulexec</td>
+<td> Analyzing Solana Binaries</td>
+</tr>
+<tr data-start="2025-10-25T16:00:00.000Z" data-end="2025-10-25T16:20:00.000Z">
+<td class="time">18:00</td>
+<td>satk0</td>
+<td> Refreshing the state of parsing disassembly</td>
+</tr>
+<tr data-start="2025-10-25T16:20:00.000Z" data-end="2025-10-25T17:00:00.000Z">
+<td class="time">18:20</td>
+<td>buherator</td>
+<td>When worlds collide: r4ghidra</td>
+</tr>
+<tr data-start="2025-10-25T17:00:00.000Z" data-end="2025-10-25T17:40:00.000Z">
+<td class="time">19:00</td>
+<td>IncogMafia</td>
+<td> Accessing r2 from anywhere anytime</td>
+</tr>
+<tr data-start="2025-10-25T17:40:00.000Z" data-end="2025-10-25T18:20:00.000Z">
+<td class="time">19:40</td>
+<td>pancake</td>
+<td>VibeReversing</td>
+</tr>
+<tr data-start="2025-10-25T18:20:00.000Z" data-end="2025-10-25T19:00:00.000Z">
+<td class="time">20:20</td>
+<td>seifreed</td>
+<td>Automated Binary Morphing</td>
+</tr>
+<tr data-start="2025-10-25T19:00:00.000Z" data-end="2025-10-25T19:40:00.000Z">
+<td class="time">21:00</td>
+<td>mikelloc</td>
+<td>Revamping FileSystems support</td>
+</tr>
+<tr data-start="2025-10-25T19:40:00.000Z" data-end="2025-10-25T19:50:00.000Z">
+<td class="time">21:40</td>
+<td>pancake</td>
+<td>Closing</td>
+</tr>
+</table>
+
+<script>
+function adjustTimes() {
+  const rows = document.querySelectorAll('tr[data-start]');
+  rows.forEach(row => {
+    const start = new Date(row.dataset.start);
+    const end = new Date(row.dataset.end);
+    const timeCell = row.querySelector('.time');
+    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  });
+}
+adjustTimes();
+</script>
+</p>
+<h2 id="presentations">Presentations</h2>
 <h3 id="latest-news-in-r2land">Latest news in r2land</h3>
 <p>(pancake) - 30m</p>
 <p>Lots of things has changed in a year, reading git log can be boring

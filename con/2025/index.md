@@ -10,13 +10,15 @@ Welcome back to your favorite conference around the radare reverse engineering f
 
 This time you don't have to worry about booking flights or hotels, it will be purely online, join the chats and watch the stream!
 
-* **Event Date**: October 24, 25
+* **Event Date**: [October 24, 25](talks/r2con2025.ics)
 * **Closing** [CFP](mailto:r2con@radare.org): October 12th
 * **Location**: Online [YouTube](https://youtube.com/r2con)/[Discord](/discord)
 
 Stay tuned!
 
-## Schedule
+SCHEDULE
+
+## Presentations
 
 ### Latest news in r2land
 
