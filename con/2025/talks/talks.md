@@ -2,27 +2,27 @@
 
 Starting at 17h CEST
 
-* 30;pancake; Welcome to r2con2025
-* 40;grepharder; Uncovering Mobile App Weaknesses
-* 40;cryptax; Crack Rust with r2ai
-* 40;seifreed; Rapid Insights for Malware Analysts
-* 40;apkunpacker; Reversing Android RASP using Radare2 & Frida
-* 40;Ahmethan; Devirtualizing VM Based Obfuscations on Android
-* 40;sha0; Running r2 in mwemu emulated processes; 30m
-* 40;pancake; TocTouMaps
-* 10;pancake;Closing day
+* 30;pancake; <a href="#welcome">Welcome to r2con2025</a>
+* 40;grepharder; <a href="#mobile">Uncovering Mobile App Weaknesses</a>
+* 40;cryptax; <a href="#rust">Crack Rust with r2ai</a>
+* 40;seifreed; <a href="#inspect">Rapid Insights for Malware Analysts</a>
+* 40;apkunpacker; <a href="#rasp">Reversing Android RASP using Radare2 & Frida</a>
+* 40;Ahmethan; <a href="#devirt">Devirtualizing VM Based Obfuscations on Android</a>
+* 40;sha0; <a href="#mwemu">Running r2 in mwemu emulated processes</a>
+* 40;pancake; <a href="#toctou">TocTouMaps</a>
+* 10;pancake;<a href="#close0">Closing day</a>
 
 ### Saturday 25th October
 
 Starting at 17h CEST
 
-* 20;gum3t; Chameleon - polymorphic shell engine
-* 40;ulexec; Analyzing Solana Binaries
-* 20;satk0; Refreshing the state of parsing disassembly
-* 40;buherator;When worlds collide: r4ghidra
-* 40;IncogMafia; Accessing r2 from anywhere anytime
-* 40;pancake;VibeReversing
-* 40;seifreed;Automated Binary Morphing
-* 40;mikelloc;Revamping FileSystems support
-* 10;pancake;Closing Conference
+* 20;gum3t; <a href="#chameleon">Chameleon - polymorphic shell engine</a>
+* 40;ulexec; <a href="#solana">Analyzing Solana Binaries</a>
+* 20;satk0; <a href="#parse">Refreshing the state of parsing disassemblya</a>
+* 40;buherator;<a href="#r4ghidra">When worlds collide: r4ghidra</a>
+* 40;IncogMafia; <a href="#r2web">Accessing r2 from anywhere anytime</a>
+* 40;pancake;<a href="#vibe">VibeReversing</a>
+* 40;seifreed;<a href="#morph">Automated Binary Morphing</a>
+* 40;mikelloc;<a href="#rfs">Revamping FileSystems support</a>
+* 10;pancake;<a href="#close2">Closing Conference</a>
 ```
