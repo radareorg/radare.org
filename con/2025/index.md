@@ -16,6 +16,8 @@ This time you don't have to worry about booking flights or hotels, it will be pu
 
 Stay tuned!
 
+Schedule in your local browser time
+
 SCHEDULE
 
 ## Presentations
