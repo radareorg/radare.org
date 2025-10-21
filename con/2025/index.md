@@ -70,6 +70,12 @@ Parsing disassembly has been always a quick and dirty way to extract information
 
 This talk introduces r2morph, a framework for transforming binaries while preserving their behaviour. Built on radare2, it performs semantic-aware mutations such as instruction substitution, NOP insertion, and control-flow flattening. We’ll explore its architecture, multi-architecture support, and practical uses in obfuscation, evasion testing, and binary research, with live examples of extending it through custom mutation passes.
 
+### <a name="vacuum">Restoring the Vacuum</a>
+
+(brainstorm) - 30m
+
+We took apart a broken vacuum cleaner and reverse engineered it from hardware to firmware, building our own custom system to gain full control over its sensors and motors. This talk walks through the entire process — from capturing hardware traces and identifying peripherals to using AI tools to analyze an ARM32 firmware, recover working source code, and fine-tune real-time control parameters. Expect practical, replicable techniques and real use cases where electronics, reverse engineering, and machine learning come together to bring old devices back to life.
+
 ### <a name="vibe">Vibereversing binaries with r2mcp</a>
 
 (pancake) - 30m
