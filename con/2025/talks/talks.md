@@ -1,6 +1,6 @@
 ### Friday 24th October
 
-Starting at 17h CEST
+Starting at 16h CEST
 
 * 30;pancake; <a href="#welcome">Welcome to r2con2025</a>
 * 40;grepharder; <a href="#mobile">Uncovering Mobile App Weaknesses</a>
@@ -14,7 +14,7 @@ Starting at 17h CEST
 
 ### Saturday 25th October
 
-Starting at 17h CEST
+Starting at 16h CEST
 
 * 20;gum3t; <a href="#chameleon">Chameleon - polymorphic shell engine</a>
 * 40;ulexec; <a href="#solana">Analyzing Solana Binaries</a>
