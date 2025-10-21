@@ -3,8 +3,6 @@
 
 <div class="container">
 
-We are proud to announce r2con2025!
-
 <img src="r2roots.jpg" width="150" style="float:left">
 
 Welcome back to your favorite conference around the radare reverse engineering framework!
@@ -13,11 +11,11 @@ This time you don't have to worry about booking flights or hotels, it will be pu
 
 * **Event Date**: [October 24, 25](talks/r2con2025.ics)
 * **Closing** [CFP](mailto:r2con@radare.org): October 12th
-* **Location**: Online [YouTube](https://youtube.com/r2con)/[Discord](/discord)
+* **Location**: [YouTube](https://youtube.com/r2con)/[Discord](/discord)/[Telegram](https://t.me/r2con2025)
+* **HashTag**: Fediverse [#r2con2025](https://infosec.exchange/tags/r2con2025)
 
-Stay tuned!
 
-This Schedule is adjusted to your local time!
+Check the schedule below! (magically adjusted to your local time!)
 
 SCHEDULE
 
