@@ -107,7 +107,7 @@ href="/discord">Discord</a></li>
 <tr data-start="2025-10-24T17:30:00.000Z" data-end="2025-10-24T18:10:00.000Z">
 <td class="time">19:30</td>
 <td>apkunpacker</td>
-<td> Emulating</td>
+<td> Reversing Android RASP using Radare2 SCHEDULE Frida</td>
 </tr>
 <tr data-start="2025-10-24T18:10:00.000Z" data-end="2025-10-24T18:50:00.000Z">
 <td class="time">20:10</td>
@@ -174,7 +174,7 @@ href="/discord">Discord</a></li>
 <tr data-start="2025-10-25T19:40:00.000Z" data-end="2025-10-25T19:50:00.000Z">
 <td class="time">21:40</td>
 <td>pancake</td>
-<td>Closing</td>
+<td>Closing Conference</td>
 </tr>
 </table>
 
@@ -185,7 +185,7 @@ function adjustTimes() {
     const start = new Date(row.dataset.start);
     const end = new Date(row.dataset.end);
     const timeCell = row.querySelector('.time');
-    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});timeCell.textContent = `${localStart}`;
   });
 }
 adjustTimes();

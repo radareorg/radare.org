@@ -84,6 +84,8 @@ if (gShowEndTime) {
     html += `const localEnd = end.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     timeCell.textContent = \`\${localStart} - \${localEnd}\`;
     `;
+    } else {
+    html += `timeCell.textContent = \`\${localStart}\`;`;
     }
 html += `
   });
