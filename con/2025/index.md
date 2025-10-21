@@ -46,6 +46,12 @@ R4Ghidra is a full rewrite of the radare2 commandline parser and the most repres
 
 An Introduction to the Solana runtime and the sBPF architecture with the brand new sBPF plug-in in radare2
 
+### <a name="vibe">Vibereversing binaries with r2mcp</a>
+
+(pancake) - 30m
+
+AI is rapidly transforming the way we work, and MCPs open the door for agents to seamlessly use tools and tackle complex problems. They not only help users learn new tools without digging through documentation but also provide a powerful way to accelerate reverse engineering workflows across diverse toolchains.
+
 ### <a name="chameleon">Chameleon: polymorphic engine for position independent shellcode</a>
 
 (gum3t) - 30m
@@ -84,15 +90,9 @@ This talk demonstrates a high-compression framework achieving 78-98% bit savings
 
 ### <a name="vacuum">Restoring the Vacuum</a>
 
-(brainstorm) - 30m
+(brainstorm+pancake) - 30m
 
-We took apart a broken vacuum cleaner and reverse engineered it from hardware to firmware, building our own custom system to gain full control over its sensors and motors. This talk walks through the entire process — from capturing hardware traces and identifying peripherals to using AI tools to analyze an ARM32 firmware, recover working source code, and fine-tune real-time control parameters. Expect practical, replicable techniques and real use cases where electronics, reverse engineering, and machine learning come together to bring old devices back to life.
-
-### <a name="vibe">Vibereversing binaries with r2mcp</a>
-
-(pancake) - 30m
-
-AI is rapidly transforming the way we work, and MCPs open the door for agents to seamlessly use tools and tackle complex problems. They not only help users learn new tools without digging through documentation but also provide a powerful way to accelerate reverse engineering workflows across diverse toolchains.
+We took apart an EOL'd vacuum cleaner and reverse engineered it from hardware to firmware, building our own custom system to gain full control over the main compute board. This talk walks through the entire process — from capturing hardware traces and identifying peripherals to using AI tools to analyze an ARM32 firmware and recover working source code. Expect practical insights where electronics, reverse engineering, and LLMs come together to bring "old" devices back to life.
 
 ### Closing Day
 
