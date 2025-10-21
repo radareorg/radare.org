@@ -83,6 +83,7 @@ href="https://youtube.com/r2con">YouTube</a>/<a
 href="/discord">Discord</a></li>
 </ul>
 <p>Stay tuned!</p>
+<p>Schedule in your local browser time</p>
 <p><h2>Friday 24th October</h2>
 <table border="0"><tr data-start="2025-10-24T15:00:00.000Z" data-end="2025-10-24T15:30:00.000Z">
 <td class="time">17:00</td>
@@ -185,7 +186,7 @@ function adjustTimes() {
     const start = new Date(row.dataset.start);
     const end = new Date(row.dataset.end);
     const timeCell = row.querySelector('.time');
-    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});timeCell.textContent = `${localStart}`;
+    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});timeCell.textContent = `${localStart}`;
   });
 }
 adjustTimes();

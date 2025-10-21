@@ -79,9 +79,9 @@ function adjustTimes() {
     const start = new Date(row.dataset.start);
     const end = new Date(row.dataset.end);
     const timeCell = row.querySelector('.time');
-    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});`;
+    const localStart = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});`;
 if (gShowEndTime) {
-    html += `const localEnd = end.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    html += `    const localEnd = end.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
     timeCell.textContent = \`\${localStart} - \${localEnd}\`;
     `;
     } else {
