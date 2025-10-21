@@ -18,7 +18,7 @@ Starting at 16h CEST
 Starting at 15h CEST
 
 * 40;brain+cake; <a href="#vacuum">Restoring the Vacuum</a>
-* 40;ulexec+seco; <a href="#solana">Analyzing Solana Binaries</a>
+* 60;ulexec+seco; <a href="#solana">Analyzing Solana Binaries</a>
 * 20;satk0; <a href="#parse">Refreshing the state of parsing disassembly</a>
 * 40;pancake; <a href="#toctou">TocTouMaps</a>
 * 15;fpedulli; <a href="#comp">High-Compression Framework for Binary Analysis</a>
