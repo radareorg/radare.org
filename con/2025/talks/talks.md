@@ -21,6 +21,7 @@ Starting at 16h CEST
 * 40;ulexec; <a href="#solana">Analyzing Solana Binaries</a>
 * 40;brainstorm; <a href="#vacuum">Restoring the Vacuum</a>
 * 20;satk0; <a href="#parse">Refreshing the state of parsing disassembly</a>
+* 15;fpedulli; <a href="#comp">High-Compression Framework for Binary Analysis</a>
 * 40;buherator;<a href="#r4ghidra">When worlds collide: r4ghidra</a>
 * 40;IncogMafia; <a href="#r2web">Accessing r2 from anywhere anytime</a>
 * 40;seifreed;<a href="#morph">Automated Binary Morphing</a>

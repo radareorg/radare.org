@@ -70,6 +70,18 @@ Parsing disassembly has been always a quick and dirty way to extract information
 
 This talk introduces r2morph, a framework for transforming binaries while preserving their behaviour. Built on radare2, it performs semantic-aware mutations such as instruction substitution, NOP insertion, and control-flow flattening. We’ll explore its architecture, multi-architecture support, and practical uses in obfuscation, evasion testing, and binary research, with live examples of extending it through custom mutation passes.
 
+### <a name="comp">High Compression Framework for Binary Analysis</a>
+
+(Francesco Pedulli) - 15m
+
+This talk demonstrates a high-compression framework achieving 78-98% bit savings on real binaries, with practical applications for reverse engineering:
+
+- Binary canonicalization using r2pipe for malware analysis
+- Crypto artifact detection via entropy analysis
+- Live compression demonstrations (97.7-98% verified)
+- All results 100% lossless and hash-verifiable
+
+
 ### <a name="vacuum">Restoring the Vacuum</a>
 
 (brainstorm) - 30m
