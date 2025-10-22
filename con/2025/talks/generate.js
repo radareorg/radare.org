@@ -6,6 +6,10 @@ const fs = typeof Deno !== 'undefined' ? {
 const gShowTitle = false;
 const gShowEndTime = false;
 
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, '');
+}
+
 const content = fs.readFileSync("talks.md", "utf8");
 const lines = content.split("\n");
 
@@ -25,7 +29,7 @@ for (const line of lines) {
     const parts = talkStr.split(";");
     const duration = parseInt(parts[0]);
     const speaker = parts[1];
-    const title = parts[2] || "";
+    const title = stripHtml(parts[2] || "");
     currentDay.talks.push({ duration, speaker, title });
   }
 }
