@@ -153,48 +153,48 @@ href="https://infosec.exchange/tags/r2con2025">#r2con2025</a></li>
 <td class="sched">brain+cake</td>
 <td class="sched"> <a href="#vacuum">Restoring the Vacuum</a></td>
 </tr>
-<tr data-start="2025-10-25T13:40:00.000Z" data-end="2025-10-25T14:40:00.000Z">
+<tr data-start="2025-10-25T13:40:00.000Z" data-end="2025-10-25T14:50:00.000Z">
 <td class="time">15:40</td>
 <td class="sched">ulexec+seco</td>
 <td class="sched"> <a href="#solana">Analyzing Solana Binaries</a></td>
 </tr>
-<tr data-start="2025-10-25T14:40:00.000Z" data-end="2025-10-25T15:00:00.000Z">
-<td class="time">16:40</td>
+<tr data-start="2025-10-25T14:50:00.000Z" data-end="2025-10-25T15:10:00.000Z">
+<td class="time">16:50</td>
 <td class="sched">satk0</td>
 <td class="sched"> <a href="#parse">Refreshing the disassembly parsers</a></td>
 </tr>
-<tr data-start="2025-10-25T15:00:00.000Z" data-end="2025-10-25T15:40:00.000Z">
-<td class="time">17:00</td>
+<tr data-start="2025-10-25T15:10:00.000Z" data-end="2025-10-25T15:50:00.000Z">
+<td class="time">17:10</td>
 <td class="sched">pancake</td>
 <td class="sched"> <a href="#toctou">TocTouMaps</a></td>
 </tr>
-<tr data-start="2025-10-25T15:40:00.000Z" data-end="2025-10-25T15:55:00.000Z">
-<td class="time">17:40</td>
+<tr data-start="2025-10-25T15:50:00.000Z" data-end="2025-10-25T16:05:00.000Z">
+<td class="time">17:50</td>
 <td class="sched">fpedulli</td>
 <td class="sched"> <a href="#comp">High-Compression for Binaries</a></td>
 </tr>
-<tr data-start="2025-10-25T15:55:00.000Z" data-end="2025-10-25T16:35:00.000Z">
-<td class="time">17:55</td>
+<tr data-start="2025-10-25T16:05:00.000Z" data-end="2025-10-25T16:45:00.000Z">
+<td class="time">18:05</td>
 <td class="sched">apkunpacker</td>
 <td class="sched"> <a href="#rasp">Reversing Android RASP</a></td>
 </tr>
-<tr data-start="2025-10-25T16:35:00.000Z" data-end="2025-10-25T17:15:00.000Z">
-<td class="time">18:35</td>
+<tr data-start="2025-10-25T16:45:00.000Z" data-end="2025-10-25T17:25:00.000Z">
+<td class="time">18:45</td>
 <td class="sched">seifreed</td>
 <td class="sched"><a href="#morph">Automated Binary Morphing</a></td>
 </tr>
-<tr data-start="2025-10-25T17:15:00.000Z" data-end="2025-10-25T17:55:00.000Z">
-<td class="time">19:15</td>
+<tr data-start="2025-10-25T17:25:00.000Z" data-end="2025-10-25T18:05:00.000Z">
+<td class="time">19:25</td>
 <td class="sched">IncogMafia</td>
 <td class="sched"> <a href="#r2web">Accessing r2 from anywhere anytime</a></td>
 </tr>
-<tr data-start="2025-10-25T17:55:00.000Z" data-end="2025-10-25T18:35:00.000Z">
-<td class="time">19:55</td>
+<tr data-start="2025-10-25T18:05:00.000Z" data-end="2025-10-25T18:45:00.000Z">
+<td class="time">20:05</td>
 <td class="sched">mikelloc</td>
 <td class="sched"><a href="#rfs">Revamping FileSystems</a></td>
 </tr>
-<tr data-start="2025-10-25T18:35:00.000Z" data-end="2025-10-25T18:45:00.000Z">
-<td class="time">20:35</td>
+<tr data-start="2025-10-25T18:45:00.000Z" data-end="2025-10-25T18:55:00.000Z">
+<td class="time">20:45</td>
 <td class="sched">pancake</td>
 <td class="sched"><a href="#close2">Closing Conference</a></td>
 </tr>
@@ -239,6 +239,9 @@ solve reverse engineering challenges and validate MASTG tests step by
 step. All challenges will be available as APK and IPA files for hands-on
 practice. Will we also use AI to tackle some of these challenges?
 Maybe.</p>
+<center>
+<img width="200" src="img/weak.jpg">
+</center>
 <h3 id="crack-rust-with-r2ai"><a name="rust">Crack Rust with
 r2ai</a></h3>
 <p>(cryptax) - 30m</p>
@@ -342,8 +345,22 @@ and LLMs come together to bring “old” devices back to life.</p>
 id="reverse-engineering-solana-programs-with-radare2"><a name="solana">Reverse
 Engineering Solana Programs with radare2</a></h3>
 <p>(ulexec + secoalba) - 30m</p>
-An Introduction to the Solana runtime and the sBPF architecture with the
-brand new sBPF plug-in in radare2
+<p>Solana programs execute inside a custom virtual machine built on top
+of sBPF, a modified version of eBPF optimized for parallel transaction
+processing.</p>
+<p>In this talk, we’ll break down the fundamentals of Solana’s runtime
+model, including its account-based architecture, program input
+serialization, and execution pipeline, to understand how transactions
+reach and interact with on-chain programs. From there, we’ll explore the
+sBPF ISA, memory layout, relocation mechanism, and syscall interface, as
+an overview of the building blocks of Solana’s execution
+environment.</p>
+Finally, we’ll demonstrate the new set of sBPF plug-ins for radare2,
+which enables disassembly, syscall name resolution, and Rust string
+detection for Solana programs for sBPF v0, v1, v2 and v3. We’ll walk
+through how these capabilities can help security researchers analyze
+Solana programs without source-code, and conclude with a short roadmap
+for upcoming improvements.
 <center>
 <img width="200" src="img/sol.jpg">
 </center>

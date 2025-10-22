@@ -40,6 +40,10 @@ Lots of things has changed in a year, reading git log can be boring and release 
 
 In this talk we'll dice into common mobile app weaknesses from the OWASP MASWE catalogue and demonstrates how to uncover them in practice. Using radare2 and other essential tools from the OWASP MASTG, we will solve reverse engineering challenges and validate MASTG tests step by step. All challenges will be available as APK and IPA files for hands-on practice. Will we also use AI to tackle some of these challenges? Maybe.
 
+<center>
+<img width="200" src="img/weak.jpg">
+</center>
+
 ### <a name="rust">Crack Rust with r2ai</a>
 
 (cryptax) - 30m
@@ -132,7 +136,11 @@ We took apart an EOL'd vacuum cleaner and reverse engineered it from hardware to
 
 (ulexec + secoalba) - 30m
 
-An Introduction to the Solana runtime and the sBPF architecture with the brand new sBPF plug-in in radare2
+Solana programs execute inside a custom virtual machine built on top of sBPF, a modified version of eBPF optimized for parallel transaction processing.
+
+In this talk, we’ll break down the fundamentals of Solana’s runtime model, including its account-based architecture, program input serialization, and execution pipeline, to understand how transactions reach and interact with on-chain programs. From there, we’ll explore the sBPF ISA, memory layout, relocation mechanism, and syscall interface, as an overview of the building blocks of Solana’s execution environment.
+
+Finally, we’ll demonstrate the new set of sBPF plug-ins for radare2, which enables disassembly, syscall name resolution, and Rust string detection for Solana programs for sBPF v0, v1, v2 and v3. We’ll walk through how these capabilities can help security researchers analyze Solana programs without source-code, and conclude with a short roadmap for upcoming improvements.
 <center>
 <img width="200" src="img/sol.jpg">
 </center>
