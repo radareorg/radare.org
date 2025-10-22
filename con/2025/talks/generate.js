@@ -56,7 +56,7 @@ for (const day of days) {
 }
 
 // Now, generate HTML
-let html = ""
+let html = "<center>"
 for (const day of days) {
   html += `<h2>${day.date}</h2>
 <table border="0">`;
@@ -96,6 +96,7 @@ html += `
 }
 adjustTimes();
 </script>
+</center>
 `;
 
 fs.writeFileSync("schedule.html", html);
