@@ -8,7 +8,7 @@ awk 'BEGIN {
   close("talks/schedule.html")
 }
 {
-  gsub(/SCHEDULE/, html)
+  gsub(/<p>SCHEDULE<\/p>/, html)
   print
 }' tmp > index.html
 rm -f tmp

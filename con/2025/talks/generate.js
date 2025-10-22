@@ -29,7 +29,7 @@ for (const line of lines) {
     const parts = talkStr.split(";");
     const duration = parseInt(parts[0]);
     const speaker = parts[1];
-    const title = stripHtml(parts[2] || "");
+    const title = parts[2];
     currentDay.talks.push({ duration, speaker, title });
   }
 }
@@ -66,8 +66,8 @@ html += `<tr><th>Time (CEST)</th><th>Speaker</th><th>Title</th></tr>`;
   for (const talk of day.talks) {
     html += `<tr data-start="${talk.start.toISOString()}" data-end="${talk.end.toISOString()}">
 <td class="time">${talk.cestTime}</td>
-<td>${talk.speaker}</td>
-<td>${talk.title}</td>
+<td class="sched">${talk.speaker}</td>
+<td class="sched">${talk.title}</td>
 </tr>
 `;
   }
@@ -111,11 +111,12 @@ for (const day of days) {
     const uid = `r2con2025-${talk.start.getTime()}`;
     const dtstart = talk.start.toISOString().replace(/[:-]/g, '').slice(0,15) + 'Z';
     const dtend = talk.end.toISOString().replace(/[:-]/g, '').slice(0,15) + 'Z';
+    const title = stripHtml(talk.title);
     ical += `BEGIN:VEVENT
 UID:${uid}
 DTSTART:${dtstart}
 DTEND:${dtend}
-SUMMARY:${talk.title}
+SUMMARY:${title}
 DESCRIPTION:Speaker: ${talk.speaker}
 END:VEVENT
 `;
