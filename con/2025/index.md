@@ -29,7 +29,9 @@ SCHEDULE
 Lots of things has changed in a year, reading git log can be boring and release notes are usually not explicative enough to catch all the juicy improvements the whole radare2 ecosystem provides. This talk will cover you up and you will learn all the stuff you missed as well as spoiling some of the future plans in the roadmap
 
 <center>
-<img width="200" src="img/intro.jpg">
+<a href="https://youtube.com/r2con">
+<img border=1 width="200" src="img/intro.jpg">
+</a>
 </center>
 
 ### <a name="mobile">Using r2 to Uncover Mobile App Weaknesses</a>
