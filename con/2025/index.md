@@ -74,14 +74,14 @@ R4Ghidra is a full rewrite of the radare2 commandline parser and the most repres
 <img width="200" src="img/r4g.jpg">
 </center>
 
-### <a name="vibe">VibeReversing binaries with r2mcp</a>
+### <a name="toctou">TocTou Maps</a>
 
 (pancake) - 30m
 
-AI is rapidly transforming the way we work, and MCPs open the door for agents to seamlessly use tools and tackle complex problems. They not only help users learn new tools without digging through documentation but also provide a powerful way to accelerate reverse engineering workflows across diverse toolchains.
+Accessing buffers is always tricky—especially when mmap comes into play. This talk dives into a subtle bug in radare2 that uncovered a series of non-portable syscalls and broader portability issues. Along the way, we’ll explore how operating systems manage memory and how these details can lead to vulnerabilities in modern software. If you’re curious about low-level memory handling and hidden pitfalls, this is a session you won’t want to miss.
 
 <center>
-<img width="200" src="img/vibe.jpg">
+<img width="200" src="img/toctou.jpg">
 </center>
 
 ### <a name="devirt">Devirtualizing VM-Based Obfuscation in Android</a>
@@ -154,14 +154,14 @@ Parsing disassembly has been always a quick and dirty way to extract information
 <img width="200" src="img/parse.jpg">
 </center>
 
-### <a name="toctou">TocTou Maps</a>
+### <a name="vibe">VibeReversing binaries with r2mcp</a>
 
 (pancake) - 30m
 
-Accessing buffers is always tricky—especially when mmap comes into play. This talk dives into a subtle bug in radare2 that uncovered a series of non-portable syscalls and broader portability issues. Along the way, we’ll explore how operating systems manage memory and how these details can lead to vulnerabilities in modern software. If you’re curious about low-level memory handling and hidden pitfalls, this is a session you won’t want to miss.
+AI is rapidly transforming the way we work, and MCPs open the door for agents to seamlessly use tools and tackle complex problems. They not only help users learn new tools without digging through documentation but also provide a powerful way to accelerate reverse engineering workflows across diverse toolchains.
 
 <center>
-<img width="200" src="img/toctou.jpg">
+<img width="200" src="img/vibe.jpg">
 </center>
 
 ### <a name="comp">High Compression Framework for Binary Analysis</a>
