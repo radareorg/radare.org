@@ -42,7 +42,7 @@ In this talk we'll dice into common mobile app weaknesses from the OWASP MASWE c
 
 <center>
 <a href="day1">
-<img width="200" src="img/weak.jpg">
+<img border=1 width="200" src="img/weak.jpg">
 </a>
 </center>
 
@@ -54,7 +54,7 @@ Have you ever reversed Rust binaries? No? Lucky you! Simple code turns into 600+
 
 <center>
 <a href="day1">
-<img width="200" src="img/rust.jpg">
+<img border=1 width="200" src="img/rust.jpg">
 </a>
 </center>
 
@@ -66,7 +66,7 @@ AI is rapidly transforming the way we work, and MCPs open the door for agents to
 
 <center>
 <a href="day1">
-<img width="200" src="img/vibe.jpg">
+<img border=1 width="200" src="img/vibe.jpg">
 </a>
 </center>
 
@@ -79,7 +79,7 @@ Presenting `r2inspect`: a framework for static malware analysis built on top of 
 
 <center>
 <a href="day1">
-<img width="200" src="img/insi.jpg">
+<img border=1 width="200" src="img/insi.jpg">
 </a>
 </center>
 
@@ -91,7 +91,7 @@ R4Ghidra is a full rewrite of the radare2 commandline parser and the most repres
 
 <center>
 <a href="day1">
-<img width="200" src="img/r4g.jpg">
+<img border=1 width="200" src="img/r4g.jpg">
 </a>
 </center>
 
@@ -103,7 +103,7 @@ In this presentation we’ll dive into how virtual machines tick, how VM-based o
 
 <center>
 <a href="day1">
-<img width="200" src="img/devirt.jpg">
+<img border=1 width="200" src="img/devirt.jpg">
 </a>
 </center>
 
@@ -115,7 +115,7 @@ Windows process emulation was already possible with mwemu, and in most of cases 
 
 <center>
 <a href="day1">
-<img width="200" src="img/mwemu.jpg">
+<img border=1 width="200" src="img/mwemu.jpg">
 </a>
 </center>
 
@@ -127,7 +127,7 @@ Chameleon is a polymorphic engine for `x86_64` position-independent shellcode th
 
 <center>
 <a href="day1">
-<img width="200" src="img/cham.jpg">
+<img border=1 width="200" src="img/cham.jpg">
 </a>
 </center>
 
@@ -145,9 +145,11 @@ See you tomorrow!
 
 We took apart an EOL'd vacuum cleaner and reverse engineered it from hardware to firmware, building our own custom system to gain full control over the main compute board. This talk walks through the entire process — from capturing hardware traces and identifying peripherals to using AI tools to analyze an ARM32 firmware and recover working source code. Expect practical insights where electronics, reverse engineering, and LLMs come together to bring "old" devices back to life.
 
+<a href="day2">
 <center>
-<img width="200" src="img/vacu.jpg">
+<img border=1 width="200" src="img/vacu.jpg">
 </center>
+</a>
 
 ### <a name="solana">Reverse Engineering Solana Programs with radare2</a>
 
@@ -159,7 +161,9 @@ In this talk, we’ll break down the fundamentals of Solana’s runtime model, i
 
 Finally, we’ll demonstrate the new set of sBPF plug-ins for radare2, which enables disassembly, syscall name resolution, and Rust string detection for Solana programs for sBPF v0, v1, v2 and v3. We’ll walk through how these capabilities can help security researchers analyze Solana programs without source-code, and conclude with a short roadmap for upcoming improvements.
 <center>
-<img width="200" src="img/sol.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/sol.jpg">
+</a>
 </center>
 
 ### <a name="parse">Refreshing the state of parsing disassembly</a>
@@ -168,7 +172,9 @@ Finally, we’ll demonstrate the new set of sBPF plug-ins for radare2, which ena
 
 Parsing disassembly has been always a quick and dirty way to extract information from the code, but also to improve the readability replacing inmediates with symbolic information like local variables or function names. This feature has been also very useful for translating any architecture into pseudocode which let high level decompilers like Decai to handle lots of targets with very little effort. During the transition from 5.9 to 6.0, radare2 changed the way these APIs work and improved the state of the art by introducing plugins and generic APIs to help developers reduce code complexity and maintainability while producing more solid results.
 <center>
-<img width="200" src="img/parse.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/parse.jpg">
+</a>
 </center>
 
 ### <a name="toctou">TocTou Maps</a>
@@ -178,7 +184,9 @@ Parsing disassembly has been always a quick and dirty way to extract information
 Accessing buffers is always tricky—especially when mmap comes into play. This talk dives into a subtle bug in radare2 that uncovered a series of non-portable syscalls and broader portability issues. Along the way, we’ll explore how operating systems manage memory and how these details can lead to vulnerabilities in modern software. If you’re curious about low-level memory handling and hidden pitfalls, this is a session you won’t want to miss.
 
 <center>
-<img width="200" src="img/toctou.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/toctou.jpg">
+</a>
 </center>
 
 ### <a name="comp">High Compression Framework for Binary Analysis</a>
@@ -193,7 +201,9 @@ This talk demonstrates a high-compression framework achieving 78-98% bit savings
 - All results 100% lossless and hash-verifiable
 
 <center>
-<img width="200" src="img/hico.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/hico.jpg">
+</a>
 </center>
 
 ### <a name="rasp">Reversing Android RASP using Radare2 & Frida</a>
@@ -202,7 +212,9 @@ This talk demonstrates a high-compression framework achieving 78-98% bit savings
 
 Practical use of radare2 and Frida for efficient analysis of RASP checks during reverse engineering. This presentation demonstrates manually invoking init_array to decrypt strings and locating and hooking mprotect to expose runtime-mapped memory regions that contain RASP checks.
 <center>
-<img width="200" src="img/rasp.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/rasp.jpg">
+</a>
 </center>
 
 ### <a name="morph">Automated Binary Morphing and Evasion Analytics</a>
@@ -212,7 +224,9 @@ Practical use of radare2 and Frida for efficient analysis of RASP checks during 
 This talk introduces r2morph, a framework for transforming binaries while preserving their behaviour. Built on radare2, it performs semantic-aware mutations such as instruction substitution, NOP insertion, and control-flow flattening. We’ll explore its architecture, multi-architecture support, and practical uses in obfuscation, evasion testing, and binary research, with live examples of extending it through custom mutation passes.
 
 <center>
-<img width="200" src="img/morf.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/morf.jpg">
+</a>
 </center>
 
 ### <a name="r2web">Accessing radare2 from anywhere, anytime</a>
@@ -222,7 +236,9 @@ This talk introduces r2morph, a framework for transforming binaries while preser
 Introduction to r2web, which brings the webassembly builds radare2 to the browser while still being totally client-side, enabling quick, setup-free reverse engineering for education, collaboration, and lightweight analysis. We'll also cover current limitations and future plans for cross-platform improvements.
 
 <center>
-<img width="200" src="img/r2web.jpg">
+<a href="day2">
+<img border=1 width="200" src="img/r2web.jpg">
+</a>
 </center>
 
 ### <a name="rfs">Revamping rfs</a>
@@ -230,6 +246,12 @@ Introduction to r2web, which brings the webassembly builds radare2 to the browse
 (mikelloc)
 
 Join us for a fast-paced overview of the recent enhancements to radare2’s filesystem library. We’ll explore the addition of UBIFS support, the introduction of a visual, interactive interface for filesystem navigation, and new capabilities for extracting metadata and recovering on-disk file locations. Learn how these improvements fill in the missing bits and open up new possibilities for filesystem analysis, debugging, and forensics in radare2.
+
+<center>
+<a href="day2">
+<img border=1 width="200" src="img/miki.jpg">
+</a>
+</center>
 
 ### Closing Event
 
