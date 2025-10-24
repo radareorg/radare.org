@@ -29,7 +29,7 @@ SCHEDULE
 Lots of things has changed in a year, reading git log can be boring and release notes are usually not explicative enough to catch all the juicy improvements the whole radare2 ecosystem provides. This talk will cover you up and you will learn all the stuff you missed as well as spoiling some of the future plans in the roadmap
 
 <center>
-<a href="https://youtube.com/r2con">
+<a href="day1">
 <img border=1 width="200" src="img/intro.jpg">
 </a>
 </center>
@@ -41,7 +41,9 @@ Lots of things has changed in a year, reading git log can be boring and release 
 In this talk we'll dice into common mobile app weaknesses from the OWASP MASWE catalogue and demonstrates how to uncover them in practice. Using radare2 and other essential tools from the OWASP MASTG, we will solve reverse engineering challenges and validate MASTG tests step by step. All challenges will be available as APK and IPA files for hands-on practice. Will we also use AI to tackle some of these challenges? Maybe.
 
 <center>
+<a href="day1">
 <img width="200" src="img/weak.jpg">
+</a>
 </center>
 
 ### <a name="rust">Crack Rust with r2ai</a>
@@ -51,7 +53,9 @@ In this talk we'll dice into common mobile app weaknesses from the OWASP MASWE c
 Have you ever reversed Rust binaries? No? Lucky you! Simple code turns into 600+ functions, and many of its concepts have impact on the way to reverse it: println is a macro, strings are fat pointers, compiler uses monomorphization... So, how can we solve a Rust CrackMe? We are going to use r2ai - r2's Artificial Intelligence plugin. It helps, but we'll nevertheless need practice and brains ;P
 
 <center>
+<a href="day1">
 <img width="200" src="img/rust.jpg">
+</a>
 </center>
 
 ### <a name="vibe">VibeReversing binaries with r2mcp</a>
@@ -61,7 +65,9 @@ Have you ever reversed Rust binaries? No? Lucky you! Simple code turns into 600+
 AI is rapidly transforming the way we work, and MCPs open the door for agents to seamlessly use tools and tackle complex problems. They not only help users learn new tools without digging through documentation but also provide a powerful way to accelerate reverse engineering workflows across diverse toolchains.
 
 <center>
+<a href="day1">
 <img width="200" src="img/vibe.jpg">
+</a>
 </center>
 
 
@@ -72,7 +78,9 @@ AI is rapidly transforming the way we work, and MCPs open the door for agents to
 Presenting `r2inspect`: a framework for static malware analysis built on top of radare2 and r2pipe, providing accurate detection of obfuscated strings, cryptographic signatures, exploit mitigation analysis, and more
 
 <center>
+<a href="day1">
 <img width="200" src="img/insi.jpg">
+</a>
 </center>
 
 ### <a name="r4ghidra">When Worlds Collide: r4ghidra</a>
@@ -82,7 +90,9 @@ Presenting `r2inspect`: a framework for static malware analysis built on top of 
 R4Ghidra is a full rewrite of the radare2 commandline parser and the most representative commands in pure Java. Yeah that sounds weird, but how does having all your favorite commandline oneliners and scripts to work inside Ghidra without depending on external binaries? What if radare2 can talk to your current Ghidra project and get all the metadata in sync? We will Highlight the challenges and opportunities of reverse engineering tool integration based on lessons learned from r4ghidra development.
 
 <center>
+<a href="day1">
 <img width="200" src="img/r4g.jpg">
+</a>
 </center>
 
 ### <a name="devirt">Devirtualizing VM-Based Obfuscation in Android</a>
@@ -92,7 +102,9 @@ R4Ghidra is a full rewrite of the radare2 commandline parser and the most repres
 In this presentation we’ll dive into how virtual machines tick, how VM-based obfuscation is applied in Android apps, and how r2 can be used to crack open those layers and devirtualize them.
 
 <center>
+<a href="day1">
 <img width="200" src="img/devirt.jpg">
+</a>
 </center>
 
 ### <a name="mwemu">Debugging emulated processes with mwemu</a>
@@ -102,7 +114,9 @@ In this presentation we’ll dive into how virtual machines tick, how VM-based o
 Windows process emulation was already possible with mwemu, and in most of cases was very effective for emulating small group of functions, decrypting stuff, etc. However full-emulation of the malware was something like an utopia. Latest improvements by mwemu team alow the reverser do analysis with radare2 from inside the emulated process. This is useful for inspecting memory data chunks, but also code analysis, functions recognizement, decompilers, ai, or any of the zillions of radare2 features.
 
 <center>
+<a href="day1">
 <img width="200" src="img/mwemu.jpg">
+</a>
 </center>
 
 ### <a name="chameleon">Chameleon: polymorphic engine for position independent shellcode</a>
@@ -112,7 +126,9 @@ Windows process emulation was already possible with mwemu, and in most of cases 
 Chameleon is a polymorphic engine for `x86_64` position-independent shellcode that has been created out of the need to evade signature-based detections in red team environments.
 
 <center>
+<a href="day1">
 <img width="200" src="img/cham.jpg">
+</a>
 </center>
 
 ### <a name="close0">Closing Day</a>
