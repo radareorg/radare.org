@@ -20,7 +20,6 @@ Starting at 15h CEST
 * 30;brain+cake; <a href="#vacuum">Restoring the Vacuum</a>
 * 60;ulexec+seco; <a href="#solana">Analyzing Solana Binaries</a>
 * 15;satk0; <a href="#parse">Refreshing the disassembly parsers</a>
-* 15;fpedulli; <a href="#comp">High-Compression for Binaries</a>
 * 30;pancake; <a href="#toctou">TocTouMaps</a>
 * 30;apkunpacker; <a href="#rasp">Reversing Android RASP</a>
 * 45;seifreed;<a href="#morph">Automated Binary Morphing</a>

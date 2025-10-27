@@ -13,10 +13,11 @@ This time we are making it **fully online**, so you don't have to worry about bo
 * **Location**: [YouTube](https://youtube.com/r2con)/[Discord](/discord)/[Telegram](https://t.me/r2con2025)
 * **HashTag**: Fediverse [#r2con2025](https://infosec.exchange/tags/r2con2025)
 
+Check out the [materials and slides](https://github.com/radareorg/r2con2025)
+
 Check the schedule; it's magically adjusted to your local time!
 
 SCHEDULE
-
 
 ## Presentations
 
@@ -186,23 +187,6 @@ Accessing buffers is always tricky—especially when mmap comes into play. This 
 <center>
 <a href="day2">
 <img border=1 width="200" src="img/toctou.jpg">
-</a>
-</center>
-
-### <a name="comp">High Compression Framework for Binary Analysis</a>
-
-(Francesco Pedulli)
-
-This talk demonstrates a high-compression framework achieving 78-98% bit savings on real binaries, with practical applications for reverse engineering:
-
-- Binary canonicalization using r2pipe for malware analysis
-- Crypto artifact detection via entropy analysis
-- Live compression demonstrations (97.7-98% verified)
-- All results 100% lossless and hash-verifiable
-
-<center>
-<a href="day2">
-<img border=1 width="200" src="img/hico.jpg">
 </a>
 </center>
 
