@@ -12,10 +12,7 @@ This time we are making it **fully online**, so you don't have to worry about bo
 * **Event Date**: October 24, 25 [ICAL](talks/r2con2025.ics)
 * **Location**: [YouTube](https://youtube.com/r2con)/[Discord](/discord)/[Telegram](https://t.me/r2con2025)
 * **HashTag**: Fediverse [#r2con2025](https://infosec.exchange/tags/r2con2025)
-
-Check out the [materials and slides](https://github.com/radareorg/r2con2025)
-
-Check the schedule; it's magically adjusted to your local time!
+* **Materials**: Check the [slides and demos](https://github.com/radareorg/r2con2025)
 
 SCHEDULE
 
