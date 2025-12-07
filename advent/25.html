@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="merry-xrefmas">25 - Merry Xrefmas</h1>
+<p>You made it! You reached the end of the advent calendar!</p>
+<p>It’s been really a pleasure to write all these posts and I really
+wish you appreciate it, learning new things and enjoyed the challenges
+as much as I did preparing them.</p>
+<p>I would like to thanks everyone who tried to keep up solving and
+sharing feedback on everyday’s posts, which helped me to improve not
+just the writings but also identify bugs and missing features in
+radare2, which most of them were addressed.</p>
+<p>It’s important to note that I want this advent calendar to stay
+relevant even after finished. This is, feel free to read, solve the
+challenges, fix bugs, share feedback and bring some life to r2land by
+contributing and enlarging the community.</p>
+<h2 id="form">Form!</h2>
+<p>I’m not sure if I will repeat next year, writing 25 daily posts alone
+is not the funniest thing you can do, but I wanted to set the base to
+let others contribute in the upcoming years.</p>
+<p>Take this post as a call for papers, to read about your feedback on
+the topics covered, quality of challenges and if you think the format
+makes sense to be kept for the future.</p>
+<p>If you enjoyed the advent and would like to have it again next year
+drop your feedback in this anonymous form!</p>
+<ul>
+<li><a
+href="https://forms.gle/y47QYeFYVDfyzh9z5">https://forms.gle/y47QYeFYVDfyzh9z5</a></li>
+</ul>
+<h2 id="thanks">Thanks!</h2>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

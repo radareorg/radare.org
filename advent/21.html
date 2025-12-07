@@ -1,0 +1,392 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="diffing-for-coins">21 - Diffing for Coins</h1>
+<p>Welcome to the 21th day of the Advent of Radare!</p>
+<p>Binary diffing is a key skill for reverse engineers. It’s especially
+useful for identifying patches, vulnerabilities, or dynamic behaviors in
+memory, which is particularly valuable for game hackers.</p>
+<p>In this post, we’ll explore binary diffing from a different
+perspective by finding changing values at runtime, focusing on the
+<code>cw</code> command. By the end, you’ll learn how to apply these
+concepts to hack games in real time, similar to how hackers used tools
+like “Game Genie” or “Action Replay” in the 90s.</p>
+<h2 id="changing-dwords">Changing dwords</h2>
+<p>We’ve previously explored radiff2’s capabilities for binary
+comparison in another advent post. Today, we’ll focus on other memory
+comparison features available inside the radare2 shell under the
+<code>c</code> subcommands.</p>
+<p>The <code>c</code> stands for <em>comparison</em>, particularly the
+‘cw’ command which is used for <em>watching</em> changes in memory
+areas.</p>
+<p>The workflow for using comparison watches typically begins with the
+‘/v’ command to search for specific values in memory, followed by
+setting up comparison watchers on addresses of interest.</p>
+<p>As the program executes, these watchers continuously track changes,
+allowing analysts to filter out irrelevant results while maintaining
+focus on significant memory locations. The combination of value
+searching and comparison watching creates a powerful toolkit for
+understanding how programs manipulate data in memory.</p>
+<p>This integration of static and dynamic analysis capabilities makes
+radare2 an effective tool for both binary and memory analysis, suitable
+for a wide range of reverse engineering tasks.</p>
+<h3 id="comparison-bytes">Comparison Bytes</h3>
+<p>Let’s practice with the <code>cw</code> command to understand how it
+works. Note that you may want to use the latest r2 version from git to
+get the same output. Feel free to suggest better ways to interact with
+these commands by submitting patches, discussing them in the chat, or
+creating issues.</p>
+<p>Let’s start by opening our target program: <code>/bin/ls</code>. This
+time we’ll enable <code>io.cache</code> to modify values without
+overwriting the file on disk.</p>
+<pre class="console"><code>$ r2 -e io.cache=true /bin/ls</code></pre>
+<p>Add a couple of comparison watchers:</p>
+<pre class="console"><code>[0x100003a58]&gt; cw
+0x100003a58
+  old: 7f2303d5
+  cur: 7f2303d5
+
+0x100003a5c
+  old: fc6fbaa9
+  cmd: fc6fbaa9
+
+[0x100003a58]&gt; wv4 1234
+[0x100003a58]&gt; cw
+0x100003a58
+  old: 7f2303d5
+  cmd: d2040000
+
+0x100003a5c
+  old: fc6fbaa9
+  cmd: fc6fbaa9
+
+[0x100003a58]&gt; cwu
+[0x100003a58]&gt; cw
+0x100003a58 modified
+  old: 7f2303d5 =&gt; new: d2040000
+  cmd: d2040000
+
+0x100003a5c
+  old: fc6fbaa9 =&gt; new: fc6fbaa9
+  cmd: fc6fbaa9
+
+[0x100003a58]&gt;</code></pre>
+<p>Checking the help of the <code>cw</code> command will explain why we
+need to use <code>cwu</code> to get the internal value updated. In fact,
+we don’t even need to define any command in the comparison watcher for
+it to work correctly.</p>
+<p>If we want to run <code>cwu</code> more frequently without having to
+type it manually, we can simply set the <code>cmd.prompt</code> variable
+like this:</p>
+<pre class="console"><code>[0x100c1cf38]&gt; e cmd.prompt
+.dr*
+[0x100c1cf38]&gt; &#39;e cmd.prompt=.dr*;cwu
+[0x100c1cf38]&gt; e cmd.prompt
+.dr*;cwu
+[0x100c1cf38]&gt;</code></pre>
+<p>Some tips on the topic:</p>
+<ul>
+<li><code>.dr*</code>: r2 sets this automatically during debugging to
+create flags for register values. When working in static mode, these
+won’t be set</li>
+<li><code>'</code> : using a single quote makes the REPL ignore the
+<code>;</code> character</li>
+<li>Any command can be executed</li>
+<li><code>cmd.visual</code> contains commands that will be executed in
+visual mode</li>
+</ul>
+<h3 id="finding-the-map">Finding the map</h3>
+<p>Identifying data location can be complex. For small programs, dumping
+the entire process memory is feasible, but this approach becomes
+impractical for large applications. Different techniques may be needed
+to identify the most promising memory regions.</p>
+<p>When running in debugger mode, we can use the <code>dm</code> and
+<code>dmm</code> commands to display the memory map layout of the target
+process. Some memory regions may be labeled as <code>[heap]</code>,
+depending on the operating system. Generally, we want to focus on
+user-allocated pages with read-write permissions. Here’s an example
+output from macOS:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 <span class="at">-d</span> ls</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x10466f868]</span><span class="op">&gt;</span> dm~u rw-</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">0x0000000104310000</span> <span class="at">-</span> 0x0000000104314000 <span class="at">-</span> usr    16K u rw- ls /bin/ls <span class="kw">;</span> <span class="ex">map.ls.rw_</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000000010469c000</span> <span class="at">-</span> 0x00000001046a4000 <span class="at">-</span> usr    32K u rw- dyld /usr/lib/dyld</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001046a4000</span> <span class="at">-</span> 0x00000001046a8000 <span class="at">-</span> usr    16K u rw- dyld /usr/lib/dyld</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001046a8000</span> <span class="at">-</span> 0x00000001046ac000 <span class="at">-</span> usr    16K u rw- dyld /usr/lib/dyld</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001046ac000</span> <span class="at">-</span> 0x00000001046f4000 <span class="at">-</span> usr   288K u rw- dyld /usr/lib/dyld <span class="kw">;</span> <span class="ex">map.dyld.rw_</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000000016b300000</span> <span class="at">-</span> 0x000000016bafc000 <span class="at">-</span> usr   8.0M u rw- 0b_copy_userrwx <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._b_copy_userrwx.rw_</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001e5fb0000</span> <span class="at">-</span> 0x00000001e5fd4000 <span class="at">-</span> usr   144K u rw- 0e_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._e_copy_1.rw_</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001e5fd4000</span> <span class="at">-</span> 0x00000001e6000000 <span class="at">-</span> usr   176K u rw- 0f_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._f_copy_1.rw_</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001e6000000</span> <span class="at">-</span> 0x00000001e7e4c000 <span class="at">-</span> usr  30.3M u rw- 10_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._0_copy_1.rw_</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000001e7e94000</span> <span class="at">-</span> 0x00000001e8f7c000 <span class="at">-</span> usr  16.9M u rw- 12_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._2_copy_1.rw_</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">0x0000000270978000</span> <span class="at">-</span> 0x0000000272000000 <span class="at">-</span> usr  22.5M u rw- 18_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._8_copy_1.rw_</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">0x0000000272000000</span> <span class="at">-</span> 0x0000000273cbc000 <span class="at">-</span> usr  28.7M u rw- 19_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._9_copy_1.rw_</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">0x0000000273cbc000</span> <span class="at">-</span> 0x0000000274a14000 <span class="at">-</span> usr  13.3M u rw- 1a_copy_1 <span class="pp">?</span> <span class="kw">;</span> <span class="ex">map._a_copy_1.rw_</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x10466f868]</span><span class="op">&gt;</span></span></code></pre></div>
+<h3 id="finding-values">Finding values</h3>
+<p>Programs commonly store important values such as scores, health
+points, or ammunition as <code>dwords</code> (32-bit values) in memory.
+Here’s how to locate and monitor these values using radare2.</p>
+<p>To search for a specific value (e.g., 100) in memory:</p>
+<pre class="console"><code>[0x20000000]&gt; /v4 100</code></pre>
+<p>This command will often return many false positives. To narrow down
+the search, we can set search boundaries:</p>
+<pre class="console"><code>[0x20000000]&gt; e search.in=range           # Restrict search to a specific range
+[0x20000000]&gt; e search.from=0x1e5fb0000   # Starting address
+[0x20000000]&gt; e search.to=0x1e8f7c000     # Ending address</code></pre>
+<p>Since most data in programs is aligned in memory for performance
+reasons, we can further refine our search by specifying alignment:</p>
+<pre class="console"><code>[0x20000000]&gt; e search.align=4    # Align to 4 bytes (common for 32-bit values)</code></pre>
+<p>After identifying potential addresses, we can monitor changes to
+these values using comparison watchers:</p>
+<pre class="console"><code>[0x100003a58]&gt; cw $$ 4 @@/v4 100
+0x100010589 hit1_0 64000000
+0x100000598 hit1_1 64000000</code></pre>
+<p>Breaking down this command: - <code>cw</code>: Creates a comparison
+watcher - <code>$$</code>: Represents the current offset (search hit
+location) - <code>4</code>: Size of the value to watch (4 bytes for
+dwords) - <code>@@/v4 100</code>: Applies the command to all locations
+where value 100 was found</p>
+<p>Use <code>cwu</code> while the program is running to check for value
+changes. This helps identify which memory location actually contains the
+value you’re interested in by showing both old and new values.</p>
+<h2 id="custom-formatting">Custom Formatting</h2>
+<p>The <code>cw</code> command accepts an optional argument to specify
+how to display the monitored value:</p>
+<pre class="console"><code>[0x100003a58]&gt; cw $$ 4 pd 1 @@/v4 100    # Show as disassembly
+[0x100003a58]&gt; cw $$ 4 px 16 @@/v4 100   # Show as hex dump</code></pre>
+<p>This is particularly useful when: - Working with structured data
+(using <code>pf</code>) - Needing different number representations
+(decimal, hex) - Analyzing surrounding memory context</p>
+<h2 id="watchpoints">Watchpoints</h2>
+<p>Some debugger primitives allow us to use watchpoints, which are
+hardware-based mechanisms to pause the debugger when a specific memory
+area is accessed (read or written). This helps us identify which parts
+of the code are accessing these memory regions, leading to better code
+understanding.</p>
+<p>The command to set watchpoints in the radare2 debugger is:</p>
+<pre class="console"><code>[0x00000000]&gt; dbw?
+Usage: dbw &lt;addr&gt; &lt;r/w/rw&gt;   # Add watchpoint
+[0x00000000]&gt;</code></pre>
+<p>Note that this feature depends on the target hardware and debugger
+implementation, so it won’t work in all cases. If watchpoints aren’t
+available, consider these alternatives:</p>
+<ul>
+<li>Modify page protections to trigger exceptions</li>
+<li>Use ESIL checks combined with single stepping</li>
+</ul>
+<p>The limitation of modifying page protections is that we can’t target
+a specific memory address; instead, it affects the entire page
+(typically 4KB or 64KB in size). This results in many false positives.
+However, we can work around this by:</p>
+<ol type="1">
+<li>Checking the instruction that raised the exception using
+<code>pd 1@r:PC</code></li>
+<li>Restoring page permissions with <code>dmp</code></li>
+<li>Single stepping once</li>
+<li>Removing the <strong>read</strong> or <strong>write</strong>
+bits</li>
+<li>Resuming execution with <code>dc</code></li>
+</ol>
+<pre class="console"><code>[0x00000000]&gt; dmp?
+Usage: dmp   Change page permissions
+| dmp [addr] [size] [perms]  change permissions
+| dmp [perms]                change dbg.map permissions
+[0x00000000]&gt;</code></pre>
+<h2 id="unified-comparisons">Unified Comparisons</h2>
+<p>Radare2 provides several comparison tools that help analyze
+differences between memory blocks.</p>
+<p>The <code>cu</code> command compares data between the <strong>current
+offset</strong> and a <strong>specified target address</strong>. It’s
+particularly useful for in-binary diffing, allowing you to identify
+byte-level differences within a single file.</p>
+<p>To compare two sections within the same binary:</p>
+<pre class="console"><code>&gt; cu section1 @ section2</code></pre>
+<ul>
+<li>section1 is the current offset or starting point of the first
+section</li>
+<li>section2 is the address of the second section you want to compare
+against</li>
+</ul>
+<p>This command compares the bytes in section2 with those in section1,
+highlighting any differences at each offset.</p>
+<p>By default, <code>cu</code> compares data according to the current
+block size. You can modify the block size using the <code>b</code>
+command to specify how many bytes to compare.</p>
+<p>For example, to set a block size of 32 bytes:</p>
+<pre class="console"><code>[0x1000073c8]&gt; b 32
+[0x1000073c8]&gt; cu $$+32 @ sym.imp.puts
+- 0x100007718 110000b031a20691300240f9110a1fd7 ....1...0.@..... !
++ 0x100007738 110000b031e20691300240f9110a1fd7 ....1...0.@..... !
+- 0x100007728 110000b031c20691300240f9110a1fd7 ....1...0.@..... !
++ 0x100007748 110000b031020791300240f9110a1fd7 ....1...0.@..... !
+[0x1000073c8]&gt;</code></pre>
+<p><strong>NOTE</strong> that the output will look much nicer if you
+have colors enabled in your terminal ;D</p>
+<p>This command compares the first 32 bytes of sym.imp.puts in the PLT
+with the same address plus 32. Helping us understand the address
+patterns that change on the relocated pointers. We may be seeing some
+red and green colors.</p>
+<h2 id="temporary-block-size">Temporary Block Size</h2>
+<p>The <code>@!</code> operator will change the block size with the
+number specified. This operator works the same way as <code>@</code> for
+temporal seeks. See the following snippet exemplifies the syntax:</p>
+<pre class="console"><code>[0x1000073c8]&gt; cu $$+32 @ sym.imp.puts @!32
+- 0x100007718 110000b031a20691300240f9110a1fd7 ....1...0.@..... !
++ 0x100007738 110000b031e20691300240f9110a1fd7 ....1...0.@..... !
+- 0x100007728 110000b031c20691300240f9110a1fd7 ....1...0.@..... !
++ 0x100007748 110000b031020791300240f9110a1fd7 ....1...0.@..... !
+[0x1000073c8]&gt;</code></pre>
+<h2 id="hacking-with-r2frida">Hacking with r2frida</h2>
+<p>Thanks to the orthogonal design of radare2, we can use all the
+knowledge we learned from static analysis or debugging, replacing the IO
+layer with any other one, such as a remote GDB connection to a Gameboy
+emulator or a remote iOS game running on a jailbroken iPhone connecting
+through the Frida server via USB using the <strong>r2frida</strong>
+plugin.</p>
+<p>r2frida works locally on all major platforms and architectures and
+can be used as a debugger backend when using the <code>dL io</code>
+command. The main difference is that <strong>Frida</strong> is designed
+to work as a tracer, meaning that the process won’t stop and resume, and
+we can manipulate memory and code at runtime without depending on
+traditional debugger primitives.</p>
+<p>Note that all r2frida commands are implemented in TypeScript in the
+agent that runs inside the target process. This means we need to use the
+io-system interface from r2 by prefixing the commands with the
+<code>:</code> character.</p>
+<p>To list maps, use <code>:dm</code> instead of <code>dm</code>. To
+search for values inside the process, use <code>:/x</code> instead of
+<code>/x</code>, and so on.</p>
+<p>However, the IO backend won’t prevent us from using any of our
+familiar r2 commands like <code>cu</code> or <code>wtf</code> to compare
+memory and write portions of memory to disk.</p>
+<p>Additionally, we can use <code>:dtf</code> to trace functions and log
+the pointers returned by <strong>malloc</strong> with this
+one-liner:</p>
+<pre class="console"><code>[0x10461b5d4]&gt; :dtf malloc %p</code></pre>
+<p>Check the help message to understand why we use <code>%p</code> for
+the format string here:</p>
+<pre class="console"><code>[0x1008d35d4]&gt; :dtf?
+Usage: dtf [format] || dtf [addr] [fmt]
+  ^  = trace onEnter instead of onExit
+  %  = format return value (only on onLeave)
+  +  = show backtrace on trace
+ p/x = show pointer in hexadecimal
+  c  = show value as a string (char)
+  i  = show decimal argument
+  z  = show pointer to string
+  w  = show pointer to UTF-16 string
+  a  = show pointer to ANSI string
+  h  = hexdump from pointer (optional length, h16 to dump 16 bytes)
+  H  = hexdump from pointer (optional position of length argument, H1 to dump args[1] bytes)
+  s  = show string in place
+  Z  = untrusted null terminated string (like z)
+  S  = pointer to string
+  O  = show pointer to ObjC object
+:dtf [addr] [fmt]    add a trace parsing arguments using a format string
+[0x1008d35d4]&gt;</code></pre>
+<p>If you want to learn more about hacking games with r2ai and decai I
+encourage you to watch <a
+href="https://www.youtube.com/watch?v=OSeNuB2Ob3s">this presentation</a>
+from #r2con2024.</p>
+<h2 id="challenge">Challenge</h2>
+<p>Your challenge today is about patching a simple game in memory.</p>
+<p>The following base64 block contains the source code for a simple game
+I wrote specifically for this post. It should compile on any UNIX system
+with just libc and a C compiler.</p>
+<p>The game will remind you of some classics where you collect coins
+while avoiding enemies and using the coins to shoot at them to avoid
+being killed. To simplify things, this game isn’t real-time but rather
+turn-based - enemies move only when you press a key. This makes it
+easier to use the debugger without having to interrupt the process and
+experiment with special features available in radare2, such as accessing
+process memory using mmap:// on proc/pid/mem, or using the
+<code>ptrace://</code> IO plugin instead of the <code>dbg://</code> URI
+handler.</p>
+<p>This allows you to read and write process memory without stopping
+execution. Feel free to use any techniques you know to get extra points
+or lives!</p>
+<ul>
+<li>Perform static analysis to understand the compiled code</li>
+<li>Use breakpoints on allocation imports and check register values to
+locate the heap</li>
+<li>Use <code>dm</code> / <code>dm.</code> to find the heap map</li>
+<li>Dump memory using the <code>wtf</code> command at different points
+in the game</li>
+<li>Use <strong>radiff2</strong> to compare those dumps and identify
+changing values</li>
+<li>Use <code>/v4</code> and <code>search.align=4</code> to find the
+little-endian value of coins or lives</li>
+<li>Use <code>pf</code> to format the heap structure containing the
+pointers</li>
+<li>Try the <code>cw</code> commands on memory addresses to compare
+value changes at different game states</li>
+<li>Use <code>wv4</code> to modify coins/lives as desired to hack the
+game</li>
+</ul>
+<p>To unpack the encoded blob and compile the source:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> base64 <span class="at">-D</span> <span class="kw">|</span> <span class="fu">xz</span> <span class="at">-d</span> <span class="op">&gt;</span> gamecoin.c</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcc gamecoin.c</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out</span></code></pre></div>
+<p>You can build this game using <code>-O3</code> and even
+<code>strip</code> to remove symbol information, adjusting the
+difficulty based on your skill level and knowledge.</p>
+<pre class="console"><code>/Td6WFoAAATm1rRGBMCvCcgYIQEcAAAAAAAAAJl2jf3gDEcEp10AF+B84GE2v2RRbcn5sn2MpsmuWcH1
+X9rNRRaw5bRncOKT+VPo5ct6ClMPJ6FG7iYZDrk23J1xr+6/gQK53zjzS36RYQW3Hh1agrNdAun8cS/i
+x0o2c0+PJeApgEFpkLLOycFZo0/Jnd9+tu+E0ipLip0rEs3y8rzTQ2U7gxRMT35ORUgmSkZNQBSq8iiW
++5dC9BQK7zSGK9StyyMBVdNHpIFc24UWYzjpGVxlwb0vI5W74bDQnL0CBt15++6561q7F5GyV7eAUYzG
+e+YzJAhJRHxSo+hIymXywpRukf+CJpuJFlsf0nHxZwaZhX5ozAEHDjn+73f2v0F37vc4BDQso4toKz/Y
+aJhgfyahqPKuZ2gD7pOGWvkH3Tz8ZaoOtOsFsVFHcgqOl2hXl30OdHHhTt7jzS1Z0w1adCh8VBfNXSYP
+BQRpRvxc9NohhQPa5AS6+hQWYmNFEd8ak5rTdQ52kizLxvl/iAiRJsUCGwURJlxw0JYlVLQY+gPxw/mM
+wLfrwk2pxETfqkQbSFwWHmSr+A48Qes8YCaO6MuFCXxNvNU9LSWIBTxInrmiouAhrD5WZUNNUNm1G8tl
+EfCXTqblpYVUHEE0qyeqzljheY5vTLTwfk9tPaSsLt0HY5JaagSIw3gYJH+Lha+a7wEe6aqgQc3N8Uaa
+OgTg45oRT2516rxp9JylImHGrFtt6zXf82Qqbqit7ibGb/CXSZvCCWIwwo5EctCysPyfBb2dpsC/W7Fb
+fB1AN1sLUal1yNPxm4uD2eYPtvieYUNBBF7E2QAJ6quopYuqIt/Xcsb0kWeO10jplYFQRAmm/rWh7pxw
+1GfQXVzwd43sBFa1kMFgg6zjaqjEuSip+qp6HKHy7UbUBMwG8G56gTD3vQNhP8L4ZfiETYABP8q8THU9
+FCz+4JhUlY/HraeWZpxgrESOeUPybPLjehdgxIs2GggNir5CfWfXhf7Fg9QxkZ+10WGr9PxNAgRz0V2C
+UiR5gWRqhxn2n+JkaCI9VSyfCiy3EeWvu2/j/tVWJQpIdu+ibJFErIKiaebFH7Wc9aaaQSgbVulkSN/Z
+wDx4BEELyIgA1a1/GkEL5HgBgyynqYhjIPXMk28lXpGr8BNQ0XAji/WA9Gc5AFG0+UFWKuh/r7/rHQsw
+fB9k80NfSiw8FCnCclQrnqZRUys0+9EO4Y0LScqufnmDVMN0uUDV62eKx0jA4JHnLdRJYYWshb9LEg+g
+UcGMfE7y9/obL022Wv6Z5pLCHWQyGVS93lGLWVFQqswaUbfiBdQXKw9rXHyazC11tab39bYCMSTNIWSh
++mzV1vFz634cI4XqWzl0hQHsNYwVAXMmiMHzQRellJMpy9sTr+aETJCM3i+QrJE1EicaftcHWw/tWJ/M
+sRuT545z0jbGKdorOr9KA+OmTKEykMfqqDSVy6uwl5z5twDAFCgcoVrK9F53A6LEb8GRdXISbsFPjyvU
+E/3y2xREhcpKq0/f0PbsF6KdIvosKwbW7oXc2czXjoF0+swZE2b2K6lD/bU/9iA9zeJ7d4sJoMsRDufV
+mYLJUqCAD+hmh1srOu+Cg7fesslWOKX81DRlZ8mqAAC+VRr1HVS1igABywnIGAAA+mymFLHEZ/sCAAAA
+AARZWg==</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>From binary diffing with <code>radiff2</code> to runtime memory
+comparison and data patching, Radare2 empowers reverse engineers with
+versatile tools. Experiment with these techniques and share your
+game-hacking adventures!</p>
+<p>Check out this repo for further ideas on the topic, and see you
+tomorrow in another low level adventure!</p>
+<ul>
+<li><a href="https://github.com/xenia-canary/game-patches">game
+patches</a></li>
+</ul>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

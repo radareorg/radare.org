@@ -1,0 +1,275 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="carving-data-with-binlimp">11 - Carving Data with BinLimp</h1>
+<p>Welcome to Day 11 of the Advent of Radare!</p>
+<p>Today, we’ll dive into a fascinating aspect of reverse engineering:
+carving binary formats from raw data or memory dumps using Radare2. This
+process involves identifying and extracting files, filesystems, or data
+structures hidden within larger binary blobs.</p>
+<p>In this post, we’ll cover:</p>
+<ul>
+<li>The <code>/m</code> command to search for known file headers.</li>
+<li>Automating the dumping of detected data with <code>wtf</code>.</li>
+<li>Real-world use cases for carving.</li>
+<li>Configuration tips to optimize your workflow.</li>
+<li>Using external magic files and extending Radare2’s
+capabilities.</li>
+</ul>
+<h2 id="why-carving-matters">Why Carving Matters</h2>
+<p>Carving is invaluable in many reverse engineering scenarios:</p>
+<ul>
+<li><strong>Extracting Compressed Files</strong>: Firmware often
+includes compressed or encrypted files hidden within the binary. Carving
+for known compression headers may help locate.</li>
+<li><strong>Recovering Images</strong>: Memory dumps may contain
+remnants of images or other multimedia files, which can provide insight
+into the application’s usage or state.</li>
+<li><strong>Locating Filesystems</strong>: Embedded systems or firmware
+may store entire filesystems or partition tables within binary
+blobs.</li>
+<li><strong>Investigating Obfuscated Data</strong>: Carving can help
+identify obfuscated file formats that might be overlooked during
+traditional analysis.</li>
+</ul>
+<p>By scanning for known file headers, Radare2 enables you to pinpoint
+these hidden gems within your binaries.</p>
+<p>Many people will recognize many of these features as part of
+<strong>binwalk</strong>, well, the thing is that radare2 had them since
+2006, 4 years before the very first version of binwalk, and as usual,
+despite being more portable and have more features, support remote
+instances, in-process scanning and better performance at the time it was
+ignored because <em>python</em>. Historically I took inspiration in
+<strong>photorec</strong> and <strong>testdisk</strong>, as those were
+the most reliable tools for data recovering when I was working as a
+forensic analyst.</p>
+<ul>
+<li><a href="https://github.com/cgsecurity/testdisk">testdisk &amp;
+photorec at github</a></li>
+</ul>
+<p>This post aims to discover these features so you can take advange to
+integrate them into your workflows and get handy with the interactive
+capabilities of the radare2 shell.</p>
+<h2 id="searching-for-magic">Searching for Magic</h2>
+<p>Radare2’s <code>/m</code> command scans for known file headers using
+<strong>libmagic</strong>. These headers, or “magic patterns,” allow you
+to identify specific file types embedded within binary data. Note that
+radare2 ships it’s own version of libmagic (which is based on a fork of
+the OpenBSD implementation) but also supports dynamic linking to the GNU
+library from the system if you have it.</p>
+<p>The benefits of using the shipped one are:</p>
+<ul>
+<li>Kind of faster</li>
+<li>Load only the signatures from radare2</li>
+<li>Run radare2 commands inlined from the magic descriptions</li>
+</ul>
+<p>Let’s take a look at one of the magic files shipped within
+radare2:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat libr/magic/d/default/cafebabe</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span>   beshort     0xcafe</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>2  <span class="ex">beshort</span>         0xbabe</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;4 belong      &gt;30     compiled Java class data,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;4 belong      &gt;30</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># !:mime    application/x-java-applet</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span>6 <span class="ex">beshort</span>     <span class="op">&lt;</span>20</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>6    <span class="ex">beshort</span>     x           version %d.</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>4    <span class="ex">beshort</span>     x           <span class="dt">\b</span>%d</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>4    <span class="ex">belong</span>      1       Mach-O fat file with 1 architecture</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>4    <span class="ex">belong</span>      <span class="op">&gt;</span>1</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;&gt;</span>4   <span class="ex">belong</span>      <span class="op">&lt;</span>20     Mach-O fat file with %d architectures</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>2  <span class="ex">beshort</span>     0xd00d      JAR compressed with pack200</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">!:mime</span>  application/x-java-pack200</span></code></pre></div>
+<p>Running these signatures over our favorite target (/bin/ls) and see
+what it can find:</p>
+<pre class="console"><code>$ r2 -n /bin/ls
+[0x00000000]&gt; /m
+0x00000000 0 hit0_0 Fat-Mach-O
+0x00004000 0 hit0_1 Mach-O
+0x0000b390 0 hit0_2 MacOS Deteched Code Signature
+0x00010000 0 hit0_3 Mach-O
+0x00021260 0 hit0_4 MacOS Deteched Code Signature
+[0x00000000]&gt;</code></pre>
+<h2 id="performance">Performance</h2>
+<p>If we executed this command in our machine we may probably noticed
+that it takes a little to finish, the reason is because.</p>
+<ul>
+<li>libmagic is primarily for file type identification, not for pattern
+scanning, which makes it inefficient for this purpose</li>
+<li>File formats typically require aligned data and headers, so scanning
+byte-by-byte is unnecessary</li>
+<li>Instead of scanning the entire address space, we can narrow the
+search range using <code>-e search.in=?</code> to improve
+performance</li>
+</ul>
+<p>We can check how much time it takes to perform this search by using
+the <code>?t</code> prefix like this:</p>
+<pre class="console"><code>[0x00000000]&gt; ?t /m
+...
+3.525228
+[0x00000000]&gt;</code></pre>
+<p>The primary way to optimize the search is by tweaking the
+<code>search.align</code> configuration option:</p>
+<pre class="console"><code>[0x00000000]&gt; e search.align=4
+[0x00000000]&gt; ?t /m
+...
+0.900765
+[0x00000000]&gt; e search.align=16
+[0x00000000]&gt; ?t /m
+...
+0.245257
+[0x00000000]&gt;</code></pre>
+<p>Radare2’s default magic database prioritizes precision, focusing on
+reducing false positives. This subset is tailored for reverse
+engineering and differs from the broader magic databases found in tools
+like <code>file</code>. However, you can extend this functionality by
+loading your own magic files or leveraging <code>/F</code> for dynamic
+scans.</p>
+<p>For hard drives we can probably use a larger alignment value like 512
+or 1024, reducing scan times by a lot.</p>
+<h2 id="magic-subcommands">Magic Subcommands</h2>
+<p>Here’s an overview of <code>/m</code>’s capabilities:</p>
+<pre class="console"><code>[0x00000000]&gt; /m?
+| /m         search for known magic patterns
+| /m [file]  same as above but using the given magic file
+| /me        like ?e similar to IRC&#39;s /me
+| /mm        search for known filesystems and mount them automatically
+| /mb        search recognized RBin headers
+[0x00000000]&gt;</code></pre>
+<h2 id="custom-magic-files">Custom Magic Files</h2>
+<p>You can enhance <code>/m</code> signature database by changing the
+signature directory defined by this variable:</p>
+<pre class="console"><code>[0x00000000]&gt; e dir.magic
+/usr/local/share/radare2/5.9.9/magic</code></pre>
+<p>Or by passing the custom magic file as argument</p>
+<h2 id="automating-data-extraction">Automating Data Extraction</h2>
+<p>Once <code>/m</code> identifies a file header, the <code>wtf</code>
+command can extract and dump the corresponding data:</p>
+<pre class="console"><code>[0x100003a58]&gt; wtf file.dump</code></pre>
+<p>Let’s inspect the help message to understand better what
+<code>wtf</code> and <code>wtff</code> can offer us:</p>
+<pre class="console"><code>[0x00000000]&gt; wt?
+Usage: wt[afs] [filename] [size]   Write current block or [size] bytes from offset to file
+| wta [filename]         append to &#39;filename&#39;
+| wtf [filename] [size]  write to file (see also &#39;wxf&#39; and &#39;wf?&#39;)
+| wtf! [filename]        write to file from current address to eof (ignores given size)
+| wtff [prefix] [size]   write block from current seek to &quot;&lt;prefix&gt;-&lt;offset&gt;&quot;
+| wts host:port [size]   send data to remote socket at tcp://host:port
+| NOTE:                  filename defaults to &quot;&lt;cfg.prefixdump&gt;.&lt;offset&gt;&quot;
+[0x00000000]&gt;</code></pre>
+<p>By default, the dump size is determined by the
+<strong>blocksize</strong> (<code>b</code>), which can be adjusted for
+larger or smaller files:</p>
+<pre class="console"><code>[0x100003a58]&gt; b=1M</code></pre>
+<p>Setting <code>b=1M</code> adjusts the dump size to 1MB, ensuring
+sufficient space for larger files. Automate the dumping process for each
+hit by configuring:</p>
+<pre class="console"><code>[0x100003a58]&gt; e cmd.hit=wtff
+[0x100003a58]&gt; e search.align=4
+[0x100003a58]&gt; b=512K
+[0x100003a58]&gt; /m
+...</code></pre>
+<h2 id="known-filesystems">Known Filesystems</h2>
+<p>Additionally, radare2 includes additional subcommands that make use
+of the RBin and RFS plugins to identify known binaries and filesystems
+in memory.</p>
+<ul>
+<li><strong>RBin (<code>/mb</code>)</strong>: Focuses on binary headers
+like ELF and PE.</li>
+<li><strong>RFS (<code>/mm</code>)</strong>: Scans for filesystems and
+attempts to mount them.</li>
+</ul>
+<p>Considering the amount of plugins supported by radare2, and its
+capability to mount filesystems from memory using the <code>m</code>
+command or load binaries from memory using the <code>oba</code> command,
+this scan will give us a deeper insight on what’s inside a blob.</p>
+<p>Note that it’s also possible to have false positives, as well you may
+ignore all the filetypes that make no sense depending on the target you
+are looking at.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rabin2 <span class="at">-L</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  any         Dummy format r_bin plugin</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  art         Android Runtime</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  avr         ATmel AVR MCUs</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  bf          brainfuck</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  bflt        bFLT format r_bin plugin</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  bios        BIOS bin plugin</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  bootimg     Android Boot Image</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  cgc         CGC format r_bin plugin</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  coff        COFF format r_bin plugin</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  dex         dex format bin plugin</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  dis         Inferno Dis VM bin plugin</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  dmp64       Windows Crash Dump x64 r_bin plugin</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  dol         Nintendo Dolphin binary format</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ex">bin</span>  dyldcache   dyldcache bin plugin</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span></code></pre></div>
+<p>By default we may be able to count how many bin and fs plugins are
+shipped:</p>
+<pre class="console"><code>[0x00000000]&gt; Li~?
+73
+[0x00000000]&gt; Lm~?
+20
+[0x00000000]&gt;</code></pre>
+<h2 id="searching-dump">Searching Dump</h2>
+<p>We learned in previous posts about how to search for hexadecimal
+patterns or plaintext strings, but when we are looking to find known
+patterns like magic headers sometimes we need to cook our own files and
+scan the memory for them.</p>
+<p>The <code>/F</code> command is designed for this purpose, allowing
+you to pass a file as an argument (<code>/F file.bin</code>) and use its
+content as a signature pattern to search in memory. The command’s
+parameters let you also specify which portion of the file to use as a
+signature, making it convenient to script multiple pattern searches
+using a single reference file.</p>
+<pre class="console"><code>[0x00000000]&gt; /F?
+| /F file [off] [sz]  search contents of file with offset and size
+[0x00000000]&gt;
+[0x00000000]&gt; /F file.bin</code></pre>
+<p>There are many more commands for searching in radare2. I would
+suggest you to take a look at the <code>/?</code> help message and play
+a little with <code>/p</code>, <code>/e</code>, <code>/v</code> and
+binary masks.</p>
+<ul>
+<li><a href="https://book.rada.re/search/intro.html">search chapter in
+the r2book</a></li>
+</ul>
+<h2 id="challenge">Challenge</h2>
+<p>Combining what we learned from previous posts for today, the
+challenge for today will consist in:</p>
+<ul>
+<li>Attach to a running process in your system, preferibly a graphical
+app (<code>r2 -d &lt;pid&gt;</code>)</li>
+<li>Dump the heap in to files, check for <em>read-write</em> regions
+with the <code>dm</code> command.</li>
+<li>Use <code>/m</code> to scan for known file types like images,
+encryption keys, SQL statements, ..</li>
+</ul>
+<p>Practice the performance techniques learned in this post and share
+your findings! #aor24</p>
+<p>See you tomorrow in another advent post!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

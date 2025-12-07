@@ -1,0 +1,342 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="arm-analysis">09 - ARM Analysis</h1>
+<p>Welcome to 9th of the Advent of Radare2!</p>
+<p>Today, we’ll explore how to set up Radare2 for analyzing ARM binaries
+and how those instructions are constructed at bit level.</p>
+<p>The ARM architecture has many implementations, SoCs and CPUs that can
+have multiple configurations based on its bit-width, endianness, CPU
+types, and instruction modes, such as Thumb and ARM. Understanding how
+to configure these options and understanding the role of base address
+and memory regions on RISC architectures like ARM will be key when
+analyzing binaries for those targets.</p>
+<h2 id="setting-up-the-arch">Setting Up the Arch</h2>
+<p>The first step is to set the architecture with <code>asm.arch</code>,
+this <em>eval</em> variable can be changed with the <code>-a</code> and
+<code>-e</code> commands/flags.</p>
+<p><strong>NOTE</strong> that radare2 flags can be also used in the
+repl, therefor <code>r2 -a arm</code> is the same as doing:
+<code>r2 -c '-a arm'</code>.</p>
+<p>These are the 4 eval variables we need to tweak for our purposes:</p>
+<ul>
+<li><code>asm.arch</code> : arch plugin to use</li>
+<li><code>asm.bits</code> : 16 (thumb), 32 (ARM32) or 64 (aarch64)</li>
+<li><code>asm.cpu</code> : specify which cpu submodul to use</li>
+<li><code>cfg.bigendian</code> : select little or big</li>
+</ul>
+<p>For example:</p>
+<pre class="console"><code>$ r2 -a arm -b 32 arm32firmware.bin</code></pre>
+<h2 id="selecting-the-cpu-model">Selecting the CPU model</h2>
+<p>ARM64 processors support various CPU types, each with slight
+instruction variations. For example, Cortex-A and Cortex-R families are
+ARM64-compatible but have slight differences in supported instructions.
+Radare2’s asm.cpu option lets you specify the ARM64 CPU type, allowing
+for better accuracy when disassembling.</p>
+<p>To list available CPU options for ARM.gnu plugin:</p>
+<pre class="console"><code>[0x100003a58]&gt; -a arm.gnu
+[0x100003a58]&gt; -e asm.cpu=?
+v2
+v2a
+v3M
+v4
+v5
+v5t
+v5te
+v5j
+XScale
+ep9312
+iWMMXt
+iWMMXt2
+wd
+[0x100003a58]&gt;</code></pre>
+<p>For ARM64, you’ll typically see options like cortex or v9. Selecting
+the correct CPU type ensures that Radare2 interprets
+architecture-specific instructions properly.</p>
+<pre class="console"><code>e asm.cpu=cortex</code></pre>
+<p><em>NOTE</em> for shell/r2shell ortogonality reasons, the
+<code>-e</code> is an alias for <code>e</code>.</p>
+<h2 id="endianness">Endianness</h2>
+<p>ARM32 binaries can be either little-endian (common in most ARM
+systems nowadays, and this feature was removed after the first releases
+of Aarch64 architecture which also had arm32 compatibility modes) or
+big-endian (common in old embedded systems, for development simplicity
+distros started to compile everything in little endian if the CPU was
+supporting to let more software to work in case big endian was not
+supported properly).</p>
+<p>The default endianness in radare2 is defined by the host system. So,
+unless we are in powerpc or a s390x mainframe we are probably in a
+little endian host, so if we want to use big endian we must change this
+variable:</p>
+<pre class="console"><code>[0x00000000]&gt; -e cfg.bigendian=true</code></pre>
+<p>Let’s see how the endianness affects the disassembly with a simple
+example:</p>
+<pre class="console"><code>[0x0000815c]&gt; e cfg.bigendian = 0
+[0x0000815c]&gt; pd 1
+0x0000815c      0d20a0e1       mov r2, sp
+[0x0000815c]&gt; e cfg.bigendian = 1
+[0x0000815c]&gt; pd 1
+0x0000815c      0d20a0e1       stceq p0, c10, [r0, -0x384]!
+[0x0000815c]&gt;</code></pre>
+<p>What we are seeing here is that these 4 bytes disassembles with valid
+instructions even in little or big endian, but probably the first one
+makes more sense, so we will assume it’s a little endian binary. But…
+what’s the endian and why old systems and network infrastructures use
+big endian instead?</p>
+<p>The CPUs read the data in a specific order, this is:</p>
+<ul>
+<li>from left to right (big endian)</li>
+<li>from right to left (little endian)</li>
+</ul>
+<p>Considering humans put the most valuable digits in the left side of
+the numbers, we think in “big endian”. We can examinate this by using
+the <code>wv4</code> command which is also affected by
+cfg.bigendian:</p>
+<pre class="console"><code>[0x00000000]&gt; e cfg.bigendian = 0
+[0x00000000]&gt; wv4 1
+[0x00000000]&gt; p8 4
+01000000
+[0x00000000]&gt; e cfg.bigendian = 1
+[0x00000000]&gt; wv4 1
+[0x00000000]&gt; p8 4
+00000001
+[0x00000000]&gt;</code></pre>
+<p>Network protocols put all their header values in “network order”,
+which is basically big endian, and this is probably the reason why most
+networking systems used big endian CPUs. Nowadays, modern CISC
+architectures provide instructions to load or store using a specific
+endianness, so the performance loss is negligible.</p>
+<p>There are some historical and fun stories about that, but probably
+the reason of using little endian was because bytes are read in a stream
+and for backward compatibility reasons or supporting variable size
+integers packed in bytes, reading from left to right was a better
+decision.</p>
+<p>But wait, is there any other endian? Of course! there are a couple of
+middle endians! And those appeared when CPUs needed to extend their data
+buses to address more memory, so they couldnt change the encoding of the
+instruction set to avoid rewiring the whole instruction decoder and just
+packed an extra byte or two at the end to read that extra 48 bit value,
+for example:</p>
+<ul>
+<li><em>01 00 00</em> -&gt; 1 in little endian</li>
+<li><em>00 00 01</em> -&gt; 1 in big endian</li>
+<li><em>00 01 00</em> -&gt; 1 in middle endian</li>
+</ul>
+<h2 id="swapping-to-thumb">Swapping to Thumb</h2>
+<p>ARM32 supports both the 32-bit ARM instruction set and the 16-bit
+Thumb instruction set (such as Thumb2), which is optimized for smaller
+code size. Radare2 provides ahb (analyze hint bits) to specify which
+sections use ARM or Thumb mode explicitly.</p>
+<p>Forcing ARM or Thumb Mode with ahb You can use ahb to hint specific
+regions to be either ARM (32-bit) or Thumb (16-bit). For example:</p>
+<p>Set Thumb Mode (16-bit):</p>
+<pre class="console"><code>ahb 16</code></pre>
+<p>Set ARM Mode (32-bit):</p>
+<pre class="console"><code>ahb 32</code></pre>
+<p>This is helpful when disassembling binaries that switch between
+modes, such as those that may use ARM for performance-critical functions
+and Thumb for space efficiency. To remove all hints and revert to the
+default configuration, use:</p>
+<pre class="console"><code>ahb-*</code></pre>
+<p>This command clears all hints, making Radare2 fall back on asm.arch
+and asm.bits for disassembly.</p>
+<h1 id="runtime-mode-changes">Runtime Mode Changes</h1>
+<p>ARM architecture supports runtime switches between endianness and
+instruction modes (ARM and Thumb). These behaviors are controlled using
+the Current Program Status Register (CPSR).</p>
+<h4 id="endianness-switching">Endianness Switching</h4>
+<pre class="console"><code>[0x00000000]&gt; -a arm; -b 32
+[0x00000000]&gt; arp~flg
+flg cpsr    .32 64  0
+flg tf  .1  .517    0   thumb
+flg ef  .1  .521    0   endian
+flg itc .4  .522    0   if_then_count
+flg gef .4  .528    0   great_or_equal
+flg jf  .1  .536    0   java
+flg qf  .1  .539    0   sticky_overflow
+flg vf  .1  .540    0   overflow
+flg cf  .1  .541    0   carry
+flg zf  .1  .542    0   zero
+flg nf  .1  .543    0   sign
+[0x00000000]&gt; dr 1
+sp = 0x00000000
+r15 = 0x00000000
+tf = 0x00000000
+ef = 0x00000000
+jf = 0x00000000
+qf = 0x00000000
+vf = 0x00000000
+cf = 0x00000000
+zf = 0x00000000
+nf = 0x00000000
+[0x00000000]&gt;</code></pre>
+<p>The CPSR contains the <code>E</code> bit:</p>
+<ul>
+<li><code>0</code>: Little-endian (default for most systems).</li>
+<li><code>1</code>: Big-endian.</li>
+</ul>
+<p>Example Assembly Code:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode asm"><code class="sourceCode fasm"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mrs r0<span class="op">,</span> cpsr        <span class="co">; Read CPSR into r0</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bic r0<span class="op">,</span> r0<span class="op">,</span> <span class="bn">0x200000</span> <span class="co">; Clear the E bit</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>orr r0<span class="op">,</span> r0<span class="op">,</span> <span class="bn">0x200000</span> <span class="co">; Set the E bit (toggle endianness)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>msr cpsr_c<span class="op">,</span> r0      <span class="co">; Write back to CPSR</span></span></code></pre></div>
+<h2 id="switching-between-arm-and-thumb-modes">Switching Between ARM and
+Thumb Modes</h2>
+<p>The CPSR’s <code>T</code> bit determines the instruction set: -
+<code>0</code>: ARM mode. - <code>1</code>: Thumb mode.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode asm"><code class="sourceCode fasm"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mrs r0<span class="op">,</span> cpsr        <span class="co">; Read CPSR into r0</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>orr r0<span class="op">,</span> r0<span class="op">,</span> <span class="bn">0x20</span>   <span class="co">; Set T bit</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>msr cpsr_c<span class="op">,</span> r0      <span class="co">; Write back to CPSR, switching to Thumb mode</span></span></code></pre></div>
+<p>Alternatively, the ARM processor determines the instruction set mode
+from the least significant bit of the target address during a branch or
+jump. Jumping to an address with the lowest bit set (e.g.,
+<code>&lt;addr&gt; + 1</code>) will switch the processor into Thumb mode
+without modifying the CPSR directly.</p>
+<h2 id="instruction-decoding">Instruction Decoding</h2>
+<p>Radare2 provides an abstraction to encapsulate multiple disassembler
+implementations to work seamlessly for the user. The potential of this
+permits us to use commandlines tools like <code>GNU gas</code> to
+assemble instructions directly from the <code>.encode</code> callback of
+the arch plugin. But the underlying implementation is opaque to radare2.
+This means that the internals of the instruction decoding are not
+available for radare2.</p>
+<p>The maximum details we can have are available as an <code>opex</code>
+struct inside the JSON representation for all the Capstone plugins:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x100003a74</span><span class="ot">]</span><span class="er">&gt;</span> <span class="er">aoj~</span><span class="fu">{}</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;opcode&quot;</span><span class="fu">:</span> <span class="st">&quot;add x29, sp, 0x50&quot;</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;disasm&quot;</span><span class="fu">:</span> <span class="st">&quot;add x29, sp, 0x50&quot;</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;pseudo&quot;</span><span class="fu">:</span> <span class="st">&quot;x29 = sp + 0x50&quot;</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;add two values&quot;</span><span class="fu">,</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;mnemonic&quot;</span><span class="fu">:</span> <span class="st">&quot;add&quot;</span><span class="fu">,</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;mask&quot;</span><span class="fu">:</span> <span class="st">&quot;ffffffff&quot;</span><span class="fu">,</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;esil&quot;</span><span class="fu">:</span> <span class="st">&quot;0x50,sp,+,fp,=&quot;</span><span class="fu">,</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sign&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;opex&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;operands&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;reg&quot;</span><span class="fu">,</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;fp&quot;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;reg&quot;</span><span class="fu">,</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;sp&quot;</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;imm&quot;</span><span class="fu">,</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="dv">80</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;addr&quot;</span><span class="fu">:</span> <span class="dv">4294982260</span><span class="fu">,</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bytes&quot;</span><span class="fu">:</span> <span class="st">&quot;fd430191&quot;</span><span class="fu">,</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;val&quot;</span><span class="fu">:</span> <span class="dv">80</span><span class="fu">,</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add&quot;</span><span class="fu">,</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;esilcost&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cycles&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;failcycles&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;delay&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;stackptr&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;family&quot;</span><span class="fu">:</span> <span class="st">&quot;cpu&quot;</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x100003a74</span><span class="ot">]</span><span class="er">&gt;</span></span></code></pre></div>
+<p>THe opex object provides the information of type and value for the
+operands of each opcode. But sometimes we need to understand which
+specific bits are representing each of these operands. And without
+having access to the internals of the decoder we need to use
+<code>aob</code>.</p>
+<h2 id="instruction-bits">Instruction Bits</h2>
+<p>The <code>aob</code> (Analyze Opcode Bits) command breaks down an
+instruction into its bit-level representation. This command works
+independently of the plugin used, so it means that we can decode at bit
+level any instruction from any architecture supported by radare2. This
+is.. 84 architectures:</p>
+<pre class="console"><code>$ rasm2 -L | wc -l
+      84
+$</code></pre>
+<p>This is particularly useful for understanding encoding schemes,
+debugging instruction decoding, or fuzzing with invalid instructions.
+Let’s see what’s the output of this command and how it works
+internally.</p>
+<pre class="console"><code>[0x100003a74]&gt; aob
+22211111 33333322 03333333 100x00x0  : add x29, sp, 0x50</code></pre>
+<p>Each group of bits corresponds to fields in the instruction. This
+visual breakdown aids in analyzing how operands and opcodes are
+represented.</p>
+<pre class="console"><code>[0x100003a74]&gt; aobv
+22211111 33333322 03333333 100x00x0       add, x29, sp, 0x50
+\\\____________\\_____________________ 2r sp     = 01
+   \\\\\___________________\__________ 1r x29    = 073
+         \\\\\\____\\\\\\\____________ 3i 0x50   = 037
+              \_________\\_\\_\___ 0o add    = 04001</code></pre>
+<p>This ascii art representation lets us see which bits and locations
+are taken to handle every operand and the instruction itself:</p>
+<p>The <code>2r</code>, <code>1r</code>, <code>3i</code>,
+<code>0o</code> correspond to the instruction fields: registers,
+immediate values, and operation codes.</p>
+<p>The octal number at right is the packed representation of all the
+sequantial bits of this operand, This brings us a much wider
+understanding on how this instruction or family are composed.</p>
+<p>Use <code>aobj</code> for structured data:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x100003a74</span><span class="ot">]</span><span class="er">&gt;</span> <span class="er">aobj</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;opstr&quot;</span><span class="fu">:</span> <span class="st">&quot;add x29, sp, 0x50&quot;</span><span class="fu">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;bytes&quot;</span><span class="fu">:</span> <span class="ot">[[</span><span class="dv">2</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">1</span><span class="ot">,</span><span class="dv">1</span><span class="ot">,</span><span class="dv">1</span><span class="ot">,</span><span class="dv">1</span><span class="ot">,</span><span class="dv">1</span><span class="ot">],[</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">2</span><span class="ot">],[</span><span class="dv">0</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">3</span><span class="ot">],[</span><span class="dv">1</span><span class="ot">,</span><span class="dv">0</span><span class="ot">,</span><span class="dv">0</span><span class="ot">,</span><span class="dv">-1</span><span class="ot">,</span><span class="dv">0</span><span class="ot">,</span><span class="dv">0</span><span class="ot">,</span><span class="dv">-1</span><span class="ot">,</span><span class="dv">0</span><span class="ot">]]</span><span class="fu">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;flipstr&quot;</span><span class="fu">:</span> <span class="st">&quot;22211111 33333322 03333333 100x00x0&quot;</span><span class="fu">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[[</span><span class="dv">23</span><span class="ot">,</span><span class="dv">24</span><span class="ot">,</span><span class="dv">26</span><span class="ot">,</span><span class="dv">27</span><span class="ot">,</span><span class="dv">29</span><span class="ot">,</span><span class="dv">30</span><span class="ot">],[</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">4</span><span class="ot">,</span><span class="dv">0</span><span class="ot">,</span><span class="dv">31</span><span class="ot">],[</span><span class="dv">5</span><span class="ot">,</span><span class="dv">6</span><span class="ot">,</span><span class="dv">7</span><span class="ot">,</span><span class="dv">8</span><span class="ot">,</span><span class="dv">9</span><span class="ot">],[</span><span class="dv">10</span><span class="ot">,</span><span class="dv">11</span><span class="ot">,</span><span class="dv">12</span><span class="ot">,</span><span class="dv">13</span><span class="ot">,</span><span class="dv">14</span><span class="ot">,</span><span class="dv">15</span><span class="ot">,</span><span class="dv">16</span><span class="ot">,</span><span class="dv">17</span><span class="ot">,</span><span class="dv">18</span><span class="ot">,</span><span class="dv">19</span><span class="ot">,</span><span class="dv">20</span><span class="ot">,</span><span class="dv">21</span><span class="ot">,</span><span class="dv">22</span><span class="ot">]]</span><span class="fu">,</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;vals&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">2049</span><span class="ot">,</span><span class="dv">31</span><span class="ot">,</span><span class="dv">59</span><span class="ot">,</span><span class="dv">1</span><span class="ot">]</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>JSON output is ideal for scripting, such as fuzzers, that require bit
+manipulation or decoding.</p>
+<h2 id="instruction-fuzzing-and-discovery">Instruction Fuzzing and
+Discovery</h2>
+<p>By swapping bits (e.g., toggling <code>x</code> bits), you can craft
+new instructions to test how they behave on real hardware or check for
+missing decodings in the disassembler. This is an effective way to
+explore reserved, invalid or undocumented instructions by writing a
+program and executes them on different CPUs to find out different
+behaviours.</p>
+<h2 id="community-challenge">Community Challenge</h2>
+<p>Automatic mode detection of ARM/Thumb modes remains a challenge in
+Radare2.</p>
+<p>The challenge for today consists in picking this ticket <a
+href="https://github.com/radareorg/radare2/issues/21294">#21294</a> and
+find out the reason and improve the code analysis or the bin parsers to
+provide the right analysis hints for the asm.bits to get them to work
+without human checks!</p>
+<p>See you tomorrow at 10th day of the AoR!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

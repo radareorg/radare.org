@@ -1,0 +1,290 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="day-08-svd-files-ok">Day 08: SVD Files (OK)</h1>
+<p>Welcome back to the Advent Of Radare!</p>
+<p>As we progress through the Radare2 Advent Calendar, today’s topic
+delves into leveraging <strong>SVD files</strong> within Radare2 using
+the <code>r2svd</code> plugin.</p>
+<p>SVD (System View Description) files are XML-based representations of
+microcontroller peripherals and their memory mappings, commonly provided
+by microcontroller manufacturers (like for example ARM Cortex-M-based
+SoCs). These files contain detailed information with name, description
+and addresses of every bit about peripherals, registers, and fields,
+which can be incredibly useful for reverse engineering embedded firmware
+to understand where serial ports are located, where analog and digital
+pins are used, etc.</p>
+<p>Today, we will explore how to to load those files into Radare2,
+interpret the results, and understand the process.</p>
+<h2 id="whats-an-the-svd">What’s an the SVD?</h2>
+<p>As we briefly explained above, SVD files help reverse engineers
+understand the layout of peripherals and registers, saving hours of
+manual analysis. By loading an SVD file into Radare2:</p>
+<ul>
+<li><strong>Simplified Navigation:</strong> Memory-mapped registers are
+flagged and named.</li>
+<li><strong>Clear Visualization:</strong> Bitfield layouts provide
+detailed insight into register fields.</li>
+<li><strong>Increased Efficiency:</strong> Automatically parse and
+integrate peripheral data without manually reading datasheets.</li>
+</ul>
+<p>An SVD file describes a microcontroller’s memory-mapped peripherals,
+detailing:</p>
+<ul>
+<li><strong>Peripheral Information:</strong> Base addresses, interrupt
+priorities, etc.</li>
+<li><strong>Register Information:</strong> Names, offsets, descriptions,
+and reset values.</li>
+<li><strong>Bitfields:</strong> Individual fields within a register,
+often associated with specific functionalities.</li>
+</ul>
+<p>There are different places we can look at to find those files, but
+sadly it’s not unified and many of them don’t follow the standard
+structure, so it’s probable that we may find some inconsistencies when
+loading them.</p>
+<ul>
+<li><strong>CMSIS Packs:</strong> ARM vendors like STMicroelectronics,
+NXP, and Texas Instruments provide SVD files in their CMSIS packs.</li>
+<li><strong>Manufacturer Websites:</strong> Look for datasheets or
+reference manuals.</li>
+<li><strong>Community Resources:</strong> Online repositories like
+GitHub often host collections of SVD files.</li>
+</ul>
+<p>Luckily this situation is improving over time and with the help of
+the community they are easier to spot and use.</p>
+<h2 id="installing-the-plugin">Installing The Plugin</h2>
+<p>In radare2 <code>r2svd</code> is a plugin available through the
+Radare2 Package Manager (<strong>r2pm</strong>). Follow these steps to
+set it up:</p>
+<p>Ensure the <code>r2pm</code> package database is updated by running
+<code>r2pm -U</code> and then run the following line to install the
+package:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">r2pm</span> <span class="at">-ci</span> r2svd</span></code></pre></div>
+<p>This installs the plugin in Radare2’s binary directory (also known as
+<code>R2PM_BINDIR</code> (see r2pm -H for more details))</p>
+<p>To ensure the plugin is correctly installed, run the tool without any
+arguments thru r2pm to displays the plugin’s help message.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2pm <span class="at">-r</span> r2svd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Usage:</span> .!r2svd <span class="pp">[</span><span class="ss">mcu</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">svd</span><span class="pp">]</span></span></code></pre></div>
+<h2 id="running-r2svd">Running R2SVD</h2>
+<p>This tool is designed to be executed with an svd fie as argument, for
+this example we will be taking this project as example:</p>
+<ul>
+<li><a
+href="https://github.com/brainstorm/treadmill-re">brainstorm/treadmill-re</a></li>
+</ul>
+<p>Use the <code>.!</code> command in Radare2 to invoke external
+commands. To load an SVD file (e.g., <code>STM8S003F3.svd</code>), you
+can execute:</p>
+<pre class="console"><code>[0x00000000]&gt; .!r2svd ./control/STM8S003F3.svd</code></pre>
+<p>Alternatively, you can use the following shell command to generate a
+script to be loaded later into r2 without depending on having r2svd
+installed.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">r2pm</span> <span class="at">-r</span> r2svd control/STM8S003F3.svd <span class="op">&gt;</span> script.r2</span></code></pre></div>
+<h2 id="understanding-the-output">Understanding the Output</h2>
+<p>The <code>r2svd</code> command processes the SVD file, extracting
+relevant information about peripherals, registers, and bitfields. The
+generated output defines flags and comments for memory-mapped devices,
+making the reverse engineering process more structured. Here’s an
+example:</p>
+<pre class="console"><code>$ r2pm -r r2svd control/STM8S003F3.svd
+&#39;@0x53e0&#39;CC ADC1
+&#39;f peripheral.ADC1 4 0x53e0
+&#39;@0x53e0&#39;Cr 1 pfb 8b DBH
+&#39;f reg.ADC1.DB0RL 4 0x53e1
+...</code></pre>
+<p>Breaking Down the Script:</p>
+<h3 id="single-quote">Single Quote</h3>
+<p>The single quote tells the r2 command interpreter to ignore all the
+special characters and do not evaluate them. This hint calls a command
+interally using the <code>r_core_cmd_call</code> api instead of
+<code>r_core_cmd</code>.</p>
+<p>Calling commands is faster and safer, because it won’t permit command
+execution and skipping all the command syntax parsing will reduce the
+time needed to load the script, for some cases this is really
+noticeable.</p>
+<h3 id="flags">Flags</h3>
+<p>Flags are defined using the <code>f</code> command, which names
+memory locations for peripherals and registers:</p>
+<pre class="console"><code>&#39;f peripheral.ADC1 4 0x53e0
+&#39;f reg.ADC1.DB0RL 4 0x53e1</code></pre>
+<p>This makes navigation and reference within Radare2 straightforward,
+as you can seek directly to a named flag.</p>
+<h3 id="temporal-seek">Temporal Seek (<code>@</code>)</h3>
+<p>The <code>@</code> in the script indicates a temporary seek, allowing
+the plugin to define comments or attributes without permanently changing
+the current offset.</p>
+<h3 id="formatted-bitfields-pfb">Formatted Bitfields
+(<code>pfb</code>)</h3>
+<p>The <code>pfb</code> command describes the bitfield layout for
+specific addresses, providing visual representation of individual
+fields:</p>
+<pre class="console"><code>&#39;@0x53e0&#39;Cr 1 pfb 8b DBH</code></pre>
+<p>Use the following help command in Radare2 to learn about the
+<code>pfb</code> syntax:</p>
+<pre class="console"><code>[0x00000000]&gt; pfb?
+Usage: pfb  print formatted bitfields
+| pfb [fmt] [fnames]   print formatted bitfield in ascii art
+| pfbc [fmt] [fnames]  same as pfb, but using C syntax
+| pfbj [fmt] [fnames]  same as pfb but in json output
+| pfbq [fmt] [fnames]  same as pfb, but quieter oneliner
+| pfbd [fmt] [fnames]  same as pfb, but for debugging reasons
+Examples:
+|  pfb 3b4b foo bar    2 bitfields, first of 3 bits and second of 4
+|  pfb 3b+4b foo bar   same as above, the + sign is ignored
+|  pfb 3b..4b foo bar  same as above, but separated by 2 unused bits
+|  pfb 3b2.4b foo bar  same as above, you can use digits and dot
+[0x00000000]&gt;</code></pre>
+<p>This is how that will look after binding the pfb command to an
+address with the <code>Cr</code> command like it’s shown below:</p>
+<pre class="console"><code>[0x00005400]&gt; pd 1
+;-- reg.ADC1.CSR:
+0x00005400 ; (Cr 1 pfb 4b1b1b1b1b CH AWDIE EOCIE AWD EOC)
+00000000     0x00000000
+\__/VVVV
+  | |||`-----      EOC =    0o     0   0x00 @ 7 + 1
+  | ||`------      AWD =    0o     0   0x00 @ 6 + 1
+  | |`-------    EOCIE =    0o     0   0x00 @ 5 + 1
+  | `--------    AWDIE =    0o     0   0x00 @ 4 + 1
+  `----------       CH =    0o     0   0x00 @ 0 + 4 ; ADC1.CSR: ADC control/status register
+[0x00005400]&gt;</code></pre>
+<h2 id="memory-maps">Memory Maps</h2>
+<p>One of the main problems when analyzing firmwares is to identify
+where the NAND, RAM, ROM and PERIPHERALS are mapped, and create a proper
+memory layout for them. Some of this information is available in the SVD
+files, other can be extracted by analysing the code inside the boot code
+of the dumped image.</p>
+<p>Let’s get some insights with <code>r2svd</code> and we will cover the
+memory layout in detail in a future blog post!</p>
+<p>If you are curious about that, feel free to checkout the challenge
+scripts and the help message and usage for the <code>om</code>
+commands.</p>
+<p>Let’s run grep and filter the output to find out where the
+peripherals are mapped.</p>
+<pre class="console"><code>$ r2pm -r r2svd control/STM8S003F3.svd | grep peripheral
+&#39;f peripheral.ADC1 4 0x53e0
+&#39;f peripheral.AWU 4 0x50f0
+&#39;f peripheral.BEEP 4 0x50f3
+&#39;f peripheral.CLK 4 0x50c0
+&#39;f peripheral.CPU 4 0x7f00
+&#39;f peripheral.DM 4 0x7f90
+&#39;f peripheral.FLASH 4 0x505a
+&#39;f peripheral.I2C 4 0x5210
+&#39;f peripheral.ITC 4 0x50a0
+&#39;f peripheral.IWDG 4 0x50e0
+&#39;f peripheral.OPT 4 0x4800
+&#39;f peripheral.PORTA 4 0x5000
+&#39;f peripheral.PORTB 4 0x5005
+&#39;f peripheral.PORTC 4 0x500a
+&#39;f peripheral.PORTD 4 0x500f
+&#39;f peripheral.PORTE 4 0x5014
+&#39;f peripheral.PORTF 4 0x5019
+&#39;f peripheral.SPI 4 0x5200
+&#39;f peripheral.SWIM 4 0x7f80
+&#39;f peripheral.TIM1 4 0x5250
+&#39;f peripheral.TIM2 4 0x5300
+&#39;f peripheral.TIM4 4 0x5340
+&#39;f peripheral.UART1 4 0x5230
+&#39;f peripheral.WWDG 4 0x50d1</code></pre>
+<p>As we can see the range seems to go from <code>0x5000</code> and
+<code>0x8000</code>.</p>
+<p>Is this all the info we can extract from the <strong>SVD</strong>
+file? totally not! r2svd can be improved to retrive architecture
+configuration details, if you are interested in contributing to
+<strong>radare2</strong>, this is also another good pick, because the
+architecture, regitser bit size and endian information can be exposed
+into r2 with <code>'-e</code> commands, or we can also expose all this
+details that are probably not relevant for radare2, but for the analyst
+by generating some <code>'?e</code>/<code>'echo</code> commands printing
+the details about fpu/revision/icache/.. that will be shown on startup
+time if needed.</p>
+<pre class="console"><code>$ head -n 30 control/STM8S003F3.svd
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;device xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; schemaVersion=&quot;1.1&quot; xs:noNamespaceSchemaLocation=&quot;CMSIS-SVD.xsd&quot;&gt;
+  &lt;vendor&gt;STMicroelectronics&lt;/vendor&gt;
+  &lt;name&gt;STM8S003F3&lt;/name&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+  &lt;series&gt;STM8S/STM8AF, low density&lt;/series&gt;
+  &lt;description&gt;Mainstream Value line 8-bit MCU with 8 Kbytes Flash, 16 MHz CPU, integrated EEPROM &lt;/description&gt;
+  &lt;cpu&gt;
+    &lt;name&gt;other&lt;/name&gt;
+    &lt;revision&gt;r1p0&lt;/revision&gt;
+    &lt;endian&gt;big&lt;/endian&gt;
+    &lt;mpuPresent&gt;false&lt;/mpuPresent&gt;
+    &lt;fpuPresent&gt;false&lt;/fpuPresent&gt;
+    &lt;fpuDP&gt;false&lt;/fpuDP&gt;
+    &lt;dspPresent&gt;false&lt;/dspPresent&gt;
+    &lt;icachePresent&gt;false&lt;/icachePresent&gt;
+    &lt;dcachePresent&gt;false&lt;/dcachePresent&gt;
+    &lt;itcmPresent&gt;false&lt;/itcmPresent&gt;
+    &lt;dtcmPresent&gt;false&lt;/dtcmPresent&gt;
+    &lt;vtorPresent&gt;false&lt;/vtorPresent&gt;
+    &lt;nvicPrioBits&gt;4&lt;/nvicPrioBits&gt;
+  &lt;/cpu&gt;
+  &lt;size&gt;8&lt;/size&gt;
+  &lt;width&gt;8&lt;/width&gt;
+  &lt;addressUnitBits&gt;8&lt;/addressUnitBits&gt;
+  &lt;access&gt;read-write&lt;/access&gt;
+...</code></pre>
+<p>If you want to contribute to <strong>r2svd</strong> here there are
+some links:</p>
+<ul>
+<li><a
+href="https://github.com/radareorg/radare2-pm/blob/master/db/r2svd">r2pm
+package</a></li>
+<li><a
+href="https://github.com/radareorg/radare2-extras/tree/master/r2svd">r2svd
+source code</a></li>
+</ul>
+<h2 id="challenge">Challenge</h2>
+<p>The challenge for today will be to pick your favourite IOT device, a
+lightbulb, smartplug, or even a cheap smartwatch. pull the firmware
+files from the iOS/Android app or their support website and load it into
+radare2.</p>
+<p>You may want to do some basic research to find out the cpu model used
+there and the svd file and load all the metadata to get a comprehensive
+disassembly.</p>
+<p>Reference Links:</p>
+<ul>
+<li><a
+href="https://github.com/brainstorm/treadmill-re">https://github.com/brainstorm/treadmill-re</a></li>
+<li><a
+href="https://github.com/cmsis-svd/cmsis-svd-data">https://github.com/cmsis-svd/cmsis-svd-data</a></li>
+</ul>
+<h2 id="final-words">Final words</h2>
+<p>The <code>r2svd</code> plugin is a powerful addition to Radare2 for
+embedded systems analysis, automating the tedious task of manually
+mapping peripherals and registers. By combining SVD files with Radare2’s
+extensive capabilities, reverse engineers can streamline their workflows
+and focus on deeper analysis. Whether you’re working on firmware reverse
+engineering or debugging, <code>r2svd</code> is a tool worth
+mastering.</p>
+<p>Start exploring, and happy reversing!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

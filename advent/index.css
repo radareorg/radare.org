@@ -1,0 +1,202 @@
+/* Typography and Base Styles */
+body {
+    background-color: #FAF0E6; /* Light beige background */
+    color: #3E2723;           /* Dark brown text */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #CC7722; /* Ochre color */
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 1em;
+    text-align: justify !important;
+}
+
+/* Links */
+a {
+    color: #8B4513;            /* SaddleBrown */
+    text-decoration: none;
+    border-bottom: 1px dashed #8B4513;
+}
+
+a:hover {
+    color: #CC7722;            /* Ochre on hover */
+    border-bottom: 1px solid #CC7722;
+}
+
+/* Lists */
+ul, ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #CC7722; /* Ochre border */
+    padding-left: 1em;
+    color:#faf0e6;
+    margin: 1em 0;
+    font-style: italic;
+}
+
+/* Code Blocks and Inline Code */
+pre {
+    background-color: #303030; /* Light grey background */
+    color:#faf0e6;
+    border-radius: 5px;
+    padding: 0em;
+    white-space: normal;
+    overflow-x: auto;
+}
+
+code {
+    background-color: #303030;
+    padding: 0.1em;
+    color:#faf0e6;
+    white-space: pre;
+    border-radius: 3px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    font-weight:bold;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+th, td {
+    border: 1px solid #D2B48C; /* Light brown border */
+    padding: 0.5em;
+    text-align: left;
+}
+
+th {
+    background-color: #DEB887; /* Burlywood background */
+    color: #3E2723;            /* Dark brown text */
+}
+
+tr:nth-child(even) {
+    background-color: #FAF0E6; /* Light beige for even rows */
+}
+
+/* Images */
+img {
+    max-width: 100%;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    border-top: 1px solid #D2B48C; /* Light brown line */
+    margin: 2em 0;
+}
+
+/////////////////// pygments
+
+/*  ==============================================================================
+                         Pygments (pandoc built-in style)
+    ==============================================================================
+    Style based on Pygments' default colors.
+
+    This stylesheet was produced using Pandoc v2.7.2.
+
+    Pandoc is (c) 2006-2017 John MacFarlane (jgm@berkeley.edu).
+    Released under the GPL, version 2 or greater.
+    ------------------------------------------------------------------------------
+*/
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #ffffff; } /* Attribute */
+code span.bn { color: #b38422; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0d8a0; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #f0d8a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #ff5601; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #a0a0a0; } /* DataType */
+code span.dv { color: #b38422; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #b38422; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw {color: #b38422;font-weight: bold;} /* Keyword */
+code span.op { color: #ffffff; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #ff9c01; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #f0d8a0; } /* String */
+code span.va { color: #a9a77c; } /* Variable */
+code span.vs { color: #f0d8a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+ .image-container {
+    position: relative;
+    width: 100%; /* Make it responsive */
+    max-width: 800px; /* Optional: limit max width */
+    margin: 0 auto;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .clickable-area {
+    position: absolute;
+    background: rgba(255, 0, 0, 0.8); /* Highlight for debugging, remove later */
+    cursor: pointer;
+  }

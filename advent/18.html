@@ -1,0 +1,423 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="hello-papi">18 - Hello Papi</h1>
+<p>Welcome to Day 18 of the Advent of Radare!</p>
+<p>We’ve heard about r2pipe and how easy it is to script and automate
+actions with just the simple command calling interface that captures the
+command output and returns it.</p>
+<p>Today we will review all that and take some steps forward to
+understand the facilities provided by r2papi; the high level and
+idiomatic API written on top of r2pipe.</p>
+<p>And at the end get a quick overview of what’s r2pipe2 and how it
+bypasses the limitations of the first protocol by keeping backward
+compatibility.</p>
+<h2 id="the-pipe">The Pipe</h2>
+<p>During my experience with reverse engineering crackmes, I encountered
+a significant limitation: the inability to effectively script debugging
+operations in GDB. At that time, GDB’s scripting capabilities were quite
+limited, which made automating complex debugging tasks particularly
+challenging. This limitation became a major bottleneck in my reverse
+engineering workflow, especially when dealing with sophisticated
+protection mechanisms that required repetitive debugging steps.</p>
+<p>This challenge motivated me to implement native debugger support in
+radare2. So I designed and developed a straightforward scripting
+interface based on running commands and capturing the output in
+exchange.</p>
+<p>Creating bindings is boring and tedious, it’s very error prone and
+adds a huge tech debt to the project because every single change in the
+C APIs or the commands requires tests, updates interfaces and
+re-designing the same thing several times to make them idiomatic and
+clean to be used.</p>
+<p>Also, having because of the costs of creating bindings, it restricts
+the support to very few languages. Like, for example: Python.</p>
+<p>After considering how to avoid creating bindings for all internal
+APIs and defining structured objects for every data exchange between the
+scripting language and core, I realized the solution was
+straightforward: using strings and JSON.</p>
+<h2 id="languages">Languages</h2>
+<p>Since every programming language has its limitations and drawbacks, I
+prefer not to become overly dependent on any single one.</p>
+<p>Python would be the primary choice for many users, but it have so
+many problems:</p>
+<ul>
+<li>Can’t make oneliners</li>
+<li>It’s slow (kind of fixed in latest versions)</li>
+<li>Indentation meaning makes refactoring painful</li>
+<li>Not having static types moves errors to the runtime</li>
+<li>Pain with multiple installations and incompatible ABIs</li>
+</ul>
+<p>While I enjoyed writing Perl one-liners back in the day, creating
+bindings for it isn’t its strongest feature. Languages like Scheme or
+TCL offer clean, well-designed C interfaces, but their limited JSON
+support and smaller ecosystem of libraries can be challenging for modern
+development.</p>
+<p>I had an idea: what if there was a way to make r2 communicate with
+any programming language without needing to create specific bindings for
+each one? After all, we could potentially reduce all the logic to a
+single function call:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> r2cmd<span class="op">(</span>cmd<span class="op">:</span> String<span class="op">)</span> String<span class="op">;</span></span></code></pre></div>
+<p>I have a function that accepts a command as an argument. This
+function communicates with radare2, executes the provided command,
+captures its output, and returns it as a string.</p>
+<p>Using this simple primitive I was able to implement bindings for more
+than 30 programming languages.</p>
+<ul>
+<li><a href="https://github.com/radareorg/radare2-r2pipe">radare2-r2pipe
+github repository</a></li>
+</ul>
+<h2 id="communication-channels">Communication Channels</h2>
+<p>There are multiple ways to stablish a communication channel. Let’s
+mention some of them, because there’s no need to be tied to a single
+solution when we can choose the one that fits better for us.</p>
+<h3 id="native">Native</h3>
+<p>Just calling <code>r_core_cmd_str</code> is enough to emulate r2cmd.
+So if the language permits doing <code>dlopen</code> we can just call
+<code>r_core_cmd0</code> and pass the pointer and convert the string
+back to the user.</p>
+<h3 id="pipes">Pipes</h3>
+<p>This is probably the easiest and more common way to use r2pipe. When
+spawning a process via the <code>#!pipe</code> rlang plugin, it will
+create two environment variables named <code>R2PIPE_IN</code> and
+<code>R2PIPE_OUT</code> with the file descriptor ids. Those are exposed
+to the child process in UNIX, so we can just write the command and read
+the result.</p>
+<h3 id="stdio">Stdio</h3>
+<p>Using the <code>-q0</code> command-line flag, we instruct r2 to
+append a null byte at the end of each command’s output. Additionally, we
+will read a null-terminated string from stdin to capture the
+user-provided command to be executed.</p>
+<h3 id="http">HTTP</h3>
+<p>Radare2 comes with an embedded webserver, which can be started with
+the <code>=h</code> command. Then we can use <code>curl</code> to run
+the command and get the output in response.</p>
+<p><code>curl http://localhost:8080/cmd/x</code></p>
+<p>HTTP is not the only network communication protocol provided by r2,
+there’s support for:</p>
+<ul>
+<li>RAP protocol (a binary protocol designed to expose remote IO plugins
+to radare2)</li>
+<li>Plain TCP support following the same stdio rules</li>
+<li>WebSocket server</li>
+</ul>
+<h2 id="structured-data">Structured Data</h2>
+<p>Having plain string output is functional but not ideal. While the
+UNIX design principle of working with simple text strings makes
+debugging easier, and performance isn’t a major concern (since payload
+size is minimal compared to command execution time), there are
+limitations.</p>
+<p>Parsing command output can be challenging because it’s primarily
+designed for human readability, and the format may change between
+versions. This makes it less reliable for programmatic use. We need a
+more structured way to handle data that can be consistently processed by
+programming languages.</p>
+<p>This is where JSON comes in. To address this need, I’ve added JSON
+output capability to all commands by allowing them to output JSON format
+when appending ‘j’ to the command.</p>
+<p>Let’s see an example:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x00006d30</span><span class="ot">]</span><span class="er">&gt;</span> <span class="er">ij~</span><span class="fu">{}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;core&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;DYN (Shared object file)&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;/bin/ls&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;fd&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">142312</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;humansz&quot;</span><span class="fu">:</span> <span class="st">&quot;139.0K&quot;</span><span class="fu">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;iorw&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;mode&quot;</span><span class="fu">:</span> <span class="st">&quot;r-x&quot;</span><span class="fu">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;block&quot;</span><span class="fu">:</span> <span class="dv">256</span><span class="fu">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;elf64&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;bin&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;arch&quot;</span><span class="fu">:</span> <span class="st">&quot;x86&quot;</span><span class="fu">,</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;baddr&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;binsz&quot;</span><span class="fu">:</span> <span class="dv">140327</span><span class="fu">,</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bintype&quot;</span><span class="fu">:</span> <span class="st">&quot;elf&quot;</span><span class="fu">,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bits&quot;</span><span class="fu">:</span> <span class="dv">64</span><span class="fu">,</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;canary&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;injprot&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;class&quot;</span><span class="fu">:</span> <span class="st">&quot;ELF64&quot;</span><span class="fu">,</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;compiled&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;compiler&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;crypto&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;dbg_file&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;endian&quot;</span><span class="fu">:</span> <span class="st">&quot;little&quot;</span><span class="fu">,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;havecode&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;guid&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;intrp&quot;</span><span class="fu">:</span> <span class="st">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span><span class="fu">,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;laddr&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;lang&quot;</span><span class="fu">:</span> <span class="st">&quot;c&quot;</span><span class="fu">,</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;linenum&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;lsyms&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;machine&quot;</span><span class="fu">:</span> <span class="st">&quot;AMD x86-64 architecture&quot;</span><span class="fu">,</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;nx&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;os&quot;</span><span class="fu">:</span> <span class="st">&quot;linux&quot;</span><span class="fu">,</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cc&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;pic&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;relocs&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;relro&quot;</span><span class="fu">:</span> <span class="st">&quot;full&quot;</span><span class="fu">,</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;rpath&quot;</span><span class="fu">:</span> <span class="st">&quot;NONE&quot;</span><span class="fu">,</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sanitize&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;static&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;stripped&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;subsys&quot;</span><span class="fu">:</span> <span class="st">&quot;linux&quot;</span><span class="fu">,</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;va&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;checksums&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x00006d30</span><span class="ot">]</span><span class="er">&gt;</span> </span></code></pre></div>
+<p>THanks to the JSON output avilable to almnost every command we can
+have an r2pipe wrapper function that looks like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> r2cmdj<span class="op">(</span>cmd<span class="op">:</span> String<span class="op">)</span> Object <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> JSON<span class="op">.</span>parse<span class="op">(</span>r2cmd<span class="op">(</span>cmd<span class="op">))</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This way we can write something as cool as this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> r2<span class="op">.</span>cmdj<span class="op">(</span><span class="st">&quot;ij&quot;</span><span class="op">).</span>bin<span class="op">.</span>arch <span class="op">==</span> <span class="st">&quot;x86&quot;</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">println</span><span class="op">(</span><span class="st">&quot;Hey, this is an intel binary!&quot;</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="r2js">R2JS</h2>
+<p>Radare2 comes with a javascript interpreter which can be triggered
+when launching it with the <code>-j</code> command or commandline
+flag.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 <span class="at">-j</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[r2js]</span><span class="op">&gt;</span></span></code></pre></div>
+<p>To run `` scripts from the r2 shell we can use:</p>
+<ul>
+<li><code>. foo.r2.js</code></li>
+<li><code>-i foo.r2.js</code></li>
+<li><code>-j foo.r2.js</code></li>
+</ul>
+<p>Note that the 3 commands will do the exactly the same, with the only
+difference that . and -j are aliases that detect which rlang plugin to
+use depending on the file extension (.js vs .r2.js) and the last one
+<code>-j</code> will use the RLang.qjs plugin only.</p>
+<h2 id="higher-level-api">Higher Level API</h2>
+<p>While scripting commands directly is possible, it may not be easily
+readable for those unfamiliar with the radare2 shell or their
+outputs.</p>
+<p>To address this, we can create a higher-level API that provides
+interface definitions for JSON representations and exposes clean,
+structured, and idiomatic APIs tailored to different programming
+languages.</p>
+<p>This implementation is called <strong>r2papi</strong> (R2PIPE API)
+and is currently available for Python and JavaScript (specifically
+TypeScript).</p>
+<p>Since r2 includes a JavaScript runtime based on QuickJS, we can
+execute JavaScript directly from the shell without installing additional
+runtimes like Node.js or Deno. This greatly enhances our automation
+capabilities.</p>
+<p>The R2Papi library comes embedded within r2js, allowing us to use
+high-level idiomatic APIs either through global instances or by creating
+a new instance based on the global r2pipe instance linked to the current
+r2 session:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> r2pipe<span class="op">.</span><span class="fu">open</span>()<span class="op">;</span> <span class="co">// not necessary</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="kw">new</span> <span class="fu">R2Papi</span>(r2)<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>r2p<span class="op">.</span><span class="fu">analyzeProgram</span>()<span class="op">;</span></span></code></pre></div>
+<p>The r2papi implementation is designed to be asynchronous to support
+backends like the HTTP one. However, when executed from within the r2js
+shell, it’s transpiled into a synchronous API for easier use,
+eliminating the need for boring <code>await</code> statements.</p>
+<h2 id="nested-r2pipe">Nested R2Pipe</h2>
+<p>Another cool feature of r2pipe is that we can nest and use multiple
+parallel instances.</p>
+<p>R2Pipe inside r2js can be also used to spawn new instances of r2,
+execute commands on them and get them back to the parent r2js session.
+This can be useful to use r2 as a top-level programming language
+because.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> r <span class="op">=</span> r2pipe<span class="op">.</span><span class="fu">open</span>(<span class="st">&quot;/bin/ls&quot;</span>)<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> a <span class="op">=</span> r<span class="op">.</span><span class="fu">cmd</span>(<span class="st">&quot;?e hello from the child&quot;</span>)<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> b <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmd</span>(<span class="st">&quot;?e hello from host&quot;</span>)<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(a<span class="op">,</span> b)<span class="op">;</span></span></code></pre></div>
+<h2 id="shell">Shell</h2>
+<p>Considering r2 implements the most common posix shell commands and we
+can execute commands from the system with the <code>!</code> shell
+escape command.</p>
+<p>This allows us to use r2js to create portable shellscripts or
+programs that run seamlessly on windows, linux and even embedded systems
+that don’t have a posix shell installed.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(r2<span class="op">.</span><span class="fu">cmd</span>(<span class="st">&quot;cat /etc/motd&quot;</span>))<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> uname <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmd</span>(<span class="st">&quot;!!uname -a &quot;</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span></code></pre></div>
+<h2 id="compiling-esm-typescript">Compiling ESM Typescript</h2>
+<p>We have mentioned previously that r2papi is implemented in
+TypeScript, therefor we have type definitions and language server
+autocompletions for any IDE we like, you can pick vim or Visual Studio
+Code and have a more modern development experience when scripting
+r2.</p>
+<p>Considering javascript transition between requires and modules is
+currently a big mess, I decided to implement the same solution that was
+made in Frida, packing all the resources into a single binary file that
+contains all the ESM modules all together.</p>
+<p>Thanks to this, r2 comes with the classic require, which loads and
+evaluates js files from local filesystem, but also permits to load those
+binary packs compiled with any of these:</p>
+<ul>
+<li>tsc - requires nodejs</li>
+<li>frida-compile - requires python</li>
+<li>r2frida-compile - requires r2frida</li>
+</ul>
+<h2 id="limitations-and-r2pipe2">Limitations and R2Pipe2</h2>
+<p>Unfortunately, working with plain strings and JSON doesn’t address
+all the challenges we face when scripting complex tools like radare2.
+While the original implementation is flexible, simple, and powerful, it
+comes with several limitations:</p>
+<ul>
+<li>Unable to capture error messages</li>
+<li>Limited to synchronous operations</li>
+<li>No support for binary data</li>
+<li>No way to verify command existence</li>
+<li>Lacks meta-structured representation</li>
+</ul>
+<p>After careful consideration of these limitations, I’m excited to
+introduce <strong>r2pipe2</strong>!</p>
+<p>The second version of the r2pipe protocol maintains full backward
+compatibility with the first version. Isn’t that great? Let’s dive in
+and explore how it works:</p>
+<pre class="console"><code>[0x00000000]&gt; {?
+Usage: {&quot;cmd&quot;:&quot;...&quot;,&quot;json&quot;:false,&quot;trim&quot;:true} # `cmd` is required
+[0x00000000]&gt; {&quot;cmd&quot;:&quot;?e hello world&quot;}
+{&quot;res&quot;:&quot;hello world\n&quot;,&quot;error&quot;:false,&quot;value&quot;:256,&quot;code&quot;:0,&quot;code&quot;:0}
+[0x00000000]&gt; </code></pre>
+<p>The functionality is built upon the “{” command. When an input
+command passed to r2pipe begins with a brace, it’s interpreted as plain
+JSON, and consequently, responds using the r2pipe2 structured
+format.</p>
+<p>A notable advantage is the ability to prefix commands with a single
+quote to prevent command injection (<code>'{...</code>). In return, we
+receive comprehensive context information including: - Error codes -
+Numeric values from the last math operation - Error messages directed to
+stderr - Results as strings within the JSON object</p>
+<p>This streamlined design was implemented in the following commit and
+released as part of r2-5.9.4:</p>
+<pre><code>commit 5f76b95bf3753aa1804b95a6f7cd981ee0381087
+Author:     pancake &lt;pancake@nowsecure.com&gt;
+AuthorDate: Mon May 27 11:57:13 2024 +0200</code></pre>
+<p>Work is currently underway to refine return codes, error messages,
+and JSON results across all commands to ensure r2pipe2 provides full
+transparency for all use cases.</p>
+<h2 id="sample-script">Sample script</h2>
+<p>This script is designed to extract and analyze potential
+Base64-encoded strings from binary files. It searches through the binary
+content, identifies strings that match Base64 pattern characteristics,
+and attempts to decode them. This can be particularly useful in reverse
+engineering, malware analysis, or when trying to discover hidden
+information within executable files.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// r2js Script to decode and verify Base64 strings from flags prefixed with &#39;str.&#39;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> flags <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmdj</span>(<span class="st">&#39;fj&#39;</span>)<span class="op">;</span> <span class="co">// Get all flags as JSON</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> result <span class="op">=</span> []<span class="op">;</span> <span class="co">// Array to store results</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Iterate through the flags</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>flags<span class="op">.</span><span class="fu">forEach</span>(flag <span class="kw">=&gt;</span> {</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (flag<span class="op">.</span><span class="at">name</span><span class="op">.</span><span class="fu">startsWith</span>(<span class="st">&#39;str.&#39;</span>)) {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> flagName <span class="op">=</span> flag<span class="op">.</span><span class="at">name</span><span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> flagOffset <span class="op">=</span> flag<span class="op">.</span><span class="at">offset</span><span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Get the string data at the flag&#39;s offset</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> stringValue <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`ps @ </span><span class="sc">${</span>flagOffset<span class="sc">}</span><span class="vs">`</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> {</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Decode Base64 and check validity</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> decodedValue <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`?e base64:</span><span class="sc">${</span>stringValue<span class="sc">}</span><span class="vs">`</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> (decodedValue) {</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                result<span class="op">.</span><span class="fu">push</span>({ <span class="dt">flag</span><span class="op">:</span> flagName<span class="op">,</span> <span class="dt">validBase64</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> decodedValue })<span class="op">;</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>            } <span class="cf">else</span> {</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                result<span class="op">.</span><span class="fu">push</span>({ <span class="dt">flag</span><span class="op">:</span> flagName<span class="op">,</span> <span class="dt">validBase64</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span> <span class="dt">decodedValue</span><span class="op">:</span> <span class="kw">null</span> })<span class="op">;</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">catch</span> (err) {</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            result<span class="op">.</span><span class="fu">push</span>({ <span class="dt">flag</span><span class="op">:</span> flagName<span class="op">,</span> <span class="dt">validBase64</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span> <span class="dt">error</span><span class="op">:</span> err<span class="op">.</span><span class="at">message</span> })<span class="op">;</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">// Output results</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;Base64 Decoding Results:&#39;</span>)<span class="op">;</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>result<span class="op">.</span><span class="fu">forEach</span>(entry <span class="kw">=&gt;</span> {</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Flag: </span><span class="sc">${</span>entry<span class="op">.</span><span class="at">flag</span><span class="sc">}</span><span class="vs">, Valid Base64: </span><span class="sc">${</span>entry<span class="op">.</span><span class="at">validBase64</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (entry<span class="op">.</span><span class="at">validBase64</span>) {</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Decoded Value: </span><span class="sc">${</span>entry<span class="op">.</span><span class="at">decodedValue</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (entry<span class="op">.</span><span class="at">error</span>) {</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Error: </span><span class="sc">${</span>entry<span class="op">.</span><span class="at">error</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h2 id="challenge">Challenge</h2>
+<p>Today we have covered so much stuff about scripting and automating
+actions inside r2, but it was all about theory, now it’s time to put all
+this knowledge into practice and get something done!</p>
+<p>You can find some examples of scripts under the <a
+href="https://github.com/radareorg/radare2/tree/master/scripts">./scripts`</a>
+directory of radare2 for inspiration.</p>
+<p>To practice all the learnings today you must write an
+<code>.r2.js</code> script that uses the <strong>NativePointer</strong>
+API and parses some bits of an ELF or MACHO headers.</p>
+<p>The NativePointer class is inspired by the implementation made by Ole
+Andre in Frida. It provides a nice way to use 64bit pointers and read
+data in different endians and sizes, moving along the address space in a
+clean and idiomatic way.</p>
+<p>The global function <code>ptr</code> returns a new instance of that
+class, so it can be used in a more convenient way, here’s an
+example:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[<span class="bn">0x00000000</span>]<span class="op">&gt;</span> <span class="op">-</span>j</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>[r2js]<span class="op">&gt;</span> G<span class="op">.</span><span class="at">p</span> <span class="op">=</span> <span class="fu">ptr</span>(<span class="st">&quot;$$&quot;</span>)<span class="op">;</span> <span class="co">// pointer to current address</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>[r2js]<span class="op">&gt;</span> G<span class="op">.</span><span class="at">p</span><span class="op">.</span><span class="at">read</span><span class="op">&lt;</span>TAB<span class="op">&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>readByteArray        readPointer          readS32</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>readU32              readU64le            readCString</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>readRelativePointer  readS8               readU32be</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>readU8               readHexString        readS16</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>readU16              readU32le            readWideString</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>readInt32            readS16be            readU16be</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>readU64              readPascalString     readS16le</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>readU16le            readU64be         </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>[r2js]<span class="op">&gt;</span> G<span class="op">.</span><span class="at">p</span><span class="op">.</span><span class="fu">readU16le</span>()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span></span></code></pre></div>
+<p>Note that when using the repl we can use the <code>G</code> object
+which is an alias of the global scope to save variables across multiple
+scripts or lines.</p>
+<h2 id="summary">Summary</h2>
+<p>This has been an intense and enlightening journey, showcasing just a
+fraction of what’s possible with radare2’s scripting features. While
+we’ve covered several powerful techniques and applications, this merely
+scratches the surface of radare2’s full potential. The framework offers
+numerous additional capabilities, including automated analysis, custom
+plugin development, and integration with other security tools.</p>
+<p>All the learned contents today can be applied to local static
+analysis, native debugging, emulation and even to script r2frida or
+automate complex processes combining multiple plugins in multiple local
+and remote instances of r2.</p>
+<p>Remember, mastering these tools is an ongoing journey, and there’s
+always more to learn and discover in the fascinating world of reverse
+engineering.</p>
+<p>Stay tuned for tomorrow’s Radare2 challenge as we explore more
+interesting topics!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

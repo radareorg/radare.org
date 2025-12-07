@@ -1,0 +1,455 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="moving-around">13 - Moving Around</h1>
+<p>Welcome to Day 13 of the Radare2 Advent of Code!</p>
+<p>Today, we will explore techniques for navigating through the
+disassembly in Radare2. Understanding the flow of code and the
+relationships between instructions, basic blocks, and functions is
+crucial for effective reverse engineering. Let’s dive into some commands
+and scripting capabilities that make this process intuitive.</p>
+<h2 id="instruction-level-navigation">Instruction-Level Navigation</h2>
+<p>Radare2 provides simple shortcuts for moving through disassembly one
+instruction at a time:</p>
+<ul>
+<li>Use <code>so+1</code> to move to the next instruction.</li>
+<li>Use <code>so-1</code> to move to the previous instruction.</li>
+</ul>
+<p>Check the offset in the prompt showing is where we go after seeking 1
+and 2 instructions forward and backward.</p>
+<pre class="console"><code>[0x100003a58]&gt; so+1
+[0x100003a5c]&gt; so-1
+[0x100003a58]&gt; so+2
+[0x100003a60]&gt; so-2
+[0x100003a58]&gt;</code></pre>
+<p>We can also use forward and backward disassembly to inspect the
+instructions we have around like this:</p>
+<pre class="console"><code>[0x100003a58]&gt; so+4
+[0x100003a68]&gt; pd-4
+ 0x100003a58      7f2303d5       pacibsp
+ 0x100003a5c      fc6fbaa9       stp x28, x27, [sp, -0x60]!
+ 0x100003a60      fa6701a9       stp x26, x25, [sp, 0x10]
+ 0x100003a64      f85f02a9       stp x24, x23, [sp, 0x20]
+[0x100003a68]&gt; pd 4
+ 0x100003a68      f65703a9       stp x22, x21, [sp, 0x30]
+ 0x100003a6c      f44f04a9       stp x20, x19, [sp, 0x40]
+ 0x100003a70      fd7b05a9       stp x29, x30, [sp, 0x50]
+ 0x100003a74      fd430191       add x29, sp, 0x50
+[0x100003a68]&gt;</code></pre>
+<p>A fancy trick to have both at the same time is to use the
+<code>pd--</code> command, which disassembles N instructions forward and
+N instructions backward:</p>
+<pre><code>[0x100003a68]&gt; pd--4
+ 0x100003a58      7f2303d5       pacibsp
+ 0x100003a5c      fc6fbaa9       stp x28, x27, [sp, -0x60]!
+ 0x100003a60      fa6701a9       stp x26, x25, [sp, 0x10]
+ 0x100003a64      f85f02a9       stp x24, x23, [sp, 0x20]
+ 0x100003a68      f65703a9       stp x22, x21, [sp, 0x30]
+ 0x100003a6c      f44f04a9       stp x20, x19, [sp, 0x40]
+ 0x100003a70      fd7b05a9       stp x29, x30, [sp, 0x50]
+ 0x100003a74      fd430191       add x29, sp, 0x50
+[0x100003a68]&gt;</code></pre>
+<p>When we are working with large addresses (kernel addresses or those
+exceeding the x86-64 compatibility mode), radare2 provides a helpful way
+to type partial addresses. Instead of typing the complete address, you
+can use relative addressing with the <code>s..</code> command followed
+by the last digits of the target address.</p>
+<p>For example:</p>
+<pre class="console"><code>[0x100003a68]&gt; s..32
+[0x100003a32]&gt;</code></pre>
+<p>In this case, instead of typing the full address
+<code>0x100003a32</code>, we just used <code>s..32</code> to seek to
+that location. The <code>s..</code> command maintains the higher bits of
+the current address and only changes the specified lower bits.</p>
+<p>This feature is particularly useful when: - Analyzing large
+executables or kernel code - Debugging processes with high memory
+addresses - Navigating through memory regions with similar address
+prefixes - Reducing the chance of typing errors when entering long
+addresses</p>
+<p>You can also use this shorthand notation with other radare2 commands
+that accept addresses as parameters.</p>
+<h2 id="basic-blocks">Basic Blocks</h2>
+<p>A basic block is like a piece of a puzzle in computer code - it’s a
+sequence of instructions that always run together, from start to finish,
+with no jumps or branches in between. Think of it as a straight path
+where once you start walking, you have to keep going until you reach the
+end. The only way in is at the beginning, and the only way out is at the
+end of the block.</p>
+<p>These blocks are super helpful when you’re trying to understand how a
+program works. Imagine a flowchart where each box is a basic block, and
+the arrows between them show where the program might go next. Basic
+blocks make it easier to analyze code because you can focus on one chunk
+at a time, knowing that these instructions will always run together.
+They’re like the building blocks that help reverse engineers understand
+the bigger picture of how a program flows and what it does.</p>
+<p>Radare2’s exposes the addresses and numbers that are related to basic
+blocks under the <code>$B</code> numvars. You can access these by
+running <code>?$?~B</code>. Here’s a breakdown:</p>
+<ul>
+<li><code>$BB</code> : Start address of the current basic block.</li>
+<li><code>$BE</code> : End address of the current basic block.</li>
+<li><code>$Bj</code> : Jump address from the current basic block.</li>
+<li><code>$Bf</code> : Fail/fall-through address from the current basic
+block.</li>
+<li><code>$Bi</code> : Number of instructions in the current basic
+block.</li>
+<li><code>$BS</code> : Size (in bytes) of the current basic block.</li>
+<li><code>$BC</code> : Number of cases (e.g., in a switch statement) in
+the block.</li>
+<li><code>$BC:{#}</code> : Address of the nth case in the current
+block.</li>
+</ul>
+<h3 id="using-numvars">Using Numvars</h3>
+<p>Numvars are basically variables that are exposed and defined by
+radare internally and have a constant value, we cannot modify their
+value but we can use them in any command that takes a math expression as
+argument.</p>
+<p>First of all we will analyze the function. Let’s open
+<code>/bin/ls</code> and then we will run the classic <code>aaaa</code>
+(do r2 -A /bin/ls if you are short in lowercase <em>a</em>’s), after
+that seek to the <code>main</code> symbol.</p>
+<p>Jump to the beginning of the current basic block:</p>
+<pre class="console"><code>s $BB</code></pre>
+<p>Check the size of the block you’re currently in:</p>
+<pre class="console"><code>?v $BS</code></pre>
+<p>Disassemble the two basic blocks that are connected to the current
+one:</p>
+<pre class="console"><code>pdb @ $Bj
+pdb @ $Bf</code></pre>
+<p>Usually basic blocks can have multiple input and output edges, we can
+assume the following statements:</p>
+<ul>
+<li>No input edge : entrypoint</li>
+<li>No output edges : exit node</li>
+<li>One output edge : splitted node, connecting two parts of the
+function</li>
+<li>Two or more input edges : beginning of loop</li>
+<li>Two output edges : conditional branch</li>
+<li>Multiple output : switch table</li>
+</ul>
+<p>These variables are highly useful for programmatically analyzing and
+navigating code structure. And we can use them from r2js, r2pipe or any
+other scripting language we like.</p>
+<p>You can also use <code>afb</code> to enumerate all the basic blocks
+of the current function and interpret the listing. Use the graph view in
+a separate terminal to verify your assumptions.</p>
+<h2 id="visual-navigation">Visual Navigation</h2>
+<p>It’s often helpful to use visual mode to navigate through a
+function’s flow or to follow references across different functions or
+pointers of interest.</p>
+<p>Learning the key combinations is essential to become comfortable with
+the interface. Here’s a quick guide you should practice with to solve
+the challenge.</p>
+<ul>
+<li><code>agfv</code> - enter visual interactive function graph
+view</li>
+<li><code>V</code> - enter visual mode (press <code>p</code> to switch
+to the disassembly)</li>
+</ul>
+<p>Now you’ll encounter reference keystroke hints that look like this:
+<code>;[1]</code> or <code>;[oe]</code>. The text between the brackets
+represents the keys you need to type to make r2 jump to that
+location.</p>
+<p>Here are some essential navigation keys you should know for
+keyboard-based navigation:</p>
+<ul>
+<li><code>u</code> - undo to the previous seek (same as <code>s-</code>
+command)</li>
+<li><code>U</code> - redo last undone seek (same as <code>s+</code>
+command)</li>
+<li><code>r</code> - rotate between data, branch, call, computed
+reference hints</li>
+<li><code>t</code> - follow the <em>true</em> output edge branch from
+the current basic block</li>
+<li><code>f</code> - same for the <em>false</em> branch</li>
+<li><code>x</code> - open the xrefs view and use <code>j/k</code> keys
+to select the destination</li>
+<li><code>n</code>/<code>N</code> - seek to the next/previous function
+(see <code>-e scr.nkey</code> to choose the target)</li>
+</ul>
+<h2 id="instruction-level-navigation-1">Instruction-Level
+Navigation</h2>
+<p>We can navigate through the disassembly instruction by instruction
+using the <code>so</code> command. In Visual mode we can use
+<code>j</code> and <code>k</code> to move down and up respectively.</p>
+<p>However, radare2 also provides other numeric variables (numvars) that
+enable us to perform calculations or express navigation in more
+sophisticated ways.</p>
+<p>radare2 provides a variety of <em>numvars</em> to help navigate
+instructions effectively. You can list all available numvars by
+running:</p>
+<pre class="console"><code>?$?~i</code></pre>
+<p>Here’s a breakdown of some useful instruction-related numvars:</p>
+<ul>
+<li><code>$in:{n}</code> : Address of the nth instruction forward.</li>
+<li><code>$ip:{n}</code> : Address of the nth instruction backward.
+Example: <code>s $I1@$Fe</code> jumps to the last instruction in a
+BB.</li>
+<li><code>$is[:{n}]</code> : Size of the nth instruction.</li>
+<li><code>$ij</code> : Jump address for instructions like
+<code>jmp</code>, <code>jz</code>.</li>
+<li><code>$ie</code> : Returns 1 if it’s the end of a block, else
+0.</li>
+<li><code>$if</code> : Jump fail address for conditional jumps. Example:
+<code>jz 0x10</code> will point to the next instruction.</li>
+<li><code>$ir</code> : Pointer value referenced by the instruction
+(e.g., <code>lea rax, [0x8010] -&gt; 0x8010</code>).</li>
+<li><code>$iv</code> : Immediate value in the instruction (e.g.,
+<code>mov eax, 42 -&gt; 42</code>).</li>
+</ul>
+<p>Quick usage examples:</p>
+<p>Skip the current offset to the 5th instruction forward.</p>
+<pre class="console"><code>s $in:5</code></pre>
+<p>Change the program counter to skip two instructions:</p>
+<pre class="console"><code>ar PC=$in:2</code></pre>
+<p>Check if the current instruction is the end of a basic block:</p>
+<pre class="console"><code>? $ie</code></pre>
+<h2 id="exploring-the-code-using-json">Exploring the code using
+JSON</h2>
+<p>Most commands in radare2 have the ability to display the information
+using a structured JSON text that we can easily use later for scripting.
+It’s just about suffixing the command with <code>j</code>.</p>
+<p>To visualize all the information of the current basic block in JSON
+format, we must use the <code>abj</code> command.</p>
+<p>This includes their <strong>size</strong>, <strong>jump</strong>,
+<strong>fail</strong>, and the instructions they contain. Here’s an
+example:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x100003a58</span><span class="ot">]</span><span class="er">&gt;</span> <span class="er">abj~</span><span class="fu">{}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;addr&quot;</span><span class="fu">:</span> <span class="dv">4294982232</span><span class="fu">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;jump&quot;</span><span class="fu">:</span> <span class="dv">4294982312</span><span class="fu">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fail&quot;</span><span class="fu">:</span> <span class="dv">4294982308</span><span class="fu">,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;opaddr&quot;</span><span class="fu">:</span> <span class="dv">4294982232</span><span class="fu">,</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;inputs&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;outputs&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ninstr&quot;</span><span class="fu">:</span> <span class="dv">19</span><span class="fu">,</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;instrs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4294982232</span><span class="ot">,</span> <span class="dv">4294982236</span><span class="ot">,</span> <span class="dv">4294982240</span><span class="ot">,</span> <span class="er">...</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;traced&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a> <span class="fu">}</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<p>If we want to see all the basic blocks of the current function we
+must use <code>afbj</code> instead:</p>
+<pre class="console"><code>[0x100003a58]&gt; afbj~ninstr
+    &quot;ninstr&quot;: 19,
+    &quot;ninstr&quot;: 1,
+    &quot;ninstr&quot;: 17,
+    &quot;ninstr&quot;: 5,
+    &quot;ninstr&quot;: 7,
+    &quot;ninstr&quot;: 7,
+    &quot;ninstr&quot;: 2,
+    ...
+    &quot;ninstr&quot;: 2,
+    &quot;ninstr&quot;: 5,</code></pre>
+<h2 id="metrics">Metrics</h2>
+<p>There are some interesting metrics that we can extract from the basic
+block sizes, edges, amount and type of instructions that they contain.
+These computations can help us to understand the purpose of the
+function, or how it is constructed, if it’s obfuscated, or how complex
+it is:</p>
+<p>These are shown with the <code>afi</code> command. Let’s highlight
+the most relevant ones:</p>
+<pre class="console"><code>[0x100003a58]&gt; afi
+offset: 0x100003a58
+name: main
+size: 3020
+is-pure: false
+realsz: 2068
+stackframe: 1696
+cyclomatic-cost: 117
+cyclomatic-complexity: 147
+num-bbs: 135
+num-instrs: 518
+edges: 180
+minbound: 0x100003a58
+maxbound: 0x100004624
+is-lineal: false
+end-bbs: 5
+trace-coverage: 62
+maxbbins: 33
+midbbins: 3.84
+ratbbins: 8.60
+noreturn: true
+recursive: false
+in-degree: 0
+out-degree: 38
+locals: 21
+args: 2</code></pre>
+<ul>
+<li><strong>size</strong> : highest instruction address minus the lowest
+address</li>
+<li><strong>realsz</strong> : sum the basic block sizes</li>
+<li><strong>pure</strong> : is this function depending on other
+functions?</li>
+<li><strong>cyclomatic cost</strong> : how expensive the</li>
+<li><strong>maxbbins</strong> : instruction count in the basic block
+with maximum amount of instructions</li>
+<li><strong>midbbins</strong> : sum all basic block instructions and
+divide by the amount of basic blocks.</li>
+</ul>
+<p>I would invite you to inspect how all the numbers are computed in the
+source code of radare2. Use your <code>grep</code> friend and look for
+<code>end-bbs</code> or any other string to locate the file and line
+that is doing this:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git grep trace-coverage</span></code></pre></div>
+<h2 id="scripting-basic-block-analysis">Scripting Basic Block
+Analysis</h2>
+<p>Using Radare2’s r2pipe JavaScript API, you can iterate through all
+functions and their basic blocks.</p>
+<p>This script iterates over all basic blocks for each function,
+extracting essential information such as their size, jump destinations,
+and fall-through addresses. We can also perform RTable queries
+(<code>afl,</code>, <code>afb,</code>) to filter and analyze the
+function information, including cross-references, function calls, and
+control flow graphs. The collected data can be used for various
+purposes, such as identifying code patterns, analyzing program flow, or
+detecting potential vulnerabilities. Additionally, the script can
+generate statistical data about basic block distribution and function
+complexity, which is valuable for program analysis and optimization.</p>
+<p>Here’s an example script:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> blocks <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> functions <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmdj</span>(<span class="st">&#39;aflj&#39;</span>)<span class="op">;</span> <span class="co">// List functions in JSON</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>functions<span class="op">.</span><span class="fu">forEach</span>(func <span class="kw">=&gt;</span> {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> bbs <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmdj</span>(<span class="vs">`afbj @ </span><span class="sc">${</span>func<span class="op">.</span><span class="at">offset</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span> <span class="co">// List basic blcoks</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    bbs<span class="op">.</span><span class="fu">forEach</span>(bb <span class="kw">=&gt;</span> {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        blocks<span class="op">.</span><span class="fu">push</span>({</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            <span class="dt">block</span><span class="op">:</span> bb<span class="op">.</span><span class="at">addr</span><span class="op">,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>            <span class="dt">size</span><span class="op">:</span> bb<span class="op">.</span><span class="at">size</span><span class="op">,</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>            <span class="dt">jump</span><span class="op">:</span> bb<span class="op">.</span><span class="at">jump</span><span class="op">,</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            <span class="dt">fail</span><span class="op">:</span> bb<span class="op">.</span><span class="at">fail</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(blocks))<span class="op">;</span></span></code></pre></div>
+<ul>
+<li>Use <code>r2 -i script.r2.js -A /bin/ls</code> to run the
+script</li>
+<li>Modify the script to adjust to your needs</li>
+<li>Re-run the script inside r2 with just
+<code>. script.r2.js</code></li>
+</ul>
+<p>At this point we will notice how the script fails with this
+error:</p>
+<pre class="console"><code>[0x100003a58]&gt; . a.r2.js
+ERROR: SyntaxError: redeclaration of &#39;blocks&#39;
+ERROR:     at &lt;eval&gt; (-:1:1)
+
+ERROR: [uninitialized]
+[0x100003a58]&gt;</code></pre>
+<p>The reason for the error is that those constants are located in the
+global scope, and according to JavaScript rules, we cannot redefine
+them. To fix this issue, we must wrap the whole code inside an anonymous
+function (also known as an <strong>IIFE</strong> - Immediately Invoked
+Function Expression) and try again. This creates a new scope for our
+variables and prevents them from polluting the global namespace.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span>() {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Your code here will have its own scope</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> myConstant <span class="op">=</span> <span class="st">&#39;value1&#39;</span><span class="op">;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// More code...</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">// In another file or section</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span>() {</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// You can now use the same constant name</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> myConstant <span class="op">=</span> <span class="st">&#39;value2&#39;</span><span class="op">;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// More code...</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span></code></pre></div>
+<p>This pattern is commonly used in JavaScript modules and libraries to
+avoid naming conflicts and maintain clean, modular code. It’s
+particularly useful when working with multiple files or third-party
+libraries that might use similar variable names.</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span>() {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> blocks <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> functions <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmdj</span>(<span class="st">&#39;aflj&#39;</span>)<span class="op">;</span> <span class="co">// List functions in JSON</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  functions<span class="op">.</span><span class="fu">forEach</span>(func <span class="kw">=&gt;</span> {</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(blocks))<span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span></code></pre></div>
+<h2 id="finding-path">Finding Path</h2>
+<p>Sometimes we want to know who is calling a specific function, and
+while xref exploration can be helpful, this approach can be manual and
+tedious. This is why radare2 provides commands that help identify the
+shortest path a program needs to take to reach a destination.</p>
+<p>The <code>abp</code> and <code>abpf</code> commands serve this
+purpose. The first one (<code>abp</code>) works only within the same
+function, while the second one (<code>abpf</code>) works across
+functions. For example, if you want to analyze a crash in a particular
+function, these commands can help determine the shortest path to reach
+that point.</p>
+<pre class="console"><code>[0x100003a58]&gt; a?*~path
+| abp[?] [addr]        follow basic blocks paths from $$ to `addr`
+Usage: abp  [addr] [num] # find num paths from current offset to addr
+| abp [addr] [num]   find num paths from current offset to addr
+| abpf [addr]        same as /gg find the path between two addresses across functions and basic blocks
+| abpj [addr] [num]  display paths in JSON
+| afco path       open Calling Convention sdb profile from given path
+| w [path]                write to path or display graph image (see graph.gv.format)
+[0x100003a58]&gt;</code></pre>
+<p>The <code>abp</code> command computes paths between basic blocks,
+allowing you to find out the basic blocks that need to be executed or
+emulated to reach the final address. This is interesting because we can
+use this information to colorize the graph to clarify which are the
+conditions that need to happen to reach the final point.</p>
+<pre class="console"><code>[0x100003a58]&gt; abp [destination_address]</code></pre>
+<p><strong>NOTE</strong> See <code>abc</code> command to colorize basic
+blocks.</p>
+<p>But <code>abp</code> has a problem. it’s just tied to following basic
+block references. It won’t be able to find out data references or
+indirect references via pointers or call instructions. This is,
+<code>abp</code> only works if you specify the begining of the basic
+block address and you are inside the very same function.</p>
+<p>To perform the same operation between functions we have
+<code>abpf</code> (formerly known as <code>/gg</code>) which will
+perform a basic block, call and reference graph and walk all the nodes
+to find out the shortest path to reach the point starting from a
+different address.</p>
+<p>There are several things to improve here, so it will be great if
+someone spends some time reading the code and improving it because there
+are many cool features that can be implemented on top of these commands.
+But first of all you may want to play a little with different commands
+and solve today’s challenge.</p>
+<h2 id="challenge">Challenge</h2>
+<p>Explore the binary <code>winmain.exe</code> in the testbins
+repository and respond to the following questions:</p>
+<ul>
+<li>What’s the address of the largest basic block?</li>
+<li>Trace the path from the first instruction in <code>entrypoint</code>
+to the largest basic block</li>
+</ul>
+<p>Submit your results as a JSON file listing the path of addresses and
+post the result.</p>
+<p>Happy reversing!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

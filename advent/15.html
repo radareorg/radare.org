@@ -1,0 +1,351 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="diffing-code">15 - Diffing Code</h1>
+<p>Welcome to Day 15 of the Radare2 Advent of Code!</p>
+<p>Today’s post is on <strong>binary diffing</strong>, in the sense of
+comparing the changes between two binary files.</p>
+<p>Radare2 provides several commands and tools that can help us to
+understand which bytes or blocks of data are changing between two
+samples. There are several things we can compare:</p>
+<ul>
+<li>Code disassembly (linear instruction decoding comparison)</li>
+<li>Comparing code signatures, ignoring immediates and absolute
+references</li>
+<li>Control flow graph (added basic blocks, changed types, conditions or
+branches)</li>
+<li>Analysis information (functions, basic blocks, types, ..)</li>
+<li>Binary metadata (symbols, imports, strings, sections, ..)</li>
+<li>Byte-to-byte comparisons (colorized hexdump of data bytes)</li>
+<li>Deltified data comparison (comparing two files with different
+size)</li>
+</ul>
+<p>As long as these features are shipped inside the framework it is
+possible to use them from the commandline with tools like
+<code>radiff2</code>/<code>rapatch2</code> or directly from the radare2
+shell using <code>c</code> subcommands (<em>c stands for
+comparison</em>), bringing us the ability to perform checks in process
+memory at runtime, compare different sections or functions of the same
+binary or do it in batch from the system shell.</p>
+<p>Understanding our options is the foundation for achieving not only
+what we currently need but also discovering possibilities we hadn’t even
+imagined.</p>
+<h2 id="comparing-code">Comparing Code</h2>
+<p>As mentioned before, we will focus on features for comparing the
+changes in code between two different samples. Taking the disassembly,
+zignatures, code analysis and binary information as primary source of
+metadata. These features are particularly useful for:</p>
+<ul>
+<li>Malware analysis - comparing multiple samples of the same
+family</li>
+<li>Patch verification - understand how a vulnerability was fixed in the
+new update</li>
+<li>Reverse engineering - compare two similar binaries or functions to
+understand patterns</li>
+<li>Security auditing - spotting other functions that may be vulnerable
+to the same problems</li>
+</ul>
+<h2 id="diffing-from-the-shell">Diffing from the Shell</h2>
+<p>Let’s start by introducing the <code>radiff2</code> tool, run the
+tool with <code>-h</code> or read the manpage <code>man radiff2</code>
+for more details, here’s a short summary of the most relevant options
+which may be split into code, data diffing and output formatting:</p>
+<p>Code:</p>
+<pre class="console"><code>  -a [arch]  specify architecture plugin to use (x86, arm, ..)
+  -A [-A]    run aaa or aaaa after loading each binary (see -C)
+  -b [bits]  specify register size for arch (16 (thumb), 32, 64, ..)
+  -B [baddr] define the base address to add the offsets when listing
+  -C         graphdiff code (columns: off-A, match-ratio, off-B) (see -A)
+  -D         show disasm instead of hexpairs
+  -e [k=v]   set eval config var value for all RCore instances
+  -g [arg]   graph diff of [sym] or functions in [off1,off2]
+  -G [cmd]   run an r2 command on every RCore instance created
+  -i [ifscm] diff imports | fields | symbols | classes | methods
+  -S [name]  sort code diff (name, namelen, addr, size, type, dist) (only for -C or -g)
+  -t [0-100] set threshold for code diff (default is 70%)
+  -T         analyze files in threads (EXPERIMENTAL, 30% faster and crashy)
+  -O         code diffing with opcode bytes only
+  -z         diff on extracted strings
+  -Z         diff code comparing zignatures</code></pre>
+<p>Data:</p>
+<pre class="console"><code>  -d         use delta diffing
+  -ss        compute Levenshtein edit distance (substitution is allowed, O(N^2))
+  -s         compute edit distance (no substitution, Eugene W. Myers O(ND) diff algorithm)
+  -x         show two column hexdump diffing
+  -X         show two column hexII diffing</code></pre>
+<p>Output:</p>
+<pre class="console"><code>  -1         output in Generic binary DIFF (0xd1ffd1ff magic header)
+  -r         output in radare commands
+  -c         count of changes
+  -j         output in json format
+  -n         print bare addresses only (diff.bare=1)
+  -m [mode]  choose the graph output mode (aditsjJ)
+  -p         use physical addressing (io.va=false) (only for radiff2 -AC)
+  -u         unified output (---+++)
+  -U         unified output using system &#39;diff&#39;</code></pre>
+<h2 id="our-first-interaction">Our first interaction</h2>
+<p>Let’s get into our first practice. Taking two binaries, if the most
+analyzed binary in r2land is <code>/bin/ls</code>, the most diffed ones
+by <code>radiff2</code> are <code>/bin/true</code> and
+<code>/bin/false</code>. As long as many systems end up reimplementing
+them into the shell for performance reasons or just shipping
+<strong>busybox</strong> which it’s just a single huge binary, we will
+take the ones from GNU binutils, which we distribute as part of the
+testsuite under the <code>test/bins/other/radiff2/</code> directory.</p>
+<p>Let’s see what happens if we throw them right into radiff with no
+arguments at all:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd radare2/test/bins/other/radiff2</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> du <span class="at">-hs</span> true false</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">28K</span>    true</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">28K</span>    false</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> radiff2 true false <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 10</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000018</span> 32 =<span class="op">&gt;</span> 38 0x00000018</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000000d0</span> b4 =<span class="op">&gt;</span> f4 0x000000d0</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000000d8</span> b4 =<span class="op">&gt;</span> f4 0x000000d8</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000198</span> 4c =<span class="op">&gt;</span> 8c 0x00000198</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000001a0</span> 4c =<span class="op">&gt;</span> 8c 0x000001a0</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">0x000001a8</span> 4c =<span class="op">&gt;</span> 8c 0x000001a8</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00000284</span> 2c0bab45e7d60d5903d8548d1b83f9d8b0937628 =<span class="op">&gt;</span> 38c5827bc74fd984c5c6c55efd57ce7b545b82bb 0x00000284</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">0x00001395</span> 0731ffe893ffffff488b3e =<span class="op">&gt;</span> 0abf01000000e890ffffff 0x00001395</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> radiff2 true false <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>     <span class="ex">970</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<p>As we can see there are several changes.. about 970 blocks of data
+that differs, some in the binary headers, others in the code. But that
+seems to be too much for what it should be. In theory the only
+difference between these two programs is a <code>return 0</code> and a
+<code>return 1</code>. So we are probably looking in the wrong way.</p>
+<p>Let’s dig into the function diffing with <code>radiff2 -AC</code> and
+see which functions match and those who differ:</p>
+<pre class="console"><code>$ radiff2 -AC true false | tail
+ sym.imp.__fprintf_chk   6 0x401350 |   MATCH  (1.000000) | 0x401350    6 sym.imp.__fprintf_chk
+       sym.imp.mbsinit   6 0x401360 |   MATCH  (1.000000) | 0x401360    6 sym.imp.mbsinit
+      sym.imp.iswprint   6 0x401370 |   MATCH  (1.000000) | 0x401370    6 sym.imp.iswprint
+ sym.imp.__ctype_b_loc   6 0x401380 |   MATCH  (1.000000) | 0x401380    6 sym.imp.__ctype_b_loc
+                  main 162 0x401390 |   MATCH  (0.773810) | 0x401390  168 main
+                entry0  41 0x401432 |   MATCH  (0.926829) | 0x401438   41 entry0
+          fcn.00401460  50 0x401460 |   MATCH  (1.000000) | 0x401470   50 fcn.00401470
+           entry.fini0  28 0x4014e0 | UNMATCH  (0.928571) | 0x4014f0   28 entry.fini0
+           entry.init0 134 0x401500 |   MATCH  (1.000000) | 0x401510  134 entry.init0</code></pre>
+<p>Now things are starting to make more sense. Let’s dig into diffing
+the 3 functions that differ:</p>
+<ul>
+<li>main</li>
+<li>entry0</li>
+<li>entry.fini0</li>
+</ul>
+<p>We may combine the -A flag to analyze code, use <code>-g</code> to
+tell which symbol to work on, and then <code>-D</code> to show
+disassembly and <code>-C</code> to work with code.</p>
+<pre class="console"><code>$ radiff2 -DDAC -g main /tmp/true /tmp/false 2&gt;/dev/null | grep -C 1 exit
+-         edi = 0
+-         sym.imp.exit ()
++         edi = 1
++         sym.imp.exit ()
+$</code></pre>
+<p>You may find some of these flags a little confusing, but that’s
+probably exècted because we need more people to work on improving the
+diffing and patching functionalities in radiff2. So feel free to suggest
+changes or submit PRs improving these powerful tools.</p>
+<p><strong>NOTE</strong> <em>immediates are changing between different
+builds of the same program or even slightly different versions of the
+program, so using <code>-e asm.imm.trim=true</code> may help on reducing
+false positive changes</em></p>
+<h2 id="patching-back">Patching back</h2>
+<p>radiff2 can print the results in different formats, by default it
+will display kind of:</p>
+<pre class="console"><code>file0-offset ... bytes-removed =&gt; bytes-added file1-offset</code></pre>
+<p>Other formats are:</p>
+<ul>
+<li>-U for unified delta diffing which may be useful when comparing
+textual data</li>
+<li>-r for radare2 scripting</li>
+<li>-1 for generic binary diffing file format</li>
+<li>-g for graph output format</li>
+</ul>
+<p>To exemplify this we will create a couple of simple files containing
+“hello” and “hello world” strings.</p>
+<pre class="console"><code>$ echo hello &gt; a.txt
+$ echo hello world &gt; b.txt</code></pre>
+<p>We will focus on the -r flag which will generate a patch file for us
+using r2 scripts.</p>
+<pre class="console"><code>$ radiff2 -dr a.txt b.txt | tee a.r2
+INFO: File size differs 6 vs 12
+r-6 @ 0x00000000
+r+12 @ 0x00000000
+wx 68656c6c6f20776f726c640a @ 0x00000000</code></pre>
+<p>We can now patch the <code>a.txt</code> file to become
+<code>b.txt</code> by running this script with r2 (eventually
+rapatch2)</p>
+<pre class="console"><code>$ r2 -e io.va=false -qnwi a.r2 a.txt
+$ md5sum a.txt b.txt
+6f5902ac237024bdd0c176cb93063dc4  a.txt
+6f5902ac237024bdd0c176cb93063dc4  b.txt</code></pre>
+<p>What we did here is the following:</p>
+<ul>
+<li><code>-e io.va=false</code> : disable virtual addressing</li>
+<li><code>-n</code> : do not parse any binary headers</li>
+<li><code>-q</code> : quit after running the commands</li>
+<li><code>-w</code> : open in read-write mode</li>
+<li><code>-i</code> : specify script to run</li>
+</ul>
+<p>Note that after doing that, both files will be the same. There’s an
+ongoing effort to implement proper support for diffing and patching
+without having to pass all those flags, and streamline the usage like
+it’s done when working with text files in GNU diff.</p>
+<p>The upcoming 6.0 release will ship a new tool <code>rapatch2</code>
+that may ease this process.</p>
+<h2 id="diffing-from-radare2">Diffing from radare2</h2>
+<p>All the functionalities we have in radiff2, are also available via
+<code>radiff2</code>.</p>
+<p>Copy the true/false binaries from the testsuite
+(<code>radare2/test/bins/other/radiff2/</code>)</p>
+<pre class="console"><code>$ r2 -B 0x4000000 /tmp/true
+[0x04001432]&gt; s main
+[0x04001390]&gt; o /tmp/false 0x8000000
+[0x080014f0]&gt; s main
+[0x08001390]&gt; ob
+- 0 3 x86-64 ba:0x04000000 sz:25374 /tmp/true
+* 1 5 x86-64 ba:0x08000000 sz:25374 /tmp/false
+[0x08001390]&gt; ccd 0x04001390
+ 0x08001390  cmp edi, 2                       = 0x04001390  cmp edi, 2
+ 0x08001393  push rbx                         = 0x04001393  push rbx
+ 0x08001394  je 0x80013a0                     ! 0x04001394  je 0x400139d
+ 0x08001396  mov edi, 1                       ! 0x04001396  xor edi, edi
+ 0x0800139b  call 0x8001330                   ! 0x04001398  call 0x4001333
+ 0x080013a0  mov rdi, qword [rsi]             = 0x0400139d  mov rdi, qword [rsi]</code></pre>
+<p>As indicated by the <code>c</code> subcommand help we will explored
+the <code>ccd</code> command again.</p>
+<h2 id="work-in-progress">Work In Progress</h2>
+<p>Binary diffing is a very hot topic, not just in radare2, because
+there are very few tools that are capable of achieving this properly.
+So, it’s always a good idea to contribute to the project by reporting
+bugs or submitting patches.</p>
+<p><strong>NOTE</strong> <em>take into account that this command have so
+many commandline flags that are subject to change for clarification,
+they have been stable for long time because of lack of focus on this
+feature but it’s an important one that must be taken into account soon
+or late</em></p>
+<p>Join the chats, test the tooling and suggest changes to make the most
+common usecases as handy as possible!</p>
+<h2 id="challenge">Challenge</h2>
+<p>The challenge to be solved today is to take two different binaries
+and find out which vulnerability has been fixed and how.</p>
+<p>This is, take both binaries, analyze the code, find which function
+has changed and understand the symbols that don’t match, comparing the
+graph, decompiler output and the disassembly.</p>
+<pre class="console"><code>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
+AAAEwSAAAAAA==</code></pre>
+<h2 id="closing">Closing</h2>
+<p>Stay tuned for tomorrow’s Radare2 challenge as we continue exploring
+advanced reverse engineering techniques!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

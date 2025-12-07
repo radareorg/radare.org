@@ -1,0 +1,297 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="got-root-r2k">10 - Got Root? r2k</h1>
+<p>Welcome once again to the Advent of Radare2!</p>
+<p>Today we’ll dive deep into Linux Kernel hacking, exploring the
+intricate world of kernel memory manipulation and task structure
+internals.</p>
+<p>To do this we’ll leverage <strong>r2k</strong>, the kernel plugin for
+radare2 which interacts with the radare2 kernel module for Linux (but
+bear in mind that it’s also available for macOS and Windows), to
+directly interact with kernel memory spaces while bypassing traditional
+debugging restrictions.</p>
+<p>You’ll learn how to build and load custom kernel modules, navigate
+through physical and virtual memory spaces, and understand the
+relationships between process memory layouts.</p>
+<p>We’ll also explore techniques to manipulate the
+<code>task_struct</code> data structures, modify process credentials
+like effective user IDs (EUID), and bypass common anti-debugging
+mechanisms. Using a bash shell as our test subject, we’ll demonstrate
+how to elevate privileges by directly modifying kernel memory
+structures, all while avoiding detection from security monitoring
+tools.</p>
+<h2 id="ring-zero">Ring Zero</h2>
+<p>Nowadays, modern kernels come with several safety protections that
+enforce a strict separation between kernel space (Ring 0) and user space
+(Ring 3). This separation is a fundamental security principle where
+applications run in a restricted user mode, while the kernel operates
+with full hardware privileges in kernel mode. This architecture prevents
+user applications from directly accessing hardware or critical memory
+areas, reducing the risk of system crashes and security breaches.</p>
+<p>When a userland process needs to perform privileged operations (like
+reading a file or creating a network connection), it must use system
+calls (syscalls) to request the kernel’s services. Syscalls are executed
+through specific CPU instructions (like SYSCALL on
+<strong>x86_64</strong>) that trigger a controlled transition from Ring
+3 to Ring 0. During this transition, the CPU switches to a separate
+kernel stack and validates the syscall parameters.</p>
+<p>To maintain memory safety, data passed between userland and kernel
+space must be carefully copied rather than directly accessed. The kernel
+uses functions like <code>copy_from_user()</code> and
+<code>copy_to_user()</code> to safely transfer data across this
+boundary, ensuring that userland processes can’t trick the kernel into
+accessing invalid or malicious memory addresses. Additionally, the
+kernel verifies all memory addresses provided by userland applications
+before accessing them, preventing potential buffer overflows or other
+memory-based attacks.</p>
+<h2 id="safety-considerations">Safety Considerations</h2>
+<p>This introduction should get you started with r2k. Remember to always
+exercise caution when working with kernel-level tools, as mistakes can
+lead to system instability or crashes.</p>
+<ul>
+<li>Kernel memory manipulation can crash your system</li>
+<li>Always backup important data before using r2k</li>
+<li>Avoid writing to critical kernel areas</li>
+<li>Use in testing environments first</li>
+</ul>
+<h2 id="installing-the-plugin">Installing the Plugin</h2>
+<p>r2k is a kernel module plugin for radare2 that allows direct access
+to kernel memory and hardware devices. It enables users to analyze and
+debug kernel-level code, inspect kernel memory spaces, and read/write
+any process or physical memory at will.</p>
+<p>r2k consists of two main components:</p>
+<ul>
+<li>A kernel module (<code>r2k.ko</code>) that provides the low-level
+access</li>
+<li>A radare2 IO plugin that interfaces with the kernel module</li>
+</ul>
+<p>While this guide focuses on Linux, r2k also supports Android, Windows
+and macOS/iOS. Each platform has its specific building requirements and
+limitations.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo r2pm <span class="at">-ci</span> r2k-linux</span></code></pre></div>
+<p>Under the hood, the r2pm package will download the radare2-extras
+repository, change to <code>r2k/linux</code> and run <code>make</code>
+to compile and insert the module in the kernel.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> make</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-C</span> /lib/modules/6.8.0-49-generic/build M=/home/pancake/prg/radare2-extras/r2k/linux modules</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">make</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="ex">:</span> Entering directory <span class="st">&#39;/usr/src/linux-headers-6.8.0-49-generic&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">warning:</span> the compiler differs from the one used to build the kernel</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">The</span> kernel was built by: x86_64-linux-gnu-gcc-13 <span class="er">(</span><span class="ex">Ubuntu</span> 13.2.0-23ubuntu4<span class="kw">)</span> <span class="ex">13.2.0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">You</span> are using:           gcc-13 <span class="er">(</span><span class="ex">Ubuntu</span> 13.2.0-23ubuntu4<span class="kw">)</span> <span class="ex">13.2.0</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">CC</span> <span class="pp">[</span><span class="ss">M</span><span class="pp">]</span>  /home/pancake/prg/radare2-extras/r2k/linux/r2k.o</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">LD</span> <span class="pp">[</span><span class="ss">M</span><span class="pp">]</span>  /home/pancake/prg/radare2-extras/r2k/linux/r2kmod.o</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">MODPOST</span> /home/pancake/prg/radare2-extras/r2k/linux/Module.symvers</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">CC</span> <span class="pp">[</span><span class="ss">M</span><span class="pp">]</span>  /home/pancake/prg/radare2-extras/r2k/linux/r2kmod.mod.o</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">LD</span> <span class="pp">[</span><span class="ss">M</span><span class="pp">]</span>  /home/pancake/prg/radare2-extras/r2k/linux/r2kmod.ko</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">BTF</span> <span class="pp">[</span><span class="ss">M</span><span class="pp">]</span> /home/pancake/prg/radare2-extras/r2k/linux/r2kmod.ko</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Skipping</span> BTF generation for /home/pancake/prg/radare2-extras/r2k/linux/r2kmod.ko due to unavailability of vmlinux</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">make</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="ex">:</span> Leaving directory <span class="st">&#39;/usr/src/linux-headers-6.8.0-49-generic&#39;</span></span></code></pre></div>
+<p>Several things can go wrong here, even if r2k have enough ifdefs to
+be able to compile in many versions of the Linux kernel you need the
+<code>linux-headers</code> and disable some security measures to make
+<code>insmod</code> to work.</p>
+<p>If we have the <code>r2kmod.ko</code> in that directory we are one
+step closer to achieve our plan!</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Inserting a module shouldn’t be more than just
+<code>insmod r2kmod.ko</code>. If that fails we probably need to change
+these two things in the BIOS and GRUB/UEFI:</p>
+<ul>
+<li>disable codesign (append <code>module.sig_enforce=0</code> in the
+/boot/grub.cfg cmdline)</li>
+<li>disable secure boot (in the BIOS/UEFI)</li>
+</ul>
+<p>Once installed this new device should be created, note that
+permissions only allow r2k to be used from root. But if we want to use
+it from any other user we can just chmod’it!</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> dmesg <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 2</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[118301.185120]</span> r2k: loading driver</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[118301.185198]</span> r2k: /dev/r2k created</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> /dev/r2k</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">crw-------</span> 1 root root 234, 0 dic  2 15:30 /dev/r2k</span></code></pre></div>
+<h2 id="the-r2ks-io-plugin">The r2k’s io plugin</h2>
+<p>The way to communicate with the kernel from radare2 is via the r2k io
+plugin. This plugin is built and shipped by default in all the builds
+for Linux, macOS or Windows. Because there are kernel modules for all
+those 3 operating systems (iOS and Android are also part of the
+list)</p>
+<h2 id="finding-the-task-struct">Finding the Task struct</h2>
+<p>The <code>task_struct</code> is the kernel’s process descriptor in
+Linux - a data structure that contains all information about a specific
+process. It’s defined in <code>&lt;linux/sched.h&gt;</code> and it
+includes:</p>
+<ul>
+<li>Process ID (PID)</li>
+<li>Process state</li>
+<li>Memory info</li>
+<li>File descriptors</li>
+<li>Scheduling info</li>
+<li>Parent/child relationships</li>
+<li><strong>Credentials</strong></li>
+<li>Signal handlers</li>
+</ul>
+<p>Some links for reference:</p>
+<ul>
+<li><a
+href="https://docs.huihoo.com/doxygen/linux/kernel/3.7/structtask__struct.html">task
+struct</a></li>
+<li><a
+href="https://elixir.bootlin.com/linux/v6.12.1/source/include/linux/cred.h#L111">cred
+struct</a></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> cred <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    atomic_long_t   usage<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    kuid_t      uid<span class="op">;</span>        <span class="co">/* real UID of the task */</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    kgid_t      gid<span class="op">;</span>        <span class="co">/* real GID of the task */</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    kuid_t      suid<span class="op">;</span>       <span class="co">/* saved UID of the task */</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    kgid_t      sgid<span class="op">;</span>       <span class="co">/* saved GID of the task */</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    kuid_t      euid<span class="op">;</span>       <span class="co">/* effective UID of the task */</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">struct</span> rcu_head rcu<span class="op">;</span>        <span class="co">/* RCU deletion hook */</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> __randomize_layout<span class="op">;</span></span></code></pre></div>
+<p><strong>NOTE</strong> that <code>__randomize_layout</code> is a Linux
+kernel security feature (a GCC attribute) that randomizes the layout of
+sensitive kernel structures in memory during compilation. This helps
+prevent attacks that rely on knowing the exact layout or offset of
+structure members. It’s part of the kernel’s defense against
+exploitation techniques like buffer overflows and information leaks.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo r2 r2k://</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">--</span> Seek at relative offsets with <span class="st">&#39;s +&lt;offset&gt;&#39;</span> or <span class="st">&#39;s -&lt;offset&gt;&#39;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x00000000]</span><span class="op">&gt;</span> :<span class="pp">?</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Usage:</span> :<span class="pp">[</span><span class="ss">MprRw</span><span class="pp">][</span><span class="ss">lpP</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">args...</span><span class="pp">]</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">:dm</span>              Print kernel memory map <span class="er">(</span><span class="ex">or</span> process if r2k.io==1<span class="kw">)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">:dr</span>              Print control registers</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">:dR</span>              Print control registers in detailed mode</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">:dp</span> <span class="pp">[</span><span class="ss">pid</span><span class="pp">]</span>        Print current selected pid or change it</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">:e</span> r2k.io=<span class="pp">[</span><span class="ss">012</span><span class="pp">]</span>  Read/Write from 0: Linear, 1: Process, 2: Physical addresses</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Old</span> Commands: <span class="er">(</span><span class="ex">deprecated</span><span class="kw">)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">:M</span>                      Print kernel memory map</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">:b</span>      beid <span class="pp">[</span><span class="ss">pid</span><span class="pp">]</span>      Change r2k backend. pid is required when beid is 1.</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                         <span class="ex">0:</span> linear address<span class="kw">;</span> <span class="ex">1:</span> process address<span class="kw">;</span> <span class="ex">2:</span> physical address</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">:p</span>      pid             Print process information</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">:rl</span>     addr len        Read from linear address</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">:rp</span>     pid addr len    Read from process address</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">:rP</span>     addr len        Read physical address</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">:R[p]</span>                   Print control registers. Use :Rp for detailed description</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ex">:wl[x]</span>  addr input      Write at linear address. Use :wlx for input in hex</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="ex">:wp[x]</span>  pid addr input  Write at process address. Use :wpx for input in hex</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ex">:wP[x]</span>  addr input      Write at physical address. Use :wPx for input in hex</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="ex">:W</span>      1<span class="kw">|</span><span class="ex">0</span>             Honor arch write protect <span class="er">(</span><span class="ex">1</span> enable WP, 0 disable WP<span class="kw">)</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x00000000]</span><span class="op">&gt;</span> </span></code></pre></div>
+<p>Let’s open a new terminal and get the PID for the current shell:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ps</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">PID</span> TTY          TIME CMD</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">62711</span> pts/4    00:00:00 bash</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">62725</span> pts/4    00:00:00 ps</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<p>To find the address of the task struct in the kernel for a specific
+<strong>PID</strong> we can use the <code>:dp</code> command to select
+the process id, and then we will switch the IO mode with
+<code>:e r2k.io=1</code>, this way we can read and write into the
+process memory without using <code>/proc/pid/mem</code> or
+<code>ptrace</code>.</p>
+<p>At this point we must check the dmesg:</p>
+<pre class="console"><code>[0x00000000]&gt; :dp 62711
+[0x00000000]&gt; :e io.r2k = 1
+[0x00000000]&gt; !sudo dmesg | grep Task | tail
+[119007.797853] Task UID 1000 Comm bash
+[119007.797858] Task 62711 EUID 0xffff8da6de2233d8 Cred 0xffff8da6de2233c0
+[119007.797861] Task 0xffff8da581668000 + 2992</code></pre>
+<p>The kernel usually makes those structs hard to find without symbols
+structs, but r2k is pleasant enough to provide us this information. So
+let’s make use of it by switching back to the linear addressing
+mode.</p>
+<pre class="console"><code>[0x00000000]&gt; :e r2k.io=0
+[0x00000000]&gt; 0xffff8da6de2233d8
+[0xffff8da6de2233d8]&gt; x 32
+- offset -          D8D9 DADB DCDD DEDF E0E1 E2E3 E4E5 E6E7  89ABCDEF01234567
+0xffff8da6de2233d8  e803 0000 e803 0000 e803 0000 e803 0000  ................
+0xffff8da6de2233e8  0000 0000 0000 0000 0000 0000 0000 0000  ................
+[0xffff8da6de2233d8]&gt; </code></pre>
+<p>We have some numbers there, but do we know the meaning of e803? Let’s
+use pv4 to swap the endianness and the use base10:</p>
+<pre class="console"><code>[0xffff8da6de2233d8]&gt; pv4
+0x000003e8
+[0xffff8da6de2233d8]&gt; pv4d
+1000
+[0xffff8da6de2233d8]&gt; </code></pre>
+<p>Exactly! It’s the UID, EUID, GID and EGID!</p>
+<p>The ‘e’ in <strong>EUID</strong>, <strong>EGID</strong>, etc. stands
+for “effective,” and it’s part of Linux’s security model for process
+credentials.</p>
+<p>Each Linux process has four types of IDs: real (from process
+creator), effective (current permissions), saved (backup of effective),
+and filesystem (for file access). This enables features like setuid
+programs, where processes can temporarily gain elevated permissions
+while maintaining their original user identity.</p>
+<p>The real ID (RUID/RGID) represents the user/group from the user who
+started the process, the effective ID (EUID/EGID) determines the actual
+permissions for the process during execution.</p>
+<p>The kernel prevents direct access to protected memory regions. r2k
+bypasses these protections by exploiting kernel functions to perform
+privileged memory operations, allowing arbitrary read/write access to
+normally restricted memory addresses, including the cred struct.</p>
+<p>So now we can just patch it:</p>
+<pre class="console"><code>[0xffff8da6de2233d8]&gt; wv4 0</code></pre>
+<p>And observe what happens if we run <code>whoami</code> in the pwned
+shell again:</p>
+<pre class="console"><code>pancake@pnuc:~$ whoami
+pancake
+pancake@pnuc:~$ whoami
+root
+pancake@pnuc:~$ </code></pre>
+<h2 id="challenge">Challenge</h2>
+<p>The challenge for today involves working with r2k, a kernel module
+designed for memory manipulation at ring zero (kernel level) privileges.
+Follow the steps described in the post to</p>
+<ul>
+<li>Successfully install this plugin for Radare2</li>
+<li>Verify that you have direct access to kernel memory</li>
+<li>Spot the Cred struct associated with a process with the help of
+dmesg</li>
+<li>Patch the EUID field to get root.</li>
+</ul>
+<p>While technically straightforward, it requires attention to detail
+and proper execution of each step to ensure the r2k module is correctly
+installed and configured. The exercise serves as a practical
+introduction to kernel-level memory analysis tools.</p>
+<h2 id="closing">Closing</h2>
+<p>If there’s any problem during the process feel free to submit your
+questions, pull requests, fill tickets or whatever needed to improve the
+state of the Kernel support for radare2!</p>
+<p>See you tomorrow in another advent post of radare2!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

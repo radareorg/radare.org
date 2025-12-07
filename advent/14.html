@@ -1,0 +1,369 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="day-14---custom-settings">Day 14 - Custom Settings</h1>
+<audio controls>
+<source src="14-config.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</source>
+</audio>
+<p>Welcome to Day 14 of the Advent of Radare!</p>
+<p>Today, we shift our focus from analyzing specific binaries to
+customizing Radare2 itself.</p>
+<p>After all these days learning its features applied to practical
+usecases, we’ll now learn how to tailor the environment to perfectly
+match your individual workflow and preferences.</p>
+<p>Radare2 comes with a well-considered default configuration, and we
+probably won’t need to change it, but this session is all about refining
+these settings to improve your comfort. As we explore the various
+configuration options, we might discover some interesting features that
+could enhance our reverse engineering workflow!</p>
+<p>The configuration system in Radare2 is quite flexible and allows
+users to customize nearly every aspect of the tool, from visual
+appearances to analysis behaviors. You can modify these settings either
+temporarily for your current session or permanently by saving them to
+your configuration file. Whether you’re a beginner or an experienced
+user, understanding how to configure Radare2 to match your preferences
+can significantly improve your productivity and make the tool more
+enjoyable to use.</p>
+<p>We’ll examine how to change settings that impact your daily use (Yes,
+I expect you to use r2 every day for everything):</p>
+<ul>
+<li>Visual style and colors</li>
+<li>Custom keyboard shortcuts</li>
+<li>Default analysis options</li>
+<li>Welcoming fortune messages</li>
+<li>Custom architecture plugins</li>
+<li>Additional disassembly hints</li>
+</ul>
+<p><strong>NOTE</strong> <em>If you find a default setting that is
+consistently inaccurate or counter-intuitive, that should be shared with
+the community to improve the overall Radare2 experience for everyone,
+please report or comment them!</em></p>
+<p>So, let’s dive into optimizing your Radare2 setup and make it truly
+your own reverse engineering toolkit!</p>
+<h2 id="introduction-the-configuration">Introduction the
+Configuration</h2>
+<p>The primary method for persistent configuration in radare2 is through
+configuration files, specifically the <code>~/.radare2rc</code> file in
+the user’s home directory <code>.radare2rc</code>. This file contain a
+series of radare2 commands that are automatically executed at startup.
+The global <code>~/.radare2rc</code> file applies to all radare2
+sessions.</p>
+<p>We can have file and project-specific scripts by just having a file
+ending with <code>.r2</code> in the same directory of the binary:</p>
+<pre class="console"><code>$ echo &#39;echo hello world&#39; &gt; ls.r2
+$ cp -f /bin/ls .
+$ r2 ls
+hello world
+[0x00000000]&gt;</code></pre>
+<p>The configuration can be viewed and modified using the <code>e</code>
+command family, where <code>e</code> lists all variables,
+<code>e &lt;var&gt;</code> shows a specific variable’s value, and
+<code>e &lt;var&gt;=&lt;value&gt;</code> sets a new value. For example,
+<code>e asm.syntax=att</code> would set the assembly syntax to AT&amp;T
+style.</p>
+<p>The <code>e</code> variables can be defined at startup time from the
+commandline using the <code>-e</code> flag. But those can be also
+changed at runtime or in visual mode using the visual eval editor
+(<code>Ve</code> command).</p>
+<p>This flexible approach let’s you configure anything at any time from
+the shell or even from scripts. But be careful running code from
+untrusted sources! Configuration files are actually scripts that are
+executed.</p>
+<p>The most comprehensive method is using the <code>e</code> command
+within radare2 or in configuration files. Common configurations include
+<code>e asm.bytes=false</code> to hide byte display,
+<code>e asm.comments=false</code> to disable automatic comments, and
+<code>e scr.color=1</code> to enable colored output.</p>
+<p>Users can explore available options using <code>e?</code> for help,
+and <code>e??</code> for a detailed list of all variables. But in short
+this is how it works:</p>
+<pre class="console"><code>e            # list all variables
+e &lt;var&gt;      # show value
+e &lt;var&gt;.     # list all variables starting with &lt;var&gt;
+e &lt;var&gt;=val  # set value
+e??          # detailed variables list</code></pre>
+<h2 id="permanent-options">Permanent Options</h2>
+<p>You don’t need to open a separate terminal and find that file in your
+home, creating it if it’s not there, radare2 can do all this for you!
+Actually, radare2 even have a text editor implemented inside, so you
+don’t even need vim. But let’s assume you have one in your system, and
+if not, you can choose it by changing the <code>cfg.editor</code> eval
+variable.</p>
+<p>Then try these two commands:</p>
+<ul>
+<li><code>edit</code> open <code>cfg.editor</code> to edit your
+configuration file</li>
+<li><code>ed+</code> to hardcode options in the radare2rc in
+non-interactive mode</li>
+<li><code>ed*</code> display contents of the ~/radare2rc file</li>
+</ul>
+<p>See <code>r2 -H</code> to find out (or override the environment
+variable) the path to the <strong>rc</strong> file is.</p>
+<p>Additionally we can just use <code>.</code> (dot include),
+<code>-i</code> command or commandline flag to include an external
+script at any time.</p>
+<p>Note that other projects like <strong>r2frida</strong> also have
+their own <em>rc</em> files.</p>
+<h2 id="startup-messages">Startup Messages</h2>
+<p>Do you wanna have clippy remembering how late it is right now? Try
+adding this line in your r2rc:</p>
+<pre class="console"><code>$ cat ~/.radare2rc
+?E `date`</code></pre>
+<p>Or maybe you want to have some seven-segmented ascii art text, use
+the <code>?ea</code> command.</p>
+<pre class="console"><code>[0x00000000]&gt; ?ea PWNRLZ
+ __          __      __
+|__||  ||\ ||__||     /
+|   |/\|| \|| \ |__  /_
+[0x00000000]&gt;</code></pre>
+<p>Or even run <code>cat /etc/motd</code> if we like</p>
+<h2 id="fortune-messages">Fortune Messages</h2>
+<p>By default, radare2 will show you the fortune messages, sometimes
+they are useful, sometimes they are just fun, and in the past they were
+also a little harsh. But they are there and you can disable them by
+changing this option if you don’t like them:</p>
+<pre class="console"><code>e cfg.fortunes = false</code></pre>
+<h2 id="discovering-configuration-options">Discovering Configuration
+Options</h2>
+<p>Abusing the hud operator with the eval help messages we can easily
+inspect them all with the following command:</p>
+<pre class="console"><code>[0x00000000]&gt; e??~..</code></pre>
+<h2 id="function-keys">Function keys</h2>
+<p>In visual mode, all the function keys F## of your keyboard can run a
+command; which can be an r2 oneliner, or anything else that can be
+executed inside radare2, like, for example a javascript file or even a
+system program.</p>
+<p>These keys can be configured by changing the following eval variables
+and are only accessed when in Visual mode.</p>
+<pre class="console"><code>[0x00000000]&gt; e key.&lt;TAB&gt;
+key.S     key.f1    key.f10   key.f11   key.f12   key.f2    key.f3    key.f4
+key.f5    key.f6    key.f7    key.f8    key.f9    key.s
+[0x00000000]&gt;</code></pre>
+<p>As you can see it’s also possible to override the command that will
+be executed when pressing <code>s</code> or <code>S</code>, aka, the
+default step-in and step-over keys.</p>
+<h2 id="visualization-options">Visualization Options</h2>
+<p>There are many options that can change the way r2 looks, the
+disassembly the hexdumps, the colors and layouts. These are the most
+used ones you may want to look at.</p>
+<ul>
+<li><code>e scr.highlight</code> highlight some words (Same as
+<code>V/</code>)</li>
+<li><code>e scr.color=3</code> enable truecolor</li>
+<li><code>e scr.utf8=true</code> use utf8 chars for the art</li>
+<li><code>e scr.demo=true</code> - add some nice effects</li>
+<li><code>e scr.wheel=true</code> - mouse wheel enabled for
+scrolling</li>
+<li><code>e scr.wheel.speed=8</code> - make wheel scrolling faster
+(default is 4)</li>
+</ul>
+<p>The prompt pcan be also tweaked in different ways to improve the tab
+autocompletion, include the flag or section name instead of the offset,
+use VI mode for the input, etc</p>
+<pre class="console"><code>[0x00000000]&gt; e??scr.prompt.
+     scr.prompt.code: show last command return code in the prompt
+     scr.prompt.file: show user prompt file (used by r2 -q)
+     scr.prompt.flag: show flag name in the prompt
+     scr.prompt.mode: set prompt color based on vi mode
+    scr.prompt.popup: show widget dropdown for autocomplete
+      scr.prompt.prj: show currently used project in prompt
+     scr.prompt.sect: show section name in the prompt
+  scr.prompt.tabhelp: show command help when pressing the TAB key
+       scr.prompt.vi: use vi mode for input prompt
+[0x00000000]&gt;</code></pre>
+<p>Radare2 provides extensive customization options for formatting both
+tables and JSON output. For JSON serialization, you can configure
+numeric values to be rendered as strings, which circumvents the inherent
+limitations of 31-bit or 63-bit numeric parsing constraints. The
+framework offers comparable configuration options for string formatting
+as well.</p>
+<pre class="console"><code>[0x00000000]&gt; e cfg.json.
+cfg.json.num = none
+cfg.json.str = none
+[0x00000000]&gt; e cfg.json.num=?
+none
+string
+hex
+[0x00000000]&gt; e cfg.json.str=?
+none
+base64
+strip
+hex
+array
+[0x00000000]&gt;</code></pre>
+<p>The RTable API, which is used for all the comma-suffixed commands
+that display listings using tables, so we can choose which is the
+default format we like for those tables:</p>
+<pre class="console"><code>[0x00000000]&gt; e cfg.table.format =?
+simple
+fancy
+html
+json
+csv
+tsv
+sql
+r2
+[0x00000000]&gt; e??cfg.table.
+    cfg.table.format: Change the default output format for tables
+    cfg.table.maxcol: Define maximum column width in tables
+      cfg.table.wrap: Wrap text to not exceed maxcol
+[0x00000000]&gt;</code></pre>
+<p>Try with the fancy output, note that setting this variable will be
+the same as using the <code>:fancy</code> modifier in the comma
+commands. The other options give us the ability to restrict the width in
+characters of the size of each column, improving the rendering on small
+terminals or just to avoid alignment problems when some fields take too
+much horizontal space.</p>
+<h2 id="color-themes">Color Themes</h2>
+<p>There are several color themes in radare2, they are precompiled as C
+headers and distributed as plain r2 scripts in the filesystem, you can
+modify them and create your own ones saving them in your home and
+loading them at startup time from the <code>.radare2rc</code>
+script.</p>
+<p>All this is done with the <code>eco</code> command:</p>
+<pre class="console"><code>[0x00000000]&gt; eco~?
+34
+[0x00000000]&gt; eco
+  ayu
+  basic
+  behelit
+  blood
+  bluy
+  bobcrawl
+  bold
+  bright
+  cga
+  chrome
+  ...</code></pre>
+<p>These scripts just use the <code>ec</code> command which sets the
+foreground and background color for a specific class of data.</p>
+<ul>
+<li><code>ec call red</code> custom details</li>
+</ul>
+<p>You can visualize them by using the <code>ec</code> command with no
+arguments:</p>
+<pre class="console"><code>[0x00000000]&gt; ec
+ &lt;font color=&quot;red&quot;&gt;##&lt;/a&gt;  comment
+ &lt;font color=&quot;green&quot;&gt;##&lt;/a&gt;  usrcmt
+ &lt;font color=&quot;green&quot;&gt;##&lt;/a&gt;  args
+ &lt;font color=&quot;yellow&quot;&gt;##&lt;/a&gt;  fname
+ &lt;font color=&quot;yellow&quot;&gt;##&lt;/a&gt;  floc
+ &lt;font color=&quot;white&quot;&gt;##&lt;/a&gt;  fline
+ &lt;font color=&quot;green&quot;&gt;##&lt;/a&gt;  flag
+..</code></pre>
+<p>You can also rotate between all the color themes in visual mode by
+pressing the <code>R</code> key. And actually there’s even a visual
+theme editor using the <code>VE</code> command.</p>
+<p>As expected, all the color theme can be saved and restored as a
+radare2 script by just using the <code>*</code> subcommand.</p>
+<pre class="console"><code>ec* &gt; mytheme.r2   # save it
+. mytheme.r2       # load it</code></pre>
+<h2 id="disassembly-settings">Disassembly Settings</h2>
+<p>One of the aspects of radare2 is more configurable is the disassembly
+listing, you can change from column widths, the amount of information
+you want to visualize, its colors, layout and more! take a look at all
+the asm. variables to find out what makes you more comfortable!</p>
+<p>These are the most relevant:</p>
+<ul>
+<li><code>e asm.bytes=false</code> - Hide instruction bytes</li>
+<li><code>e asm.comments=true</code> - Show comments</li>
+<li><code>e asm.lines=false</code> - Hide function lines</li>
+<li><code>e emu.str=true</code> - show strings referenced from computed
+emulation</li>
+<li><code>e asm.syntax=att</code> - use AT&amp;T syntax by default</li>
+<li><code>e asm.cmt.esil=true</code> - show esil expressions next to the
+disasm</li>
+<li><code>e asm.describe=true</code> - explain what each instruction is
+doing in a comment</li>
+</ul>
+<p>I won’t be pasting the complete list in here because there are so
+many, but you may want to use <code>e??asm~..</code> to inspect them
+easily.</p>
+<pre class="console"><code>[0x00000000]&gt; e??asm.~?
+139
+[0x00000000]&gt;</code></pre>
+<h2 id="binary-analysis-and-search-options">Binary, Analysis and Search
+Options</h2>
+<p>There are so many other options that may help you get better results
+depending on your target, these are usually not good to be in the
+radare2rc because different kind of targets may result on wrong
+behaviours or inconsistent results, but it’s good to know them and maybe
+create a conditional configuration to run them depending on the target
+file you are analysing.</p>
+<p>Binary settings:</p>
+<pre class="console"><code>e bin.strings=false     # e anal.strings=true (load strings from analysis instead of disasm)
+e bin.dbginfo=false     # dont load dwarf information, for performance reasons usually
+e bin.demangle=false    # do not demangle symbo names</code></pre>
+<p>Analysis settings:</p>
+<pre class="console"><code>e anal.hasnext=true    # assume there&#39;s a function after
+e anal.a2f=true        # use alternative function analysis loop
+e anal.depth=50        # dont go much deep</code></pre>
+<p>Search settings:</p>
+<pre class="console"><code>e search.in=?          # specify where to search for stuff
+e search.align=4       # assume stuff is always aligned to 4 bytes
+e search.overlap=false # dont take overlapping hits as valid
+e search.prefix=foo    # use &#39;foo&#39; instead of &#39;hit&#39; in the flags</code></pre>
+<h2 id="conditionals">Conditionals</h2>
+<p>Sometimes we want to run some commands depending on some
+configuration options, for example in this case we want to use
+<code>arm.v35</code> instead of <code>arm</code> when loading an ARM
+binary:</p>
+<pre class="console"><code>[0x00000000]&gt; -a
+arm
+[0x00000000]&gt; ?== arm `-a`;?! -a arm.v35
+[0x00000000]&gt; -a
+arm.v35</code></pre>
+<p>Which is the same as the script below:</p>
+<pre class="console"><code>[0x00000000]&gt; e asm.arch
+arm
+[0x00000000]&gt; ?== arm `e asm.arch`;?! ?e its arm
+its arm</code></pre>
+<h2 id="custom-aliases">Custom aliases</h2>
+<p>You can create custom commands that run r2 oneliners with the
+<code>$</code> command. That’s a common approach for having your own
+oneliners easily accessible.</p>
+<pre class="console"><code>$          # list all aliases
+$x=x 32    # the &#39;x&#39; alias runs &#39;x 32&#39;
+$x         # execute the &#39;$x&#39; alias.</code></pre>
+<h2 id="challenge">Challenge</h2>
+<p>Today’s challenge is about writing our own radare2rc script. Run
+<code>ed</code> to launch your <code>cfg.editor</code> to tweak it for
+your own taste!</p>
+<p>I would encourage you to test every single color theme by pressing
+the <code>R</code> key in visual mode (<code>V</code>) and tweak them in
+case you find any graphical inconsistency, additionally you can also
+create your own color theme and share it with everyone!</p>
+<h2 id="closing">Closing</h2>
+<p>Now that you have properly set up radare2 on your system, you’ll
+likely feel more confident and be able to solve upcoming challenges more
+efficiently!</p>
+<p>Feel free to read more on the topic in the <a
+href="https://book.rada.re/config/intro.html">r2book</a>.</p>
+<p>Stay tuned for tomorrow - exciting content is coming!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

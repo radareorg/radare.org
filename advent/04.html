@@ -1,0 +1,331 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="searching-strings">04 - Searching strings</h1>
+<p>Welcome to the 4th day of the Advent of Radare2!</p>
+<p>Today’s knowledge pill is about finding specific strings within a
+binary, which is also a common task not just for reverse engineering but
+also for forensics when performing data carving, remember? this was the
+original <a href="https://book.rada.re/intro/history.html">reason</a>
+why <em>radare</em> was created.</p>
+<p>Searching for a simple message like “Hello” may sound
+straightforward, but binary formats, encodings, and compiler
+optimizations can make it more complex.</p>
+<p>In this post, we’ll learn about different Radare2 commands that scan
+memory for locating strings and explore external tools like
+<code>rafind2</code> for scanning random files directly from the
+shell.</p>
+<h2 id="plain-ascii-strings">Plain Ascii Strings</h2>
+<p>Let’s begin with something simple, searching plain ascii strings in a
+binary. In radare2 we use the / command to search. To find a string such
+as “Hello,” simply use:</p>
+<pre class="console"><code>[0x00000000]&gt; / Hello</code></pre>
+<p>This command searches for the ASCII “Hello” sequence and returns any
+hits. Radare2 will display the offset of each match, allowing you to
+jump to the location and examine the surrounding code or data.</p>
+<p>Sounds simple, but things can become a little more complex if we
+don’t know how to answer the following questions:</p>
+<ul>
+<li>How is the string encoded?</li>
+<li>Where it is located?</li>
+<li>Was it spotted by the bin parser?</li>
+<li>It is constructed with code?</li>
+<li>Mapped in memory or just in disk?</li>
+</ul>
+<p><strong>NOTE</strong> that all the <code>/</code> subcommands make
+use of the <code>-e search.</code> eval variables, this means that if we
+are not spotting anything maybe it’s because we need to change the
+scope. By default when loading binaries, r2 will scan only the portions
+of that physical file that are mapped in memory.</p>
+<p>That’s the default value:</p>
+<pre><code>[0x100003a58]&gt; e search.in
+io.maps
+[0x100003a58]&gt;</code></pre>
+<p>But we can specify any other range:</p>
+<pre><code>[0x00000000]&gt; e search.in=?
+raw
+flag
+block
+bin.section
+bin.sections
+bin.sections.rwx
+bin.sections.r
+bin.sections.rw
+bin.sections.rx
+bin.sections.wx
+bin.sections.x
+io.map
+io.maps
+io.maps.rwx
+io.maps.r
+io.maps.rw
+...
+[0x00000000]&gt;</code></pre>
+<p>And even specify our range via <code>search.from</code> and
+<code>search.to</code>. If we just want to scan the entire binary
+ignoring the binary headers and don’t load any portion as virtual
+address, we can launch <code>r2 -n</code>.</p>
+<h2 id="wide-strings">Wide Strings</h2>
+<p>Sometimes the string can be encoded in UTF-16 or wide-encoded
+strings, use the /w command. UTF-16 strings are common in binaries
+compiled for Windows, especially those written in languages that support
+Unicode by default. Here’s an example of how to search for the “Hello”
+string in UTF-16:</p>
+<pre class="console"><code>[0x00000000]&gt; /w Hello</code></pre>
+<p>Wide strings, take 2 bytes per character and can be written with
+<code>ww</code>, note that text encodings can be also affected by the
+endianness and we can even find utf-32 strings, mainly used for single
+point or glyphs.</p>
+<pre class="console"><code>[0x00000000]&gt; ww hello
+[0x00000000]&gt; x 16
+- offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
+0x00000000  6800 6500 6c00 6c00 6f00 0000 0000 0000  h.e.l.l.o.......
+[0x00000000]&gt; e cfg.bigendian = true
+[0x00000000]&gt; ww hello
+[0x00000000]&gt; x 16
+- offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
+0x00000000  0068 0065 006c 006c 006f 0000 0000 0000  .h.e.l.l.o......
+[0x00000000]&gt;</code></pre>
+<p>Having fixed size runes to store the characters in the strings helps
+indexing the characters and computing lengths in a faster way.</p>
+<p>To search for wide strings we use the <code>/w</code> command.</p>
+<pre class="console"><code>[0x00000000]&gt; /w hello
+0x00000001 hit0_0 680065006c006c006f00
+[0x00000000]&gt;</code></pre>
+<p>Note that utf8 strings are also detected by default with normal
+<code>/</code> scans. But feel free to learn more subcommands from
+<code>/?</code> to spot further capabilities and usecases in case you
+need them.</p>
+<h2 id="base64">Base64</h2>
+<p>Many programs use base64 encoding to “hide” their strings. radare2
+can decode them all in just a single line, but we can also encode the
+string we like and scan the binary for that pattern like this:</p>
+<pre class="console"><code>[0x100003a58]&gt; p6es hello
+aGVsbG8=
+[0x00000000]&gt; p6es ello
+ZWxsbw==
+[0x00000000]&gt; p6es llo
+bGxv
+[0x00000000]&gt;
+[0x100003a58]&gt; / `p6es hello`
+...</code></pre>
+<p>It’s important to note that base64 packs characters every 3 bytes
+usually, so the result from encoding multiple substrings may end up into
+different representations.</p>
+<p>To decode the base64 string you can use a script that takes every
+string, running p6d on it, and writes a comment or sets the comment on
+the given flag with the decoded string. Then we can use
+<code>CC~base64~...</code> to filter for our keywords.</p>
+<p>This is the help for the base64 facilities in radare2:</p>
+<pre class="console"><code>[0x100003a58]&gt; p6?
+Usage: p6[d|e][s|z]  [len]  base64 decoding/encoding
+| p6d[s|z] [len]    decode current block as base64
+| p6e[s|z][len]     encode current block in base64
+| p6ez              encode base64 zero-terminated string
+| p6es hello world  encode given string to base64
+| p6ds AAA=         decode given base64 string
+| p6dz              decode null-terminated base64 string in block
+[0x100003a58]&gt;</code></pre>
+<h2 id="strings-in-programs">Strings in Programs</h2>
+<p>When loading known file formats like programs or libraries which
+contain executable code, the linker uses the pack all the strings used
+in a single section. That section is usually in mapped into a read-only
+and non-executable and contains all the null terminated strings
+concatenated one after the other.</p>
+<p>RBin is smart enough to spot that region by checking the section and
+scan for strings and make them available as part of the “binary strings”
+list from the <code>iz</code> command.</p>
+<pre class="console"><code>[0x100003a58]&gt; iS~str
+3   0x00007a15   0x506 0x100007a15   0x506 -r-x CSTRINGS         3.__TEXT.__cstring
+[0x100003a58]&gt;</code></pre>
+<p>For a deeper scan, we can use <code>izz</code> which scans all the
+mapped regions instead of just the <em>cstrings</em> one.</p>
+<p>Additionally, we can also use <code>izzz</code> which ignores the
+mapped areas and the virtual addressing setup <code>io.va</code> which
+helps finding strings inside binary headers or parts from the executable
+that never hit the memory when executed.</p>
+<p>Those strings are usually more than the ones are referenced by the
+program, so we can use that area to find long unrefered strings to write
+our own ones for our patching needs. Just in case we need to replace a
+string with a longer one, this trick may work better than resizing
+strings.</p>
+<p>Note that the algorithm implemented under <code>iz</code>, is also
+the one available in <code>/z</code>, which can be used to do manual
+scans on the regions defined by
+<code>search.in/search.from/search.to</code> variables.</p>
+<pre class="console"><code>[0x100003a58]&gt; /z?
+| /z min max  search for strings of given size
+[0x100003a58]&gt;</code></pre>
+<p>Note that these minimum and maximum boundaries used for scanning
+strings can be also configured by rbin with the following commandline
+options in rabin2:</p>
+<pre class="console"><code>$ rabin2 -h | grep min:max
+ -N [min:max]    force min:max number of chars per string (see -z and -zz)</code></pre>
+<p>..as well as the <code>bin.str.min</code> and
+<code>bin.str.max</code> variables in radare2.</p>
+<h2 id="rafind2-from-the-shell">rafind2 from the Shell</h2>
+<p>Radare2 includes an external tool called <code>rafind2</code>, which
+provides the searching capabilities of <strong>radare2</strong> directly
+from the command line. rafind2 is especially useful if you want to
+search for strings without loading the entire binary into Radare2 and
+you don’t care about interactivity.</p>
+<p>Here’s how to use rafind2 to search for the “Hello” string:</p>
+<pre class="console"><code>$ rafind2 -s Hello /path/to/binary</code></pre>
+<p>With <code>-s</code> to specify the search string and taking the
+files as target files, rafind2 will scan the binaries for instances of
+“Hello” and output any matches, similar to Radare2’s / command.</p>
+<p>Other interesting flags from rafind2 are:</p>
+<ul>
+<li><strong>-w</strong>: Search for wide (UTF-16) strings.</li>
+<li><strong>-o</strong>: Specify an offset to start the search from a
+particular location in the binary.</li>
+<li><strong>-n</strong>: Specify the number of results to return,
+limiting output if the binary is large.</li>
+<li><strong>-f/-t</strong>: Set the from/to boundaries</li>
+<li><strong>-F</strong>: Use the contents of the given file as
+keyword</li>
+</ul>
+<p>For example:</p>
+<pre class="console"><code>$ rafind2 -s libS /bin/ls /bin/sleep
+/bin/ls: 0x46a1
+/bin/ls: 0x10689
+/bin/sleep: 0x44e1
+/bin/sleep: 0xc531
+$</code></pre>
+<p><strong>NOTE</strong> All the programs in radare2 use the IO library
+to access “files” and read data from there, so it’s important to note
+that this <code>/bin/ls</code> can be also replaced with
+<code>ptrace://pid</code> or <code>tcp:</code> or any other URI handler
+listed by <code>r2 -L</code> to (for example) scan memory from running
+processes.</p>
+<h2 id="assembly-constructed-strings">Assembly Constructed Strings</h2>
+<p>In modern programming languages like Rust and Swift, strings may not
+appear as direct ASCII or Unicode sequences in the binary. These
+languages often use assembly-level string construction, which compiles
+down to instructions that build strings dynamically at runtime.
+Radare2’s <code>/az</code> command allows us to search for such
+assembly-constructed strings.</p>
+<p>Here’s how you can use /az:</p>
+<pre class="console"><code>[0x100002db0]&gt; /az
+0x100001634 Enter Password
+0x100001704 Password
+0x100001b4c 123
+0x100001b58 password
+0x100001bc0 password123
+0x100001c38 123
+0x100001d40 Submit
+0x100002004 Success
+0x10000201c Error
+0x100002114 OK
+0x100002f10 forp
+
+[0x100002db0]&gt; 0x100001634
+[0x100001634]&gt; pd 10
+ ;-- asm.str.0_Enter_Password_1:
+ 0x100001634      a0c88dd2       mov x0, 0x6e45             ; &#39;En&#39; ; string &quot;Enter_Password&quot;
+ 0x100001638      80aeacf2       movk x0, 0x6574, lsl 16    ; &#39;te&#39;
+ 0x10000163c      400ec4f2       movk x0, 0x2072, lsl 32    ; &#39;r &#39;
+ 0x100001640      002aecf2       movk x0, 0x6150, lsl 48    ; &#39;Pa&#39;
+ 0x100001644      616e8ed2       mov x1, 0x7373             ; &#39;ss&#39;
+ 0x100001648      e1eeadf2       movk x1, 0x6f77, lsl 16    ; &#39;wo&#39;
+ 0x10000164c      418eccf2       movk x1, 0x6472, lsl 32    ; &#39;rd&#39;
+ 0x100001650      01c0fdf2       movk x1, 0xee00, lsl 48
+ 0x100001654      23140094       bl sym SwiftUI.LocalizedStringKey.stringLiteral...cfC
+ 0x100001658      ff4300d1       sub sp, sp, 0x10
+[0x100001634]&gt;</code></pre>
+<p>The <code>/az</code> command performs a linear disassembly of all the
+program instructions, identifying code patterns that construct list of
+characters with immediates and shifts. This search is more CPU-intensive
+than ASCII or UTF-16 searches, but it’s invaluable for languages and
+frameworks that construct strings dynamically. Mainly because all the
+release builds of programs written with modern versions of LLVM end up
+inlining all the short strings by packing the immediates in registers
+instead of touching the memory for performance and size reasons.</p>
+<p>Note that <code>/az</code> creates flags named prefixed with
+<code>asm.str.</code> as well as create comments with the “string:”
+prefix, which is enough for making the pseudo decompilation
+readable.</p>
+<p>It’s important to note that in this case, the Swift API can take a
+single string packed in two 64 bit registers, the x0 and x1, holding up
+to 16 characters long strings.</p>
+<h2 id="challenge">Challenge</h2>
+<p>To practice what we learned here take this base64 string, which
+contains a program that asks for a password and using
+<strong>ONLY</strong> rax2, rafind2 and radare2 you may be able to spot
+the password!</p>
+<p>Post the solution in your favorite social network and learn from
+other responses to improve your skills!</p>
+<p>Use this oneliner to extract the binary:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat file.txt <span class="kw">|</span> <span class="ex">base64-D</span> <span class="kw">|</span> <span class="fu">xz</span> <span class="at">-d</span> <span class="op">&gt;</span> file.bin</span></code></pre></div>
+<pre class="console"><code>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</code></pre>
+<h2 id="summary">Summary</h2>
+<p>Finding strings in binaries can reveal important clues, whether
+they’re ASCII, Unicode, or dynamically constructed. In this post we
+learned the basics and got some practical tips and exercises to get
+fluent in the process.</p>
+<p>See you tomorrow in another advent post of radare2!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

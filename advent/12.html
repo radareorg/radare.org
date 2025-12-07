@@ -1,0 +1,328 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="emulation-with-esil">12 - Emulation with ESIL</h1>
+<p>Welcome to Day 12 of the Radare2 Advent of Code!</p>
+<p>Today, we’ll explore <strong>ESIL</strong>, the emulation engine
+shipped and designed within in radare2.</p>
+<p>ESIL can emulate instructions of any architecture (if implemented by
+the arch plugin) without running the live process, making it possible to
+hook specific events like which memory addresses are accessed,
+reimplementing external functions, permitting to decrypt strings in
+static.</p>
+<p>We’ll walk through setting up ESIL, initializing emulation,
+configuring register values, and running a simple emulation to see how
+ESIL works.</p>
+<h2 id="what-is-esil">What is ESIL?</h2>
+<p>The name <strong>ESIL</strong> stands for ‘Evaluable Strings
+Intermediate Language’, considering how complex some instructions can be
+and how difficult to express their mechanics we designed the simplest
+form to describe it’s behaviours by using a FORTH like language that
+uses commas as a separator.</p>
+<p>But how does that FORTH thing look like?</p>
+<p>Lets take a simple x86-32 instruction and turn it into ESIL:</p>
+<p><code>mov eax, 33</code> -&gt; <code>33,rax,:=</code></p>
+<p>As you can see, esil separates the words by commas, each word can be
+a number, register name or an operation. The operations are documented
+in <code>ae??</code>.</p>
+<pre class="console"><code>[0x00000000]&gt; ae??
+| Examples:ESIL   examples and documentation
+| =       assign updating internal flags
+| :=      assign without updating internal flags
+| +=      a+=b =&gt; b,a,+=
+| /       division
+| *       multiply
+| *=      multiply and assign a *= b
+| L*      long multiply
+| +       a=a+b =&gt; b,a,+,a,=
+| ++      increment, 2,a,++ == 3 (see rsi,--=[1], ... )
+| --      decrement, 2,a,-- == 1
+| *=      a*=b =&gt; b,a,*=
+| /=      a/=b =&gt; b,a,/=
+| %       module
+| %=      a%=b =&gt; b,a,%=
+| &amp;=      and ax, bx =&gt; bx,ax,&amp;=
+...</code></pre>
+<p>The language permis creating loops, update and check internal
+comparison bits, etc.</p>
+<ul>
+<li><a href="https://book.rada.re/emulation/intro.html">ESIL on the
+r2book</a></li>
+</ul>
+<h3 id="why-use-esil">Why Use ESIL?</h3>
+<p>Primarily becase it’s tightly integrated with radare2, so you don’t
+need to install any external plugin and it can be heavily extended, but
+there are other reasons.</p>
+<ul>
+<li><strong>Safe Analysis</strong>: Avoids the need to run potentially
+dangerous code.</li>
+<li><strong>Instruction-Level Control</strong>: Lets you execute
+instructions one at a time.</li>
+<li><strong>Substruction Debugging</strong>: ESIL can step thru the
+internal operations performed inside a instruction.</li>
+<li><strong>Efficient</strong>: Emulates instructions quickly without
+the overhead of a debugger.</li>
+</ul>
+<p>But hey, we are focusing too much on the use of ESIL for emulation,
+but there are so many other use cases for it, let’s name few of
+them:</p>
+<ul>
+<li><strong>Search</strong> for expressions that evaluate as true in an
+esil expression</li>
+<li><strong>Prediction</strong> for jumps to be likely or unlikely to be
+executed</li>
+<li><strong>Debugger Backend</strong> and swap from native or gdb remote
+process to local emulation at any time</li>
+<li><strong>Snapshots</strong> for reverse debugging and fuzzing</li>
+<li><strong>Computed References</strong> to find strings and function
+calls on register values</li>
+<li><strong>Software Watchpoints</strong> detect which addreses are
+accessed by an instruction before actually stepping on them</li>
+<li><strong>Replace Functions</strong> when stepping in debugger or
+emulation in a function you can run an esil expression to perform the
+actions you need, even as r2 or system commands.</li>
+<li><strong>Symbolic Solvers</strong> crack keygens, crack passwords and
+find valid paths for exploits using taint analysis on top of esil.</li>
+<li><strong>Decompilation</strong> uplift esil expressions into higher
+level constructions using large language models.</li>
+<li><strong>Data flow graphs</strong> to find out where the data comes
+and goes inside a function esil dom graph (agD)</li>
+<li><strong>Obfuscation</strong> protector tools can use esil to
+generate new assembly code from the esil expressions to make the code
+harder to read</li>
+<li><strong>Undefined values</strong> identify which registers and
+memory addresses are not initialized before entering a function</li>
+</ul>
+<p>There are several more usecases for esil and all of them are
+implemented in radare2, just close your eyes, take a shower and imagine
+what it is possible with all this.</p>
+<ul>
+<li><a href="https://github.com/aemmitt-ns/radius2">radius2 symbolic
+solver</a></li>
+</ul>
+<h2 id="setting-up-esil-emulation">Setting Up ESIL Emulation</h2>
+<p>To begin using ESIL, we need to initialize the emulation environment
+and configure the necessary registers and memory. We will do that with
+<code>aeim</code> which stands for “analysis emulation initialize
+memory”.</p>
+<pre class="console"><code>[0x00000000]&gt; aeim</code></pre>
+<p>Some other interesting initialization subcommands can be found in the
+help:</p>
+<pre class="console"><code>[0x00000000]&gt; aei?
+Usage: aei  [smp] [...]
+| aei                        initialize ESIL VM state (aei- to deinitialize)
+| aeis argc [argv] [envp]    initialize entrypoint stack environment
+| aeim [addr] [size] [name]  initialize ESIL VM stack (aeim- remove)
+| aeip                       initialize ESIL program counter to curseek
+| aeim                       initialize esil memory with default values from esil.stack.* evals
+| aeim 0x10000               same as aeim@e:esil.stack.addr=0x10000
+| aeim 0x10000 2M mystack    give a name to that new 2MB stack
+[0x00000000]&gt;</code></pre>
+<h2 id="evaluate-expressions">Evaluate Expressions</h2>
+<p>ESIL can be evaluated as individual expressions, making it possible
+to test individual instructions or simple operations directly. To run a
+single expression in ESIL, use:</p>
+<pre><code>[0x00000000]&gt; ae &lt;expression&gt;</code></pre>
+<p>This command evaluates a single ESIL expression and shows the result.
+It’s helpful for testing individual operations or calculations without
+full emulation.</p>
+<pre class="console"><code>[0x00000000]&gt; ar?x0
+0x00000000
+[0x00000000]&gt; ae 33,x0,:=
+[0x00000000]&gt; ar?x0
+0x00000021
+[0x00000000]&gt;</code></pre>
+<p>Let’s see how different instructions translate into esil by:</p>
+<ul>
+<li>Looking at the output of <code>ao</code></li>
+<li>Enabling <code>asm.esil=true</code> to replace instructions with
+esil</li>
+<li>Inspecting the json from <code>aoj</code></li>
+<li>Using <code>pie</code> to print N instructions as esil
+expressions</li>
+<li>Reading it side by side with <code>asm.cmt.esil</code></li>
+</ul>
+<pre class="console"><code>[0x100003a74]&gt; ao~esil:,disas
+disasm: add x29, sp, 0x50
+esil: 0x50,sp,+,fp,=
+[0x100003a74]&gt;</code></pre>
+<h2 id="visual-esil-expression-debugger">Visual ESIL Expression
+Debugger</h2>
+<p>Like many other cool features of radare2, ESIL also has a visual
+mode, which permits better understanding of how the expression is
+parsed, the contents of the VM stack, and the state of registers and
+memory associated during the process.</p>
+<p>The esil expression debugger can step forward and backward inside a
+instruction. Kind of debugging microcode.</p>
+<p>Check this out by running the following command: <code>aev</code></p>
+<p>We won’t go into much detail here, but you are free to experiment
+with it and feel free to suggest improvements or make questions if
+anything is not clear about it!</p>
+<h2 id="emulated-debugging">Emulated Debugging</h2>
+<p>To emulate full instructions or blocks of code, use either aes or
+ds:</p>
+<ul>
+<li><code>aes</code>: Emulates a single step of code (similar to
+stepping in a debugger).</li>
+<li><code>ds</code>: Performs a single emulated step in static analysis,
+as though the binary were being debugged.</li>
+</ul>
+<p>The reason why the <code>d</code> subcommands work in static is
+because when <code>-e cfg.debug</code> is <code>false</code> it will
+fallback to run the <code>ae</code> subcommands instead. But it is also
+possible to switch on <code>cfg.debug</code> and choose the ESIL
+debugger plugin:</p>
+<pre class="console"><code>[0x00000000]&gt; dL
+- bf       BF debug plugin
+- bochs    bochs debug plugin
+o esil     esil debug plugin
+- evm      evm debugger backend
+- gdb      gdb debug plugin
+- io       io debug plugin
+- native   native debug plugin
+- null     null debug plugin (does nothing)
+- qnx      qnx debug plugin
+- rap      rap debug plugin
+- rv32ima  experimental riscv32ima emulator
+- winkd    winkd debug plugin
+[0x00000000]&gt;</code></pre>
+<p>Let’s explore how to use these commands in a practical example with a
+simple ARM64 function.</p>
+<h2 id="emulating-an-arm64-addition">Emulating an ARM64 Addition</h2>
+<p>For this example, we’ll create a simple function in ARM64 that takes
+two numbers, adds them, and returns the result in the x0 register.</p>
+<h2 id="function-overview">Function Overview</h2>
+<p>We have a very simple <strong>addition</strong> function that we have
+generated in assembly with <strong>rasm2</strong> or compiled from C.
+Following the calling conventions this ABI takes two arguments (x0 and
+x1) and returns the result into x0.</p>
+<ul>
+<li>x0: Used to pass the first argument and store the return value.</li>
+<li>x1: Used to pass the second argument.</li>
+</ul>
+<pre><code>sym.add:
+    add x0, x0, x1    // x0 = x0 + x1
+    ret               // return with result in x0</code></pre>
+<p>This simple addition function takes two arguments in x0 and x1, adds
+them, and stores the result back in x0.</p>
+<p>For simplicity and learning purposes we have generated this function
+in place by patching the radare2’s io cache in the entrypoint of the
+program like this:</p>
+<pre><code>0$ r2 /bin/ls
+WARN: Relocs has not been applied. Please use `-e bin.relocs.apply=true` or `-e bin.cache=true` next time
+ -- Now featuring NoSQL!
+[0x100003a58]&gt; e io.cache=1
+[0x100003a58]&gt; wa+ add x0,x0,x1
+INFO: Written 4 byte(s) ( add x0,x0,x1) = wx 0000018b @ 0x100003a58
+[0x100003a5c]&gt; wa+ ret
+INFO: Written 4 byte(s) ( ret) = wx c0035fd6 @ 0x100003a5c
+[0x100003a60]&gt; s-8
+[0x100003a58]&gt; af
+[0x100003a58]&gt; pdf
+┌ 8: int main (int argc, char **argv);
+│ `- args(x0, x1)
+│  0x100003a58  0000018b    add x0, x0, x1
+└  0x100003a5c  c0035fd6    ret
+[0x100003a58]&gt; pie 2
+0x100003a58 x1,x0,+,x0,=
+0x100003a5c lr,pc,:=
+[0x100003a58]&gt; aea 2
+ I: x1 x0 lr
+ A: x1 x0 lr pc
+ R: x1 x0 lr
+ W: x0 pc
+ V: 0
+ N: x1 lr
+[0x100003a58]&gt;</code></pre>
+<p>Reset all the register values and initialize the memory with a fake
+stack:</p>
+<pre class="console"><code>ar0
+aeim</code></pre>
+<p>Set x0 and x1 Registers: Set x0 to 3 and x1 to 5 as inputs.</p>
+<pre class="console"><code>dr x0=3
+dr x1=5</code></pre>
+<p>Set the Program Counter (PC): Use dr PC=$$ to point the program
+counter to the current offset, where our function resides.</p>
+<pre><code>dr PC=$$</code></pre>
+<p>These commands prepare the x0 and x1 registers with the values we
+want to add, and set the program counter to the start of the
+function.</p>
+<p>Then we will need to perform some steps thru the code to see how what
+changes, to do this we can use the visual debugger mode
+(<code>V0pp</code>) and press <code>s</code> to step into.</p>
+<p>We may see that after a step <code>x0</code> value will be
+<strong>8</strong>.</p>
+<h2 id="challenge">Challenge</h2>
+<p>Today we have a special one! We will need to solve a crackme!</p>
+<p>To do that we may need to analyse and emulate the program attached
+below (macOS-m1 executable) to find out the password that requires to
+tell you are a “good dog”. Practice all the learnings and make it!</p>
+<p>For simplicity reasons i’m also attaching the source code of the
+crackme, so you can also compile it on your favorite operating system
+and architecture for playing on different targets and understand how
+different compiler flags end up generating assembly code.</p>
+<p>Source Code (XZ+B64):</p>
+<pre class="console"><code>/Td6WFoAAATm1rRGBMCcApoDIQEcAAAAAAAAAEkvZJDgAZkBFF0AEZpJxkcPE6IAd
+zsjz8FuSvEPKIULvXWtKdcSE2yciX9r/4Ot+9ca2MnLTMEC/r8MtQPmrRSvmbT6KS
+Xt1daHPrll4rDWeDb8GR3yweH/L2JXlsg/v3pZfFctNNQ0oqlg7fku6Ums37/k05Y
+t3/+oRUamldgkQRf9VR9je/uz4YeFhX7e8HwEeN2UC6Hv+pxKpat9s7h4c4ZogWZp
+xoXJtg3vEty9IxuPDjx1iiQPLlmXvGva3bWat11llswkQVN7uWUvnoRlWX3uMCMlQ
+skATCcuvTy1oLQWebiKLzjTHyjx08nJf2tJMCLlyFoEfmqDBgStxEoucplt0x9RV+
+Tw/E2rGcZUs8YzCvLHtkqtr3G63WC9ACz6zd/YlSuGAAG4ApoDAAA8qbefscRn+wI
+AAAAABFla</code></pre>
+<p>Binary for macOS:</p>
+<pre class="console"><code>/Td6WFoAAATm1rRGBMDXCYiHAyEBHAAAAAAAAIbqrtDgw4cEz10AZ76Zr95iOx0/a
+CMidekm3aDf3qfJBZBx1CQIBgKWKiGUi/Rfxr6azbJj6nomg44rbstY+74wXV2iVq
+4z+AS7HdiLWfi6nY38Xeo6Fs3ciZwWQHjXCGOgAR1M72OvqrIxzXC7g1ge8e8NJCT
+DFdXoPadNrH6JEkyJ+3ZR0dCGNPIrjYU5IfryG+S01aLtSWpjAYqIU/sTVArB21ZQ
+eG50NHbC0JkzBmZ9e5EEoX+asv1CTFLn/DzTDFiSIfxBme0Tcs7ftHYJqXVsMcSSf
+rT54ZO/z4r5l/vNRGz7j42DFoz5E51x20kiyryX4MPddObUz6DwiZcmEcj5KgPV8i
+WsVqzi2CR0BkEan2WPipcpI1Vkwcrc5rJXbD2FhUz7ZUvgV902p2H/RvNefi6b22M
+hiq9juQuwri4pX5Mf56PAxvLpyr8E76IrTUA6NFIJFQIgs07y4+REI0OUk69THpl+
+MSNu2RX7oWtrnZqiZ12Awl1zsq5ZaRNCr1RPEb8NksXGPRigtnVeJl9O41ZZCjM+b
+mM+ay/jmEoV0Wg7SWJ1G0g28tqQfLxj52tylHPRiBjCboLdZ0QFCkzO4g36ohQPVV
+K+YPSb+5Tv04Xgwv1EGbXuRckSxVOMpd3nWIhILWVbtakrhP1sofZZv+JWrGRzjoR
+e4btjQ/DXadw9ZLl+UAENiF3EZDc4wFbizIU2rUaC+LlNxLVkYYI0AaVMm6RXqIwW
+G/QsIDZouQuyFtQIdAwj0R+50yiJ8T5GzrVjAvOFC1H8jCol8YiWU2L2Or7xwQQaE
+Hc0xuTtBP2v/nqqTLBNgdj0yDrCweWlogAcPLbl3Yk8nYlmdwoY45PzSR3hb73S5G
+dZBZ6m+D+tiSpI28XPA5NquCTXWVKydlyxsIYQRQ5P4onyxoLf69aebyyZx771i9w
+6jlPv0cLVfFfRtEp7fV9eiGu5jU6emqreU2rXHyiNGM4j1Af+MP55ARMAVp9BlDd0
+h7YaArMTpK7Qjzpm6Mu+N1Nk/kwybN3lkS9rTQx0b4dT1Pk+8lFUVwI6fVytJ+D+v
+Xu3QsOxPgEUtY8smI1kOpw80fJJsmxqmQgN9uLNSomFM0G8G78a0RAvNm9vTy/PyD
+th7uvc7hrbVlr9WZTekEoKpPwObzVT7rK26s49SDdAnpFzQmRx4ka7r8flPmj52dj
+iLzM6o32aank9ZeOAvwky0iKV900q4t6+NEalosMLL8sn0ZFfxZx9LIqAoFgn3vbB
+tLZFCNyemg2zgBy865i6z0OKUwHuTLJkWkx6JwhvIUOJXi56HLn8siJA4G17uoUwi
+pkL374duH5CmZW4jPMrzxZpTdue6brMKVTcGQgVDw2jvkV9RKj1dNbPcKIfE/tCot
+BNUiJGP5QS6HVoILTFiPm+ySPhOhZt5DH9i1sLYCV7Q/xavkDzlSevB1XG1XPPUcj
+1eDJ7F4oE1bi+8vqz2L720tvFvCk4q66oMYPPjsiiLHBMq1XNExo16hdqgicLqehZ
+q2GipvRw1I3ifbIoO1QqzO/DkakXhbnjND05BUieqOhHok7IJDQWDM5wMpXuROynD
+81MBUlafsXZECzSQMLoKN0RKPJydrZajTqyMsbJ0RzI7jglubLI6OF6iwMk9qC3TT
+qSxgAAItwaAB7A7AAAAfMJiIcDAAkd+bqxxGf7AgAAAAAEWVo=</code></pre>
+<h2 id="closing">Closing</h2>
+<p>Stay tuned for tomorrow’s Radare2 challenge, where we’ll dive even
+deeper into advanced reverse engineering techniques!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

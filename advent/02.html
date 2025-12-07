@@ -1,0 +1,441 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="breaking-into-the-main">02 - Breaking into the main</h1>
+<p>Welcome to second day of the Advent of Radare2!</p>
+<p>Today, we’re exploring breakpoints. Learning about how to use the
+<code>db</code> command in the radare2 debugger, stopping on the
+<code>main</code> function, understanding what happens before the
+<code>main</code>, and using Radare2’s advanced features like
+<code>dcu main</code> and the <code>r2frida</code> plugin for performing
+early instrumentation on a variety of programs.</p>
+<h2 id="understanding-breakpoints">Understanding Breakpoints</h2>
+<p>Breakpoints are essential for debugging. They allow us to pause
+program execution at specific points, inspect the current state, and
+step through instructions. In Radare2, breakpoints are handled by the
+<code>db</code> command, which can set and delete breakpoints with
+simple commands.</p>
+<p>There several ways to interrupt the execution of a program and
+bringing back the control to the attached debugger. Some architectures
+support hardware breakpoints, which mean that memory is not modified,
+but instead the CPU is configured to stop the execution when a specific
+condition is reached.</p>
+<p>Software breakpoints modify the program code by replacing
+instructions at the target address with a special one that triggers an
+exception. For example:</p>
+<ul>
+<li>On <strong>x86</strong>, <code>INT 3</code> (0xCC) is used.</li>
+<li>On <strong>ARM</strong>, a <code>BKPT</code> instruction is
+inserted.</li>
+<li>On <strong>ARM64</strong>, the <code>BRK</code>.</li>
+<li>On <strong>RISC-V</strong>, the <code>EBREAK</code> opcode is
+used.</li>
+</ul>
+<p>Note that a breakpoint instruction can be also any invalid
+instruction, not just those specially used for this. On certain
+architectures like ARM the breakpoint instruction takes an immediate as
+argument, which is used by software debuggers to differentiate between
+different types of interruptions, making it easier for the analyst to
+understand the point of break.</p>
+<p>At source level, radare2 provides the <code>r_sys_breakpoint()</code>
+API, which can be used to directly inject a breakpoint instruction in a
+portable way, helping developers get into the debugger control without
+having to care about typing boring source debugging commands.</p>
+<p>Some packers and binary obfuscators make use of these special
+instructions to break control on the execution and make it harder to
+understand the control flow and make debuggers harder to use. These are
+some of the reasons why it’s important for us as reverse engineers to
+understand the role and use of hardware and software breakpoints.</p>
+<p>In radare2 we can use the <code>dbg.swstep</code> and
+<code>dbg.hwbp</code> to choose if we want to use software or hardware
+breakpoints for stepping or stopping the program execution by
+default.</p>
+<h3 id="breakpoint-workflow">Breakpoint Workflow</h3>
+<p>To set a breakpoint at a specific address, we use the following
+command:</p>
+<pre class="console"><code>db &lt;address&gt;</code></pre>
+<p>Setting a breakpoint on a function, like main, can be as simple as
+using its flag name:</p>
+<pre class="console"><code>db sym.main</code></pre>
+<p>Note that any numeric argument taken by commands in r2 is parsed as
+an RNum expression, which means that you can use math operators as well
+as special dollar numbers (See <code>?$?</code> output).</p>
+<pre class="console"><code>[0x00000000]&gt; ?$?~B
+| $S[:{name}]   section offset (alias for $SB)
+| $SB[:{name}]  section begin
+| $B            base address (aligned lowest map address)
+| $DB           alias for $D
+| $BB           begin of basic block
+| $BE           end of basic block
+| $Bj           jump out address from basic block
+| $Bf           fail/fall out address from basic block
+| $Bi           basic block instructions
+| $BS           basic block size
+| $BC           cases count for this block
+| $BC:#         address of the nth case
+| $F            same as $FB
+| $FB           begin of function
+| $MB           alias for $M
+[0x00000000]&gt;</code></pre>
+<p>For example, if we want to add a breakpoint at the beginning of the
+current basic block we can use:</p>
+<pre class="console"><code>[0x00000000]&gt; db $BB</code></pre>
+<p>And if we want to do it 5 instructions after main:</p>
+<pre class="console"><code>db $in:5 @ main</code></pre>
+<p>Here, sym.main refers to the main function’s symbol in Radare2, But
+we can use any other symbol, function or address that is
+<em>flagged</em>, in other words. In radare2 we use <em>flags</em> to
+name offsets, and all math operations can use named offsets as
+reference. You can use <code>f</code> to list all the flags,
+<code>afl</code> for the functions or <code>is</code> for the
+symbols.</p>
+<pre class="console"><code>is</code></pre>
+<h2 id="under-the-hood">Under the Hood</h2>
+<p>After setting a breakpoint, you can start the program with
+<code>dc</code> (debug continue) and the program will pause when it hits
+the breakpoint. At this point we can run <code>dc</code> again to
+continue the execution after the breakpoint or inspect the registers and
+memory at this point. But I want you to understand what’s the debugger
+doing here behind the scenes:</p>
+<ul>
+<li>Modify program in memory to introduce a breakpoint instruction</li>
+<li>When the breakpoint instruction is executed, the process stops after
+it
+<ul>
+<li>This is, the program counter is pointing after the trap</li>
+<li>The debugger must fix the program counter, in r2 this is known as
+<em>recoil</em></li>
+</ul></li>
+<li>Patch back the memory to bring back the original instruction</li>
+<li>When we continue the execution of the debugee, the debugger must
+perform this:
+<ul>
+<li>Single step to execute the instruction covered by the
+breakpoint</li>
+<li>Patch the instruction to contain the trap once back</li>
+<li>Resume process execution.</li>
+</ul></li>
+</ul>
+<p>Note that in the whole process, we are assuming that a breakpoint
+instruction is of the size of the smallest instruction possible for the
+given architecture. This is, on intel 1 byte, on arm64: 4 bytes. Why’s
+that? On intel or arm32/thumb it’s possible to jump into an unaligned
+memory address in the middle of an instruction.</p>
+<h2 id="reverting-a-breakpoint">Reverting a Breakpoint</h2>
+<p>To delete a breakpoint at a specific address or function, use this
+command, where <code>&lt;address&gt;</code> can be also a flag name. But
+considering that we can only have one breakpoint per address, r2 uses
+that as an id. Use <code>db</code> to enumerate the registered
+breakpoints.</p>
+<pre class="console"><code>[0x1028cd074]&gt; db-&lt;address&gt;</code></pre>
+<p>If we just want to get rid of all of them at once just run this
+one.</p>
+<pre class="console"><code>[0x1028cd074]&gt; db-*</code></pre>
+<h2 id="turning-them-into-tracepoints">Turning them into
+Tracepoints</h2>
+<p>If we look carefully into the help message of <code>db?</code> we
+will find out that there are a couple of attributes:</p>
+<ul>
+<li><strong>E</strong> is the breakpoint enabled or not?</li>
+<li><strong>T</strong> is this a tracepoint?</li>
+</ul>
+<p>Toggling the trace bit can be done with the <code>dbite</code>
+command (debug breakpoint (by index) trace enable.</p>
+<p>Also, we can use <code>dbic</code> to associate an r2 command to be
+triggered when a breakpoint is hit.</p>
+<pre class="console"><code>$ r2 -d ls /
+[0x100e79048]&gt; db main
+[0x100e79048]&gt; dbi
+0 0x100b9fa58 E:1 T:0
+[0x100e79048]&gt; dbite 0
+[0x1027a4638]&gt; dbic 0 ?e hello world
+[0x1027a4638]&gt; dc
+INFO: hit tracepoint at: 0x102723a58
+hello world
+bin         etc         usr        proc      sys
+INFO: ==&gt; Process finished
+[0x102723a5c]&gt;</code></pre>
+<h2 id="continue-and-break">Continue And Break</h2>
+<p>While <code>db</code> is useful, manually managing breakpoints can
+get tedious, especially if you only need to break once at a function.
+Radare2 offers a convenient command to handle this automatically:
+<code>dcu</code>.</p>
+<p>The <code>dcu</code> (debug continue until) command sets a breakpoint
+at the specified function or address, continues execution until reaching
+it, and then removes the breakpoint once hit. This is especially useful
+for functions like main when we only want to pause there once:</p>
+<pre class="console"><code>dcu sym.main</code></pre>
+<h2 id="early-debugging">Early Debugging</h2>
+<p>When we run <code>r2 -d ls</code> the process will stop, as soon as
+possible. Which means that the kernel will fork to create a new process,
+run <strong>execve</strong>, which will run the program interpreter
+defined in the binary headers (On UNIX systems, ELF or MACH0 only)</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rabin2 <span class="at">-I</span> /bin/ls <span class="kw">|</span> <span class="fu">grep</span> intrp</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">intrp</span>    /usr/lib/dyld</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<p>If we inspect memory maps, we may find out that there’s not even
+<strong>libc</strong> loaded in memory yet. So we have lots of room for
+messing around with the program before even the main is hit. Traditional
+debuggers don’t let you dig that way because they are designed to be
+source debuggers, assuming they are only useful for inspecting the
+target program. Low level debuggers like <strong>radare2</strong> are
+designed to work with assembly code, outside the boundaries of the
+operating system or common runtimes.</p>
+<h3 id="but-whats-before-main">But what’s before Main?</h3>
+<p>It’s a common misconception to think about <code>main</code> being
+the first function executed in a program. However, in most binary
+formats, main is actually called later in the program’s execution
+sequence. Here’s why:</p>
+<ul>
+<li><strong>Entrypoint Execution</strong>: Every program has an
+entrypoint, which is typically specified in the binary’s headers. When a
+program is loaded, execution begins at this entrypoint, not at
+main.</li>
+<li><strong>ELF and Mach-O Formats</strong>: In Linux (ELF) and macOS
+(Mach-O) binaries, the entrypoint often points to code that handles
+initializations, like setting up the runtime environment, executing
+constructors, or calling library initialization functions.</li>
+<li><strong>Windows PE Format</strong>: In Windows binaries, the
+entrypoint can execute TLS (Thread-Local Storage) callbacks or other
+initialization routines before main is reached.</li>
+<li><strong>Symbol Resolution</strong>: The main function is referenced
+in the entrypoint code, but is not the initial function in the
+program.</li>
+</ul>
+<p>To illustrate this, we can use Radare2 to examine the binary’s
+entrypoint and its references to main:</p>
+<p>The <code>pif</code> command disassembles the instructions of the
+function in the given address (<code>entry0</code>). Within this code,
+you’ll typically find a call to main after the necessary runtime setup
+is completed.</p>
+<p><strong>NOTE</strong> <em>pif, pdf, pdr, .. and all those commands
+need the function to be previously analized. You can use
+<code>r2 -A</code> or just run <code>af</code></em></p>
+<p>Let’s inspect this entrypoint from a 32 bit Linux binary. Note that
+macOS and Windows binaries use a different way to pass initialize the
+program and prepare the memory to execute <code>main</code>.</p>
+<p><strong>NOTE</strong> <em>if you don’t have a Linux box or you need
+binaries from other operating systems or architectures check the
+radare2-testbins repository which is cloned under the
+<code>test/bins</code> directory of radare2</em></p>
+<pre class="assembly"><code>$ r2 /bin/ls
+[0x08048420]&gt; s entry0
+[0x08048360]&gt; af
+[0x08048360]&gt; pif
+xor ebp, ebp
+pop esi
+mov ecx, esp
+and esp, 0xfffffff0
+push eax
+push esp
+push edx
+push sym.__libc_csu_fini
+push sym.__libc_csu_init
+push ecx
+push esi
+push main
+call sym.imp.__libc_start_main</code></pre>
+<p>Note that <code>libc_start_main</code> takes several arguments from
+the stack by popping them one by one. The most interesting ones here are
+the 3 function pointers passed that are:</p>
+<ul>
+<li><code>sym.__libc_csu_init</code></li>
+<li><code>main</code></li>
+<li><code>sym.__libc_csu_fini</code></li>
+</ul>
+<p>So we can inspect what the program will execute before the main:</p>
+<pre class="console"><code>[0x080484a0]&gt; pd 10 @ sym.__libc_csu_init
+            ; DATA XREF from entry0 @ 0x8048370(r)
+┌ 99: sym.__libc_csu_init
+│ 0x080484a0  push ebp
+│ 0x080484a1  mov ebp, esp
+│ 0x080484a3  push edi
+│ 0x080484a4  push esi
+│ 0x080484a5  xor esi, esi
+│ 0x080484a7  push ebx
+│ 0x080484a8  call sym.__i686.get_pc_thunk.bx
+│ 0x080484ad  add ebx, 0x1b47
+│ 0x080484b3  sub esp, 0x1c
+│ 0x080484b6  call sym._init
+...</code></pre>
+<p>In the case of malware, or code hidden in the binary we may probably
+want to patch that binary to just do nothing on the executable
+constructor. (Note that libraries, not just programs, can also execute
+code at <code>dlopen</code> time).</p>
+<pre class="console"><code>oo+                            # reopen in read-write
+wao ret @ sym.__libc_csu_init  # write a ret in there</code></pre>
+<h3 id="tls-on-windows">TLS on Windows</h3>
+<p>TLS stands for thread-local-storage, which, by definition it is just
+an independent memory space reserved to be used for each different
+thread in programs.</p>
+<p>On UNIX systems (read it as BSD, Linux, Darwin, ..) this is just
+allocated and filled by zeroes.. But Windows takes this concept a step
+forward and adds an array of functions to be executed when a new thread
+is created. And by thread I mean also creating the process.</p>
+<p>This is achieved through TLS callbacks—functions that the operating
+system invokes during thread creation and termination. These callbacks
+are defined in the Portable Executable (PE) header and execute before
+the program’s main entry point, enabling initialization of
+thread-specific data structures.</p>
+<p>Malware often exploits TLS callbacks to execute code prior to the
+main function, thereby evading detection by debuggers that typically
+break at the program’s entry point. To effectively debug such binaries
+using radare2, it’s crucial to identify and handle TLS callbacks. By
+setting breakpoints at these callbacks, analysts can gain control over
+the execution flow from the earliest stages, allowing for thorough
+examination of the program’s behavior.</p>
+<p>Radare2 can enumerate those callbacks by listing them with the
+<code>iee</code> command, as they are considered alternative entrypoints
+(<code>ie</code>).</p>
+<pre class="console"><code>[0x00401000]&gt; ie
+paddr      vaddr       phaddr     vhaddr     type
+―――――――――――――――――――――――――――――――――――――――――――――――――
+0x00000200 0x00401000  0x00000068 0x0040068  program</code></pre>
+<p>Now using <code>iee</code> to enumerate constructors and
+destructors…</p>
+<pre class="console"><code>[0x00401000]&gt; iee
+paddr      vaddr       phaddr     vhaddr     type
+―――――――――――――――――――――――――――――――――――――――――――――――――
+0x00000220 0x00401020  0x00000384 0x00400384 tls
+[0x00401000]&gt;</code></pre>
+<p>Checkout how rabin2 creates the flags to register this information
+inside the current radare2 session by combining the <code>-r</code>
+(radare2 commands output) flag and the <code>-e</code> (entrypoint):</p>
+<pre class="console"><code>$ rabin2 -re /bin/ls
+&#39;fs+symbols
+&#39;f entry0 1 0x100003a58
+&#39;f entry0_haddr 1 0x000005f0
+&#39;s entry0
+&#39;fs-
+$</code></pre>
+<p>We will learn more about flags in the future, but for now we need to
+know that:</p>
+<ul>
+<li><code>'</code> : single quote avoids evaluating special characters
+in the line</li>
+<li><code>fs+fsname</code> : create or set the current flag space (group
+of flags)</li>
+<li><code>fs-</code> : select no flagspace</li>
+<li><code>f name size addr</code> : creates a flag with
+<code>name</code> and <code>size</code> in the given
+<code>address</code></li>
+<li><code>s</code> : seek to change the current offset to move to the
+<code>entry0</code></li>
+</ul>
+<h3 id="stepping">Stepping</h3>
+<p>Some architectures, like <strong>x86</strong>, support raising a trap
+before executing an instruction. This may let debuggers control
+single-stepping at the hardware level, with less need for exception
+handling. But under some circumstances, we may not be able to achieve
+this; for example, on MIPS or when using a JTAG to instrument firmware
+running on a raw development board.</p>
+<p>For those cases we probably need to end up using software stepping
+which requires writing breakpoint instructions in the very next
+instruction and resuming the execution.</p>
+<p>Note that this operation may look as simple just checking the size of
+the instruction pointed by <code>PC</code> and using this to determine
+the breakpoint instruction. But we must take into consideration that
+MIPS will always execute 2 instructions, and different architectures
+will do differently, so this needs to be taken into account to determine
+all the possible control flow path changes and place all the breakpoints
+needed to avoid falling on conditional branches.</p>
+<p>Luckily for you, radare2 implements all the code analysis
+requirements to perform software stepping in r2 and r2frida with all the
+available debugger backends (<code>dL</code>) by just setting the
+<code>e dbg.swstep = true</code> configuration option.</p>
+<pre class="console"><code>[0x00000000]&gt; dL
+- bf       BF debug plugin
+- bochs    bochs debug plugin
+- esil     esil debug plugin
+- evm      evm debugger backend
+- gdb      gdb debug plugin
+- io       io debug plugin
+o native   native debug plugin
+- null     null debug plugin (does nothing)
+- qnx      qnx debug plugin
+- rap      rap debug plugin
+- rv32ima  experimental riscv32ima emulator
+- winkd    winkd debug plugin</code></pre>
+<h3 id="early-instrumentation-with-r2frida">Early Instrumentation with
+r2frida</h3>
+<p>For early breakpoint placement or tracing on systems with complex
+initializations, r2frida is an ideal solution. r2frida uses Frida’s
+dynamic instrumentation to debug running applications and even spawn new
+ones for analysis. One of the key features here is the ability to attach
+breakpoints early using the frida://spawn method, allowing us to catch
+events that occur before main or other late-loading functions are
+reached.</p>
+<p><strong>NOTE:</strong> To install r2frida you don’t need to install
+<code>frida</code> at all. r2frida is self contained and you can install
+it and check if it’s installed with the following commands:</p>
+<pre><code>$ r2pm -ci r2frida
+$ r2 -L | grep frida
+$ r2 frida://0</code></pre>
+<p>r2frida can spawn (create the process without executing any
+instruction), launch (create and resume execution), as well as attaching
+to an already existing process by specifying the process id.</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 frida:///bin/ls</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x00000000]</span><span class="op">&gt;</span> :db main</span></code></pre></div>
+<p>The <code>:db</code> main command places a breakpoint directly on
+main using Frida’s API. But r2frida also provides our new favourite way
+to stop in functions which mimics the one in the radare2 debugger.</p>
+<pre class="console"><code>[0x00000000]&gt; :dcu main</code></pre>
+<p><strong>NOTE</strong>: At this point you have probably noticed that
+all <strong>r2frida</strong> commands start with <code>:</code>. This is
+because r2frida is an io plugin, and some io plugins provide an
+interface to execute commands thru them by prefixing them with this
+character.</p>
+<p>By following these steps, Radare2 will pause at the beginning of the
+main function, allowing you to inspect registers, memory, as well as
+modify the memory layout, load libraries or add extra hooks if needed.
+Frida is not designed to work as a debugger, but we can achieve the same
+as the trace option of the breakpoints with the <code>dtf</code> which
+add a tracepoint to the given function, associating an r2 command,
+showing function return, register or argument values.</p>
+<p>Note that latest versions of Frida provide native breakpoint and
+watchpoint APIs, so you can leverage all these actions, not just from r2
+or r2frida commands, but also write JS scripts that control the
+execution flow with precision.</p>
+<p>We will cover <strong>r2frida</strong> in more detail in future
+posts, and we have messed enough, so I won’t go into more details for
+now.</p>
+<h2 id="summary">Summary</h2>
+<p>Today we have covered so much stuff for just a simple debugger
+feature, it may feel a bit overwhelming because we didn’t went into real
+practical examples like how to bypass anti-debugging tricks that abuse
+these features, but it’s important to understand the basics first.</p>
+<p>So for today, the only challenge is just to practice the explained
+commands and experiment with different binaries of your choice on
+different operating systems. This will help you remember the theory and
+get fluent with the tooling. Take some time to install
+<code>r2frida</code> and have fun inspecting binaries!</p>
+<p>See you tomorrow for more knowledge bits!</p>
+<p><strong>Happy debugging!</strong></p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

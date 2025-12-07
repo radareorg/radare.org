@@ -1,0 +1,257 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="symbolicating">07 - Symbolicating</h1>
+<p>Welcome to Day 7 of the Radare2 Advent of Code!</p>
+<p>Welcome to an advanced guide on leveraging Radare2 to analyze symbols
+and functions in binaries. This document expands on essential
+techniques, including reverse callgraph listing, identifying symbols as
+functions or data, and optimizing auto-naming with AI tools like
+<code>r2ai</code>.</p>
+<h2 id="what-are-symbols">What Are Symbols?</h2>
+<p>In the context of binary analysis, <strong>symbols</strong> are
+identifiers for functions, global variables, and other entities within
+the binary. Symbols can represent internal or external functions,
+variables, or data. They play a crucial role in navigating and
+interpreting binaries, as they help label addresses with meaningful
+names instead of raw hexadecimal values.</p>
+<p>In Radare2 we have different commands that unify the metadata from
+different types of file formats so we don’t need to dig into petools or
+objdump to check the symbol visibility, content types, etc.</p>
+<p>But from a global perspective we want to find out at least 3 types of
+symbols:</p>
+<ul>
+<li><strong><code>is</code></strong>: Lists all symbols in the
+binary.</li>
+<li><strong><code>ii</code></strong>: Lists all imported symbols
+(functions and data).</li>
+<li><strong><code>iE</code></strong>: Lists all exported symbols.</li>
+</ul>
+<h2 id="whats-the-difference">What’s the difference?</h2>
+<p>Despite all those commands respond with named addresses, there are
+some subtle details that make them different:</p>
+<ul>
+<li>Symbols (is): These are all named entities in a binary, including
+functions, variables, and constants. Symbols encompass both internally
+defined and external references.</li>
+<li>Imports (ii): These are external functions or data that the binary
+uses from other libraries or modules. The address defined by radare2 for
+those symbols is located in the PLT section of the current binary, where
+it calls the runtime linker to resolve the global symbol when called for
+the first time. That’s because we don’t know where those symbols are in
+memory when we are just analyzing it in static.</li>
+<li>Exports (iE): These are symbols that the binary makes available for
+use by other programs or libraries. Exports are particularly important
+when analyzing shared libraries or APIs.</li>
+</ul>
+<h2 id="output-in-commands">Output in Commands</h2>
+<p>We should already know that most radare2 commands have a * subcommand
+(e.g., is<em>, ii</em>, iE*), which automatically sets flags in radare2
+based on the listed addresses. Flags in radare2 act as named markers for
+specific addresses, making navigation and analysis easier.</p>
+<p>For example. Running is* will list all symbols and create
+corresponding flags for them. If we want to interpret those commands we
+can prefix the command with just a dot.</p>
+<pre class="console"><code>&gt; f~sym    # list flags containing sym
+&gt; f-sym*   # remove all flags starting with sym
+&gt; .is*     # set all the symbol flags again</code></pre>
+<p>As anything in r2, we can also dump the output of the command into a
+file just using the redirect operator <code>&gt;</code> like this:</p>
+<pre class="console"><code>is* &gt; symbols.r2</code></pre>
+<p>One of the main needs for symbolicating programs is when debugging,
+because radare2 does some lazy job here by not parsing any file from
+disk and just picking the map names for you as a guide.</p>
+<p>For those cases we can use the <code>dmi</code> command:</p>
+<pre class="console"><code>[0x7de3612bd540]&gt; d?* | grep symb
+| dmi [addr|libname] [symname]      list symbols of target lib
+| dmi* [addr|libname] [symname]     list symbols of target lib in radare commands
+| dmi.                              list closest symbol to the current address
+| dmis [libname]                    same as .dmi* - import all symbols from given lib as flags
+| dmiv                              show address of given symbol for given lib
+[0x7de3612bd540]&gt;</code></pre>
+<p>Or create a radare2 script with rabin2 that sets all the flags
+rebased to the map we like using a oneliner like this:</p>
+<pre class="console"><code>$ rabin2 -B &lt;base_address&gt; -r -s &lt;binary_file&gt;</code></pre>
+<p>This workflow is especially useful for creating scripts for binaries
+where the load address might differ (e.g., shared libraries or
+position-independent executables). It ensures that the symbols, imports,
+and exports remain correctly aligned to the new base address,
+simplifying subsequent analyses.</p>
+<p>Feel free to pass <code>-i</code> or <code>-E</code> in addition of
+the <code>-s</code> one to get the full set.</p>
+<h2 id="external-symbol-files">External Symbol files</h2>
+<p>Sometimes the symbols for a program are defined in external files,
+each operating system handles this in a different way, even some use
+symbol servers to provide a way for userst o submit a hash of the binary
+and download the symbolication details for that specific build to the
+deverlopers, this way the users can use stripped builds and developers
+can understand the unnamed backtraces from the crashes reported.</p>
+<p>On Linux/Mac we may probably find an ELF or MACHO file containing
+only the DWARF sections, r2 will find them and load that automatically
+for you. But we can also use the <code>rabin2 -rs</code> trick explained
+about to load that by hand if needed.</p>
+<p>On Windows we can find PDB files that can be pulled from PDB Servers
+using the <code>idp</code> command. Checkout the <a
+href="https://book.rada.re">r2book</a> for more details. But you have
+some basic help in here:</p>
+<pre><code>[0x00000000]&gt; e~pdb
+pdb.autoload = 0
+pdb.extract = 1
+pdb.server = https://msdl.microsoft.com/download/symbols
+pdb.symstore = /home/pancake/.local/share/radare2/pdb
+pdb.useragent = microsoft-symbol-server/6.11.0001.402
+
+[0x00000000]&gt; id?
+Usage: idp  Debug information
+| id               show DWARF source lines information
+| idp [file.pdb]   load pdb file information
+| idpi [file.pdb]  show pdb file information
+| idpi*            show symbols from pdb as flags (prefix with dot to import)
+| idpd             download pdb file on remote server
+| idx              display source files used via dwarf (previously known as iX)
+[0x00000000]&gt; </code></pre>
+<p>Additionally Visual Studio generate some <strong>vsmap</strong> files
+which are no more than SQLITE dump files that can be parsed with the <a
+href="https://github.com/radareorg/radare2/blob/master/scripts/vsmap.r2.js">vsmap.r2.js</a>
+script.</p>
+<h2 id="symbols-in-r2frida">Symbols in R2Frida</h2>
+<p>R2Frida handles all the symbols from all the binaries loaded in
+memory, which can result in millions of flags being set when we probably
+just care about few of them.</p>
+<p>To minimize the pain, r2frida <code>:i</code> subcommands will only
+list the symbols, imports, classes, .. available in the current binary
+in memory, so we will need to seek to any address inside any of the
+libraries we like:</p>
+<pre class="console"><code>[0x755f3a000000]&gt; :il
+0x0000650c45287000 0x0000650c452ab518 ls
+0x00007ffd0c96f000 0x00007ffd0c9700ab linux-vdso.so.1
+0x0000755f3a269000 0x0000755f3a2956c8 libselinux.so.1
+0x0000755f3a000000 0x0000755f3a211d90 libc.so.6
+0x0000755f39f66000 0x0000755f39fff310 libpcre2-8.so.0.11.2
+0x0000755f3a2c7000 0x0000755f3a3002d8 ld-linux-x86-64.so.2
+0x0000755f3a261000 0x0000755f3a265010 libdl.so.2
+0x0000755f3a25c000 0x0000755f3a260010 librt.so.1
+0x0000755f39e7d000 0x0000755f39f65018 libm.so.6
+0x0000755f3a257000 0x0000755f3a25b010 libpthread.so.0
+[0x755f3a000000]&gt; </code></pre>
+<p>And then run <code>.:iE* @ lib.libc.so.6</code> to set flags to all
+the exported symbols from the libc library in r2frida.</p>
+<h2 id="default-analysis">Default Analysis</h2>
+<p>The aa command series in Radare2 helps automate the analysis of
+symbols, functions, and control flow. Each version adds a layer of depth
+to the analysis, so let’s look at each:</p>
+<ul>
+<li>aa: Analyzes only basic symbols and function definitions. It
+performs a light analysis and is a good starting point.</li>
+<li>aaa: Extends the analysis to include control flow, data references,
+and function details. This option provides more comprehensive function
+insights.</li>
+<li>aaaa: Performs a full analysis, diving into every possible function,
+data reference, and control structure. It’s the most thorough and
+time-consuming but reveals the highest level of detail.</li>
+</ul>
+<p>Most of those analysis commands perform recursive function discovery
+which means that even if the public symbol have a name, the ones called
+inside the binary don’t need to have one.</p>
+<p>This complicates the understanding process of those inner functions,
+but there are ways to give them a name automatically, but first we need
+to lear about the importance of the order of the analysis/</p>
+<h2 id="importance-of-analysis-order">Importance of Analysis Order</h2>
+<p>Proper analysis order is essential for accurate function typing, name
+resolution, and reference propagation. Here’s a recommended sequence for
+optimal analysis starting from the external and going down to the lowest
+internal procedures:</p>
+<ul>
+<li>imports</li>
+<li>exports</li>
+<li>symbols</li>
+</ul>
+<p>After this we proabably want to perform an <code>aac</code> or
+<code>aap</code> to find all calls and function preludes, maybe using
+also <code>-e anal.hasnext=true</code> to enlarge the code coverage but
+having in mind that all the named functions with their type details are
+exposed before hand.</p>
+<p>We can use the <code>aflm</code> command to list all the functions
+and the functions they call in “makefile” format, which is very readable
+and understable to have a quick look on the</p>
+<p>The command <code>afla</code>, as noted in the help message will list
+the functions in reverse order:</p>
+<pre class="console"><code>[0x00006d30]&gt; afl?~revers
+| afla           reverse call order (useful for afna and noret, also see afba)</code></pre>
+<p>Why does it matter and why this needs to be used for analysis and
+autonaming functions? Exactly! for the same reason of the type
+propagation and function boundary detection we learned before.</p>
+<p>This command will compute a callgraph, take the nodes with no exits,
+and create a list for all the reference calls to each of them, and keep
+doing that recursively until covering the whole graph, and then list the
+offsets of the functions in the right order so we can it for scripts or
+abusing the @@ foreach operator to name them all in the right order like
+this:</p>
+<pre class="console"><code>.afna @@c:afla</code></pre>
+<p>The <code>@@?</code> command will discover for us that we also have
+an alias for this useful action which is <code>@@F</code></p>
+<pre class="console"><code>[0x00006d30]&gt; @@?~recursive
+| x @@F               alias for @@c:afla - inverse recursive function list</code></pre>
+<h2 id="autonaming-functions">Autonaming Functions</h2>
+<p>Radare2 provides some basic autonaming algorithm, which relies on
+symbols and strings referenced by a function to determine a better name
+that may help us navigate through the function list and the
+callgraph.</p>
+<p>The autonaming depends on two variables:</p>
+<ul>
+<li>-e anal.autoname=true</li>
+<li>-e anal.slow=true</li>
+</ul>
+<p>The first option will run <code>aan</code> to name all the functions,
+and the second will chose between a slow or a fast algorithm which uses
+emulation or just plain call references to construct a unique function
+name to be assigned to each function.</p>
+<p>Sadly this is probably never enough and requires too much manual
+intervention</p>
+<h2 id="improved-autonaming-with-ai">Improved autonaming with AI</h2>
+<p>The decai’s r2ai plugin leverages the language model capabilties to
+understand the logic of a function to find out a good name that
+describes its decompilation based on function calls and the strings
+referenced, type metadata, etc.</p>
+<p>This command applies machine learning-based heuristics to suggest
+better function names across all functions identified in the reverse
+callgraph.</p>
+<pre><code>decai -n @@F</code></pre>
+<h2 id="autoname-challenge">Autoname Challenge</h2>
+<p>Analyzing symbols with Radare2 allows you to uncover the names hidden
+in the program and discover more functions.</p>
+<p>As an exercise for today I want you all to experiment with
+<code>afna</code>, <code>aan</code> and <code>decai -n</code> to improve
+the algorithm implemented in libr/core/canal.c (search for autoname_)
+and the prompt used in decai -n when used with local models via ollama
+or the r2ai webserver to improve the results and final namings listed by
+the <code>afl</code> command.</p>
+<p>Do you have more symbolication tricks? is there any symbol database
+or binary format not supported by radare2? Let us know!</p>
+<p>Stay tuned for tomorrow’s challenge as we continue exploring
+Radare2’s features!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

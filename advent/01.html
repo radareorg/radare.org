@@ -1,0 +1,281 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="day-1-identifying-the-architecture">Day 1: Identifying the
+Architecture</h1>
+<p>Welcome to Day 1 of the Advent of Radare!</p>
+<h2 id="introduction">Introduction</h2>
+<p>Today, we’re diving into one of the foundational steps in binary
+analysis: identifying the specific CPU architecture.</p>
+<p>Knowing a binary’s architecture is crucial as it affects everything
+from disassembly to emulation. Radare2 provides various tools and
+commands to help us uncover this information, most of the time this
+information is autodetected or directly exposed by the binary headers,
+but sometimes it’s not straightforward.</p>
+<p>Let’s look at how we can use Radare2 commands like rasm2, i, and
+asm.cpu settings to investigate architectures. We’ll also explore an
+advanced script to attempt automatic architecture detection for binaries
+that lack headers, such as firmware binaries.</p>
+<h3 id="listing-supported-architectures">Listing Supported
+Architectures</h3>
+<p>One of the quickest ways to familiarize yourself with the
+architectures Radare2 supports is by running <code>rasm2 -L</code>. This
+command outputs a comprehensive list of architectures, along with the
+bits, endianness, and available CPU types associated with each.</p>
+<p>The output of rasm2 -L will list architectures such as x86, arm,
+mips, powerpc, and more. Here’s a sample of what it looks like:</p>
+<pre class="console"><code>$ rasm2 -L
+_de 8           6502        Disassembler for the 6502 microprocessor family (NES, c64, ..)
+_de 8           6502.cs     Capstone mos65xx 8 bit microprocessors
+ade 8 16        8051        8051 microcontroller (also known as MCS-51)
+_de 64          alpha       ALPHA architecture disassembler based on GNU binutils
+_de 32          amd29k      AMD 29k decoder
+a__ 16 32 64    any.as      Use system&#39;s gnu/clang &#39;as&#39; assembler
+a__ 8 16 32 64  any.vasm    Use asm.cpu=6502, 6809, c16x, jagrisc, m68k, pdp11, ppc,qnice, tr3200, vidcore, x86, z80
+_de 16 32       arc         ARC processor instruction decoder
+a__ 16 32 64    arm.nz      Custom thumb, arm32 and arm64 assembler
+_de 16 32 64    arm         Capstone ARM analyzer
+_de 16 32 64    arm.gnu     ARM code analysis plugin (asm.cpu=wd for winedbg disassembler)
+_de 64          arm.v35     Vector35 ARM analyzer
+ade 8 16        avr         AVR microcontroller CPU by Atmel
+ade 32          bf          brainfuck architecture
+ade 32          bpf.mr      BPF the Berkeley Packet Filter bytecode
+_de 32 64       bpf         Capstone BPF bytecode
+...</code></pre>
+<p>Note that for parsing purposes you can always append <code>-j</code>
+to get the output in JSON <code>rasm2 -jL</code>.</p>
+<p>The first column indicates the following information:</p>
+<ul>
+<li><code>a</code> the plugin supports assembling instructions
+(encode)</li>
+<li><code>d</code> the plugin supports disassembling instructions
+(decode)</li>
+<li><code>e</code> the plugin supports emulating instructions
+(emulate)</li>
+</ul>
+<p>If the architecture we are looking for is not listed there we may
+probably want to use <code>r2pm -s</code> to search for 3rd party
+plugins and install them like this:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2pm <span class="at">-ci</span> hexagon</span></code></pre></div>
+<h3 id="binary-headers">Binary Headers</h3>
+<p>Most of the time we will be loading binaries with a structured header
+that specifies all this information.</p>
+<p>The <code>i</code> command outputs basic information about the
+binary, often including arch, bits, endian, class, and machine. For
+instance:</p>
+<pre class="console"><code>$ r2 -qci /path/to/binary
+arch     x86
+bits     64
+endian   little</code></pre>
+<p>This metadata helps you confirm if <em>radare2</em> has correctly
+detected the binary’s architecture. However, when working with raw
+binaries (like firmwares or memory dumps) that lack those meta headers,
+<em>radare2</em> will default to an incorrect or the host architecture,
+requiring manual intervention.</p>
+<p>But there’s no need to load the entire binary inside radare2 to
+retrive the architecture information, we can achieve the same output
+using just <code>rabin2</code> from the shell like this:</p>
+<pre class="console"><code>$ rabin2 -I /path/to/binary
+arch     x86
+bits     64
+endian   little
+...</code></pre>
+<p>This information is also exposed in JSON format by just appending the
+<code>-j</code> flag:</p>
+<pre class="console"><code>$ rabin2 -j -I /bin/ls | jq .
+{
+  &quot;info&quot;: {
+    &quot;arch&quot;: &quot;arm&quot;,
+    &quot;baddr&quot;: 4294967296,
+    &quot;binsz&quot;: 89088,
+    &quot;bintype&quot;: &quot;mach0&quot;,
+    &quot;bits&quot;: 64,
+    &quot;canary&quot;: true,
+    &quot;injprot&quot;: false,
+    &quot;class&quot;: &quot;MACH064&quot;,
+...</code></pre>
+<h3 id="specifying-the-specific-cpu-model">Specifying the specific CPU
+model</h3>
+<p>To configure the CPU model for the given architecture we must use the
+<code>asm.cpu</code> variable. This can be essential when dealing with
+binaries optimized for specific processors, such as ARM Cortex-M or MIPS
+R3000.</p>
+<p>To list valid asm.cpu options for the currently loaded architecture,
+use:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">e</span> asm.cpu=<span class="pp">?</span></span></code></pre></div>
+<p>You can list the cpus for the arm.gnu plugin with the command from
+the shell with the following oneliner:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 <span class="at">-a</span> arm.gnu <span class="at">-b</span> 32 <span class="at">-qc</span> <span class="st">&#39;e asm.cpu=?&#39;</span> <span class="at">--</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">v2</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">v2a</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">v3M</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">v4</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">v5</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">v5t</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">v5te</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">v5j</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">XScale</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">ep9312</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">iWMMXt</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">iWMMXt2</span></span></code></pre></div>
+<p>Changing the asm.cpu will show immediate change after disassembling
+code, this may help us discover what some <code>invalid</code>
+instructions are really doing. Note that inside the r2 shell you can
+also use <code>-e</code> (like the commandline flags of the very same
+tool):</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">-e</span> asm.cpu=v5t</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pd</span> 10</span></code></pre></div>
+<p>Setting the asm.cpu appropriately can enhance disassembly accuracy by
+accounting for architecture-specific opcodes and behaviors, providing a
+more precise interpretation of the binary’s instructions.</p>
+<h2 id="automating-it-in-a-script">Automating it in a Script</h2>
+<p>When a binary has no header information, architecture detection
+becomes a manual process. However, we can leverage Radare2’s flexibility
+with an r2js script that tries different architecture and bit
+configurations, analyzes the disassembly, and measures the ratio of
+valid to invalid instructions. This process can give us a strong
+indication of the correct architecture by narrowing down configurations
+that yield the fewest decoding errors.</p>
+<p>The script below attempts various arch and bits combinations,
+performs a short disassembly (pd), and counts invalid instructions. The
+configuration with the least invalid instructions is likely the correct
+one.</p>
+<h3 id="auto-detect-script">Auto-Detect Script</h3>
+<p>This script is written in r2js, Radare2’s JavaScript interface, which
+allows for dynamic command execution and result parsing.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> architectures <span class="op">=</span> [</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">arch</span><span class="op">:</span> <span class="st">&quot;arm&quot;</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> [<span class="dv">64</span><span class="op">,</span> <span class="dv">32</span><span class="op">,</span> <span class="dv">16</span>]}<span class="op">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">arch</span><span class="op">:</span> <span class="st">&quot;x86&quot;</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> [<span class="dv">64</span><span class="op">,</span> <span class="dv">32</span><span class="op">,</span> <span class="dv">16</span>]}<span class="op">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">arch</span><span class="op">:</span> <span class="st">&quot;mips&quot;</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> [<span class="dv">64</span><span class="op">,</span> <span class="dv">32</span><span class="op">,</span> <span class="dv">16</span>]}<span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">arch</span><span class="op">:</span> <span class="st">&quot;ppc&quot;</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> [<span class="dv">64</span><span class="op">,</span> <span class="dv">32</span>]}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> bestMatch <span class="op">=</span> {<span class="dt">arch</span><span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">invalidCount</span><span class="op">:</span> <span class="kw">Infinity</span>}<span class="op">;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">const</span> config <span class="kw">of</span> architectures) {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> bit <span class="kw">of</span> config<span class="op">.</span><span class="at">bits</span>) {</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Set architecture and bit width</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`e asm.arch=</span><span class="sc">${</span>config<span class="op">.</span><span class="at">arch</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`e asm.bits=</span><span class="sc">${</span>bit<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Perform a short disassembly</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> disasm <span class="op">=</span> r2<span class="op">.</span><span class="fu">cmdj</span>(<span class="st">&#39;pdj 80&#39;</span>)<span class="op">;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> invalidCount <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Count invalid instructions</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        disasm<span class="op">.</span><span class="fu">forEach</span>(instruction <span class="kw">=&gt;</span> {</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> (instruction<span class="op">.</span><span class="at">opcode</span> <span class="op">===</span> <span class="st">&#39;invalid&#39;</span>) {</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>                invalidCount<span class="op">++;</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Testing </span><span class="sc">${</span>config<span class="op">.</span><span class="at">arch</span><span class="sc">}</span><span class="vs">-</span><span class="sc">${</span>bit<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span>invalidCount<span class="sc">}</span><span class="vs"> invalid instructions`</span>)<span class="op">;</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Track the best configuration</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (invalidCount <span class="op">&lt;</span> bestMatch<span class="op">.</span><span class="at">invalidCount</span>) {</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>            bestMatch <span class="op">=</span> {<span class="dt">arch</span><span class="op">:</span> config<span class="op">.</span><span class="at">arch</span><span class="op">,</span> <span class="dt">bits</span><span class="op">:</span> bit<span class="op">,</span> invalidCount}<span class="op">;</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Best match: </span><span class="sc">${</span>bestMatch<span class="op">.</span><span class="at">arch</span><span class="sc">}</span><span class="vs">-</span><span class="sc">${</span>bestMatch<span class="op">.</span><span class="at">bits</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">// Set the best configuration</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`e asm.arch=</span><span class="sc">${</span>bestMatch<span class="op">.</span><span class="at">arch</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>r2<span class="op">.</span><span class="fu">cmd</span>(<span class="vs">`e asm.bits=</span><span class="sc">${</span>bestMatch<span class="op">.</span><span class="at">bits</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span></code></pre></div>
+<h3 id="how-it-works">How It Works:</h3>
+<p>The script iterates through different configurations, disassembling
+the first 80 instruction and counts how many of them can’t be decoded
+and considered invalid.</p>
+<p>Best Match Selection: It tracks the configuration with the lowest
+count of invalid instructions, which is likely to be the correct
+one.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> uname <span class="at">-m</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">arm64</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 <span class="at">-i</span> whatarch.r2.js /bin/ls</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> arm-64: 0 invalid instructions</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> arm-32: 12 invalid instructions</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> arm-16: 3 invalid instructions</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> x86-64: 3 invalid instructions</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> x86-32: 1 invalid instructions</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> x86-16: 0 invalid instructions</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> mips-64: 18 invalid instructions</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> mips-32: 2 invalid instructions</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> mips-16: 18 invalid instructions</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> ppc-64: 4 invalid instructions</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Testing</span> ppc-32: 4 invalid instructions</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Best</span> match: arm-64</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">--</span> Now with more better English!</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003a58]</span><span class="op">&gt;</span></span></code></pre></div>
+<p>There are several assumptions this script is doing that can be
+improved and it’s important to have them into consideration.</p>
+<ul>
+<li>We took the instructions starting from the entrypoint</li>
+<li>Firmwares use to have one jump at the begining and then data</li>
+<li>Sometimes the code is not in the right place</li>
+<li>Other metrics like branches to valid destinations will make sense
+too</li>
+<li>16 bit architectures use to have a low ratio of invalid instructions
+which may lead to false positives</li>
+<li>This script is only playing with a hardcoded list of arch/bits, we
+can use the whole list of archs too</li>
+<li>The script doesn’t play with endian or asm.cpu values</li>
+<li>Decode every instruction at bit level and analyze the entropy level
+of each operand</li>
+</ul>
+<p>As for today we give you the challenge to write a better version of
+this script that is able to solve all the problems described in this
+post and share it! ideally as a pull request into the examples/
+directory in GitHub!</p>
+<h2 id="keep-learning">Keep learning</h2>
+<p>If you are curious about radare2, I would recommend you to checkout
+the following links:</p>
+<ul>
+<li><a href="https://book.rada.re">radare2 book</a></li>
+<li><a href="https://github.com/radareorg/radare2/tree/master/man">rasm2
+manpage</a></li>
+<li><a href="https://radare.org/tv">radare.TV</a></li>
+</ul>
+<p>Feel free to contribute and open tickets to improve the documentation
+from what you learned here!</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<p>Identifying a binary’s architecture is the foundation of effective
+reverse engineering, and Radare2 offers robust tools to assist in this
+process. By using commands like rasm2 -L, i, and asm.cpu, we can
+investigate architecture and bit options manually. In cases with limited
+metadata, scripts can automate the detection process, saving valuable
+time.</p>
+<p>Hope you all learned something new and see you tomorrow in the second
+advent post of radare2!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

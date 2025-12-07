@@ -1,0 +1,326 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="hexadecimal-dumps">05 - Hexadecimal Dumps</h1>
+<p>Welcome to Day 5 of the Advent of Radare2!</p>
+<p>Today, we’ll explore several commands for displaying data in
+hexadecimal. Once again, another simple task that needs some attention
+to help us understanding binary structures hidden in the data.</p>
+<h2 id="hexpairs-and-dumps">Hexpairs and Dumps</h2>
+<p>Radare2 provides multiple commands for printing data in different
+formats, the two basic ones are:</p>
+<ul>
+<li><strong><code>p8</code></strong>: Prints hex values in a compact
+“hexpairs” string format (e.g., <code>48656c6c6f</code>). This format is
+ideal for simple copying and comparing hex values. Because it fits in a
+line and is not affected by endianness.</li>
+<li><strong><code>px</code></strong>: Displays hex values packed in
+bytes, words, dwords, qwords in a structured ASCII hex dump, showing
+both hex bytes and ASCII representations. This view is useful for
+readability and context as it may also show flags and comments in the
+right side.</li>
+</ul>
+<p>Let’s look at examples of both commands with the first 16 bytes of
+code in a binary.</p>
+<pre class="console"><code>&gt; p8 16
+48656c6c6f20776f726c6421200000</code></pre>
+<p>Another cool aspect of <code>p8</code> is the JSON representation, as
+we already know, appending <code>j</code> to any command will give print
+the command output in JSON format, which for that case it is ideal
+reading memory when using r2pipe via scripting. Which returns an array
+in JavaScript syntax:</p>
+<pre class="console"><code>[0x100003a58]&gt; p8j 16
+[127,35,3,213,252,111,186,169,250,103,1,169,248,95,2,169]
+[0x100003a58]&gt;</code></pre>
+<p>The <code>px</code> output includes addresses, aligned hex bytes, and
+ASCII values, which is particularly useful for viewing byte patterns in
+a readable format.</p>
+<pre class="console"><code>[0x100003a58]&gt; e hex.header = false
+[0x100003a58]&gt; x 16
+0x100003a58  7f23 03d5 fc6f baa9 fa67 01a9 f85f 02a9  .#...o...g..._..
+[0x100003a58]&gt; e hex.pairs = false
+[0x100003a58]&gt; x 16
+0x100003a58  7f 23 03 d5 fc 6f ba a9 fa 67 01 a9 f8 5f 02 a9  .#...o...g..._..
+[0x100003a58]&gt; e hex.compact = true
+[0x100003a58]&gt; x 16
+0x100003a58 7f2303d5fc6fbaa9fa6701a9f85f02a9 .#...o...g..._..
+[0x100003a58]&gt;</code></pre>
+<p>If you need to export data to be included in a source of any
+programming language, explore the <code>pc</code> subcommands:</p>
+<pre class="console"><code>[0x00000000]&gt; pc?
+Usage: pc   # Print in code
+| pc   C
+| pc*  print &#39;wx&#39; r2 commands
+| pcA  .bytes with instructions in comments
+| pca  GAS .byte blob
+| pcc  C char * multiline string
+| pcd  C dwords (8 byte)
+| pch  C half-words (2 byte)
+| pci  C array of bytes with instructions
+| pcJ  javascript
+| pcj  json
+| pck  kotlin
+| pco  Objective-C
+| pcp  python
+| pcq  quiet C (include-friendly)
+| pcr  rust
+| pcg  Golang
+| pcS  shellscript that reconstructs the bin
+| pcs  string
+| pcn  space separated list of numbers
+| pcv  JaVa
+| pcV  V (vlang.io)
+| pcw  C words (4 byte)
+| pcy  yara
+| pcY  quiet yara
+| pcz  Swift
+[0x00000000]&gt;</code></pre>
+<h2 id="grouping-words">Grouping Words</h2>
+<p>Back to our main topic! Data is often easier to understand when
+displayed in different byte groupings. Radare2 provides several commands
+to view hex dumps organized by 2-byte (word), 4-byte (dword), and 8-byte
+(qword) values:</p>
+<ul>
+<li><code>pxh</code>: Groups in 2-byte words.</li>
+<li><code>pxw</code>: Groups in 4-byte words.</li>
+<li><code>pxq</code>: Groups in 8-byte words.</li>
+</ul>
+<p>Let’s see how each looks with the first 16 bytes with pxh:</p>
+<pre class="console"><code>[0x100003a58]&gt; pxq 16
+0x100003a58  0xa9ba6ffcd503237f  0xa9025ff8a90167fa   .#...o...g..._..
+[0x100003a58]&gt; pxw 16
+0x100003a58  0xd503237f 0xa9ba6ffc 0xa90167fa 0xa9025ff8  .#...o...g..._..
+[0x100003a58]&gt; pxh 16
+0x100003a58  0x237f 0xd503 0x6ffc 0xa9ba 0x67fa 0xa901 0x5ff8 0xa902  .#...o...g..._..
+[0x100003a58]&gt;</code></pre>
+<h2 id="endians-and-sign">Endians and Sign</h2>
+<p>Radare2 allows you to view data not only in hexadecimal, but also in
+decimal, taking its most significant bit as sign. The <code>px</code>
+subcommand makes use of the <code>cfg.bigendian</code> variable to swap
+the bytes accordingly, which makes it ideal for analyzing a variety of
+data.</p>
+<ul>
+<li>WAV samples</li>
+<li>Relative pointer arrays</li>
+<li>Cryptographic keys</li>
+<li>Arrays of numbers</li>
+</ul>
+<p>To view data as signed integers, use <code>pxd</code>, this command
+interprets hex values as signed integers, making it easier to analyze
+negative values directly in the dump.</p>
+<pre class="console"><code>[0x100003a58]&gt; pxd 32
+- offset -    58 59  5A 5B  5C 5D  5E 5F  60 61  62 63  64 65  66 67  89ABCDEF01234567
+0x100003a58     -721214593   -1447399428   -1459525638   -1459462152  .#...o...g..._..
+0x100003a68    -1459398666   -1459335180   -1459258371   -1862188035  .W...O...{...C..
+[0x100003a58]&gt;</code></pre>
+<h2 id="handling-endianness-with-cfg.bigendian">Handling Endianness with
+cfg.bigendian</h2>
+<p>By default, Radare2 reads data in little-endian format (because it
+picks the endian from the host system and let’s assume you are reading
+this from a little-endian machine ;), but there’s always the option to
+toggle to big-endian with <code>cfg.bigendian</code> eval variable:</p>
+<pre class="console"><code>[0x100003a58]&gt; pxd?
+Usage: pxd[1248] ([len])  show decimal byte/short/word/dword dumps
+| pxd   show base10 signed decimal hexdumps
+| pxd1  show byte hexdump (int8_t)
+| pxd2  show short hexdump (int16_t)
+| pxd4  show dword hexdump (int32_t)
+| pxd8  show qword hexdump (int64_t)
+[0x100003a58]&gt;</code></pre>
+<p>Let’s try them and see the output:</p>
+<pre class="console"><code>[0x100003a58]&gt; e hex.header = false
+[0x100003a58]&gt; e hex.cols = 8
+[0x100003a58]&gt; pxd1
+0x100003a58   127   35    3  -43   -4  111  -70  -87  .#...o..
+0x100003a60    -6  103    1  -87   -8   95    2  -87  .g..._..
+0x100003a68   -10   87    3  -87  -12   79    4  -87  .W...O..
+0x100003a70    -3  123    5  -87   -3   67    1 -111  .{...C..
+[0x100003a58]&gt; pxd2 32
+0x100003a58     9087  -11005   28668  -22086  .#...o..
+0x100003a60    26618  -22271   24568  -22270  .g..._..
+0x100003a68    22518  -22269   20468  -22268  .W...O..
+0x100003a70    31741  -22267   17405  -28415  .{...C..
+[0x100003a58]&gt; pxd4 32
+0x100003a58     -721214593   -1447399428  .#...o..
+0x100003a60    -1459525638   -1459462152  .g..._..
+0x100003a68    -1459398666   -1459335180  .W...O..
+0x100003a70    -1459258371   -1862188035  .{...C..
+[0x100003a58]&gt;</code></pre>
+<p>Let’s see what happens when we switch the endian now:</p>
+<pre class="console"><code>[0x100003a58]&gt; e cfg.bigendian
+false
+[0x100003a58]&gt; pxd4 32
+0x100003a58     -721214593   -1447399428  .#...o..
+0x100003a60    -1459525638   -1459462152  .g..._..
+0x100003a68    -1459398666   -1459335180  .W...O..
+0x100003a70    -1459258371   -1862188035  .{...C..
+[0x100003a58]&gt; e cfg.bigendian =true
+[0x100003a58]&gt; pxd4 32
+0x100003a58     2133001173     -59786583  .#...o..
+0x100003a60      -93912663    -127991127  .g..._..
+0x100003a68     -162069591    -196148055  .W...O..
+0x100003a70      -42269271     -45940335  .{...C..
+[0x100003a58]&gt;</code></pre>
+<p>The <code>j</code> subcommand also works for all those commands,
+which makes it perfect for analyzing data from r2js. In here we will use
+the <code>-j</code> command to enter into the r2js shell and then run a
+single javascript oneliner:</p>
+<pre class="console"><code>[0x100003a58]&gt; -j
+QuickJS - Type &quot;\h&quot; for help
+[r2js]&gt; r2.cmdj(&quot;pxd4j&quot;)[2]
+-1459525638</code></pre>
+<p>Let’s decompose it:</p>
+<ul>
+<li><code>r2.cmdj</code> : runs a command, reads the output, and returns
+it parsed as JSON</li>
+<li><code>pxd4j</code> : hexdump 4 byte words as signed integers, output
+in json</li>
+<li><code>[2]</code> : pick the 3nd element in the array</li>
+</ul>
+<h2 id="analysing-embedded-pointers">Analysing Embedded Pointers</h2>
+<p>Radare2’s pxa and pxr commands add powerful capabilities for
+interpreting hex dumps:</p>
+<ul>
+<li><strong>pxa</strong>: Follows embedded pointers, identifying code,
+data, or string references within the dump.</li>
+<li><strong>pxr</strong>: Displays any flags (symbols or labels)
+associated with embedded pointers.</li>
+</ul>
+<p>To examine pointers we have <code>pxr</code> which works like
+<code>drr</code> the periscoped inspection of data from registers or
+memory that walks recursively analyzing each pointer to indicate using
+colors if the value constructed is an invalid pointer or if it points to
+data, code or writable area.</p>
+<p>Periscope inspection is a feature that provides a detailed “deep
+look” at memory contents and their interpretations. It’s like following
+a trail of memory references and showing you what’s at each stop.</p>
+<p>These commands are helpful when analyzing complex data structures
+located in the stack or the heap and can decode multiple nested
+pointers.</p>
+<pre class="console"><code>$ r2 -d ls
+[0x102e54f80]&gt; pxr@r:SP
+0x16d34b7a0 0x0000000000000005   ........ @ sp 5
+0x16d34b7a8 0x000000016d34b8d8   ..4m.... 6127139032 0b_copy_userrwx R W 0xb02c800102e54ec0
+0x16d34b7b0 ..[ null bytes ]..   00000000
+0x16d34b7b8 0x000000016d34b860   `.4m.... 6127138912 0b_copy_userrwx R W 0x5800102e8df20
+0x16d34b7c0 0x000000000000000c   ........ 12 x8
+0x16d34b7c8 0x000000008009dc79   y....... 2148129913
+0x16d34b7d0 0x000000016d34b850   P.4m.... @ fp 6127138896 0b_copy_userrwx R W 0x16d34b8d0
+0x16d34b7d8 0xe20d800102e506e4   ........ lr
+0x16d34b7e0 0x00000000000dc000   ........ 901120 x13
+0x16d34b7e8 0x000000000004c000   ........ 311296
+0x16d34b7f0 0x000000016d34bc00   ..4m.... 6127139840 0b_copy_userrwx R W 0x0
+0x16d34b7f8 0x0000000102e006e0   ........ 4343203552 dyld R X &#39;invalid&#39; &#39;dyld&#39; __LINKEDIT
+0x16d34b800 ..[ null bytes ]..   00000000
+0x16d34b820 0x000000000000ffff   ........ 65535
+0x16d34b828 ..[ null bytes ]..   00000000
+0x16d34b830 0x0000000102e00000   ........ 4343201792 dyld map.dyld.r_x,x22 R X &#39;invalid&#39; &#39;dyld&#39;</code></pre>
+<p>This command highlights any recognizable pointers in the hex dump,
+labeling references that point to code, data, or strings. Note that we
+used the <code>@r:</code> operator that takes the address of the
+<code>SP</code> register (uppercase register names are
+cross-architecture aliases that work with all architectures).</p>
+<p>As a practice I would recommend setting a breakpoint on a function
+deep inside the program you are debugging to have more than 3 frame
+pointers in the stack.</p>
+<h2 id="analysing-data-challenge">Analysing Data Challenge</h2>
+<p>And last but not least, we have the <code>ad</code> command, which
+performs something similar to <code>pxr</code>, but in a more fancy way,
+following pointers, identifying linked lists, arrays, known data types,
+strings, etc.</p>
+<p>Take into account that there’s nothing generic or magic that will
+work for all data structures without defining at least a basic structure
+for parsing it, but those commands will help us navigate thru the binary
+and get a better understanding.</p>
+<p>As for today’s challenge, we will need to write a backtrace
+implementation in pure Python or Javascript using rlang/r2pipe using the
+commands explained in this post.</p>
+<p>You can take the code from <code>dbt</code> as <a
+href="https://github.com/radareorg/radare2/tree/master/libr/debug/p/native/bt">inspiration</a>.</p>
+<h2 id="alternative-challenge">Alternative Challenge</h2>
+<p>If implementing a custom backtrace algorithm feels overwheling I
+would like you to examine the stack contents of any program after
+stopping in the <code>main</code> symbol, and take a look at the memory
+to find out the argc, argv, envp. locating the environment variables and
+program name as strings using the <code>pxr</code> command.</p>
+<p>This is an example on macOS, this similar behaviour may be seen on
+Linux or any other UNIX:</p>
+<pre class="console"><code>$ r2 -d ls
+[0x1048577a0]&gt; dcu main
+INFO: Continue until 0x10442ba58 using 4 bpsize
+INFO: hit breakpoint at: 0x10442ba58
+[0x10442ba58]&gt; pxr@r:SP
+0x16b9d7b30 ..[ null bytes ]..   00000000 sp
+0x16b9d7b48 0x00000001e76dc0a0   ..m..... 8177696928 11_copyrw-_1 x20 R 0x1e76dc0d0
+0x16b9d7b50 0x000000016b9d7b88   .{.k.... 6100450184 0b_copy_userrwx R W 0x16b9d7d70
+0x16b9d7b58 0x000000016b9d7b90   .{.k.... 6100450192 0b_copy_userrwx R W 0x1e76dc470
+0x16b9d7b60 0x000000016b9d7c18   .|.k.... 6100450328 0b_copy_userrwx x22,x23 R W 0x1e883a740
+0x16b9d7b68 0x000000016b9d7b80   .{.k.... 6100450176 0b_copy_userrwx R W 0x1824d6000
+0x16b9d7b70 0x000000016b9d7b78   x{.k.... 6100450168 0b_copy_userrwx R W 0xdb1180010442ba58
+0x16b9d7b78 0xdb1180010442ba58   X.B..... x8
+0x16b9d7b80 0x00000001824d6000   .`M..... 6481076224 0c_copy_1 x24 R X &#39;invalid&#39; &#39;0c_copy_1&#39;
+0x16b9d7b88 0x000000016b9d7d70   p}.k.... 6100450672 0b_copy_userrwx R W 0x104428000
+0x16b9d7b90 0x00000001e76dc470   p.m..... 8177697904 11_copyrw-_1 R 0x678001e880f7a8
+0x16b9d7b98 0x0022800000000000   ......&quot;. @ x10
+0x16b9d7ba0 0x001c0001e76dc050   P.m.....
+0x16b9d7ba8 0x0000000042000000   ...B.... 1107296256 ascii (&#39;</code></pre>
+<p>Let’s follow the 2nd dereferenced pointer…</p>
+<p><em>NOTE</em> if the command starts with <code>0x</code>, radare2
+assumes that you are entering an hexadecimal address and it will perform
+a seek. This is: <code>0x32</code> is the same as
+<code>s 0x32</code>:</p>
+<pre class="console"><code>[0x10442ba58]&gt; 0x16b9d7d70
+[0x16b9d7d70]&gt; pxr
+0x16b9d7d70 0x0000000104428000   ..B..... 4366434304 ls segment.__TEXT,__mh_execute_header,map.ls.r_x R X &#39;invalid&#39; &#39;ls&#39;
+0x16b9d7d78 0x0000000000000001   ........ 1 x0
+0x16b9d7d80 0x000000016b9d7e28   (~.k.... @ x1 6100450856 0b_copy_userrwx R W 0x736c2f6e69622f /bin/ls
+0x16b9d7d88 ..[ null bytes ]..   00000000
+0x16b9d7d98 0x000000016b9d7e10   .~.k.... @ x3 6100450832 0b_copy_userrwx R W 0x6261747563657865 executable_path=/bin/ls
+0x16b9d7da0 0x000000016b9d7e30   0~.k.... 6100450864 0b_copy_userrwx R W 0x0
+0x16b9d7da8 0x000000016b9d7e40   @~.k.... 6100450880 0b_copy_userrwx R W 0x0
+0x16b9d7db0 0x000000016b9d7e5f   _~.k.... 6100450911 0b_copy_userrwx R W 0x0
+0x16b9d7db8 0x000000016b9d7e94   .~.k.... 6100450964 0b_copy_userrwx R W 0x676e756d5f727470 ptr_munge=
+0x16b9d7dc0 0x000000016b9d7eb1   .~.k.... 6100450993 0b_copy_userrwx R W 0x6174735f6e69616d main_stack=
+0x16b9d7dc8 0x000000016b9d7ee7   .~.k.... 6100451047 0b_copy_userrwx R W 0x6261747563657865 executable_file=0x1a0100000d,0xfffffff00095b92
+0x16b9d7dd0 0x000000016b9d7f16   ...k.... 6100451094 0b_copy_userrwx R W 0x6c69665f646c7964 dyld_file=0x1a0100000d,0xfffffff000962ca
+0x16b9d7dd8 0x000000016b9d7f3f   ?..k.... 6100451135 0b_copy_userrwx R W 0x6261747563657865 executable_cdhash=15e52203c3d28427e79ec5363e9d3068a740d0e5
+0x16b9d7de0 0x000000016b9d7f7a   z..k.... 6100451194 0b_copy_userrwx R W 0x6261747563657865 executable_boothash=0560a106a385f562299fdf13ed7efa32bee281b8
+0x16b9d7de8 0x000000016b9d7fb7   ...k.... 6100451255 0b_copy_userrwx R W 0x615f6534366d7261 arm64e_abi=all
+[0x16b9d7d70]&gt;</code></pre>
+<h2 id="summary">Summary</h2>
+<p>Radare2 offers various commands to examine hexadecimal data in
+different formats. You can get a basic hex string using <code>p8</code>,
+view a formatted ASCII dump with <code>px</code>, or display data in
+specific groupings using <code>pxh</code> (halfwords), <code>pxw</code>
+(words), and <code>pxq</code> (quad-words). Additionally, commands like
+<code>pxa</code> and <code>pxr</code> enable you to trace pointers and
+flags within the hex dump, which is particularly useful when analyzing
+data structures and memory layouts.</p>
+<p>Try these commands in your next reverse engineering session, and stay
+tuned for tomorrow’s Radare2 challenge!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

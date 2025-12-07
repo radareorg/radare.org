@@ -1,0 +1,438 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="function-bytes">19 - Function Bytes</h1>
+<p>Welcome to Day 19 of the Advent of Radare!</p>
+<p>Today’s focus is on extracting byte sequences from functions, which
+raises several questions:</p>
+<ul>
+<li>Why do we need to do this?</li>
+<li>Do all the bits matter?</li>
+<li>Are they linearly mapped?</li>
+<li>What’s the meaning of life?</li>
+</ul>
+<p>This post will try to answer all these questions and provide you with
+key commands to create YARA rules and zignature files, as well as
+identify patterns for similar functions. We’ll also address the
+challenges of different code constructions and discuss how to eliminate
+parts that can vary between similar patterns.</p>
+<h2 id="linear-vs-sparse">Linear vs Sparse</h2>
+<p>Functions can be described as a consecutive list of instructions that
+have one entrypoint. The rest of rules can vary depending on the way
+they are implemented.</p>
+<ul>
+<li>Can have none, one or many exit points, and those can or can’t
+return values to the caller</li>
+<li>Code can be linearly and consecutive but it’s usually not</li>
+<li>Basic blocks can be shared between different functions.</li>
+<li>Basic blocks can be splitted by branches</li>
+<li>Multiple basic blocks can coeixst in the same address</li>
+<li>Multiple representations of the same code can be seen in the same
+address if jump-in-the-middle hacks are made</li>
+<li>Implementation can jump back, so entrypoint don’t need to be the
+lowest address</li>
+<li>Data can be inlined between the code blocks</li>
+<li>There can be dead code. When optimized to have aligned branch
+destinations, when unoptimized because code was not removed</li>
+<li>Relocations can patch the code at loading time and change the entire
+meaning of existence</li>
+</ul>
+<p>As you can see, things that may look simple or easy can become a
+complete nightmatre for the analyst, and even more for writing software
+that reliabily aims to find out athe real constructions behind the
+assembly.</p>
+<p>So having all these concepts in mind we may want to know what would
+be the best or easiest way to get a list of all the basic blocks..</p>
+<h2 id="linear-paradise">Linear Paradise</h2>
+<p>Imagine a perfect world where all compilers generate a single entry
+point for every function, without reusing basic blocks, and place the
+implementation linearly below the entry point.</p>
+<p>Imagine these functions have no data mixed with code <em>within</em>
+their boundaries, instead delegating data to the space between functions
+or into a separate rodata section within the binary.</p>
+<p>In this imaginary world, we wouldn’t have many problems and could
+simply use commands like:</p>
+<pre class="console"><code>pD $FS @ $FB</code></pre>
+<p>Where: * $FS: The linear size of the function * $FB: The beginning
+address of the function</p>
+<p>Alternatively, you can use p8 to view the byte sequence in
+hexadecimal pairs:</p>
+<pre class="console"><code>p8 $FS @ $FB</code></pre>
+<ul>
+<li>Note that $FB can also be written as $F</li>
+</ul>
+<p>This linear disassembly is usually easily readable with commands like
+<code>pdf</code> or <code>pD $FS</code>. However, if you’ve used these
+commands for a while, you’ve probably noticed that sometimes the output
+is incomplete and contains disappointing “…” ellipses.</p>
+<p>Unfortunately, this perfect world doesn’t exist.</p>
+<h2 id="sparse-land">Sparse Land</h2>
+<p>Now let’s get into the harsh real world problems, following the rules
+we read before we need a way to enumerate the basic blocks of a
+function: <code>afb</code>.</p>
+<pre class="console"><code>[0x100003a58]&gt; afb~:0..10
+0x100003a58 0x100003aa4 00:0000 76 j 0x100003aa8 f 0x100003aa4
+0x100003aa4 0x100003aa8 00:0000 4 j 0x100003aa8
+0x100003aa8 0x100003aec 00:0000 68 j 0x100003b1c f 0x100003aec
+0x100003aec 0x100003b00 00:0000 20 j 0x100003b88 f 0x100003b00
+0x100003b00 0x100003b1c 00:0000 28 j 0x100003b88
+0x100003b1c 0x100003b38 00:0000 28 j 0x100003b40 f 0x100003b38
+0x100003b38 0x100003b40 00:0000 8 j 0x100003b6c f 0x100003b40
+0x100003b40 0x100003b60 00:0000 32 j 0x100003b80 f 0x100003b60
+0x100003b60 0x100003b68 00:0000 8 j 0x100003b7c f 0x100003b68
+0x100003b68 0x100003b6c 00:0000 4 j 0x100003b80
+[0x100003a58]&gt;</code></pre>
+<ul>
+<li>Use <code>afbq</code> (the quiet version of <code>afb</code>) to
+enumerate only the addresses.</li>
+<li>The cons filter <code>~:0..10</code> is the same as
+<code>| head -n 10</code></li>
+</ul>
+<p>Now that we have the list of basic block entrypoints of the current
+function we need to disassemble every basic block:</p>
+<pre class="console"><code>pdb @@= `afbq`</code></pre>
+<ul>
+<li><code>pdb</code> : disassemble the basic block (same as
+<code>pD $BS @ $BB</code>)</li>
+<li><code>@@=</code> : foreach operator that takes space separated list
+of addresses for tempoeral seeking</li>
+<li><code>afbq</code> : backticks replace the output of the command
+inside the same line</li>
+</ul>
+<p>We said we wanted to get the bytes, right? So we may replace the
+<code>pdb</code> with:</p>
+<ul>
+<li><code>p8 $BS</code> : show N hexpairs, where $N is the numvar that
+specifies the size of the basic block size.</li>
+</ul>
+<p>Additionally we may probably want to use <code>@ $BB</code> to force
+the temporal seek to start at the begining of the basic block. But as
+long as we have learned a single address can be owned by multiple basic
+blocks. and we must assume <code>afbq</code> output is enough for us to
+determine each basic block address.</p>
+<p>For parsing reasons, we can replace the following expression:</p>
+<pre class="console"><code>@@=`command`</code></pre>
+<p>With the non-backtick version: <code>@@c:</code></p>
+<p>This gives us the possibility to create a oneliner that prints a
+single block</p>
+<pre class="console"><code>[0x100003a58]&gt; echo `p8b@@c:afbq`|sed -e &#39;s, ,,g&#39;
+7f2303d5fc6fbaa9fa6701a9f85f02a9f65703a9f44f04a9fd7b05...</code></pre>
+<p>Visualizing the how much sparsed the function code is can be done
+with the <code>afb=</code> command which shows some nice ascii art about
+it. (Yes, this ascii art can be much better, and i’m open to suggestions
+and pull requests!)</p>
+<pre class="console"><code>[0x1000038fc]&gt; afb=
+
+0*  0x1000038fc ███―――――― 0x100003914
+1   0x100003914 ――█―――――― 0x100003918
+2   0x100003918 ――██――――― 0x100003928
+3   0x100003928 ――――█―――― 0x100003930
+4   0x100003930 ――――██――― 0x100003934
+5   0x100003934 ―――――█――― 0x10000393c
+6   0x10000393c ―――――████ 0x100003960
+=&gt;  0x1000038fc ^^^^^^^^^ 0x1000039fc
+[0x1000038fc]&gt;</code></pre>
+<p>Which command can we use instead of <code>pdf</code> to disassemble a
+sparse functions?</p>
+<p><strong>Correct!</strong> It’s <code>pdr</code>, which stands for
+print-disasm-recursive. That command will probably not show the branch
+lines in the best possible way, but will cover all the basic blocks,
+trying to enumerate them by jump and address location order.</p>
+<ul>
+<li>The good part of <code>pdr</code> is that it will show all the code
+of the function</li>
+<li>The bad side is that it will skip all the dead code and data
+inlined, sometimes valuable for the reader.</li>
+</ul>
+<p>Give it a try!</p>
+<h2 id="sorting-blocks">Sorting blocks</h2>
+<p>For non-linear functions, it’s essential to process each basic block
+individually to retrieve the complete byte sequence.</p>
+<p>Functions can be sorted using the <code>afls</code> command, which
+affects the default listing from <code>afl</code>. However, we can
+always use <code>afl,</code> to create custom table queries to filter
+and reorder functions as needed.</p>
+<pre class="console"><code>[0x100003a58]&gt; afls?
+Usage: afls  [afls] # sort function list
+| afls   same as aflsa
+| aflsa  sort by address (same as afls)
+| aflss  sort by size
+| aflsn  sort by name
+| aflsb  sort by number of basic blocks
+[0x100003a58]&gt;</code></pre>
+<p>Unlike <code>afls</code>, there’s no sorting command for
+<code>afb</code> (no <code>afbs</code>). This could be a potential
+contribution to the project. However, we can use <code>afb,</code> to
+filter basic block listings according to our requirements.</p>
+<p>But what’s the correct order for sorting them? Can we simply use the
+entrypoint address as a numeric ordinal? Unfortunately, no. The
+appropriate approach depends on our specific needs.</p>
+<p>If we’re reading code: It’s generally fine to follow each branch on
+every basic block until we’ve covered all basic blocks.</p>
+<pre class="console"><code>afbq &gt; $bbs
+p8 $BS @@c:cat $bbs</code></pre>
+<ul>
+<li>Note: dollar-files are memory-based virtual files that can be used
+with any r2 command as if they were physical files.</li>
+</ul>
+<p>For cases where we need a pattern that’s as linear as possible, we
+might want to sort them and fill gaps with masked bytes.</p>
+<p>Instead of using <code>afbq</code> (which sorts by offset), we can
+use <code>afba</code> which mirrors the implementation of
+<code>afla</code>. This means taking all basic blocks and traversing
+them in reverse order, covering all basic blocks and code paths while
+defining the proper analysis order following the jumps.</p>
+<pre class="console"><code>[0x100003a58]&gt; afb? | grep order
+| afba[!]                                       list basic blocks of current offset in analysis order (EXPERIMENTAL, see afla)</code></pre>
+<p>The only issue with this listing is that it’s reversed. We can solve
+this using <code>tac</code> (the reverse version of <code>cat</code>) to
+achieve our desired order.</p>
+<pre class="console"><code>aaaa           # analyze all the things
+afba &gt; $bbs    # list basic blocks in reverse analysis dependency order
+tac $bbs       # reverse every line of that file, entrypoint should be the first</code></pre>
+<h2 id="zignaturezzz">Zignaturezzz</h2>
+<p>Creating function signatures is useful for many reasons. While this
+post delves into the topic, we might be focusing too much on the
+technical requirements rather than the practical applications.</p>
+<p>In r2land we call them “zignaturez”, yes; with ‘z’.</p>
+<p>And as expected, radare2 ships its own implementation for signatures.
+You might wonder: “Why not just use FLIRT or whatever GHIDRA provides?”
+The main reason is that IDA’s implementation is too simplistic and comes
+packed in a proprietary file format, while Ghidra’s <a
+href="https://blog.threatrack.de/2019/09/20/ghidra-fid-generator/">FIDB</a>
+is stored as <code>Java serialization data, version 5</code>.</p>
+<p>I don’t really understand why such a complex topic was reduced to
+just “byte pattern + binary mask” and stored in a proprietary,
+non-standard file format. This explains why r2 has its own
+implementation, which is more flexible, configurable, powerful, and
+precise.</p>
+<p>And the best part? As usual, hardly anyone knows about it! So you can
+feel even more exclusive when using these features.</p>
+<p>The choice for the <code>z</code> command for this feature was made
+because <code>s</code> was already taken, and using <code>z</code>
+became a memorable pronunciation joke. We won’t go into much detail here
+since there’s an <a
+href="https://book.rada.re/signatures/zignatures.html">entire
+chapter</a> in the r2book about it.</p>
+<p>Let’s look at how to use it first, then we’ll explore the
+configuration options and metrics. Here’s a sample session:</p>
+<pre class="console"><code>aaaa       # analyze all
+zg         # generate zignatures for all the functions
+z* &gt; z.r2  # dump them into an r2script</code></pre>
+<p>If we load a different file or a program with functions from the
+library we’ve analyzed, we must use the <code>z/</code> command, which
+scans and compares every function with the loaded signatures. We can
+load multiple zignatures at once and manipulate them as needed.</p>
+<p>To inspect what’s created in the file, we can simply read this
+<code>z.r2</code> or dump it in JSON format.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="dv">0</span><span class="er">x100003a58</span><span class="ot">]</span><span class="er">&gt;</span> <span class="er">zj~</span><span class="fu">{}</span><span class="er">|head</span> <span class="er">-n</span> <span class="er">50</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;sym.imp.__tolower&quot;</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bytes&quot;</span><span class="fu">:</span> <span class="st">&quot;110000b031820091300240f9110a1fd7&quot;</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;mask&quot;</span><span class="fu">:</span> <span class="st">&quot;ff000000ffffffffffffffffffffffff&quot;</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;graph&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;cc&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;nbbs&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ebbs&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;bbsum&quot;</span><span class="fu">:</span> <span class="dv">16</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;addr&quot;</span><span class="fu">:</span> <span class="dv">4294997000</span><span class="fu">,</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;next&quot;</span><span class="fu">:</span> <span class="st">&quot;sym.imp.abort&quot;</span><span class="fu">,</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;types&quot;</span><span class="fu">:</span> <span class="st">&quot;int __tolower (int c)&quot;</span><span class="fu">,</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;refs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;xrefs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;sym.func.100006780&quot;</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;collisions&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;vars&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;hash&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;bbhash&quot;</span><span class="fu">:</span> <span class="st">&quot;ceb84efacc7c830486ac15b8fa27a452ecb0f75f3d21eac04bd44bdcfc580a2e&quot;</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;sym.imp.compat_mode&quot;</span><span class="fu">,</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bytes&quot;</span><span class="fu">:</span> <span class="st">&quot;110000b031220291300240f9110a1fd7&quot;</span><span class="fu">,</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;mask&quot;</span><span class="fu">:</span> <span class="st">&quot;ff000000ffffffffffffffffffffffff&quot;</span><span class="fu">,</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;graph&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;cc&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;nbbs&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ebbs&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;bbsum&quot;</span><span class="fu">:</span> <span class="dv">16</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span></code></pre></div>
+<p>This generates a zignature, a function signature that uses bitmasks
+to exclude bits prone to variation.</p>
+<p>We can filter the patterns with the bytes like this:</p>
+<pre class="console"><code>z~bytes[1]</code></pre>
+<p>To see the bitmask applied by the zignature (showing which bits are
+ignored), use:</p>
+<pre class="console"><code>z~mask[1]</code></pre>
+<p>This bitmask helps identify which parts of the instruction sequence
+are static and which are variable, making it easier to create robust
+YARA rules or other detection mechanisms that remain effective across
+different build variations.</p>
+<h2 id="metrics-and-options">Metrics and Options</h2>
+<p>Other tools come with just a big button that makes things happen, but
+that’s not the r2 way. Here, we prefer to understand how things work and
+customize them to fit our specific use cases. While we strive to provide
+good defaults, sometimes they might not work well or haven’t been
+thoroughly tested for .. <em>reasons</em>.</p>
+<p>The metrics used to generate signatures are the following:</p>
+<ul>
+<li><strong>name</strong> is the function named in a similar way?</li>
+<li><strong>bytes</strong> linear byte patterns</li>
+<li><strong>mask</strong> binary mask to be applied on the bytes</li>
+<li><strong>graph</strong> code complexity, basic block cound, amount of
+edges, ending basic blocks..</li>
+<li><strong>contex</strong> which is the next and previous symbol</li>
+<li><strong>types</strong> which types are used as arguments or
+variables and its function signature</li>
+<li><strong>refs</strong> which data is referenced</li>
+<li><strong>xrefs</strong> who is referencing this function</li>
+<li><strong>hash</strong> aproximated minhash of the bytes used to
+compute distance with others</li>
+</ul>
+<p>We can see the configuration options to generate and match the
+metrics with the following command:</p>
+<pre class="console"><code>[0x100003a58]&gt; e??zign.
+       zign.autoload: autoload all zignatures located in dir.zigns
+          zign.bytes: use bytes patterns for matching
+   zign.diff.bthresh: threshold for diffing zign bytes [0, 1] (see zc?)
+   zign.diff.gthresh: threshold for diffing zign graphs [0, 1] (see zc?)
+           zign.dups: allow duplicate zignatures
+          zign.graph: use graph metrics for matching
+           zign.hash: use Hash for matching
+        zign.mangled: use the manged name for zignatures (EXPERIMENTAL)
+          zign.maxsz: maximum zignature length
+          zign.mincc: minimum cyclomatic complexity for matching
+          zign.minsz: minimum zignature length for matching
+         zign.offset: use original offset for matching
+         zign.prefix: default prefix for zignatures matches
+           zign.refs: use references for matching
+      zign.threshold: minimum similarity required for inclusion in zb output
+          zign.types: use types for matching
+[0x100003a58]&gt;</code></pre>
+<h2 id="yarayarayara">Yarayarayara</h2>
+<p>R2Yara brings the power of YARA pattern matching into radare2,
+enabling efficient binary analysis and malware detection. This
+integration allows you to scan binaries for specific patterns using YARA
+rules directly within your r2 session.</p>
+<p>Simply install using r2pm:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2pm <span class="at">-ci</span> r2yara</span></code></pre></div>
+<p>R2Yara provides two command sets: <code>yara</code> for full commands
+and <code>yr</code> for shorter alternatives. The key commands are:</p>
+<ul>
+<li>Load rules: <code>yr &lt;file&gt;</code></li>
+<li>List rules: <code>yrl</code></li>
+<li>Scan binary: <code>yrs</code></li>
+<li>Clear rules: <code>yr-*</code></li>
+</ul>
+<pre class="console"><code>[0x00000000]&gt; yr crypto.yara   # Load crypto detection rules
+[0x00000000]&gt; yrs              # Scan current binary</code></pre>
+<p>R2Yara will automatically creates flags at matched locations, making
+it valuable for both automated analysis and manual investigation of
+suspicious binaries.</p>
+<p>Common use cases for r2yara are:</p>
+<ul>
+<li>Malware Detection
+<ul>
+<li>Identify known malware patterns</li>
+<li>Match suspicious code structures</li>
+</ul></li>
+<li>Crypto Detection
+<ul>
+<li>Find cryptographic constants</li>
+<li>Identify encryption algorithms</li>
+</ul></li>
+<li>Binary Classification
+<ul>
+<li>Detect compiler patterns</li>
+<li>Match library signatures</li>
+</ul></li>
+</ul>
+<p>I encourage you to watch <a
+href="https://www.youtube.com/watch?v=5ORYZQE3UJE&amp;list=PLQYxYCskjP6X49cHfof-qB-7lfhi-Nbiy&amp;index=8">“Uncovering
+more crypto secrets”</a>, a presentation by Sylvain and Azox at
+<a href="https://radare.org/con/2024">#r2con2024</a>, to learn more
+about practical use cases of YARA rules for cryptographic pattern
+detection.</p>
+<h2 id="challenge">Challenge</h2>
+<p>With the scripting knowledge from yesterday’s post, I’m challenging
+you to create an r2js script (or Python using the r2pipe API) that
+creates a binary mask pattern for every function, similar to how the
+zignatures implementation works. Try to improve upon the existing
+implementation by:</p>
+<ol type="1">
+<li>Warning about patterns that might result in false positives</li>
+<li>Identifying potential misbehavior</li>
+<li>Running the script across all binaries from the <a
+href="https://github.com/radareorg/radare2-testbins">testbins</a>
+repository to perform testing and understand the challenges
+encountered</li>
+</ol>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for a in test/bins/<span class="pp">**</span>/<span class="pp">*</span> <span class="kw">;</span> <span class="cf">do</span> <span class="ex">r2</span> <span class="at">-qi</span> script.r2.js <span class="va">$a</span> <span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<p>After completing this, share your results by:</p>
+<ul>
+<li>Posting the script used for the examples repository</li>
+<li>Identifying at least 3 binaries that exhibited unusual behavior
+patterns</li>
+<li>Explaining the specific issues encountered with these binaries</li>
+</ul>
+<p>Additional questions:</p>
+<ul>
+<li>Which architectures proved most challenging when creating function
+patterns?</li>
+<li>What limitations did you encounter during implementation?</li>
+<li>Could some of these missing elements be exposed in the
+<code>ao</code> output, rather than relying on the zignatures
+implementation to remove parameterized and immediate values from the
+disassembly and show the associated binary mask?</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>Radare2 provides robust tools for displaying a function’s byte
+sequence, whether the function is linear or divided into basic
+blocks.</p>
+<p>Commands like p8 and pD make it easy to capture bytes for linear
+functions, while p8 $BS @<span class="citation"
+data-cites="c:afbq">@c:afbq</span> captures bytes across multiple basic
+blocks. For reliable detection across builds, zignatures (zg) generate
+function signatures with bitmasks to ignore variable bits, helping you
+create accurate, flexible YARA rules.</p>
+<p>Stay tuned for tomorrow’s Radare2 post as we continue exploring
+advanced analysis and reverse engineering techniques!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

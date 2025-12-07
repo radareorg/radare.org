@@ -1,0 +1,299 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="finding-all-the-functions">03 - Finding all the Functions</h1>
+<p>Welcome to Day 3 of the Advent of Radare2!</p>
+<p>Today’s we will explore the functions within a binary and discuss
+ways to improve code coverage during static analysis.</p>
+<p>Radare2 offers several useful commands for listing functions and
+gathering statistics, which are essential steps for understanding the
+function landscape. Different static analysis techniques offer varying
+levels of insight which may lead to identify potential dead or
+unreachable code, improve code coverage or better function
+boundaries.</p>
+<p>Finally, function listing and its generated statistics will help us
+learn and understand how well the analysis options taken work to give us
+better analysis results for our specific purposes.</p>
+<h2 id="listing-functions">Listing Functions</h2>
+<p>let’s start by just loading the program right from radare2 we get an
+empty function listing:</p>
+<pre class="console"><code>$ r2 /bin/ls
+[0x100003a58]&gt; afl
+[0x100003a58]&gt;</code></pre>
+<p>This is a common missconception but the reason is that radare2 by
+default does not analyze anything, and functions are discovered while
+analyzing, so at this point we have an empty function list but you
+probably want to enumerate the symbols with the <code>is</code>
+command.</p>
+<p>So, well, let’s do some basic analysis, in radare2 we have the
+<code>-A</code> command line flag that maps to <code>aaa</code>,
+therefor, appending another <code>A</code> results into running one more
+<code>a</code> after the <strong>aaa</strong>. The more <em>a</em>’s you
+add the more analysis steps are performed. Note these <code>aa's</code>
+are the standard and generic code analysis commands. This means that
+they are tested to work more or less well for most common binaries, they
+are not designed to be the most performant and sometimes can result on
+false positives or not cover as much as we liked. We will learn more
+tricks to make the code analysis work the best for our needs later on in
+this post.</p>
+<p>Coming back into The <code>afl</code> command, we can now enumerate
+all the recognized functions within a binary. The listing contains the
+address, function size, amount of basic blocks and name:</p>
+<pre class="console"><code>[0x04007000]&gt; afl
+0x00400700    16   1  sym.main
+0x00400720    32   1  sym.func1
+0x00400740    64   3  sym.func2
+...</code></pre>
+<p>This command is excellent for a quick overview of all functions
+Radare2 has recognized, giving you insight into function entry points,
+lengths, and types, and you can use the <code>Vv</code> command to
+navigate them all in a visual mode.</p>
+<h2 id="filtering-the-listing">Filtering the listing</h2>
+<p>If you need a CSV (comma-separated values) format for easier handling
+of the output, you can use:</p>
+<pre class="console"><code>[0x04007000]&gt; afl,:csv</code></pre>
+<p>This format is useful if you want to import the function list into
+spreadsheet software or analyze it with command-line tools.</p>
+<p>Let’s investigate some comma expressions and learn useful usecases
+for them:</p>
+<pre class="console"><code>[0x04007000]&gt; , :help
+RTableQuery&gt; comma separated. &#39;c&#39; stands for column name.
+ c/sort/inc     sort rows by given colname
+ c/sortlen/inc  sort rows by strlen()
+ c/cols/c1/c2   only show selected columns
+ c/gt/0x800     grep rows matching col0 &gt; 0x800
+ c/lt/0x800     grep rows matching col0 &lt; 0x800
+ c/eq/0x800     grep rows matching col0 == 0x800
+ c/ne/0x800     grep rows matching col0 != 0x800
+ */uniq         get the first row of each that col0 is unique
+ */head/10      same as | head -n 10
+ */skip/10      skip the first 10 rows
+ */tail/10      same as | tail -n 10
+ */page/1/10    show the first 10 rows (/page/2/10 will show the 2nd)
+ c/str/warn     grep rows matching col(name).str(warn)
+ c/nostr/warn   grep rows not matching col(name).str(warn)
+ c/strlen/3     grep rows matching strlen(col) == X
+ c/minlen/3     grep rows matching strlen(col) &gt; X
+ c/maxlen/3     grep rows matching strlen(col) &lt; X
+ c/sum          sum all the values of given column
+ :r2            .tostring() == .tor2()         # supports import/export
+ :csv           .tostring() == .tocsv()        # supports import/export
+ :tsv           .tostring() == .totsv()        # supports import/export
+ :fancy         .tostring() == .tofancystring()
+ :html          .tostring() == .tohtml()
+ :json          .tostring() == .tojson()
+ :simple        simple table output without lines
+ :sql           .tostring() == .tosql() # export table contents in SQL statements
+ :header        show column headers (see :quiet and :noheader)
+ :quiet         do not print column names header</code></pre>
+<p>Dump the list of functions in tab separated values to use it later
+with standard spreadsheet software</p>
+<pre class="console"><code>[0x04007000]&gt; afl,:tsv &gt; functions.tsv</code></pre>
+<p>Get the top 10 functions with more basic blocks:</p>
+<pre class="console"><code>[0x100003a58]&gt; afl,nbbs/sort/dec,/head/10
+addr        size name               noret nbbs nins refs xref axref calls cc  file
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0x100003a58 3020 main               1     135  518  404  0    155   20    147
+0x100004b44 2220 sym.func.100004b44 0     124  555  245  2    88    26    67
+0x100005638 1836 sym.func.100005638 0     82   459  277  1    58    29    47
+0x100005e00 804  sym.func.100005e00 0     42   201  120  1    37    12    24
+0x100006f18 604  sym.func.100006f18 0     39   151  70   1    145   7     24
+0x10000644c 820  sym.func.10000644c 0     38   205  103  1    25    7     23
+0x1000047a8 744  sym.func.1000047a8 0     36   134  73   1    37    9     34
+0x1000069ac 400  sym.func.1000069ac 0     21   100  67   1    12    4     16
+0x100006b3c 332  sym.func.100006b3c 0     17   83   38   1    12    6     10
+0x100006780 360  sym.func.100006780 0     17   90   47   1    14    3     8
+[0x100003a58]&gt;</code></pre>
+<p>Find which functions have more xrefs</p>
+<pre class="console"><code>[0x100003a58]&gt; afl,xref/sort/dec,/head/5
+addr        size name             noret nbbs nins refs xref axref calls cc file
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0x100007708 16   sym.imp.putchar  0     1    4    3    28   28    0     1
+0x1000076f8 16   sym.imp.printf   0     1    4    3    21   21    0     1
+0x100007788 16   sym.imp.snprintf 0     1    4    3    11   11    0     1
+0x1000075e8 16   sym.imp.getenv   0     1    4    3    10   10    0     1
+0x100007798 16   sym.imp.strcmp   0     1    4    3    9    9     0     1
+[0x100003a58]&gt;</code></pre>
+<h2 id="counting-functions-with-aflc">Counting Functions with aflc</h2>
+<p>There are many ways to count the amount of functions found, typically
+we can just use <code>afl~?</code> which is the same as
+<code>afl | wc -l</code>. But as a short and more performant way it is
+good to use <code>aflc</code>.</p>
+<p>This gives you a quick function count, helping you estimate the scope
+of the binary’s coverage.</p>
+<pre class="console"><code>[0x100003a58]&gt; afl~?
+135
+[0x100003a58]&gt; aflc
+135</code></pre>
+<h2 id="function-preludes">Function Preludes</h2>
+<p>Another interesting technique to spot more functions requires
+performing a linear scan over the regions specified by the
+<code>-e anal.in</code> variable. Which by default targets the regions
+with executable permissions.</p>
+<p>The <strong>aap</strong>: This command analyzes function preludes,
+identifying their entry points that might have been missed by other
+recursive analysis techniques.</p>
+<p>Function prelude are the first instructions commonly found at the
+beginning of functions. Modern compilers tend to be more creatives when
+generating code, but still this technique is useful because most of them
+will use generic patterns, let’s say for example on ARM64:</p>
+<pre class="console"><code>[0x100003a58]&gt; pi 3
+pacibsp
+stp x28, x27, [sp, -0x60]!
+stp x26, x25, [sp, 0x10]</code></pre>
+<p>or on X86 we can find:</p>
+<pre class="assembly"><code>[0x00005ae0]&gt; pi 3
+endbr64
+xor ebp, ebp
+mov r9, rdx
+[0x00005ae0]&gt;</code></pre>
+<p>or even the classic and well known
+<code>push ebp; mov ebp, esp</code></p>
+<pre class="assembly"><code>[0x08048d60]&gt; pi 3
+push ebp
+mov ebp, esp
+push ebx
+[0x08048d60]&gt;</code></pre>
+<p>If we are analyzing a new architecture or compiler, it’s possible to
+provide our own custom prelude patterns, which by default are provided
+by the <strong>RArch</strong> plugin by running several analysis
+commands and then manually reviewing the results of this oneliner:</p>
+<pre class="console"><code>p8 16 @@F |sort -u</code></pre>
+<p>We can play with different lengths to determine which is the shortest
+common pattern used for introduction functions, for example on
+ARM64:</p>
+<pre class="console"><code>[0x100003a58]&gt; p8 4 @@F | uniq -c | sort | tail -n 4
+   6 7f2303d5
+  18 110000b0
+  20 7f2303d5
+  66 110000b0
+[0x100003a58]&gt;</code></pre>
+<p>Let’s analyze this oneliner:</p>
+<ul>
+<li><code>p8 4</code> - print 4 bytes, on arm64 this is 1
+instruction</li>
+<li><code>@@F</code> - on every function found (assuming we ran
+<code>aaa</code> before)</li>
+<li><code>uniq -c</code> - count how many times each pattern is
+repeated</li>
+<li><code>sort | tail -n 4</code> - show the 4 most common instructions
+used to start a function</li>
+</ul>
+<h2 id="call-destinations">Call Destinations</h2>
+<p>The <code>aac</code> command performs analysis on call destinations,
+exploring potential references within the binary to uncover additional
+code paths. Assuming we do a linear scan on the executable regions
+looking for <code>CALL</code> instructions, checking that the
+destination points to a valid area with code and performing
+<code>af</code> in the destination.</p>
+<p>There are additional options like <code>anal.hasnext</code> that will
+assume that at the end of the function there’s another one, or the
+<code>anal.calls</code> will give us better code coverage and spot more
+functions with very few false positives.</p>
+<h2 id="code-coverage">Code Coverage</h2>
+<p>To get an overview of code coverage and other statistics, Radare2
+provides the a command, which displays analysis results, including the
+number of functions found, code coverage percentages, and analysis
+depth.</p>
+<p>To use it just run <code>a</code> which is an alias for the
+<code>aai</code> command.</p>
+<p>This command is a powerful way to review the effectiveness of the
+analysis, especially after applying aap, aac, and setting anal.hasnext.
+It allows you to adjust your analysis strategy based on coverage,
+helping you achieve a more complete understanding of the binary.</p>
+<pre class="console"><code>[0x100003a58]&gt; aai
+fcns    135
+xrefs   2250
+calls   330
+strings 97
+symbols 140
+imports 84
+covrage 17148
+codesz  32768
+percent 52%
+[0x100003a58]&gt;</code></pre>
+<h2 id="summary">Summary</h2>
+<p>With commands like <code>afl</code> and its variants
+(<code>afl</code>, <code>afll</code>, <code>afl,</code> or
+<code>aflc</code> to share some examples), you can learn from the output
+of different analysis commands and how they combine to achieve better
+code coverage.</p>
+<p>To exercise this we will write a shellscript that runs different
+analysis commands and shows some statistics about it:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">BINFILE</span><span class="op">=</span><span class="st">&quot;/usr/bin/awk&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">CMDS</span><span class="op">=</span><span class="st">&quot;aa aaa aaaa aaaa aap aac aab afr&quot;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="kw">`</span><span class="bu">echo</span> <span class="va">${CMDS}</span><span class="kw">`</span> <span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> b <span class="kw">in</span> anal.hasnext=false anal.hasnext=true <span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">c</span><span class="op">=</span><span class="kw">`</span><span class="ex">r2</span> <span class="at">-q</span> <span class="at">-e</span> <span class="va">${b}</span> <span class="at">-c</span> <span class="va">${a}</span> <span class="at">-c</span> <span class="st">&#39;aai~[1]&#39;</span> <span class="va">${BINFILE}</span> <span class="dv">2</span><span class="op">&gt;</span> /dev/null <span class="kw">|</span> <span class="fu">tr</span> <span class="st">&#39;\n&#39;</span> <span class="st">&#39; &#39;</span><span class="kw">`</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">\t</span><span class="va">$b</span><span class="st">\t</span><span class="va">$c</span><span class="st">&quot;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>The output for this script is the following:</p>
+<pre class="console"><code>Columns:  fcns xrefs calls strings symbols imports covrage codesz percent 
+-------------------------------------------------------------------------
+aa  anal.hasnext=false  262 3135 1243 481 284 74 85440 114688 74%
+aa  anal.hasnext=true   288 3186 1294 481 284 74 85544 114688 74%
+aaa anal.hasnext=false  265 8198 1453 481 284 74 85676 114688 74%
+aaa anal.hasnext=true   291 8249 1504 481 284 74 85780 114688 74%
+aaaa    anal.hasnext=false  265 8198 1453 481 284 74 85676 114688 74%
+aaaa    anal.hasnext=true   291 8249 1504 481 284 74 85780 114688 74%
+aaaa    anal.hasnext=false  265 8198 1453 481 284 74 85676 114688 74%
+aaaa    anal.hasnext=true   291 8249 1504 481 284 74 85780 114688 74%
+aap anal.hasnext=false  346 3070 1006 481 284 74 84220 114688 73%
+aap anal.hasnext=true   305 3187 1291 481 284 74 85704 114688 74%
+aac anal.hasnext=false  206 2852 1414 481 284 74 68688 114688 59%
+aac anal.hasnext=true   262 3201 1464 481 284 74 78444 114688 68%
+aab anal.hasnext=false  276 0 0 481 284 74 67996 114688 59%
+aab anal.hasnext=true   276 0 0 481 284 74 67996 114688 59%
+afr anal.hasnext=false  66 1004 227 481 284 74 39036 114688 34%
+afr anal.hasnext=true   215 1998 698 481 284 74 61940 114688 54%</code></pre>
+<p>Obviously using /usr/bin/awk as example for this script is probably
+not the best target, but serves as an idea that combining with different
+analysis strategies like <code>aap</code>, <code>aac</code>, and
+enabling <code>anal.hasnext</code>, you can greatly enhance code
+coverage and function discovery in Radare2.</p>
+<p>These techniques will us help discover hidden functions or missing
+xrefs, providing valuable insights into the binary’s behavior and code
+structure. As well, we must understand that finding more functions
+doesn’t mean having better results, because the order of analysis, the
+type propagation and other important details need further analysis than
+just plain statistics.</p>
+<h2 id="challenge">Challenge</h2>
+<p>Now it’s your turn to test the script on your favourite binaries, be
+careful analyzing the results and compare the difference in functions
+discovered looking for false positives, luckily you will spot some new
+good generic tips to improve the default analysis.</p>
+<p>Discuss, test and share your thoughs about all these techniques and
+which analysis behaviours work the best for your personal usecases as an
+exercise for today, you’ll surely find out better ways to analyze your
+binaries and reduce processing times which clearly makes a difference
+when working with large binaries at scale.</p>
+<p>Stay tuned for tomorrow’s advent task, where we’ll explore further
+aspects of binary analysis with Radare2!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

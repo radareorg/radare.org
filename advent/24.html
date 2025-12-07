@@ -1,0 +1,271 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="tracing-functions">24 - Tracing Functions</h1>
+<p>Greetings on Day 24 of the Advent of Radare!</p>
+<p>Our focus today is on function call tracing within specific memory
+areas using Radare2 and <code>r2frida</code>. Today’s post will teach us
+how to set boundaries in code analysis, filter analysis results within a
+range, and understand the relationships between functions by recreating
+a backtrace call graph.</p>
+<p>We are reaching the end of the advent calendar, so make sure to
+<code>git pull</code> and run <code>sys/install.sh</code> for your
+radare2 installation. Get ready to learn more about
+<strong>r2frida</strong>, <strong>code analysis</strong>, and
+<strong>graphs</strong> to enhance your reverse engineering skills!</p>
+<h2 id="finding-the-functions">Finding The Functions</h2>
+<p>To begin, we need to specify a range in memory. While we usually run
+<code>aaaa</code> without much thought, when working with large binaries
+or debugging, it’s often preferable to define limits. This helps avoid
+analyzing all system libraries and program codepaths when we’re only
+interested in specific ones.</p>
+<p>We previously learned about the <code>search.in</code> variable,
+which can be set to different values to specify where we want to scan
+memory for values. The same concept applies to analysis when using the
+<code>anal.in</code> variable:</p>
+<p>I will assume you have r2frida installed, so we’ll load a system
+session:</p>
+<pre class="console"><code>$ r2 frida://0
+INFO: Mounted io on /r2f at 0x0
+ -- Are you still watching?
+[0x1042c7818]&gt;</code></pre>
+<p>We want to analyze only the functions in the range of the executable
+map of the <strong>libr_flag.dylib</strong>. So we grep for them and
+this is the output:</p>
+<pre class="console"><code>[0x1042f0000]&gt; :dm~flag
+0x00000001042f0000 - 0x00000001042f8000 r-x .../libr_flag.dylib
+0x00000001042f8000 - 0x00000001042fc000 r-- .../libr_flag.dylib
+0x00000001042fc000 - 0x0000000104300000 r-- .../libr_flag.dylib</code></pre>
+<p>Our range of interes starts in 0x00000001042f0000 and ends at
+0x00000001042f8000. Therefor we run:</p>
+<pre class="console"><code>[0x1042c7818]&gt; -e anal.in=range
+[0x1042c7818]&gt; -e anal.from=0x00000001042f0000
+[0x1042c7818]&gt; -e anal.to=0x00000001042f8000</code></pre>
+<p>And now we are ready to run a command that uses these vars
+(<strong>hint</strong>: it’s not <code>aaaaaa</code>).</p>
+<pre class="console"><code>[0x1042f0000]&gt; aac
+[0x1042f0000]&gt; aflc
+106</code></pre>
+<p>If we run <code>afl</code> we will see that the functions have names
+like <code>sub.fcn.10408e0d4_10408e0d4</code>.. but this is because we
+haven’t loaded the symbols from this library yet! To address that we
+must run this command before <code>aac</code>:</p>
+<pre class="console"><code>[0x1042c7818]&gt; s 0x00000001042f0000
+[0x1042f0000]&gt; .:is*
+[0x1042f0000]&gt; aac</code></pre>
+<p>The <code>.:is*</code> command will set flags from the symbols of the
+binary loaded in current address. If we weren’t lucky and analyzed the
+functions before loading the symbols we can still fix that with the
+following command:</p>
+<pre class="console"><code>[0x1042f0000]&gt; .afna@@F</code></pre>
+<ul>
+<li><code>.</code> - interpret the output of <code>afna</code> as
+commands to be executed</li>
+<li><code>@@F</code> - run the command on every function</li>
+</ul>
+<h3 id="scanning-for-calls">Scanning for Calls</h3>
+<p>Now that we have found all the functions within the range of
+<code>libr_flag</code>, we can go a step further and analyze the code
+looking for <strong>CALL</strong> instructions. To do this, let’s
+disable the <code>anal.in</code> restrictions.</p>
+<pre class="console"><code>[0x1028f3818]&gt; -e anal.in=bin.ormaps.x</code></pre>
+<p>We must now define the range of memory to scan for instructions, this
+is a search command, so we must configure the <code>search.in</code> the
+same way we did before:</p>
+<pre class="console"><code>[0x1042c7818]&gt; -e search.in=range
+[0x1042c7818]&gt; -e search.from=0x00000001042f0000
+[0x1042c7818]&gt; -e search.to=0x00000001042f8000</code></pre>
+<p>Or well, we can also do alternative boundaries by just telling it to
+scan the instructions in the upcoming 1KB of memory.</p>
+<pre class="console"><code>e search.from=$$
+e search.to=$$+1K
+e search.in=raw</code></pre>
+<p>Once the memory range is defined, we can search for all function
+calls within this region using the <code>/a</code> command. This command
+performs a linear disassembly of all instructions, specifically looking
+for <strong>CALL</strong> instructions within the specified range.</p>
+<pre class="console"><code>/at call</code></pre>
+<p>This command outputs a list of addresses where function calls occur
+within the defined range, helping us locate and focus on function calls
+only.</p>
+<h2 id="filtering-unique-calls">Filtering Unique Calls</h2>
+<p>The output of <code>/at</code> command may contain repeated or
+indirect call destinations. To identify unique destinations, we can
+filter the results using radare2’s <code>~</code> operator and sort the
+addresses to eliminate duplicates.</p>
+<pre class="console"><code>[0x1028f3818]&gt; /at call~$$[4]~?
+     106
+[0x1028f3818]&gt; /at call~[4]~?
+     293
+[0x1028f3818]&gt;</code></pre>
+<ul>
+<li><code>~[4]</code>: Filters the output to extract only the fourth
+field (the call destination).</li>
+<li><code>$$</code>: Sorts the list and removes duplicates, outputting
+only unique call addresses.</li>
+<li><code>~?</code>: counts the lines in the output</li>
+</ul>
+<p>Let’s save the list of unique calls in an internal file:</p>
+<pre class="console"><code>[0x1028f3818]&gt; /at call~$$[4] &gt; $calls</code></pre>
+<p>Note that we used <code>$calls</code>. this is an internal file, all
+file operations accessing names that start with a <code>$</code> will be
+using in-memory files. So we don’t need to use the filesystem to save
+output of commands.</p>
+<h2 id="tracing-calls">Tracing Calls</h2>
+<p>R2Frida is specifically designed to trace function calls, and it
+excels at recording logs of each call while tracking arguments passed,
+return values, and even backtraces.</p>
+<p>In today’s post, we will focus on capturing backtraces and saving the
+results to a log file.</p>
+<p>In our previous post, we obtained a list of unique call destinations.
+Now, we will set a trace on each of them using this line:</p>
+<pre class="console"><code>[0x1028f3818]&gt; :dt $$ @@.$calls</code></pre>
+<ul>
+<li><code>:dt</code> - add a debugger trace hook on r2frida</li>
+<li><code>$$</code> - target function in the current offset</li>
+<li><code>@@.</code> - repeat on each offset found in the file</li>
+<li><code>$calls</code> - the file name to read offsets from.</li>
+</ul>
+<p>There’s only one missing thing to be done: enable backtrace:</p>
+<pre class="console"><code>[0x1021a7818]&gt; :e hook.backtrace=true</code></pre>
+<p>We can now resume the execution of the program and get our terminal
+full of anoying logs!</p>
+<pre class="console"><code>[0x1021a7818]&gt; :dc</code></pre>
+<h2 id="static-instruction-tracing">Static Instruction Tracing</h2>
+<p>Tracing is monitoring and recording program execution at runtime,
+including function calls, system calls, memory access, and other events
+for analysis and debugging.</p>
+<p>In radare2’s debugging mode, a tracepoint is a breakpoint with the
+<code>trace</code> bit enabled, which logs and continues execution when
+hit (instead of stopping).</p>
+<p>Common tracing targets:</p>
+<ul>
+<li>Function Calls</li>
+<li>Function Enter/Exit (Frida hooks)</li>
+<li>Instructions (Frida Stalker)</li>
+</ul>
+<p>Instruction-level tracing monitors program execution at the machine
+instruction level, recording instruction sequences and their effects
+(memory access, cache misses, CPU cycles, register values). Main
+applications include:</p>
+<ul>
+<li><p><strong>Reverse Engineering</strong>: Understanding function
+relationships, arguments, and execution patterns.</p></li>
+<li><p><strong>Fuzzing and Exploit Development</strong>: Analyzing code
+coverage and identifying execution paths.</p></li>
+<li><p><strong>Performance Optimization</strong>: Identifying
+inefficient code patterns and unnecessary operations.</p></li>
+<li><p><strong>Assembly Optimization</strong>: Measuring instruction
+costs to write more efficient low-level code.</p></li>
+<li><p><strong>Compiler Development</strong>: Understanding how
+high-level code translates to machine instructions for better
+optimization strategies.</p></li>
+</ul>
+<p>While instruction-level tracing is computationally expensive, its
+detailed insights often justify the cost, particularly for security,
+optimization, and debugging purposes.</p>
+<h2 id="tracing-facilities">Tracing Facilities</h2>
+<p>Radare2’s <code>dt</code> commands and trace configuration variables
+can track instruction execution counts and code coverage during ESIL
+emulation or debugging.</p>
+<p>Let’s take a look at them!</p>
+<pre class="console"><code>[0x00000000]&gt; dt?
+Usage: dt  Trace commands
+| dt                                 list all traces
+| dt [addr]                          show trace info at address
+| dt*                                list all traced opcode offsets
+| dtj                                list instruction trace logs in json
+| dt+ [addr] [times]                 add trace for address N times
+| dt-                                reset traces (instruction/calls)
+| dt=                                show ascii-art color bars with the debug trace ranges
+| dta 0x804020 ...                   only trace given addresses
+| dtc[?][addr]|([from] [to] [addr])  trace call/ret
+| dtd[qi] [nth-start]                list all traced disassembled (quiet, instructions)
+| dte[?]                             show esil trace logs
+| dtg                                graph call/ret trace
+| dtg*                               graph in agn/age commands. use .dtg*;aggi for visual
+| dtgi                               interactive debug trace
+| dts[?]                             manage trace sessions, used for step back (EXPERIMENTAL)
+| dtt [tag]                          select trace tag (no arg unsets)
+| dtt.
+[0x00000000]&gt; e~trace
+asm.trace = false
+asm.trace.color = true
+asm.trace.space = false
+asm.trace.stats = true
+dbg.trace = false
+dbg.trace.continue = true
+dbg.trace.eval = true
+dbg.trace.inrange = false
+dbg.trace.libs = true
+dbg.trace.tag = 0
+graph.trace = false
+[0x00000000]&gt;</code></pre>
+<p>Let’s enable the debug traces for esil and get a linear disassembly
+from the emulated instructions:</p>
+<pre class="console"><code>[0x100003a58]&gt; e dbg.trace=1
+[0x100003a58]&gt; aeim
+[0x100003a58]&gt; 10ds
+[0x100003a58]&gt; dtd
+0x100003a58 pacibsp
+0x100003a5c stp x28, x27, [sp, -0x60]!
+0x100003a60 stp x26, x25, [sp, 0x10]
+0x100003a64 stp x24, x23, [sp, 0x20]
+0x100003a68 stp x22, x21, [sp, 0x30]
+0x100003a6c stp x20, x19, [sp, 0x40]
+0x100003a70 stp x29, x30, [sp, 0x50]
+0x100003a74 add x29, sp, 0x50
+0x100003a78 sub sp, sp, 0x640
+0x100003a7c mov x19, x1
+[0x100003a58]&gt;</code></pre>
+<h2 id="challenge">Challenge</h2>
+<p>Today’s challenge involves reading the <code>hook-urls.js</code>
+script for r2frida, which can be loaded with
+<code>:. hook-urls.js</code> inside an r2frida session, and getting it
+to work to create a backtrace graph for a program other than
+<strong>Safari</strong>.</p>
+<ul>
+<li><a
+href="https://github.com/nowsecure/r2frida/blob/master/plugins/hook-urls.js">hook-urls.js</a></li>
+</ul>
+<p><strong>NOTE</strong>: A backtrace graph is a graph that merges all
+the backtrace linked lists into a graph containing all the control flow
+paths that lead to the functions we hooked. You can think of it as a
+kind of callgraph that focuses on one specific function, showing all the
+real code paths.</p>
+<p>Commands like this are not available in any other tool, and the
+potential to script all of this brings tremendous opportunities for
+static and dynamic analysis.</p>
+<h2 id="summary">Summary</h2>
+<p>Analyzing code and finding functions is highly configurable in
+<strong>radare2</strong>, understand the syntax of the commands is key
+to solve our daily problems. (<em>Remember, you can even order pizzas
+with radare2</em>)</p>
+<p>Take your time to re-read all the #aor24 posts and practice all you
+want, join the chats and suggest improved workflows and new actions.</p>
+<p>Stay tuned for tomorrow’s last advent post of Radare!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

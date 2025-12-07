@@ -1,0 +1,412 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="reversing-with-ai">21 - Reversing with AI</h1>
+<p>Welcome to Day 8 of the Advent of Radare2!</p>
+<p>Today, we will dig into the fascinating intersection of artificial
+intelligence and reverse engineering, specifically examining how
+advanced language models can enhance various reverse engineering
+tasks.</p>
+<p>Our primary focus will be on decompilation techniques, where we’ll
+explore how these powerful AI tools can assist in transforming low-level
+machine code back into more readable and maintainable high-level source
+code.</p>
+<p>Traditional decompilers often produce very verbose output for high
+level to interpret, necessitating manual cleanup and analysis. However,
+with the integration of artificial intelligence, tools like
+<strong>decai</strong> and <strong>r2ai</strong> are improving this
+process, offering generative suggestions and more readable decompilation
+outputs.</p>
+<p>Generative decompilation brings the ability to use natural language
+to manipulate and tweak the output of the decompilation as well as
+propagating changes across functions, describing function behaviours and
+permitting “zero-click” interactions to solve problems.</p>
+<h2 id="decompiler-options">Decompiler Options</h2>
+<p>Decompilation, the process of reconstructing high-level source code
+from low-level machine code, presents significant challenges. The
+complexity of modern architectures, compiler optimizations, and the
+inherent loss of information during compilation make perfect
+reconstruction nearly impossible.</p>
+<p>Several tools aim to address these difficulties, offering varying
+levels of accuracy and sophistication. Popular options include
+standalone commercial decompilers like Binary Ninja or IDA Pro, or
+NSA^Wfree ones like GHIDRA.</p>
+<p>On the other side, <strong>radare2</strong> itself boasts several
+decompilation plugins, delegating the heavy work of decompilation to
+external projects outside the core. Following its modular design it is
+possible to use Ghidra’s decompiler, as well as many other options like
+<strong>r2dec</strong>, <strong>JADX</strong>, <strong>revng</strong>,
+and many others available via <strong>r2pm</strong>.</p>
+<pre class="console"><code>$ r2pm -s decompiler
+radeco              [syspkg] Radare Decompiler in Rust
+pickledec           pickle decompiler for radare2
+revng               rev.ng decompiler
+r2retdec            retdec decompiler plugin for radare2 (adds pdz command)
+r2apktool           [r2-r2pipe-python] APK decompiler alternative to apktool
+r2ghidra            Ghidra Disassembler, Analysis and Decompiler Plugins
+decai               r2ai/OpenAI/Anthropic/ollama based decompiler, formerly known as r2ai-decai
+jadx                jadx decompiler (requires Java)
+r2snow              [decompiler] snowman decompiler integration with radare2
+r2jadx              jadx decompiler integration plugin for radare2
+r2angr              angr decompiler for radare2
+pdq                 QuickDecompiler based on r2js and esil
+$</code></pre>
+<p>Natively, r2 comes with the <code>pdc</code> command which combines
+the pseudo disassembly generated with the <code>asm.pseudo=true</code>
+and the <code>emu.str</code> emulation option to find out to render a
+pretty-unoptimized pseudo-decompilation full of <code>goto</code> and
+<code>label</code> statements.</p>
+<p>This output is not ideal for the users, but it’s aligned with the
+information in radare2, which is in many situations better than the
+alternatives.</p>
+<h2 id="comparing-decompilers">Comparing decompilers</h2>
+<p>Let’s inspect the output of different decompilers for a versions of
+the following function:</p>
+<p><strong>C</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> sum<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>r2ghidra</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span> pdg</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int32_t</span> sym<span class="op">.</span>_sum<span class="op">(</span><span class="dt">int32_t</span> param_1<span class="op">,</span> <span class="dt">int32_t</span> param_2<span class="op">)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// [00] -r-x section size 152 named 0.__TEXT.__text</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> param_1 <span class="op">+</span> param_2<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>r2dec</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span> pdd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">/* r2dec pseudo code output */</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* a.out @ 0x100003eec */</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdint.h&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sum <span class="op">(</span><span class="dt">int64_t</span> arg_10h<span class="op">,</span> <span class="dt">int64_t</span> arg1<span class="op">,</span> <span class="dt">int64_t</span> arg2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int64_t</span> var_8h<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int64_t</span> var_ch<span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> arg1<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> arg2<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* [00] -r-x section size 152 named 0.__TEXT.__text */</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    var_ch <span class="op">=</span> w0<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    var_8h <span class="op">=</span> w1<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    w8 <span class="op">=</span> var_ch<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    w9 <span class="op">=</span> var_8h<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    w0 <span class="op">=</span> w8 <span class="op">+</span> w9<span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span></span></code></pre></div>
+<p><strong>pdc</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span> pdc</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="co">// callconv: x0 arm64 (x0, x1, x2, x3, x4, x5, x6, x7, stack);</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sym<span class="op">.</span>_sum <span class="op">(</span><span class="dt">int64_t</span> arg1<span class="op">,</span> <span class="dt">int64_t</span> arg2<span class="op">,</span> <span class="dt">int64_t</span> arg_10h<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    loc_0x100003eec<span class="op">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        sp <span class="op">=</span> sp <span class="op">-</span> <span class="bn">0x10</span> <span class="co">// [00] -r-x section size 152 named 0.__TEXT.__text</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">[</span>var_ch<span class="op">]</span> <span class="op">=</span> w0 <span class="co">// arg1</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">[</span>var_8h<span class="op">]</span> <span class="op">=</span> w1 <span class="co">// arg2</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        w8 <span class="op">=</span> <span class="op">[</span>var_ch<span class="op">]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        w9 <span class="op">=</span> <span class="op">[</span>var_8h<span class="op">]</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        w0 <span class="op">=</span> w8 <span class="op">+</span> w9</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        sp <span class="op">=</span> sp <span class="op">+</span> <span class="bn">0x10</span> <span class="co">// a.c:0</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x0<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>decai</strong> (using pdc as backend)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span> decai <span class="op">-</span>d</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> sum<span class="op">(</span><span class="dt">int</span> num1<span class="op">,</span> <span class="dt">int</span> num2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num1 <span class="op">+</span> num2<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003eec</span><span class="op">]&gt;</span></span></code></pre></div>
+<p>Decai can be used as a frontend for any other decompiler, but it’s
+using <code>pdc</code> by default (see <code>decai -e cmds</code>)
+because it’s the more verbose and detailed, which provides better
+context for language models to optimize the output in a better way.
+Another benefit of <code>pdc</code> compared to r2ghidra/r2dec/.. is
+that it works for all the architectures, so it can be used even for
+brainfuck, pickle, lua or z80.</p>
+<h2 id="r2ai-components">R2AI Components</h2>
+<p>R2AI is not just one thing, but instead, a set of different programs,
+scripts and plugins that bridge the gap between radare2 and local and
+remote language models.</p>
+<p><strong>Decai</strong> is a lightweight plugin for <a
+href="https://rada.re/n/radare2.html">radare2</a> that focuses on
+decompilation. It leverages AI models to enhance the readability of
+decompiled code by performing various cleanups and optimizations.
+Internally, decai utilizes the <a
+href="https://github.com/radareorg/radare2-pm/blob/master/pdc/README.md">pdc</a>
+(pseudo decompiler) to generate initial decompilation output. This
+output is then processed through AI models to refine the code, making it
+more comprehensible.</p>
+<p><strong>r2ai</strong> serves as the bridge between radare2 and AI
+models. It facilitates communication with local or remote language
+models, enabling features like auto-solving tasks, function renaming,
+and type propagation. By integrating r2ai with decai, users can automate
+the decompilation process, resulting in cleaner and more informative
+code representations.</p>
+<p><strong>NOTE</strong> <em>Actually there’s an ongoing work on
+rewriting r2ai, decai and r2ai-plugin into a single codebase in pure C,
+which may probably end up replacing those three packages.</em></p>
+<p><strong>r2ai-plugin</strong> that’s the same as <code>r2ai</code> but
+loaded from radare2 using the <code>rlang</code> api to comunicate
+internally with radare2 to execute commands and share context with the
+currently loaded session.</p>
+<p><strong>r2ai-server</strong> shellscript wrapper to start different
+language model, this can simplify the way to start the r2ai webserver,
+llamafile, llama.cpp, ollama, etc.</p>
+<p><strong>shai</strong> a shellscript to be placed in your PATH to
+query language models from bash or even with vim.</p>
+<p>To install any of these use <code>r2pm -ci decai</code></p>
+<h2 id="ai-based-decompilation">AI Based Decompilation</h2>
+<p>The decompilation process begins with decai invoking the
+<code>pdc</code> command to generate pseudo-C code from the target
+function. This initial output often contains artifacts and lacks
+meaningful variable names and types. To address this, decai employs AI
+models and a custom system prompt:</p>
+<ul>
+<li><strong>Code Cleanup</strong>: Removes unnecessary artifacts and
+restructures code for better readability.</li>
+<li><strong>Type Propagation</strong>: Infers and assigns appropriate
+data types to variables, improving the accuracy of the decompiled
+code.</li>
+<li><strong>Function Renaming</strong>: Analyzes function behavior and
+context to suggest meaningful names, aiding in understanding the code’s
+functionality.</li>
+</ul>
+<p>By utilizing the recursive call graph obtained via the
+<code>afla</code> command in radare2, decai can propagate types and
+rename functions throughout the binary, resulting in a more coherent
+decompilation output.</p>
+<p>This is the default prompt used by <code>decai</code>. But we can
+redefine it at any time or save it in your radare2rc:</p>
+<pre class="console"><code>[0x00000000]&gt; decai -r
+Rewrite this function and respond ONLY with code, NO explanations, NO markdown, Change &#39;goto&#39; into if/else/for/while, Simplify as much as possible, use better variable names, take function arguments and and strings from comments like &#39;string:&#39;
+[0x00000000]&gt;</code></pre>
+<h2 id="remote-language-models">Remote Language Models</h2>
+<p>If you have an API key for any API endpoint r2ai will pick them from
+your home:</p>
+<ul>
+<li><code>~/.r2ai.openai-key</code> - ChatGPT</li>
+<li><code>~/.r2ai.anthropic-key</code> - Claude</li>
+<li><code>~/.r2ai.gemini-key</code> - Google</li>
+<li><code>~/.r2ai.xai-key</code> - Grok</li>
+<li><code>~/.r2ai.huggingface-key</code> - 🤗</li>
+<li><code>~/.r2ai.bedrock-key</code> - Amazon</li>
+</ul>
+<p>You can select which one to use by changing the
+<code>decai -e api=?</code> configuration variable.</p>
+<p><strong>NOTE</strong> <em>For decompilation purposes Claude and
+OpenAI are the best options</em></p>
+<h2 id="running-it-in-local">Running it in Local</h2>
+<p>But hey, we don’t wanna drain rivers or leak our research! We want to
+use local models!</p>
+<p>Turns out huggingface is probably the best repository to find and
+download models. We will focus on the GGUF ones (a standard file
+format), which makes them easy to use in most llama based api servers
+like llamacpp or the r2ai webserver.</p>
+<p>To accomplish this, we’ll install r2ai and utilize the
+<code>-m</code> flag to specify our desired model (you can use
+<code>-M</code> to view available model suggestions first). After
+entering the initial command, you’ll be prompted to select the
+quantization level and size of the GGUF file for download. I typically
+recommend selecting <strong>Q5_K_M</strong>, and it’s important to note
+that larger file sizes don’t necessarily correlate with better
+performance.</p>
+<p>These are some of the recommended models for decompilation in
+local:</p>
+<pre class="console"><code>$ r2pm -r r2ai
+[r2ai:0x100003a58]&gt; -M
+-m Qwen/Qwen2.5-Coder-7B-Instruct-GGUF
+-m unsloth/Llama-3.2-1B-Instruct-GGUF
+-m QuantFactory/granite-8b-code-instruct-4k-GGUF
+-m bartowski/Gemma-2-9B-It-SPPO-Iter3-GGUF
+[r2ai:0x100003a58]&gt; -m Qwen/Qwen2.5-Coder-7B-Instruct-GGUF
+[r2ai:0x100003a58]&gt; hello
+Hello! How can I assist you today?
+[r2ai:0x100003a58]&gt;</code></pre>
+<p>We will now start the webserver in r2ai:</p>
+<pre class="console"><code>[r2ai:0x100003a58]&gt; -w
+[12/11/24 17:26:33] INFO     r2ai.server - INFO - [R2AI] Serving at port    web.py:336</code></pre>
+<p>As explained before we can also start the webserver using
+<code>r2ai-server</code> like this:</p>
+<pre class="console"><code>$ r2pm -r r2ai-server -l
+r2ai
+llamafile
+llamacpp
+koboldcpp
+$ r2pm -r r2ai-server -m /path/to/Qwen2.5-Coder-32B</code></pre>
+<p>Models downloaded through r2ai are automatically stored in the
+<code>~/.r2ai.models</code> directory. Those can be reused from decai,
+r2ai-server or r2ai-native by specifying the model name or the full path
+to the GGUF file.</p>
+<h2 id="settings-in-decai">Settings in Decai</h2>
+<p>We probably don’t need to change anything in decai to use the r2ai
+webserver as backend.</p>
+<pre class="console"><code>&gt; decai -e api=r2ai
+&gt; decai -e host=localhost
+&gt; decai -e port=8080</code></pre>
+<p>If we want to make it use pdc, pdg and pdd all together to combine
+all the decompiled code into a single function we can just specify it
+like this:</p>
+<pre class="console"><code>&gt; decai -e cmds=pdc,pdg,pdd</code></pre>
+<p><strong>NOTE</strong> <em>Other useful commands to be fed to decai
+are <code>pdsf</code> or <code>CCf</code>.</em></p>
+<p>Language models understand the constructions and transformations
+required to transpile the code between different programming
+languages.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-e</span> lang=python</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-d</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">def</span> sum_numbers<span class="er">(</span><span class="ex">num1,</span> num2<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">result</span> = num1 + num2</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ex">result</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-e</span> lang=bash</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-d</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum()</span> <span class="kw">{</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">num1</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">num2</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$((num1</span> <span class="op">+</span> <span class="va">num2))</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-e</span> lang=lisp</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">defun</span> sum <span class="er">(</span><span class="ex">arg1</span> arg2<span class="kw">)</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="bu">let</span> <span class="er">(</span><span class="kw">(</span><span class="ex">result</span> <span class="er">(</span><span class="ex">+</span> arg1 arg2<span class="kw">)))</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">result</span><span class="kw">))</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-e</span> lang=sql</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span> decai <span class="at">-d</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ex">CREATE</span> OR REPLACE FUNCTION sum_numbers<span class="er">(</span><span class="ex">num1</span> INT, num2 INT<span class="kw">)</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ex">RETURNS</span> INT AS <span class="va">$$</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="ex">BEGIN</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">RETURN</span> num1 + num2<span class="kw">;</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="ex">END</span><span class="kw">;</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="va">$$</span> LANGUAGE plpgsql<span class="kw">;</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="ex">[0x100003eec]</span><span class="op">&gt;</span></span></code></pre></div>
+<h2 id="vulnerability-analysis">Vulnerability Analysis</h2>
+<p>Language models are also trained with several commits, pull requests,
+CVE descriptions and many other sources of knowledge about
+vulnerabilities and bad practices. So we can use decai to conversate
+with the model to do any of the following actions:</p>
+<ul>
+<li>Explain the purpose of the function (-x)</li>
+<li>Find possible vulnerabilities in the implementation (-V)</li>
+<li>Change the variable types and names (-v)</li>
+<li>Suggest new function name (-n)</li>
+<li>Change function signature (-s)</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>$ r2 overflow</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="bn">0x100003ebc</span><span class="op">]&gt;</span> decai <span class="op">-</span>d</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main <span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">**</span>argv<span class="op">,</span> <span class="dt">char</span> <span class="op">**</span>envp<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> buffer<span class="op">[</span><span class="dv">32</span><span class="op">];</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&gt;</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        strcpy<span class="op">(</span>buffer<span class="op">,</span> argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        strcpy<span class="op">(</span>buffer<span class="op">,</span> <span class="st">&quot;world&quot;</span><span class="op">);</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Hello </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> buffer<span class="op">);</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Suggest a new function name:</p>
+<pre class="console"><code>[0x100003ebc]&gt; decai -n
+afn HelloWorldPrinter @ 0x100003ebc
+[0x100003ebc]&gt;</code></pre>
+<p>Explain me the function:</p>
+<pre class="console"><code>[0x100003ebc]&gt; decai -x
+The function checks the number of command line arguments.
+If there is only one argument, it copies the string
+&quot;world&quot; into a buffer, otherwise it copies the second
+argument into the buffer. Then it prints &quot;Hello %s\n&quot;
+with the buffer as the string argument. It also includes
+a stack protection mechanism to prevent buffer overflow
+attacks.</code></pre>
+<p>Choose Japanese for “human language”:</p>
+<pre class="console"><code>[0x100003ebc]&gt; decai -e hlang=japanese
+[0x100003ebc]&gt; decai -x
+この関数は、コマンドライン引数をチェックし、引数が1つだ
+け与えられた場合にはその引数を&quot;Hello %s\n&quot;という形式で
+出力します。引数が与えられなかった場合には&quot;world&quot;という
+文字列を出力します。また、スタックオーバーフローを防ぐ
+ためのチェックも行っています。</code></pre>
+<p>Let’s ask about vulnerability analysis with <code>-V</code>:</p>
+<pre class="console"><code>[0x100003ebc]&gt; decai -V
+The vulnerability in this code is a buffer overflow
+vulnerability. The `strcpy` function does not check the
+size of the input string and the size of the destination
+buffer. If the input string (in this case `argv[1]`) is
+larger than the destination buffer (in this case `buffer`),
+it will cause a buffer overflow. This can lead to
+arbitrary code execution, denial of service, or
+information disclosure vulnerabilities.
+
+Here is a simple exploit that can cause a segmentation
+fault by overflowing the buffer:
+
+$ ./program $(python -c &quot;print &#39;A&#39;*40&quot;)
+
+This will create a string of 40 &#39;A&#39; characters, which
+is larger than the size of the buffer (32 characters),
+and pass it as an argument to the program. This will
+overflow the buffer and cause a segmentation fault.
+
+Please note that this is a simple demonstration of how
+the buffer overflow can be exploited and real-world
+exploits can be much more complex and dangerous.</code></pre>
+<h2 id="playground">Playground</h2>
+<p>Today’s “challenge” consists in putting all the knowledge we learned
+today:</p>
+<ul>
+<li>Install r2ai and decai</li>
+<li>Open a binary and decompile random functions</li>
+<li>Play with different prompts</li>
+<li>Select different programming language</li>
+<li>Tweak the prompt to improve the output</li>
+</ul>
+<p>Experiment with different prompt structures to see how they affect
+the decompilation results. For instance, providing more context or
+specific instructions can lead to more accurate and informative
+outputs.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=KL1yi8FXCKI">Mastering
+R2AI</a> (spanish) - <span class="citation"
+data-cites="pancake">@pancake</span></li>
+<li><a href="https://www.youtube.com/watch?v=r6UhSApaWq4">Decompiling
+with AI at r2con</a> - (english) <span class="citation"
+data-cites="pancake">@pancake</span></li>
+<li><a href="https://www.youtube.com/watch?v=UxE5GNUBCXo">Cracking
+binaries with r2ai visual mode</a> - (english) <span class="citation"
+data-cites="dnakov">@dnakov</span></li>
+<li><a
+href="https://cryptax.medium.com/using-ai-assisted-decompilation-of-radare2-e81a882863c9">Using
+AI-assisted decompilation</a> by <span class="citation"
+data-cites="cryptax">@cryptax</span></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Integrating AI into the decompilation process through tools like
+Decai and r2ai marks a significant advancement in reverse engineering.
+By leveraging powerful language models, these tools automate and enhance
+code analysis, making it more accessible and efficient. As AI models
+continue to evolve, we can anticipate even greater improvements in
+decompilation accuracy and readability.</p>
+<p>Hope you come back tomorrow!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

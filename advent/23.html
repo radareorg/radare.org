@@ -1,0 +1,387 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="memory-layouts">23 - Memory Layouts</h1>
+<p>Welcome to Day 23 of the Advent of Radare!</p>
+<p>Today, we’ll explore how memory is configured across different
+systems and how Operating Systems manage memory mapping for binary
+executables and libraries covering everything from static to dynamic
+setups.</p>
+<p>Radare2 features a sophisticated and powerful IO layer that supports
+various configurations through multiple setups, from static analysis,
+debugger backends, emulation for memory mapped devices when loading raw
+firmwares, and even simulating complex environments.</p>
+<p>Understanding memory architecture is essential: distinguishing
+between code and data segments, identifying constant resources, locating
+stack and heap regions, and analyzing how programs interact with memory
+during execution. These concepts are fundamental for: Debugging
+applications, reverse engineering firmware, or even for exploit
+development.</p>
+<p>The capabilities of the IO layer in radare2 is extended to work with
+remote virtualized environments thru specific IO connections like
+windbg, gdbremote or r2frida. As well as being able to setup esotheric
+configurations like non-8bit bytes, cyclic memory for non-standard data
+busses, memory banks, segmented memory registers, and more.</p>
+<p>To be clear, you can’t find any alternative out there capable of any
+of this.</p>
+<h2 id="segments-and-sections">Segments and Sections</h2>
+<p>To begin with the topic we must understand how binaries are mapped in
+memory and the difference between <strong>segments</strong> and
+<strong>sections</strong>, <em>radare2</em> unifies the terminology
+across different binary formats to represent the following elements:</p>
+<ul>
+<li><p><strong>Sections</strong> (<code>iS</code>): These provide a
+finer organization of the binary’s contents, primarily used for
+debugging purposes. In ELF files, these are defined by Section Headers
+(SHDR). While they contain useful labels like <code>.text</code> or
+<code>.data</code>, their permissions and names aren’t required for
+program execution.</p></li>
+<li><p><strong>Segments</strong> (<code>iSS</code>): These are memory
+regions that the runtime linker uses to load the program into memory. In
+ELF files, these are defined by Program Headers (PHDR) and contain
+essential information like memory permissions and load
+addresses.</p></li>
+</ul>
+<p>Radare2’s abstractions allows consistent analysis across different
+file formats, with commands to examine both segments and sections
+regardless of the binary type or the target OS, so we don’t need to
+learn new concepts everytime we start analyzing a binary from a
+different operating system.</p>
+<p>As explained above, we have <code>iS</code> and <code>iSS</code>
+commands, both commands take different subcommands to tweak the output
+into JSON, r2 commands, csv table, etc. And of course the same
+information is also available via <code>rabin2 -S</code> and
+<code>rabin2 -SS</code>.</p>
+<p>This is the example output for our favourite <code>ls</code> variant
+on macOS.</p>
+<pre class="console"><code>$ r2 /bin/ls
+[0x100003a58]&gt; iSS
+nth paddr         size vaddr         vsize perm flags type name
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0   0x00010000  0x8000 0x100000000  0x8000 -r-x 0x0   MAP  __TEXT
+1   0x00018000  0x4000 0x100008000  0x4000 -rw- 0x0   MAP  __DATA_CONST
+2   0x0001c000  0x4000 0x10000c000  0x4000 -rw- 0x0   MAP  __DATA
+3   0x00020000  0x8000 0x100010000  0x8000 -r-- 0x0   MAP  __LINKEDIT
+[0x100003a58]&gt; iS
+nth paddr         size vaddr         vsize perm flags type             name
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0   0x000037f8  0x3bd0 0x1000037f8  0x3bd0 -r-x 0x0   REGULAR          0.__TEXT.__text
+1   0x000073c8   0x540 0x1000073c8   0x540 -r-x 0x0   SYMBOL_STUBS     1.__TEXT.__auth_stubs
+2   0x00007908   0x10d 0x100007908   0x10d -r-x 0x0   REGULAR          2.__TEXT.__const
+3   0x00007a15   0x506 0x100007a15   0x506 -r-x 0x0   CSTRINGS         3.__TEXT.__cstring
+4   0x00007f1c    0xe0 0x100007f1c    0xe0 -r-x 0x0   REGULAR          4.__TEXT.__unwind_info
+5   0x00008000   0x2a0 0x100008000   0x2a0 -rw- 0x0   NONLAZY_POINTERS 5.__DATA_CONST.__auth_got
+6   0x000082a0    0x30 0x1000082a0    0x30 -rw- 0x0   NONLAZY_POINTERS 6.__DATA_CONST.__got
+7   0x000082d0   0x268 0x1000082d0   0x268 -rw- 0x0   REGULAR          7.__DATA_CONST.__const
+8   0x0000c000    0x20 0x10000c000    0x20 -rw- 0x0   REGULAR          8.__DATA.__data
+9   0x00000000     0x0 0x10000c020    0xb0 -rw- 0x0   ZEROFILL         9.__DATA.__common
+10  0x00000000     0x0 0x10000c0d0   0x158 -rw- 0x0   ZEROFILL         10.__DATA.__bss
+[0x100003a58]&gt;</code></pre>
+<p>The <code>iSS</code> command displays each segment, showing
+attributes such as address, size, and permissions. This helps identify
+which regions are allocated for code, data, or resources.</p>
+<p>Permissions in memory regions may help us identify the purpose of
+each region too</p>
+<ul>
+<li>Executable (x): Code regions, typically containing the .text
+section.</li>
+<li>Writable (w): Data sections, including .data and uninitialized
+.bss.</li>
+<li>Read-only (r): Constants or static data, like .rodata.</li>
+</ul>
+<p>By comparing <code>iS</code> and <code>iSS</code>, you can determine
+which sections belong to which segments and understand the organization
+of the binary’s memory layout. It’s important to note that sections are
+primarily useful for analysis, while the runtime linker only requires
+segment information to map the binary. A binary can still execute
+properly even with stripped section headers, though this makes analysis
+significantly more challenging.</p>
+<p>Be aware that some binaries may intentionally manipulate section
+information to complicate analysis. To avoid being misled, analysts may
+need to take additional steps such as removing flags, specifying
+different string regions to scan, and other countermeasures.</p>
+<p>Fortunately, Radare2 provides all the necessary tools to handle these
+situations without requiring binary modification.</p>
+<h2 id="mapping-memory">Mapping Memory</h2>
+<p>The <code>om</code> command lists the mapped memory regions for a
+binary. RBin parsers use <code>om</code> internally to specify which
+regions of the binary should be loaded from physical offsets into
+virtual memory addresses (only when <code>-e io.va=true</code> is set),
+along with their corresponding permissions.</p>
+<p>To view the memory map, simply type <code>om</code> without
+arguments:</p>
+<pre class="console"><code>$ r2 /bin/ls
+[0x100003a58]&gt; om
+* 5 fd: 3 +0x00010000 0x100000000 - 0x100007fff r-x fmap.__TEXT
+- 4 fd: 3 +0x00018000 0x100008000 - 0x10000bfff r-- fmap.__DATA_CONST
+- 3 fd: 3 +0x0001c000 0x10000c000 - 0x10000ffff r-- fmap.__DATA
+- 2 fd: 3 +0x00020000 0x100010000 - 0x100015bff r-- fmap.__LINKEDIT
+- 1 fd: 4 +0x00000000 0x100015c00 - 0x100017fff r-- mmap.__LINKEDIT
+[0x100003a58]&gt; o
+ 3 * r-x 0x00025c00 /bin/ls
+ 4 - r-- 0x00002400 null://9216
+[0x100003a58]&gt;</code></pre>
+<p>We can observe two numbers in the first columns that represent the
+“map id” and the “file descriptor” associated with the given map. This
+is important because as we can observe here, the RBin library will make
+use of the null uri handler to fill the gaps between regions that have
+larger virtual addressing size than the physical one.</p>
+<p>THe following numbers can be read like this:</p>
+<ul>
+<li><code>*</code> : selected/priorized memory map, when two maps
+overlap this one will go first</li>
+<li><code>5</code>, 4, 3.. : map IDs</li>
+<li><code>fd: X</code> : file descriptor id (see <code>o</code> output
+to find out which file is associated with)</li>
+<li><code>+0x00010000</code> : starting physical offset from the fd</li>
+<li><code>0x100000000</code> : initial virtual address to map the
+data</li>
+<li><code>0x100007fff</code> : last virtual address (using a closed
+interval representation)</li>
+<li><code>r-x</code> : this page have read and executable
+permissions</li>
+<li><code>fmap.__TEXT</code> : name of the map</li>
+</ul>
+<p>See the output from <code>om*</code> to find out how we can reproduce
+the same setup using commands:</p>
+<pre class="console"><code>[0x100003a58]&gt; om*
+omu 4 0x100015c00 0x00002400 0x00000000 r-- mmap.__LINKEDIT
+omu 3 0x100010000 0x00005c00 0x00020000 r-- fmap.__LINKEDIT
+omu 3 0x10000c000 0x00004000 0x0001c000 r-- fmap.__DATA
+omu 3 0x100008000 0x00004000 0x00018000 r-- fmap.__DATA_CONST
+omu 3 0x100000000 0x00008000 0x00010000 r-x fmap.__TEXT
+[0x100003a58]&gt;</code></pre>
+<p>Let’s check the help to understand the arguments passed.</p>
+<pre class="console"><code>[0x100003a58]&gt; om?~create
+| om fd vaddr [size] [paddr] [rwx] [name]  create new io map
+[0x100003a58]&gt; omu?
+| omu fd va sz pa rwx name  same as `om` but checks for existance (u stands for uniq)
+[0x100003a58]&gt;</code></pre>
+<p><strong>NOTE</strong> that any numeric argument in radare2 commands
+is parsed using the RNum API, which means you can use mathematical
+operations, reference flags, and use numeric variables. Be careful not
+to use spaces, as they serve as argument delimiters.</p>
+<h2 id="fake-stack">Fake Stack</h2>
+<p>When in the need for emulation we usually need to define a range for
+the stack or at least a RAM that have permissions to read and write. The
+<code>aeim</code> will do all the black magic for us. But if we want to
+understand how that works and what’s doing behind the scenes keep
+reading in here!</p>
+<p>The <code>aeim</code> command have some options to define the size,
+initial address and pattern used to fill. After initializing the memory
+it will change the stack pointer register to be located in the middle of
+it.</p>
+<pre class="console"><code>[0x00000000]&gt; e~esil.stack
+esil.stack.addr = 0x00100000
+esil.stack.depth = 256
+esil.stack.pattern = 0
+esil.stack.size = 0x000f0000</code></pre>
+<p>First of all we will need to open a memory that covers all the
+portion we need. Let’s say, we need 1MB of writeable memory that is
+initialized to zeroes:</p>
+<pre class="console"><code>[0x100003a58]&gt; onn malloc://1M</code></pre>
+<p>Note the following details:</p>
+<ul>
+<li><code>onn</code> instead of <code>o</code> will open the file,
+without creating any map for it or parsing rbin info</li>
+<li><code>1M</code> is a valid number for RNum expressions, it’s an
+alias for 1024K, which is 0x100000</li>
+</ul>
+<p>We will now observe that there’s a new file descriptor but no map
+created for it:</p>
+<pre class="console"><code>[0x100003a58]&gt; o
+ 3 * r-x 0x00025c00 /bin/ls
+ 4 - r-- 0x00002400 null://9216
+ 5 - rw- 0x00100000 malloc://1M
+[0x100003a58]&gt;</code></pre>
+<p>Let’s create a named map and put that in the right place for example,
+we want stack to be located at 0x600000</p>
+<pre><code>[0x100003a58]&gt; om 5 0x600000 1M 0 rw- stack
+[0x100003a58]&gt; om~stack
+- 6 fd: 5 +0x00000000 0x00600000 - 0x006fffff rw- stack
+[0x100003a58]&gt;</code></pre>
+<p>Before moving forward, let’s flag all those maps with
+<code>om**</code>:</p>
+<pre class="console"><code>[0x100003a58]&gt; om**                  # check the flag names
+f iomap.stack=0x600000
+f iomap.fmap.__TEXT=0x100000000
+f iomap.fmap.__DATA_CONST=0x100008000
+f iomap.fmap.__DATA=0x10000c000
+f iomap.fmap.__LINKEDIT=0x100010000
+f iomap.mmap.__LINKEDIT=0x100015c00
+[0x100003a58]&gt; .om**                 # run the script</code></pre>
+<p>Now we just need to change the stack pointer register:</p>
+<pre class="console"><code>[0x100003a58]&gt; ar PC=iomap.stack+0x1000</code></pre>
+<p>That memory is now filled with zeroes. But in case of analyzing a
+firmware we sometimes can fill it with the contents of the real RAM or
+the stack contents of the process which was previously dumped on a file.
+Use <code>wff</code> to <strong>write-from-file</strong>.</p>
+<pre class="console"><code>[0x100003a58]&gt; wff stack.bin @ iomap.stack</code></pre>
+<h2 id="physical-addressing">Physical Addressing</h2>
+<p>As mentioned previously, the IO Maps are only used when working
+virtual addressing. If we disable them we will be just reading the data
+stored in the physical files loaded below.</p>
+<p>This can be a problem when we have multiple files loaded because the
+address 0 will have different meanings depending on the file that was
+loaded last. And this is where priorizing file descriptors joins the
+game.</p>
+<pre class="console"><code>[0x100003a58]&gt; e io.va=0
+ 3 - r-x 0x00025c00 /bin/ls
+ 4 - r-- 0x00002400 null://9216
+ 5 * rw- 0x00100000 malloc://1M
+[0x100003a58]&gt; s 0
+[0x00000000]&gt; e io.va=false
+[0x00000000]&gt; op 5
+[0x00000000]&gt; x 32
+- offset -  5859 5A5B 5C5D 5E5F 6061 6263 6465 6667  89ABCDEF01234567
+0x00000000  0000 0000 0000 0000 0000 0000 0000 0000  ................
+0x00000000  0000 0000 0000 0000 0000 0000 0000 0000  ................
+[0x00000000]&gt; op 4
+[0x00000000]&gt; x 32
+- offset -  5859 5A5B 5C5D 5E5F 6061 6263 6465 6667  89ABCDEF01234567
+0x00000000  ffff ffff ffff ffff ffff ffff ffff ffff  ................
+0x00000000  ffff ffff ffff ffff ffff ffff ffff ffff  ................
+[0x00000000]&gt; op 3
+[0x00000000]&gt; x 32
+- offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
+0x00000000  cafe babe 0000 0002 0100 0007 0000 0003  ................
+0x00000010  0000 4000 0000 bbf0 0000 000e 0100 000c  ..@.............
+[0x00000000]&gt;</code></pre>
+<p>When working with io.va, priorizing different file descriptors will
+also change the selected binobject (see <code>ob</code> command) which
+will allow us to work with different binaries mapped in the same
+address.</p>
+<h2 id="cyclic-memory">Cyclic Memory</h2>
+<p>Some architectures like v850 or old s390 cpus have cyclic memory
+access, which means that only part of the addressing bits of the data
+bus are used to point to the physical memory.</p>
+<p>So, imagine you can use 32 bit immediates, but only the 24 lower bits
+are connected. This means that every 1^24 we will be addressing the same
+exact memory. In the case of v850, the higher bits are used to determine
+if the memory is executable or writeable, that’s used as an optimization
+for some compilers to read from higher addresses using relative pointers
+to negative offsets.</p>
+<p>Radare2 have two main features to support cyclic memory:</p>
+<ul>
+<li>cyclic:// - io plugin that repeats its contents every X bytes</li>
+<li>io.mask - define the amount of bits connected to the address
+bus</li>
+</ul>
+<h2 id="banks">Banks</h2>
+<p>Some architectures solved the limited addressing problem caused by
+small data buses by using memory banks. A memory bank is a way to
+determine which</p>
+<p>As an example of architectures using memory banks, we have the
+GameBoy (TM). Which used this technique to be able to load larger ROMs
+and even sometimes extend the RAM. Other old consoles like NES or Master
+System used this trick too.</p>
+<p>In the case of GB, it was able to address 8KB of ram and 32KB of ROM,
+but with bank swapping it could use 32KB of ram and 1MB of rom.</p>
+<p>In r2land we have the concept of io banks which are used to group a
+set of maps, these maps can be swapped.</p>
+<p>Actually this feature can be applied to other use cases like
+simulating context switches between userland and kernel, so we can
+actually use iobanks when emulating a syscall to replace the userland
+process memory layout with another iobank that contains the kernel
+memory and code.</p>
+<p>This is the help message of the io banks:</p>
+<pre class="console"><code>[0x00000000]&gt; omb?
+Usage: omb[+-adgq] [fd]  Operate on memory banks
+| omb           list all memory banks
+| omb [id]      switch to use a different bank
+| omb=[name]    same as &#39;omb id&#39; but using its name
+| omb+ [name]   create a new bank with given name
+| omba [id]     adds a map to the bank
+| ombd [id]     delete a map from the bank
+| omb-*         delete all banks
+| omb- [mapid]  delete the bank with given id
+| ombg          associate all maps to the current bank
+| ombq          show current bankid
+[0x00000000]&gt;</code></pre>
+<h2 id="naming-maps">Naming Maps</h2>
+<p>We’ve seen that it is possible to set a name to a map, but we can
+actually rename them or set a name at any time.</p>
+<p>This can be achieved with the <code>omn</code> command, which takes
+the name as argument (map id is optional because it will pick the one
+located in the current offset by default).</p>
+<pre class="console"><code>[0x00000000]&gt; om?~name
+| omn[?] ([mapid]) [name]                     manage map names</code></pre>
+<h2 id="aslr-random-base-address">ASLR: Random Base Address</h2>
+<p>To analyze a binary’s memory in a running state, we can start the
+process with Radare2’s debugger. Using the <code>dm</code> command to
+enumerate the memory maps, we can see how the runtime linker has
+configured the memory layout. During debugging sessions, we will observe
+that for Radare2, the whole address space is covered by a single map,
+but it’s the underlying I/O handler that serves its contents according
+to what it reads from the debugger interface APIs.</p>
+<p>We will also observe that in some systems, the addresses will be
+different on every execution due to ASLR (Address Space Layout
+Randomization). However, in static analysis, binaries will always load
+at the same address. To simulate this behavior in static analysis, we
+can use the <code>bin.aslr</code> variable, which is set to false by
+default.</p>
+<pre class="console"><code>$ r2 -qcs -e bin.aslr=true /bin/ls
+0x13003a58
+$ r2 -qcs -e bin.aslr=true /bin/ls
+0x5003a58
+$ r2 -qcs -e bin.aslr=true /bin/ls
+0x12003a58
+$</code></pre>
+<p>On systems with ASLR (Address Space Layout Randomization), memory
+addresses are randomized each time a process is launched. As a result,
+we may not be able to use breakpoints, flags, or other absolute
+addresses because they will all depend on the base address of the
+module. This is used as a technique to not only annoy reverse engineers
+but, more importantly, to help prevent certain types of attacks.</p>
+<p>Some operating systems allow disabling this feature, which can be
+helpful for debugging purposes. In radare2, we can use the
+<code>rarun2</code> tool by passing the <code>aslr=false</code> option
+as an argument. For more details, refer to the manual page.</p>
+<pre><code>$ man rarun2</code></pre>
+<h2 id="challenge">Challenge</h2>
+<p>Today’s challenge is about experimenting with different memory
+layouts. Open a binary with <code>oon</code> (open without loading
+maps), remove all the maps, and recreate them using the <code>om</code>
+commands.</p>
+<p>After that, try to create a fake stack similar to what
+<code>aeim</code> does, but by following the manual steps.</p>
+<p>You will succeed if stepping through function calls or instructions
+that write data to the stack are emulated properly. Remember to check
+the register values before starting the first step!</p>
+<h2 id="summary">Summary</h2>
+<p>Understanding memory regions in Radare2 involves examining segments,
+sections, and mapped memory. Commands like <code>iSS</code>,
+<code>iS</code>, <code>om</code>, <code>dm</code>, and <code>dmm</code>
+provide insights into how a binary’s code and data are organized, both
+statically and dynamically. By analyzing permissions and runtime
+mappings, you can identify code regions, constants, and data sections
+accurately, which enhances your analysis of the binary.</p>
+<p>To learn more about how the IO layer works I encourage you to watch
+this <a href="https://www.youtube.com/watch?v=b7wAPJA0OSw">training</a>
+from latest #r2con2024</p>
+<p>Stay tuned for tomorrow’s Radare2 post!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

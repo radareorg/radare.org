@@ -1,0 +1,295 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="finding-references">06 - Finding References</h1>
+<p>Welcome to Day 6 of the Radare2 Advent of Code!</p>
+<p>Today, we’re diving into one of the most useful aspects of reverse
+engineering: finding cross-references (xrefs) to functions or strings
+within a binary.</p>
+<p>By locating these references, you can spot the code that interacts
+with the strings or code you are interested on, giving you insight into
+how a binary operates.</p>
+<p>Radare2 provides several commands to handle cross-references (xrefs).
+We’ll explore these commands for analyzing code and data, along with
+useful tricks to better understand the results and the relationships
+between different components.</p>
+<h2 id="the-basics">The Basics</h2>
+<p>Assuming the binary has been analysed (using <code>r2 -A</code> or
+<code>aaa</code>, we may have at least some xrefs to start playing with
+the <code>ax</code> subcommands. The <code>axt</code> command is the
+command for finding all “analysis xrefs to” a particular address.</p>
+<p>For example, to find all references to the “puts” import symbol
+located in the PLT:</p>
+<pre class="console"><code>$ r2 -A /bin/ls
+[0x100003a58]&gt; axt sym.imp.puts
+(nofunc) 0x100004940 [CALL:--x] bl sym.imp.puts
+(nofunc) 0x100004984 [CALL:--x] bl sym.imp.puts
+[0x100003a58]&gt;</code></pre>
+<p>In the other way around, we have <code>axf</code> which perfoms a
+list of the xrefs that are originated from the current or given
+address.</p>
+<h2 id="listing-references">Listing References</h2>
+<p>While <code>axt</code> is great for finding xrefs to a specific
+place, ax list all cross-references within the entire address space.
+This command is handy when you want an overview of the code’s structure
+or need to locate xrefs in bulk for analysis.</p>
+<p>For clarity we will use the comma separated table output available in
+the <code>ax,</code> command:</p>
+<pre class="console"><code>[0x000019f0]&gt; ax,:fancy
+.-----------------------------------------------------------------------.
+| from    | to      | size  | type  | perm      | fromname              |
+)-----------------------------------------------------------------------(
+| 0x1254  | 0x5ff0  | 4     | DATA  | --x       | section..plt.got + 4  |
+| 0x1264  | 0x5ea8  | 4     | DATA  | --x       | section..plt.sec + 4  |
+| 0x1274  | 0x5eb0  | 4     | DATA  | --x       | sym.imp.__errno + 4   |
+| 0x14b5  | 0x2     | 4     | DATA  | r--       | main + 37             |
+| 0x14ee  | 0x2f    | 4     | DATA  | r--       | main + 94             |
+| 0x14f6  | 0x1320  | 0     | CALL  | --x       | main + 102            |
+| 0x150d  | 0x6     | 4     | DATA  | r--       | main + 125            |
+| 0x151c  | 0x40b3  | 4     | DATA  | r--       | main + 140            |
+| 0x1523  | 0x1280  | 0     | CALL  | --x       | main + 147            |
+| 0x1ab2  | 0x1250  | 0     | CALL  | --x       | entry.fini0 + 34      |
+| 0x1ab7  | 0x1a20  | 0     | CALL  | --x       | entry.fini0 + 39      |
+| 0x1abc  | 0x6018  | 4     | DATA  | -w-       | entry.fini0 + 44      |
+| 0x1ad4  | 0x1a50  | 0     | CODE  | --x       | entry.init0 + 4       |
+`-----------------------------------------------------------------------&#39;</code></pre>
+<p>The problem here, is that usually, this listing is pretty large, so
+you will need to perform some filtering to get some insights. By default
+this command outputs every reference detected in the binary, categorized
+by type (e.g., call, data, jump). You can filter or search within the
+output to locate particular references of interest.</p>
+<p>These are some of the common tricks for filtering:</p>
+<ul>
+<li>Grepping for ‘hello’: <code>ax~hello</code></li>
+<li>Interactive hud filtering: <code>ax~...</code></li>
+<li>JSON output for external script: <code>axlj</code></li>
+<li>Table queries: <code>ax,:help</code></li>
+</ul>
+<h2 id="missing-references">Missing references</h2>
+<p>When analyzing binaries, you might encounter situations where
+references to specific functions, variables, or addresses are not
+immediately visible due to optimizations, indirect calls, or
+obfuscation. Radare2 provides powerful tools and techniques to uncover
+these “missing references” and understand program interactions
+better.</p>
+<p>References can be created in many different ways:</p>
+<ul>
+<li>Direct jump or call</li>
+<li>Memory reference</li>
+<li>Computed reference by emulation</li>
+<li>Dword from memory</li>
+<li>Indirect double pointer reference</li>
+<li>Relative deltas from immediates</li>
+<li>Jump tables</li>
+<li>Virtual Tables of pointers</li>
+<li>Reflection metadata</li>
+<li>…</li>
+</ul>
+<p>As you can see by reading this list, it’s very easy that the
+automatic analysis won’t spot all the possible references, and it’s
+important to understand the nature of each reference to know the reason
+why we are not catching some or why some false positives appear during
+our analysis process.</p>
+<p>An important aspect of how references are handled in radare2 is that
+they also store information about direction and permissions. This means
+you can determine whether the referenced address is being used for
+reading, writing, or executing.</p>
+<p>When we run <code>aaaa</code> the list of commands executed under the
+hood are shown:</p>
+<pre class="console"><code>[0x00000000]&gt; aaaa
+INFO: Analyze all flags starting with sym. and entry0 (aa)
+INFO: Analyze imports (af@@@i)
+INFO: Analyze symbols (af@@@s)
+INFO: Analyze all functions arguments/locals (afva@@@F)
+INFO: Analyze function calls (aac)
+INFO: find and analyze function preludes (aap)
+INFO: Analyze len bytes of instructions for references (aar)
+INFO: Finding and parsing C++ vtables (avrr)
+INFO: Analyzing methods (af @@ method.*)
+INFO: Recovering local variables (afva@@@F)
+INFO: Type matching analysis for all functions (aaft)
+INFO: Propagate noreturn information (aanr)
+INFO: Scanning for strings constructed in code (/azs)
+INFO: Enable anal.types.constraint for experimental type propagation</code></pre>
+<p>So, as we have learned, not just the code analysis is affected by the
+order and the type of analysis performed, but also the references. It’s
+known to be a good practice in r2land to not to assume the default
+analysis is the best option for all cases, and we may run the ones we
+need to understand what they are doing and reduce the analysis time
+optimized for our needs.</p>
+<p>Take into account, that sometimes running less commands will give
+better results, and some experimental analysis under <code>aaaaa</code>
+may end up creating false positives depending on the target arch and
+binary.</p>
+<h2 id="computed-references">Computed references</h2>
+<p>Radare2 also provides commands for searching references through
+immediate values and computed addresses. The <code>/r</code> and
+<code>/re</code> commands offer powerful ways to locate indirect and
+dynamic references.</p>
+<p>These commands use <code>search.in</code> boundaries instead of
+<code>anal.in</code> and are not triggered by the default analysis, but
+we can assume that <code>aar</code> will find all the direct references,
+and <code>/r</code> will find only one direct reference (and the same
+goes for <code>aae</code> and <code>/re</code>).</p>
+<ul>
+<li><code>/r</code>: Searching for Immediate References</li>
+</ul>
+<p>The <code>/r</code> command searches for references by analyzing
+immediate values in instructions. This is useful when a function or data
+reference is passed directly within an instruction.</p>
+<pre class="console"><code>/r 0x00400620</code></pre>
+<p>Here, Radare2 searches for any instructions with an immediate value
+of 0x00400620, potentially leading to indirect calls or accesses of a
+function or variable at this address.</p>
+<ul>
+<li><code>/re</code>: Emulating Code to Find Computed References</li>
+</ul>
+<p>The /re command takes this a step further by emulating code linearly,
+identifying references that might not appear in immediate values but are
+calculated at runtime.</p>
+<pre class="console"><code>/re 0x00400620</code></pre>
+<p>Radare2 tries to follow the flow of execution to determine if any
+instructions compute a reference to 0x00400620. This method is valuable
+for analyzing functions with computed or dynamically generated
+addresses.</p>
+<h2 id="immediates">Immediates</h2>
+<p>Sometimes it’s easier for us to just perform a full disassembly of
+the whole code section and grep for values or strings. And radare2
+provides multiple ways to do that:</p>
+<pre class="console"><code>[0x100003a58]&gt; e emu.str=true
+[0x100003a58]&gt; pD $SS @ $S ~ jailbreak</code></pre>
+<p>And maybe we just want to filter out all the flags, commands, xrefs,
+functions in the visual hud with <code>V_</code>.. but we have also a
+large set of low level commands to scan for instructions matching some
+specific characteristics, like for example, those having an immediate
+that can be used to reference some data or delta inside a struct.</p>
+<p>Take a look at <code>/ai</code>:</p>
+<pre class="console"><code>[0x100003a58]&gt; /ai 0x70
+0x100004e38             eb3b40f9  ldr x11, [sp, 0x70]
+0x100004e70             087140b9  ldr w8, [x8, 0x70]
+0x1000052b4             e83b40f9  ldr x8, [sp, 0x70]
+0x100005b1c             08c10191  add x8, x8, 0x70
+0x1000067a0             fdc30191  add x29, sp, 0x70
+0x1000074ac             31c20191  add x17, x17, 0x70
+[0x100003a58]&gt;</code></pre>
+<p>Check <code>/a?</code> to find the help for all the <strong>assembly
+search</strong> subcommands for you to get an idea about the
+capabilities in case you need to go deeper in here.</p>
+<h2 id="inlined-values">Inlined Values</h2>
+<p>In MIPS binaries or firmware files in general, finding references
+isn’t limited to instructions that directly access a function or
+address. In such cases, tools like <code>aav</code>, <code>/v</code>,
+and <code>/V</code> offer additional insights.</p>
+<p>These commands help uncover references that may be embedded within
+data structures, especially useful in languages where function pointers
+or callbacks are stored dynamically when used on running processes like
+via <code>r2frida</code>, remote <strong>gdb</strong> or the native
+debugger (<code>r2 -d</code>).</p>
+<p>The aav command analyzes values within code sections, helping locate
+pointers or data that may reference functions or addresses
+indirectly.</p>
+<pre class="console"><code>aav</code></pre>
+<p>By running <code>aav</code>, Radare2 scans the code for potential
+dword addresses inlined as immediate values, assisting in identifying
+otherwise hard-to-find function references.</p>
+<p>To begin with we can try with <code>/v</code> and all its variants
+<code>/v4</code> or <code>/v8</code> that will encode the given value
+into a 4 or 8 byte endian-aware pattern to search for, those values must
+be aligned for performance reasons so we can use
+<code>-e search.align=4</code> to make the scan 4 times faster and
+reduce false positives.</p>
+<ul>
+<li>/V: Conducts a more thorough scan for ranges of values, which can be
+ideal when we want to cover references to entire sections or maps
+instead of a single value.</li>
+</ul>
+<pre class="console"><code>[0x00000000]&gt; /V?
+| /V[1248] min max  look for an `cfg.bigendian` 32bit value in range
+[0x00000000]&gt;</code></pre>
+<p>One practical use case for this would be to find in a firmware where
+the memory mapped devices are mapped. Because it’s usually easier for
+programs to load a dword for the destination address than computing the
+value which can’t fit in an immediate value on 8 or 16bit
+microprocessors.</p>
+<p>Once those values are found you can check for xrefs in the given
+addresses using a command like <code>/ar @@ hit*</code> but take into
+account that you can manually register new xrefs using the
+<code>ax</code> command.</p>
+<h2 id="thumb-code">Thumb Code</h2>
+<p>Programs on ARM-16 mode can combine 16 and 32 bit wide instructions,
+this is a problem because the Thumb bit of the cpsr register can change
+at any time and this can be used for obfuscation or the binary headers
+can report invalid details about the location of the thumb or non-thumb
+symbols, resulting on pretty bad results.</p>
+<p>Radare2 uses the <code>anal hints</code> as a way to specify the
+bitness of a specific memory region with the <code>ahb</code>
+command.</p>
+<pre class="console"><code>[0x00000000]&gt; ahb?
+Usage: ahb [8|16|32|64] [@ addr]   Define asm.bits hint at given address
+| ahb 16  set asm.bits=16 in the given address
+| ahb     get asm.bits used in given addr (current seek)
+| ahb-$$  delete all the hints in the given address
+| ahb*    show defined bits hints as r2 commands
+[0x00000000]&gt;</code></pre>
+<p>Some ELF binaries can become a big mess because the bin loader will
+set a lot of <code>ahb 16</code> and <code>ahb 32</code> hints here and
+there and cause the analysis to missbehave.</p>
+<p>Also, note that <code>aae</code> and <code>aaef</code> can perform
+recursive control flow graph emulation, finding code patterns that
+modify the CPU mode and propagate the <code>ahb</code> hints over
+functions.</p>
+<p>A quick solution to override this and reset to defaults consists in
+just removing all those hints and start over before running any analysis
+with the <code>ahb-*</code> command.</p>
+<p>Scanning for computed references using <code>aae</code> after that
+will result in much better results for those kind of binaries.</p>
+<h2 id="reference-challenge">Reference Challenge</h2>
+<p>Today’s challenge consists in using all this knowledge and your
+battery or binaries, analyze the binary and try to find the reason why
+there’s a missing or a false positive reference.</p>
+<ul>
+<li>Open the binary and run your favourite analysis commands</li>
+<li>Enter the <em>visual hud</em> mode with the <code>V_</code>
+command</li>
+<li>Type <code>str</code> and choose a string you like</li>
+</ul>
+<p>Once you spot once, it will be great if you could submit a
+<strong>PR</strong> fixing it by:</p>
+<ul>
+<li>Improving <code>aaa</code> default analysis</li>
+<li>Adding new analysis procedures</li>
+</ul>
+<p>Don’t worry if you feel overwhelmed. If you’re not comfortable fixing
+this issue yourself, you can create a ticket and include the binary file
+along with reproduction steps. What’s most important right now is
+demonstrating your ability to research and analyze the references.</p>
+<p><em>HINT</em>: you are free to use other tools to find out those
+references in case they are not available in r2, comparing between tools
+is another good way to learn more about how the analysis and references
+are constructed.</p>
+<p>Stay tuned for tomorrow’s Advent of Radare2!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

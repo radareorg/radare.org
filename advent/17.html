@@ -1,0 +1,393 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="breakpoints-and-registers">17 - Breakpoints and Registers</h1>
+<p>Welcome to Day 17 of the Advent of Radare!</p>
+<p>Today, we’ll focus on examining and changing the register state at
+specific breakpoints, a fundamental step in debugging and understanding
+binary behavior when performing dynamic instrumentation.</p>
+<p>Radare2 provides commands like <code>db</code> and <code>dbc</code>
+to manage breakpoints and display register values with <code>dr</code>
+or <code>drr</code>. In this guide, we’ll explore some common practices
+and techniques for manipulating program execution to bypass protections
+and security checks at runtime.</p>
+<h2 id="in-need-for-a-break">In need for a break?</h2>
+<p>We have already covered the topic of breakpoints in the 2nd day of
+the <strong>#aor24</strong>, so we won’t go into much extra details in
+here, but instead focus on the practical applications and
+inconvenients.</p>
+<h2 id="am-i-being-debugged">Am I being Debugged?</h2>
+<p>Protected software uses different techniques to detect when the
+application is being debugged and uses that as a way to misbehave,
+crash, or fail in different ways to confuse the analyst or avoid
+tampering to make it harder to change or inspect its internal
+functionalities.</p>
+<p>This technique is commonly used not just for Anti-debugging
+mechanisms, but also for Malware detection evasion, Software protection
+schemes and Security-sensitive applications. In this section we will
+learn about some of them:</p>
+<p><strong>IsDebuggerPresent</strong>, this w32 api returns true when
+the current process have a debugger attached, so the program itself can
+determine if it’s being debugged.</p>
+<p>The IsDebuggerPresent API on Windows can be replaced by directly
+checking the Process Environment Block (PEB) structure, which contains a
+byte flag indicating if a debugger is present. This information is
+accessible through the Thread Local Storage (TLS) via the Thread
+Environment Block (TEB), which points to the PEB.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">IsDebuggerPresentPEB:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>#if _WIN64</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">mov</span> <span class="kw">rax</span><span class="op">,</span> <span class="kw">gs</span><span class="op">:[</span><span class="bn">0x60</span><span class="op">]</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>#else</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">mov</span> <span class="kw">eax</span><span class="op">,</span> <span class="kw">fs</span><span class="op">:[</span><span class="bn">0x30</span><span class="op">]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>#endif</span></code></pre></div>
+<p>Some little understandings on which structures are inside those
+pointers:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>BOOL IsDebuggerPresentPEB<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">typedef</span> <span class="kw">struct</span> _PEB <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        BYTE Reserved1<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        BYTE BeingDebugged<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        BYTE Reserved2<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ... rest of PEB structure</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> PEB<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">typedef</span> <span class="kw">struct</span> _TEB <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        NT_TIB NtTib<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        PVOID EnvironmentPointer<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        CLIENT_ID ClientId<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        PVOID ActiveRpcHandle<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        PVOID ThreadLocalStoragePointer<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        PPEB ProcessEnvironmentBlock<span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ... rest of TEB structure</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> TEB<span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    PTEB pTEB <span class="op">=</span> NtCurrentTeb<span class="op">();</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pTEB<span class="op">-&gt;</span>ProcessEnvironmentBlock<span class="op">-&gt;</span>BeingDebugged<span class="op">;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>On Linux systems (as well as in <strong>BSD</strong>), the
+<code>PTRACE_ME</code> request for the ptrace syscall that will fail
+(return -1) when the process is being traced. The reason for that is
+because this call can be only made once by the child process.</p>
+<p>On Linux we can check the <code>stat</code> and <code>status</code>
+files from the <code>/proc/self/</code> directory to determine if we are
+being traced:</p>
+<ul>
+<li>Parse the stat file contents. The TracerPID is the 9th field in
+<code>/proc/[pid]/stat</code></li>
+<li>Grep for ‘TracerPid:’ text in the
+<code>/proc/self/status</code></li>
+</ul>
+<h2 id="anti-debugging-techniques">Anti-Debugging Techniques</h2>
+<p>Malware authors and software protection systems often implement
+various techniques to detect and prevent debugging. Understanding them
+will make us understand and find ways to bypass or workaround them.</p>
+<p>Spend some time reading the following items and think (or google
+around) about how to beat them!</p>
+<h3 id="code-integrity-checks">Code Integrity Checks</h3>
+<ul>
+<li>Calculate checksums or hashes of specific code segments at
+runtime</li>
+<li>Compare against pre-computed values to detect modifications</li>
+<li>Can detect software breakpoints (INT3/0xCC) and code patches</li>
+</ul>
+<h3 id="timing-based-detection">Timing-Based Detection</h3>
+<ul>
+<li>Measure execution time between two points in code</li>
+<li>Debug sessions significantly slow down execution</li>
+<li>Compare timestamps using high-precision timers (RDTSC)</li>
+<li>Can also detect single-stepping</li>
+</ul>
+<h3 id="virtual-machine-detection">Virtual Machine Detection</h3>
+<ul>
+<li>Check for hypervisor presence (CPUID instruction)</li>
+<li>Detect common VM artifacts (specific registry keys, processes,
+drivers)</li>
+<li>Look for VM-specific hardware ID like virtual network adapters</li>
+</ul>
+<h3 id="environment-analysis">Environment Analysis</h3>
+<ul>
+<li>Inspect environment variables</li>
+<li>Check parent process name</li>
+<li>Check for processes in the system named (gdb, radare2, x64dbg, ida,
+..)</li>
+<li>Check if system is unprotected like jailbroken systems</li>
+</ul>
+<h3 id="system-behavior-checks">System Behavior Checks</h3>
+<ul>
+<li>Monitor file descriptors and handles (stdin, stdout, stderr linked
+to pipes or sockets instead of terminal)</li>
+<li>Check for debugger ports (default port 23946 for WinDbg)</li>
+<li>Analyze process memory layout</li>
+</ul>
+<h3 id="other-techniques">Other Techniques</h3>
+<ul>
+<li>Self-modifying code to confuse in-memory static analysis</li>
+<li>Trash or encrypt stack frames on random function calls</li>
+<li>Thread-based anti-debugging (create watchdog threads)</li>
+<li>Hardware breakpoint detection, using them to store encryption
+keys</li>
+<li>Exception handling tricks (SEH/VEH on Windows, Signal hooking)</li>
+<li>Process memory tampering detection</li>
+<li>Code encryption/decryption at runtime</li>
+<li>Anti-dump techniques (trash binary headers in memory)</li>
+</ul>
+<h3 id="debugger-specific-tricks">Debugger-Specific tricks</h3>
+<ul>
+<li>Detect popular debuggers by window class or process names</li>
+<li>Check for debugger-specific libraries loaded inside the process
+(frida?)</li>
+</ul>
+<h2 id="register-profiles">Register Profiles</h2>
+<p>Let’s go back to the radare2 shell to learn how to display and
+manipulate the registers.</p>
+<p>Register profiles are tab-separated text files that define how
+registers are mapped in memory. Each analysis engine and debugger
+backend maintains its own register profile, which specifies the exact
+memory layout of registers.</p>
+<p>We can inspect them with the <code>arp</code> or <code>drp</code>
+commands. These files contain the following fields:</p>
+<ul>
+<li>Name (must be lowercase)</li>
+<li>Alias (generic-cross-arch name, must be uppercase)</li>
+<li>Type (general purpose, vector, flags, ..)</li>
+<li>Size in bits (8, 16, 32, 64, ..)</li>
+<li>Endianness (little, big, …)</li>
+<li>Vector pack details</li>
+</ul>
+<p>Here’s an excerpt from the reg profile used by esil on x64
+binaries:</p>
+<pre class="console"><code>0x00000000]&gt; drp | head -n20
+=PC rip
+=SP rsp
+=BP rbp
+=R0 rax
+=A0 rdi
+=A1 rsi
+=A2 rdx
+=A3 rcx
+=A4 r8
+=A5 r9
+=A6 r10
+=A7 r11
+=SN rax
+gpr rax .64 80  0
+gpr eax .32 80  0
+gpr ax  .16 80  0
+gpr al  .8  80  0
+gpr ah  .8  81  0
+gpr rbx .64 40  0
+gpr ebx .32 40  0
+..</code></pre>
+<p>The register profile information is also available in XML format
+within GDB, and Radare2 includes functionality to convert between both
+formats. By default, the <code>dr</code> command displays registers
+corresponding to the current architecture’s bit width (as specified by
+<code>asm.bits</code>).</p>
+<p>To pick the value of a register:</p>
+<pre class="console"><code>[0x100425074]&gt; dr=</code></pre>
+<p>Show registers of size 64</p>
+<pre class="console"><code>[0x100425074]&gt; dr 64</code></pre>
+<h2 id="dumping-and-restoring-regstate">Dumping and Restoring
+regstate</h2>
+<p>As long as all r2 command can export the information in scripts by
+using the <code>*</code> suffix, we can use this characteristic to save
+the register values in a file and then restore it back by executing the
+script.</p>
+<p>Let’s see how that works:</p>
+<pre class="console"><code>[0x100425074]&gt; dr* &gt; regs.r2
+[0x100425074]&gt; . regs.r2</code></pre>
+<p>But what’s in the regs.r2 now? is this exactly what we were looking
+for?</p>
+<pre class="console"><code>[0x100425074]&gt; cat regs.r2
+fs+registers
+f rax 8 0x00000000
+f rbx 8 0x00000000
+f rcx 8 0x00000000
+f rdx 8 0x00000000
+f rsi 8 0x00000000
+f rdi 8 0x00000000
+...
+fs-
+[0x100425074]&gt;</code></pre>
+<p>Well, it seems like it’s not. this script is just setting some flags
+with a given name, size and address. So, if we run the script what we
+will get is just the flags loaded, but flags are not tied to the
+debugger backend or the register state, why’s that useful for then?</p>
+<p>Turns out that math operations, and many other commands end up using
+the flags as a way to find out references to named things like the
+register periscoping listing in <code>drr</code>.</p>
+<ul>
+<li><code>dr?rax</code> - get value of ‘rax’ register</li>
+<li><code>fd @ rax</code> - assume <code>rax</code> is taken as a flag
+(see <code>.dr*</code>)</li>
+<li><code>fd @r:rax</code> - show flag <code>dr*rax</code> - get value
+of ‘rax’ register</li>
+</ul>
+<p>So, to achieve the same behaviour we can just run it in one line:</p>
+<pre class="console"><code>[0x100425074]&gt; .dr*</code></pre>
+<p>The dot tells r2 to take the output of the command that is written
+right after it and interpret it as an r2 script.</p>
+<p>But then, which command should we use to save and restore registers?
+it’s <code>dr.</code>!</p>
+<pre class="console"><code>[0x100425074]&gt; dr. &gt; regs.r2
+[0x100425074]&gt; dr rax=33
+[0x100425074]&gt; . regs.r2
+[0x100425074]&gt; dr?rax
+0x00000033</code></pre>
+<p>And the script now looks like expected:</p>
+<pre class="console"><code>[0x100425074]&gt; dr.
+dr rax=0x00000000
+dr rbx=0x00000000
+dr rcx=0x00000000
+dr rdx=0x00000000
+dr rsi=0x00000000
+dr rdi=0x00000000
+dr r8=0x00000000
+...</code></pre>
+<h2 id="tracing-breaking-and-patching">Tracing, Breaking and
+Patching</h2>
+<p>We learned about the advantages and inconveniences of different
+protections and anti-debugging techniques, so we should now decide which
+are the best choices we can take to circumvent them.</p>
+<ul>
+<li>Hardware breakpoints (<code>dbh</code>)</li>
+<li>Software brearkpoints (<code>db</code>)</li>
+<li>Library injection to replace imports
+(<code>rarun2 ldpreload=..</code>)</li>
+<li>Binary or in-memory patching (<code>wx/wa</code>)</li>
+<li>In-process tracing (r2frida)</li>
+</ul>
+<h2 id="bypassing-the-ptraceme-check">Bypassing the ptraceme check</h2>
+<p>Let’s put the knowledge into practice with today’s challenge, we may
+try to solve it in all the possible ways we have.</p>
+<p>Start by disassembling the main function of the binary attached
+(b64+xz), then load it into your favourite linux-x64 system and run
+it:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello,</span> World!</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> r2 <span class="at">-qc</span> <span class="st">&#39;dc&#39;</span> <span class="at">-d</span> ./a.out</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Debugger</span> detected!</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">1223217</span><span class="kw">)</span> <span class="ex">Process</span> exited with status=0x100</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<p>I’ll give you over some of these options:</p>
+<h3 id="breakpoints">Breakpoints</h3>
+<p>Set a breakpoint in the ptrace import. step over the libc call and
+check for the condition that happens in the main function and the values
+of the registers.</p>
+<p>We can now use the ‘dr’ command right before the cmp to set the right
+value like if ptrace returned 0 instead of -1.</p>
+<h3 id="binary-patching-in-disk">Binary patching in disk</h3>
+<p>Open the binary with <code>-w</code> to be able to write changes in
+the file, analyze with agfv the condition that makes the program fail
+when ptrace returns -1 and patch the code using <code>wa</code> or
+<code>wao</code>.</p>
+<ul>
+<li>Nop the ptrace call or replace it with a xor rax,rax</li>
+<li>Keep the ptrace call and replace the cmp with a mov rax,0</li>
+<li>Nop the jne or replace it with a non-conditional branch</li>
+</ul>
+<h3 id="r2frida">R2Frida</h3>
+<p>If we use Frida or r2frida as backend for debugging or tracing the
+target we will notice that the program runs without any issue:</p>
+<pre class="console"><code>$ frida ./a.out
+Spawned `./a.out`. Resuming main thread!                                
+Hello, World!
+[Local::a.out ]-&gt; Process terminated
+Thank you for using Frida!</code></pre>
+<p>Same happens in r2frida:</p>
+<pre class="console"><code>$ r2 frida://./a.out
+INFO: Mounted io on /r2f at 0x0
+ -- Press &#39;C&#39; in visual mode to toggle colors
+[0x5caf81643169]&gt; :dc
+Hello, World!
+INFO: resumed spawned process
+[0x5caf81643169]&gt;
+INFO: DetachReason: FRIDA_SESSION_DETACH_REASON_PROCESS_TERMINATED</code></pre>
+<p>The reason for that is because frida uses ptrace only to spawn the
+proces and inject the frida agent inside the process, then it’s
+detaching it and resuming, we can use commands like
+<code>:dtf ptrace</code> to trace when the ptrace call is happening. But
+more interestingly, we can just fake the return value of
+<code>ptrace</code> to make the program think that is running</p>
+<pre class="console"><code>$ r2 frida://./a.out
+INFO: Mounted io on /r2f at 0x0
+[0x61a5cf02f169]&gt; :dif-1 ptrace
+[0x61a5cf02f169]&gt; :dc
+INFO: resumed spawned process
+Debugger detected!
+Target: ptrace was called, intercepting return value.
+INFO: DetachReason: FRIDA_SESSION_DETACH_REASON_PROCESS_TERMINATED
+[0x61a5cf02f169]&gt; </code></pre>
+<p>The <code>dif-1</code> command intercepts the function return value
+and replace it with 0, 1, -1, any random inmediate a string, etc..</p>
+<p>The difference with <code>di</code> is that one replaces the function
+and the other keeps the code being executed and changes the return value
+after that.</p>
+<pre class="console"><code>:di[0,1,-1,i,s,v] [addr]    Intercepts and replace return value of address without calling the function
+:dif[0,1,-1,i,s] [addr]     Intercepts return value of address after calling the function</code></pre>
+<h2 id="blob">Blob!</h2>
+<pre class="console"><code>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
+AAAAAARZWg==
+</code></pre>
+<h2 id="closing">Closing</h2>
+<p>Stay tuned for tomorrow’s Radare2 challenge as we explore more
+powerful analysis tools!</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>

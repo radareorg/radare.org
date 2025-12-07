@@ -1,0 +1,375 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advent Of Radare2</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <a href="/advent">/advent</a>
+<h1 id="welcome-contributors">20 - Welcome Contributors</h1>
+<p>Welcome to 20th Day of the Advent of Radare!</p>
+<p>Free software projects advance thanks to their surrounding
+communities. Contributions come in many forms: discussions, creating
+projects, bug reports, adding tests, documentation all help them grow
+and evolve over time.</p>
+<p>Radare2 is no exception, and while it has a reputation for having a
+huge and complex codebase, the reality is quite different when people
+actually engage with it. There have been numerous presentations at
+r2cons specifically aimed at helping new contributors overcome their
+initial hesitation and understand the fundamentals.</p>
+<p>In fact, there are many ways to contribute, and in most cases it’s
+easier than you might think. Before moving on to the next section,
+remember that coding is not the only way to contribute to the
+project!</p>
+<h2 id="introduction">Introduction</h2>
+<p>There are some good resources online and offline to learn more about
+contributing, but I would encourage you to read the following files from
+the <a href="https://github.com/radareorg/radare2">root of
+radare2</a>:</p>
+<ul>
+<li><strong>DEVELOPERS.md</strong> guidelines</li>
+<li><strong>CONTRIBUTING.md</strong> instructions</li>
+</ul>
+<p>Also, it’s a good practice to use <code>tig</code> (reverse
+<code>git</code>) to inspect the git history and find commits that are
+similar to the ones you want to do to learn from previous
+contributors.</p>
+<h2 id="tests">Tests</h2>
+<p>It’s generally good and recommended practice to write tests to ensure
+functionality won’t break in the future and maintain consistency. Even
+with a comprehensive test suite, code coverage is often far from 100%,
+so keep this in mind.</p>
+<p>Don’t hesitate to submit patches focused solely on improving the test
+suite. You can use this as an opportunity to contribute even if you’re
+not modifying the main codebase.</p>
+<p>The test suite we use is called <code>r2r</code>, a command-line tool
+that you can use to verify that your local build of radare2 passes all
+the tests. However, it’s common practice to delegate this task to the CI
+(Continuous Integration) and just keep the local copy.</p>
+<p>This tool is shipped as part of the radare2 toolchain and is also
+used to test third-party plugins like r2yara, r2frida, etc.</p>
+<p>There are for types of tests:</p>
+<ul>
+<li><strong>asm</strong> - test arch plugins to assemble and disassemble
+instructions</li>
+<li><strong>cmd</strong> - run commands and compare output</li>
+<li><strong>json</strong> - run cmds and verify output is valid
+json</li>
+<li><strong>fuzz</strong> - runs fuzzing checks on inputs for: fs, bin,
+cmd</li>
+<li><strong>unit</strong> - test behaviour and usage of various C
+APIs</li>
+</ul>
+<p>The tool accepts 3 types of input arguments:</p>
+<ul>
+<li>Directories containing test files</li>
+<li>Individual test files (format described below)</li>
+<li>C source files containing special comments like
+<code>// R2R ...</code> that specify which tests to run</li>
+</ul>
+<p>The test files follow this format:</p>
+<pre class="console"><code>NAME=testname              # must be unique
+FILE=malloc://1024         # file to open
+BROKEN=0|1                 # is the test broken?
+ARGS=-a x86                # optional
+CMDS=&lt;&lt;EOF                 # all the commands
+?e hello world
+?ee errmsg
+EOF
+EXPECT=&lt;&lt;EOF               # command output
+hello world
+EOF
+EXPECT_ERR&lt;&lt;EOF            # optional
+errmsg
+EOF
+RUN</code></pre>
+<p>Tests marked as broken will be reported as FIXED or BROKEN depending
+on whether they pass or not. Another good way to contribute is to spot
+these tests and remove the BROKEN statement to make them pass.</p>
+<p>The tool has several interesting flags worth explaining:</p>
+<ul>
+<li>-i : interactively asks you to fix, edit, or patch broken tests; the
+flag will update the test output if requested</li>
+<li>-j : runs tests in separate threads in parallel</li>
+<li>-S : performs a shallow run of a percentage of tests (randomly skips
+some to speed up testing)</li>
+<li>-o : specifies output JSON file containing all timestamps and test
+results</li>
+</ul>
+<p>The resulting JSON file generated with <code>-o</code> is
+particularly useful for obtaining metrics and identifying bottlenecks or
+slow operations. There’s a set of tests under <code>db/test/slow</code>
+that contains the most time-consuming tests to run, and it’s recommended
+to use them with a profiler to optimize the r2 code.</p>
+<p>The r2r test suite runs using the <a
+href="https://github.com/radareorg/radare2-testbins/">testbins</a>
+repository. This repository contains binaries for different
+architectures and Operating Systems that are copyright-friendly,
+allowing them to be distributed and used as seeds for mutation-based
+fuzzing.</p>
+<h2 id="third-party">Third Party</h2>
+<p>Radare is self-contained, which means you can compile it with only
+<code>libc</code> as a dependency.</p>
+<p>Traditionally, dependencies were packed inside the same repository
+using a <a href="https://en.wikipedia.org/wiki/Monorepo">monorepo</a>
+approach. This was later changed to handcrafted git clones because git
+submodules are problematic for several reasons:</p>
+<ul>
+<li>GitHub tarballs don’t include them</li>
+<li>Release tarballs require git</li>
+<li>Git requires network connectivity, preventing offline builds</li>
+<li>Submodule commits are easily broken or changed</li>
+</ul>
+<p>Recently, we began migrating all external dependencies to
+meson-wraps, which provide a more robust way to manage external source
+repositories. This approach resolves all the issues mentioned above,
+simplifies maintenance and updates, and reduces the overall
+codebase.</p>
+<p>r2-6.0 will be the first version to implement this system.</p>
+<p>While this is a meson-specific feature, wrap files are also supported
+by <a href="https://github.com/radareorg/acr">ACR</a>, an
+autotools-replacement project created by <em>pancake</em>. ACR generates
+configure/make files that are 20 times smaller, faster to execute, and
+easier to maintain, with zero external dependencies. It has been tested
+on numerous UNIX systems.</p>
+<p>For <strong>make</strong> builds, acr-wrap handles pulling external
+repositories and can be executed in the <code>preconfigure</code>
+script, enabling offline builds.</p>
+<h2 id="build-system">Build System</h2>
+<p>As mentioned before, radare2 supports make and meson for building its
+source. Both have their good and bad sides, and maintaining two build
+systems is totally not a problem, not even for a large project like
+this.</p>
+<p>The make machinery is:</p>
+<ul>
+<li>Easy to write and hack stuff in</li>
+<li>Very portable and standard (GNU Make)</li>
+<li>Can’t build if your src build contains spaces</li>
+<li>Install with symlinks, so no need to reinstall</li>
+<li>Can build only stuff in one directory</li>
+</ul>
+<p>On the meson part we can say:</p>
+<ul>
+<li>Requires a relative modern version of Python
+<ul>
+<li>muon/samu are C rewrites of the python’s meson and c++’s ninja</li>
+</ul></li>
+<li>Not friendly with old unix systems</li>
+<li>Build times and recompilations take longer than make</li>
+<li>Works fine on Windows</li>
+</ul>
+<p>Pick the one you like, but remember to update both things if you
+submit changes that require new files or compilation options which is
+something that is not really common.</p>
+<h2 id="stable-abi-and-versioning">Stable ABI and Versioning</h2>
+<p>During winter, radare2 enters the ABI breaking season. This is due to
+a self-imposed rule aimed at improving stability and reducing user
+complaints by enforcing a stable binary interface for all modules and
+public APIs.</p>
+<p>The CI check works by downloading the static build from the latest
+stable release and using the <code>abidiff</code> tool from RedHat’s
+libabigail. It generates a comparison using the DWARF metadata to ensure
+all public functions and structures remain unchanged.</p>
+<p>This check is only disabled when the last number of the version
+string is <code>.9</code>.</p>
+<p>Let’s clarify how versioning works in radare2 - while it looks
+similar to semver, it follows a different convention!</p>
+<p>Version string is split into 3 numbers: X.Y.Z</p>
+<ul>
+<li><strong>X</strong> Major: increments when minor version changes from
+.9 to .0</li>
+<li><strong>Y</strong> Minor: indicates ABI stable versioning; releases
+with the same minor version are binary compatible</li>
+<li><strong>Z</strong> Patch: specifies ABI compatible releases
+<ul>
+<li>even (0, 2, 4, …): stable release</li>
+<li>odd (1, 3, 5, …): git version
+<ul>
+<li>.9: ABI breaking season</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Throughout the project’s evolution, we’ve used various versioning
+approaches. Given the project’s active development and numerous changes,
+adopting semver would have led to versions like 237823.3.1, which are
+difficult to read and interpret.</p>
+<p>The current model makes it easy to determine a version’s age at a
+glance, as we aim to release every 200-300 commits, approximately every
+three months.</p>
+<p>Sometimes, necessary ABI-breaking changes can hinder evolution. To
+address this, we implement the <code>--with-new-abi</code> configure
+flag, which enables these ABI-breaking changes while allowing private or
+external projects to use the new APIs with their custom builds.</p>
+<p>Users should consider these builds experimental and not as thoroughly
+tested (despite running the test suite with these changes enabled), so
+caution is advised. These changes take effect during the ABI breaking
+season.</p>
+<h2 id="linting-and-indenting">Linting and Indenting</h2>
+<p>One of the extra checks that happens in the CI on every commit is to
+execute the following script:</p>
+<ul>
+<li><code>sys/lint.sh</code></li>
+</ul>
+<p>This is an ugly shell script that git greps over all the source files
+and finds incorrect syntax or constructions that break our coding
+conventions:</p>
+<ul>
+<li>Indent code with tabs</li>
+<li>Indent comments with spaces</li>
+<li><code>R_API</code> function definitions</li>
+<li><code>R_IPI</code> for internal cross-object functions</li>
+<li>No space before <code>(</code> in function definitions</li>
+<li>Add space when calling functions</li>
+<li>Don’t define variables inside <code>for</code> statements</li>
+<li>Don’t use newlines in <code>R_LOG</code> calls</li>
+<li>Don’t use formatting functions with non-formatted strings</li>
+<li>Don’t use dangerous APIs like strcpy</li>
+<li>…</li>
+</ul>
+<p>We’ve tried different tools to enforce the coding style, but the fact
+is that all of them fail in some way or another, creating monstrous and
+unreadable codebases. This is why r2 requires contributors to indent the
+code by hand.</p>
+<p>For some reason, young developers find that rule a bit annoying
+because they’re used to modern languages like Go, TypeScript, Rust,
+etc., that enforce these rules in the language itself. But for oldies
+like me, indenting C by hand brings some satisfaction in the sense that
+you have full control over what you write, and part of your style and
+personality gets transferred to the code you write.</p>
+<p>To be honest, thanks to this I’m able to read a portion of code and
+tell you who wrote it without using <code>git blame</code>. That brings
+better satisfaction than enforcing automated indentation, in my humble
+opinion.</p>
+<h2 id="grep-is-your-friend">Grep is your Friend</h2>
+<p>One of the best ways to find things to fix or improve in the radare2
+codebase isn’t by checking GitHub issues, but rather by grepping for
+specific keywords in the source code.</p>
+<p>In the r2 ecosystem, we have established keywords and rules that help
+locate points of interest in the codebase. Using <code>git grep</code>
+is fast enough to make the workflow fluid and efficient. Here’s a list
+of these keywords:</p>
+<ul>
+<li><strong>TODO</strong> : stuff that needs to be done</li>
+<li><strong>XXX</strong> : this is known to be wrong</li>
+<li><strong>WIP</strong> : not finished, but kind of working</li>
+<li><strong>R2_600</strong> : things to be done before r2-6.x</li>
+<li><strong>USE_NEW_ABI</strong> : only used during the abi stable
+seassons</li>
+<li><strong>R_API</strong> : find definition of api function</li>
+<li><strong>R_IPI</strong> : internal api function definition</li>
+<li><strong>R_TH_LOCAL</strong> : global variables to be eliminated</li>
+</ul>
+<p>You can use the <code>sys/counters.sh</code> script to get some
+stats:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sys/counters.sh</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">XXX</span>     1323</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">TODO</span>        1927</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">GLOBALS</span>      148</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">strcpy</span>       227</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sprintf</span>      171</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">eUsage</span>        21</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">f</span><span class="er">(</span><span class="ex">char</span><span class="kw">)</span>        <span class="ex">3</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">isdigit</span>      199</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">f</span><span class="er">(</span><span class="ex">void</span><span class="kw">)</span>       <span class="ex">41</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">aPlugs</span>         3</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">BROKEN</span>       234</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Cannot</span>         9</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">http:/</span>       134</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">strtok</span>        12</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">R2_580</span>         0</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ex">R2_590</span>        89</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">R2_600</span>       106</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<p>Ideally all the comments like <code>R2_600</code> should be addressed
+<strong>BEFORE</strong> r2-6.0 is out. Note that 5.9.0 was released
+without addressing them all, so those are also good targets to be solved
+or converted to <code>R2_600</code>.</p>
+<h2 id="doublehashtags">DoubleHashtags</h2>
+<p>You may have noticed while reading the <code>git log</code> that some
+commits contain hashtags prefixed with two <code>##</code> characters.
+These are processed by the <code>sys/release-notes.sh</code> script,
+which groups those tags to create the text that’s attached to releases
+when a new tag is pushed to the master branch.</p>
+<p>This CI custom machinery helps reduce the effort required to deliver
+new versions, so it’s important to use these tags wisely. Only use them
+if the commit is relevant enough to be included in the final
+changelog.</p>
+<p>Some of the most commonly used tags are:</p>
+<ul>
+<li><strong>print</strong> : for p subcommands</li>
+<li><strong>analysis</strong> : related to code analysis</li>
+<li><strong>arch</strong> : cpu / architecture support</li>
+<li><strong>debug</strong> : the debugger capabilities</li>
+<li><strong>shell</strong> : commandline improvements</li>
+<li><strong>esil</strong> : esil expressions, engine</li>
+<li><strong>bin</strong> : binary parsing files</li>
+<li><strong>disasm</strong> : disassembly listings</li>
+<li><strong>io</strong> : related to the IO layer</li>
+<li><strong>crash</strong> : segfault, overflow, security related</li>
+<li><strong>fs</strong> : filesystems and partition tables</li>
+<li><strong>build</strong> : portability and build fixes</li>
+<li><strong>util</strong> : utility functions</li>
+<li><strong>search</strong> : / subcommands and <em>r_search</em>
+apis</li>
+<li><strong>visual</strong> : related to the visual mode</li>
+<li><strong>crypto</strong> : cryptographic and hash / checksums</li>
+</ul>
+<h2 id="digging-tickets">Digging Tickets</h2>
+<p>When searching for issues on GitHub, effectively utilizing labels and
+search functionality helps you find the ones that best match your
+interests.</p>
+<p>Labels are typically used to specify modules (rbin, arch, core,
+debug, etc.) that the issues are associated with. Use them to find
+topics that align with your areas of interest if you want to work on a
+specific subject.</p>
+<p>Addressing issues associated with upcoming milestones is crucial for
+maintaining project momentum and meeting delivery deadlines. Milestones
+help teams organize issues and pull requests into larger goals or
+releases, providing a clear roadmap for project development.</p>
+<p>We strive to maintain a friendly approach in code reviews because
+experience has shown that receiving numerous changes and complaints for
+every small patch can be frustrating. Having large, interesting patches
+abandoned due to frustration is worse than having multiple smaller ones
+that help motivate the team, enable better testing, and encourage open
+discussions about future development directions.</p>
+<p>By regularly reviewing and prioritizing issues linked to immediate
+milestones, teams can ensure they’re focusing on the most important
+tasks and tracking progress effectively. This practice helps prevent
+last-minute rushes, enables better resource allocation, and contributes
+to more successful project deliveries while maintaining transparency
+with stakeholders regarding project status and timeline adherence.</p>
+<h2 id="challenge">Challenge</h2>
+<p>Today’s challenge is to solve a GitHub issue, a <strong>TODO</strong>
+or an <strong>XXX</strong> comment by submitting a Pull Request.</p>
+<p>Choose the one that best suits your skills and make it happen!</p>
+<h2 id="closing">Closing</h2>
+<p>I hope you all feel motivated after reading this. Next time you find
+something confusing or miss a feature, try to fix it yourself before
+opening a ticket!</p>
+<p>Check out the <a
+href="https://www.youtube.com/watch?v=MdjcWsTj4Ek">Developers
+Welcome</a> presentation from #r2con2024 to learn more tips and hear
+testimonials from some of the main contributors!</p>
+<p>See you tomorrow in another post of the advent of radare2!</p>
+<p>–pancake</p>
+</body>
+<script>
+  function scaleImageMap() {
+    const img = document.getElementById("advimg");
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const imgDisplayedWidth = img.offsetWidth;
+    const scale = imgDisplayedWidth / imgWidth;
+
+    document.querySelectorAll("#imgmap area").forEach((area) => {
+      const originalCoords = area.dataset.originalCoords.split(",").map(Number);
+      const scaledCoords = originalCoords.map(coord => Math.round(coord * scale));
+      area.coords = scaledCoords.join(",");
+    });
+  }
+  window.addEventListener("load", scaleImageMap);
+  window.addEventListener("resize", scaleImageMap);
+</script>
+</html>
